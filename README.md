@@ -1,8 +1,8 @@
 # plugin-api
-A mid wrapper for building consistant figma &amp; sketch &amp; studio plugin, with single api reference
+A mid wrapper for building consistant figma &amp; sketch &amp; reflection plugin, with single api reference
 
 
-> write once, run every whre. supports studio, figma, sketch
+> write once, run every whre. supports reflection, figma, sketch
 
 
 ## Sketch reference
