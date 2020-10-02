@@ -6,9 +6,10 @@ A mid wrapper for building consistant figma &amp; sketch &amp; reflection plugin
 
 
 ## Sketch reference
-https://developer.sketch.com/plugins/javascript-api
+- https://developer.sketch.com/plugins/javascript-api
+- https://developer.sketch.com/reference/api/
 
 
 
 ## Figma reference
-https://www.figma.com/plugin-docs/api/
+- https://www.figma.com/plugin-docs/api/
