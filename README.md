@@ -1,6 +1,7 @@
-# plugin-api
+# DESIGN SDK
 A mid wrapper for building consistant figma &amp; sketch &amp; reflection plugin, with single api reference
 
+> developed and maintained by [bridged's assistant](https://github.com/bridgedxyz/assistant)
 
 > write once, run every whre. supports reflection, figma, sketch
 
