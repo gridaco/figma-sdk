@@ -1,0 +1,14 @@
+{
+    "name": "@bridged.xyz/design-sdk",
+    "version": "0.1.0",
+    "main": "dist/index.js",
+    "scripts": {
+        "postinstall": "tsc"
+    },
+    "dependencies": {
+        "@reflect.bridged.xyz/uiutils": "0.0.1"
+    },
+    "devDependencies": {
+        "typescript": "^3.4.3"
+    }
+}
