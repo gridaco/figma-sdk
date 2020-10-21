@@ -5,6 +5,7 @@
  * @param node 
  */
 export function checkIfRoot(node: SceneNode) {
+    console.log(node)
     if (node.parent.type == "PAGE" && node.type == "FRAME") {
         return true;
     }

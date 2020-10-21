@@ -12,7 +12,8 @@ import {
   ReflectRectangleCornerMixin,
   ReflectDefaultShapeMixin,
   ReflectEllipseNode,
-} from "./mixin";
+  ReflectConstraintMixin,
+} from "./types";
 import { convertToAutoLayout } from "./auto-layout.convert";
 import { notEmpty } from "../utils/general";
 
@@ -28,7 +29,12 @@ export function frameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
     return frameToRectangleNode(node, altParent);
   }
 
-  const altNode = new ReflectFrameNode();
+  const altNode = new ReflectFrameNode(
+    {
+      id: node.id,
+      name: node.name
+    }
+  );
 
   altNode.id = node.id;
   altNode.name = node.name;
@@ -41,6 +47,7 @@ export function frameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
   convertFrame(altNode, node);
   convertCorner(altNode, node);
   convertRectangleCorner(altNode, node);
+  convertConstraint(altNode, node);
 
   altNode.children = convertIntoReflectNodes(node.children, altNode);
 
@@ -50,10 +57,12 @@ export function frameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
 // auto convert Frame to Rectangle when Frame has no Children
 function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
   altParent: ReflectFrameNode | ReflectGroupNode | null): ReflectRectangleNode {
-  const newNode = new ReflectRectangleNode();
-
-  newNode.id = node.id;
-  newNode.name = node.name;
+  const newNode = new ReflectRectangleNode(
+    {
+      id: node.id,
+      name: node.name
+    }
+  );
 
   if (altParent) {
     newNode.parent = altParent;
@@ -62,6 +71,7 @@ function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
   convertDefaultShape(newNode, node);
   convertRectangleCorner(newNode, node);
   convertCorner(newNode, node);
+  convertConstraint(newNode, node);
   return newNode;
 }
 
@@ -70,9 +80,9 @@ function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
  * @param sceneNode 
  * @param altParent 
  */
-export function convertIntoReflectNode(sceneNode: ReadonlyArray<SceneNode>,
+export function convertIntoReflectNode(sceneNode: SceneNode,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null): ReflectSceneNode {
-  return convertIntoReflectNodes(sceneNode, altParent,)[0]
+  return convertIntoReflectNodes([sceneNode], altParent,)[0]
 }
 
 export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
@@ -82,15 +92,19 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
       if (node.type === "RECTANGLE" || node.type === "ELLIPSE") {
         let altNode;
         if (node.type === "RECTANGLE") {
-          altNode = new ReflectRectangleNode();
+          altNode = new ReflectRectangleNode({
+            id: node.id,
+            name: node.name
+          });
           convertRectangleCorner(altNode, node);
         }
         else if (node.type === "ELLIPSE") {
-          altNode = new ReflectEllipseNode();
+          altNode = new ReflectEllipseNode({
+            id: node.id,
+            name: node.name
+          });
         }
 
-        altNode.id = node.id;
-        altNode.name = node.name;
 
         if (altParent) {
           altNode.parent = altParent;
@@ -112,10 +126,11 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
           return convertIntoReflectNodes(node.children, altParent)[0];
         }
 
-        const altNode = new ReflectGroupNode();
+        const altNode = new ReflectGroupNode({
+          id: node.id,
+          name: node.name
+        });
 
-        altNode.id = node.id;
-        altNode.name = node.name;
 
         if (altParent) {
           altNode.parent = altParent;
@@ -131,10 +146,11 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
         // also, Group will always have at least 2 children.
         return convertNodesOnRectangle(altNode);
       } else if (node.type === "TEXT") {
-        const altNode = new ReflectTextNode();
+        const altNode = new ReflectTextNode({
+          id: node.id,
+          name: node.name
+        });
 
-        altNode.id = node.id;
-        altNode.name = node.name;
 
         if (altParent) {
           altNode.parent = altParent;
@@ -142,11 +158,14 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
 
         convertDefaultShape(altNode, node);
         convertIntoReflectText(altNode, node);
+        convertConstraint(altNode, node);
+
         return altNode;
       } else if (node.type === "VECTOR") {
-        const altNode = new ReflectRectangleNode();
-        altNode.id = node.id;
-        altNode.name = node.name;
+        const altNode = new ReflectRectangleNode({
+          id: node.id,
+          name: node.name
+        });
 
         if (altParent) {
           altNode.parent = altParent;
@@ -204,6 +223,10 @@ function convertGeometry(altNode: ReflectGeometryMixin, node: GeometryMixin) {
   altNode.dashPattern = node.dashPattern;
   altNode.fillStyleId = node.fillStyleId;
   altNode.strokeStyleId = node.strokeStyleId;
+}
+
+function convertConstraint(altNode: ReflectConstraintMixin, node: ConstraintMixin) {
+  altNode.constraints = node.constraints;
 }
 
 function convertBlend(altNode: ReflectBlendMixin,

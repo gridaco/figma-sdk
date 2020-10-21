@@ -1,10 +1,10 @@
-import { ReflectSceneNode, ReflectFrameNode, ReflectGroupNode } from "./mixin";
+import { ReflectSceneNode, ReflectFrameNode, ReflectGroupNode } from "./types";
 
 export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
-  const newNode = new ReflectFrameNode();
-
-  newNode.id = node.id;
-  newNode.name = node.name;
+  const newNode = new ReflectFrameNode({
+    id: node.id,
+    name: node.name
+  });
 
   newNode.x = node.x;
   newNode.y = node.y;

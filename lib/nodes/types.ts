@@ -1,4 +1,5 @@
 import { checkIfRoot } from "../utils/check-if-root";
+import { getGroupLCRS, getNodeLCRS, LCRS } from "../utils/lcrs";
 
 export type ReflectSceneNode =
   | ReflectFrameNode
@@ -6,10 +7,22 @@ export type ReflectSceneNode =
   | ReflectRectangleNode
   | ReflectEllipseNode
   | ReflectTextNode
+  | ReflectLineNode
+  | ReflectComponentNode
+  | ReflectInstanceNode
 // TODO
 // | StarNode
 // | LineNode
 // | PolygonNode;
+
+
+export interface IConstraintable {
+  readonly lcrs: LCRS
+}
+
+export interface ReflectConstraintMixin extends IConstraintable {
+  constraints: Constraints
+}
 
 export interface ReflectGeometryMixin {
   fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
@@ -60,12 +73,21 @@ export interface ReflectLayoutMixin {
 
 
 class ReflectBaseNode {
-  type: NodeType
+  readonly type: NodeType
+
+  constructor(props: {
+    id: string,
+    name: string
+  }) {
+    this.id = props.id
+    this.name = props.name
+  }
+
+  locked: boolean
   id: string;
   parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
   name: string;
   readonly pluginData: { [key: string]: string };
-
 
   get isComponent(): boolean {
     return this.type === "COMPONENT" || this.type == "INSTANCE";
@@ -126,10 +148,27 @@ export abstract class ReflectDefaultShapeMixin
 }
 
 
+export class ReflectLineNode extends ReflectDefaultShapeMixin implements ReflectConstraintMixin {
+  readonly type = "LINE"
+  constraints: Constraints
+
+  get lcrs(): LCRS {
+    return getNodeLCRS(this)
+  }
+}
+
 export class ReflectRectangleNode extends ReflectDefaultShapeMixin implements
   ReflectCornerMixin,
+  ReflectConstraintMixin,
   ReflectRectangleCornerMixin {
   readonly type = "RECTANGLE";
+
+
+  constraints: Constraints
+
+  get lcrs(): LCRS {
+    return getNodeLCRS(this)
+  }
 }
 
 export class ReflectEllipseNode extends ReflectDefaultShapeMixin {
@@ -137,7 +176,7 @@ export class ReflectEllipseNode extends ReflectDefaultShapeMixin {
 }
 
 //#region frame
-interface ReflectFrameMixin {
+interface ReflectFrameMixin extends ReflectConstraintMixin {
   layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
   counterAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
 
@@ -168,6 +207,12 @@ export class ReflectFrameNode
   ReflectLayoutMixin {
 
   readonly type = "FRAME";
+
+  constraints: Constraints
+
+  get lcrs(): LCRS {
+    return getNodeLCRS(this)
+  }
 
 
   // frame mixin
@@ -232,6 +277,24 @@ export class ReflectFrameNode
 }
 //#endregion
 
+export class ReflectComponentNode extends ReflectFrameNode {
+  // FIXME
+  // @ts-ignore
+  readonly type = "COMPONENT";
+
+  description: string;
+  readonly remote: boolean;
+  readonly key: string;
+}
+
+export class ReflectInstanceNode extends ReflectFrameNode {
+  // FIXME
+  // @ts-ignore
+  readonly type = "INSTANCE";
+
+  masterComponent: ComponentNode;
+}
+
 
 
 //#region group node
@@ -239,8 +302,13 @@ export class ReflectGroupNode
   extends ReflectBaseNode implements
   ReflectChildrenMixin,
   ReflectBlendMixin,
-  ReflectLayoutMixin {
+  ReflectLayoutMixin,
+  IConstraintable {
   readonly type = "GROUP";
+
+  get lcrs(): LCRS {
+    return getGroupLCRS(this)
+  }
 
   // base node mixin
   id: string;
@@ -274,8 +342,13 @@ export class ReflectGroupNode
 //#endregion
 
 export class ReflectTextNode extends
-  ReflectDefaultShapeMixin {
+  ReflectDefaultShapeMixin implements ReflectConstraintMixin {
   readonly type = "TEXT";
+
+  constraints: Constraints
+  get lcrs(): LCRS {
+    return getNodeLCRS(this)
+  }
 
   characters: string;
   textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";

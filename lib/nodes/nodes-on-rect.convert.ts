@@ -3,7 +3,7 @@ import {
   ReflectFrameNode,
   ReflectGroupNode,
   ReflectSceneNode,
-} from "./mixin";
+} from "./types";
 import { convertToAutoLayout } from "./auto-layout.convert";
 
 /**
@@ -66,7 +66,12 @@ export function convertNodesOnRectangle(node: ReflectFrameNode | ReflectGroupNod
 function convertRectangleToFrame(rect: ReflectRectangleNode) {
   // if a Rect with elements inside were identified, extract this Rect
   // outer methods are going to use it.
-  const frameNode = new ReflectFrameNode();
+  const frameNode = new ReflectFrameNode(
+    {
+      id: rect.id,
+      name: rect.name
+    }
+  );
 
   frameNode.parent = rect.parent;
 
@@ -106,9 +111,7 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
   frameNode.topRightRadius = rect.topRightRadius;
   frameNode.bottomLeftRadius = rect.bottomLeftRadius;
   frameNode.bottomRightRadius = rect.bottomRightRadius;
-
-  frameNode.id = rect.id;
-  frameNode.name = rect.name;
+  frameNode.constraints = rect.constraints
 
   return frameNode;
 }
