@@ -1,5 +1,5 @@
 import { checkIfRoot } from "../utils/check-if-root";
-import { getGroupLCRS, getNodeLCRS, LCRS } from "../utils/lcrs";
+import { calculateLCRS, getGroupLCRS, getNodeLCRS, LCRS } from "../utils/lcrs";
 
 export type ReflectSceneNode =
   | ReflectFrameNode
@@ -10,19 +10,121 @@ export type ReflectSceneNode =
   | ReflectLineNode
   | ReflectComponentNode
   | ReflectInstanceNode
+  | ReflectConstraintMixin
+  | ReflectChildrenMixin
 // TODO
 // | StarNode
 // | LineNode
 // | PolygonNode;
 
 
-export interface IConstraintable {
-  readonly lcrs: LCRS
+
+export interface ReflectBlendMixin {
+  opacity: number;
+  blendMode: "PASS_THROUGH" | BlendMode;
+  isMask: boolean;
+  effects: ReadonlyArray<Effect>;
+  effectStyleId: string;
+  visible: boolean;
+  radius: number;
 }
 
-export interface ReflectConstraintMixin extends IConstraintable {
-  constraints: Constraints
+
+
+export interface ReflectLayoutMixin {
+  x: number;
+  y: number;
+  rotation: number; // In degrees
+
+  width: number;
+  height: number;
+
+  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH"; // applicable only inside auto-layout frames
 }
+
+export enum ReflectSceneNodeType {
+  group = "GROUP",
+  component = "COMPONENT",
+  constraint = "CONSTRAINT",
+  instance = "INSTANCE",
+  text = "TEXT",
+  frame = "FRAME",
+  ellipse = "ELLIPSE",
+  rectangle = "RECTANGLE",
+  line = "LINE",
+}
+
+class ReflectBaseNode implements ReflectLayoutMixin, ReflectBlendMixin {
+  readonly type: ReflectSceneNodeType
+
+  constructor(props: {
+    id: string,
+    name: string
+  }) {
+    this.id = props.id
+    this.name = props.name
+  }
+
+  locked: boolean
+  id: string;
+  parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
+  name: string;
+  readonly pluginData: { [key: string]: string };
+
+  // layout related
+  x: number;
+  y: number;
+  rotation: number; // In degrees
+  width: number;
+  height: number;
+  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
+  //
+
+  // blen related
+  opacity: number;
+  blendMode: "PASS_THROUGH" | BlendMode;
+  isMask: boolean;
+  effects: ReadonlyArray<Effect>;
+  effectStyleId: string;
+  visible: boolean;
+  radius: number;
+  //
+
+  get isComponent(): boolean {
+    return this.type === "COMPONENT" || this.type == "INSTANCE";
+  }
+
+  get isMasterComponent(): boolean {
+    return this.type == "COMPONENT";
+  }
+
+  get isRoot(): boolean {
+    // DANGEROUS
+    return checkIfRoot(this as any)
+  }
+}
+
+
+export class ReflectConstraintMixin extends ReflectBaseNode {
+  // @ts-ignore
+  type = ReflectSceneNodeType.constraint
+  constraints: Constraints
+
+  /**
+   * the current node's LCRS positioning.
+   */
+  get lcrs(): LCRS {
+    return getNodeLCRS(this)
+  }
+
+  /**
+   * the cureent node's LCRS positioning actually relative to parent.
+   */
+  get relativeLcrs(): LCRS {
+    return getReletiveLCRS(this, this.parent);
+  }
+}
+
 
 export interface ReflectGeometryMixin {
   fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
@@ -49,64 +151,9 @@ export interface ReflectRectangleCornerMixin {
   bottomRightRadius: number;
 }
 
-export interface ReflectBlendMixin {
-  opacity: number;
-  blendMode: "PASS_THROUGH" | BlendMode;
-  isMask: boolean;
-  effects: ReadonlyArray<Effect>;
-  effectStyleId: string;
-  visible: boolean;
-  radius: number;
-}
-
-export interface ReflectLayoutMixin {
-  x: number;
-  y: number;
-  rotation: number; // In degrees
-
-  width: number;
-  height: number;
-
-  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH"; // applicable only inside auto-layout frames
-}
-
-
-
-class ReflectBaseNode {
-  readonly type: NodeType
-
-  constructor(props: {
-    id: string,
-    name: string
-  }) {
-    this.id = props.id
-    this.name = props.name
-  }
-
-  locked: boolean
-  id: string;
-  parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
-  name: string;
-  readonly pluginData: { [key: string]: string };
-
-  get isComponent(): boolean {
-    return this.type === "COMPONENT" || this.type == "INSTANCE";
-  }
-
-  get isMasterComponent(): boolean {
-    return this.type == "COMPONENT";
-  }
-
-  get isRoot(): boolean {
-    // DANGEROUS
-    return checkIfRoot(this as any)
-  }
-}
-
 
 export abstract class ReflectDefaultShapeMixin
-  extends ReflectBaseNode implements
-  ReflectBlendMixin,
+  extends ReflectConstraintMixin implements
   ReflectGeometryMixin,
   ReflectRectangleCornerMixin,
   ReflectCornerMixin,
@@ -148,35 +195,46 @@ export abstract class ReflectDefaultShapeMixin
 }
 
 
-export class ReflectLineNode extends ReflectDefaultShapeMixin implements ReflectConstraintMixin {
-  readonly type = "LINE"
-  constraints: Constraints
+export class ReflectLineNode extends ReflectDefaultShapeMixin {
+  readonly type = ReflectSceneNodeType.line
+}
 
-  get lcrs(): LCRS {
-    return getNodeLCRS(this)
-  }
+/**
+ * 
+ * @param target the target node a.k.a current node
+ * @param reletiveTo the parent node of target node in generatl.
+ */
+function getReletiveLCRS(target: ReflectSceneNode, reletiveTo: ReflectSceneNode): LCRS {
+
+  // FIXME rel does not work with group as expected.
+  const relX = target.x
+  const relXCenter = relX + (target.width / 2)
+  const relY = target.y
+  const relYCenter = relY + (target.height / 2)
+
+  const lcrs = calculateLCRS({
+    centerPosition: relXCenter,
+    startPosition: target.x,
+    containerWidth: reletiveTo.width,
+    width: target.width
+  })
+
+  return lcrs
 }
 
 export class ReflectRectangleNode extends ReflectDefaultShapeMixin implements
   ReflectCornerMixin,
-  ReflectConstraintMixin,
   ReflectRectangleCornerMixin {
-  readonly type = "RECTANGLE";
+  readonly type = ReflectSceneNodeType.rectangle;
 
-
-  constraints: Constraints
-
-  get lcrs(): LCRS {
-    return getNodeLCRS(this)
-  }
 }
 
 export class ReflectEllipseNode extends ReflectDefaultShapeMixin {
-  readonly type = "ELLIPSE";
+  readonly type = ReflectSceneNodeType.ellipse;
 }
 
 //#region frame
-interface ReflectFrameMixin extends ReflectConstraintMixin {
+interface ReflectFrameMixin {
   layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
   counterAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
 
@@ -196,23 +254,36 @@ interface ReflectFrameMixin extends ReflectConstraintMixin {
   guides: ReadonlyArray<Guide>;
 }
 
+class ReflectChildrenMixin extends ReflectConstraintMixin {
+  children: Array<ReflectSceneNode>;
+  get constraintableChildren(): Array<ReflectConstraintMixin> {
+    return filterConstraintableChildren(this)
+  }
+  isRelative?: boolean;
+}
+
+function filterConstraintableChildren(node: ReflectChildrenMixin) {
+  const constraintables: Array<ReflectConstraintMixin> = [];
+  for (const childNode of node.children) {
+    if (childNode.type == "INSTANCE" || childNode.type == "COMPONENT" || childNode.type == "FRAME" || childNode.type == "RECTANGLE" || childNode.type == "GROUP" || childNode.type == "LINE" || childNode.type == "ELLIPSE" || childNode.type == "TEXT") {
+      constraintables.push(childNode as ReflectConstraintMixin);
+    }
+  }
+  return constraintables;
+}
+
 
 export class ReflectFrameNode
-  extends ReflectBaseNode implements ReflectFrameMixin,
-  ReflectChildrenMixin,
+  extends ReflectChildrenMixin implements ReflectFrameMixin,
   ReflectGeometryMixin,
   ReflectCornerMixin,
   ReflectRectangleCornerMixin,
   ReflectBlendMixin,
   ReflectLayoutMixin {
 
-  readonly type = "FRAME";
+  readonly type = ReflectSceneNodeType.frame;
 
   constraints: Constraints
-
-  get lcrs(): LCRS {
-    return getNodeLCRS(this)
-  }
 
 
   // frame mixin
@@ -280,7 +351,7 @@ export class ReflectFrameNode
 export class ReflectComponentNode extends ReflectFrameNode {
   // FIXME
   // @ts-ignore
-  readonly type = "COMPONENT";
+  readonly type = ReflectSceneNodeType.component;
 
   description: string;
   readonly remote: boolean;
@@ -290,7 +361,7 @@ export class ReflectComponentNode extends ReflectFrameNode {
 export class ReflectInstanceNode extends ReflectFrameNode {
   // FIXME
   // @ts-ignore
-  readonly type = "INSTANCE";
+  readonly type = ReflectSceneNodeType.instance;
 
   masterComponent: ComponentNode;
 }
@@ -299,16 +370,12 @@ export class ReflectInstanceNode extends ReflectFrameNode {
 
 //#region group node
 export class ReflectGroupNode
-  extends ReflectBaseNode implements
+  extends ReflectChildrenMixin implements
   ReflectChildrenMixin,
   ReflectBlendMixin,
-  ReflectLayoutMixin,
-  IConstraintable {
-  readonly type = "GROUP";
+  ReflectLayoutMixin {
+  readonly type = ReflectSceneNodeType.group;
 
-  get lcrs(): LCRS {
-    return getGroupLCRS(this)
-  }
 
   // base node mixin
   id: string;
@@ -342,13 +409,8 @@ export class ReflectGroupNode
 //#endregion
 
 export class ReflectTextNode extends
-  ReflectDefaultShapeMixin implements ReflectConstraintMixin {
-  readonly type = "TEXT";
-
-  constraints: Constraints
-  get lcrs(): LCRS {
-    return getNodeLCRS(this)
-  }
+  ReflectDefaultShapeMixin {
+  readonly type = ReflectSceneNodeType.text;
 
   characters: string;
   textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";
@@ -368,8 +430,3 @@ export class ReflectTextNode extends
   lineHeight: LineHeight | PluginAPI["mixed"];
 }
 
-
-interface ReflectChildrenMixin {
-  children: Array<ReflectSceneNode>;
-  isRelative?: boolean;
-}

@@ -96,6 +96,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
             id: node.id,
             name: node.name
           });
+          convertConstraint(altNode, node);
           convertRectangleCorner(altNode, node);
         }
         else if (node.type === "ELLIPSE") {
@@ -171,6 +172,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
           altNode.parent = altParent;
         }
 
+        convertConstraint(altNode, node);
         convertDefaultShape(altNode, node);
 
         // TODO Vector support is still missing. Meanwhile, add placeholder.

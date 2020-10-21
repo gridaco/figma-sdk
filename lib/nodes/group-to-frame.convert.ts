@@ -51,7 +51,7 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
  */
 function updateChildrenXY(node: ReflectSceneNode): ReflectSceneNode {
   // the second condition is necessary, so it can convert the root
-  if (node.type === "GROUP") {
+  if (node instanceof ReflectGroupNode) {
     node.children.forEach((d) => {
       d.x = d.x - node.x;
       d.y = d.y - node.y;
