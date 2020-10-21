@@ -1,7 +1,7 @@
 import {
   ReflectRectangleNode,
-  AltFrameNode,
-  AltGroupNode,
+  ReflectFrameNode,
+  ReflectGroupNode,
   ReflectSceneNode,
 } from "./mixin";
 import { convertToAutoLayout } from "./auto-layout.convert";
@@ -9,7 +9,7 @@ import { convertToAutoLayout } from "./auto-layout.convert";
 /**
  * Identify all nodes that are inside Rectangles and transform those Rectangles into Frames containing those nodes.
  */
-export function convertNodesOnRectangle(node: AltFrameNode | AltGroupNode): AltFrameNode | AltGroupNode {
+export function convertNodesOnRectangle(node: ReflectFrameNode | ReflectGroupNode): ReflectFrameNode | ReflectGroupNode {
   if (node.children.length < 2) {
     return node;
   }
@@ -66,7 +66,7 @@ export function convertNodesOnRectangle(node: AltFrameNode | AltGroupNode): AltF
 function convertRectangleToFrame(rect: ReflectRectangleNode) {
   // if a Rect with elements inside were identified, extract this Rect
   // outer methods are going to use it.
-  const frameNode = new AltFrameNode();
+  const frameNode = new ReflectFrameNode();
 
   frameNode.parent = rect.parent;
 

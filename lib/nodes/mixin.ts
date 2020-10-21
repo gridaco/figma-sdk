@@ -1,11 +1,17 @@
-export type ReflectSceneNode =
-  | AltFrameNode
-  | AltGroupNode
-  | ReflectRectangleNode
-  | AltEllipseNode
-  | AltTextNode;
+import { checkIfRoot } from "../utils/check-if-root";
 
-export interface AltGeometryMixin {
+export type ReflectSceneNode =
+  | ReflectFrameNode
+  | ReflectGroupNode
+  | ReflectRectangleNode
+  | ReflectEllipseNode
+  | ReflectTextNode
+// TODO
+// | StarNode
+// | LineNode
+// | PolygonNode;
+
+export interface ReflectGeometryMixin {
   fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
   strokes: ReadonlyArray<Paint>;
   strokeWeight: number;
@@ -18,19 +24,19 @@ export interface AltGeometryMixin {
   strokeStyleId: string;
 }
 
-export interface AltCornerMixin {
+export interface ReflectCornerMixin {
   cornerRadius: number | PluginAPI["mixed"];
   cornerSmoothing: number;
 }
 
-export interface AltRectangleCornerMixin {
+export interface ReflectRectangleCornerMixin {
   topLeftRadius: number;
   topRightRadius: number;
   bottomLeftRadius: number;
   bottomRightRadius: number;
 }
 
-export interface AltBlendMixin {
+export interface ReflectBlendMixin {
   opacity: number;
   blendMode: "PASS_THROUGH" | BlendMode;
   isMask: boolean;
@@ -40,7 +46,7 @@ export interface AltBlendMixin {
   radius: number;
 }
 
-export interface AltLayoutMixin {
+export interface ReflectLayoutMixin {
   x: number;
   y: number;
   rotation: number; // In degrees
@@ -51,7 +57,87 @@ export interface AltLayoutMixin {
   layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH"; // applicable only inside auto-layout frames
 }
 
-export interface AltFrameMixin {
+
+
+class ReflectBaseNode {
+  type: NodeType
+  id: string;
+  parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
+  name: string;
+  readonly pluginData: { [key: string]: string };
+
+
+  get isComponent(): boolean {
+    return this.type === "COMPONENT" || this.type == "INSTANCE";
+  }
+
+  get isMasterComponent(): boolean {
+    return this.type == "COMPONENT";
+  }
+
+  get isRoot(): boolean {
+    // DANGEROUS
+    return checkIfRoot(this as any)
+  }
+}
+
+
+export abstract class ReflectDefaultShapeMixin
+  extends ReflectBaseNode implements
+  ReflectBlendMixin,
+  ReflectGeometryMixin,
+  ReflectRectangleCornerMixin,
+  ReflectCornerMixin,
+  ReflectLayoutMixin {
+  opacity: number;
+  blendMode: "PASS_THROUGH" | BlendMode;
+  isMask: boolean;
+  effects: ReadonlyArray<Effect>;
+  effectStyleId: string;
+  visible: boolean;
+  radius: number;
+
+  fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
+  strokes: ReadonlyArray<Paint>;
+  strokeWeight: number;
+  strokeMiterLimit: number;
+  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
+  strokeCap: StrokeCap | PluginAPI["mixed"];
+  strokeJoin: StrokeJoin | PluginAPI["mixed"];
+  dashPattern: ReadonlyArray<number>;
+  fillStyleId: string | PluginAPI["mixed"];
+  strokeStyleId: string;
+
+  topLeftRadius: number;
+  topRightRadius: number;
+  bottomLeftRadius: number;
+  bottomRightRadius: number;
+
+  cornerRadius: number | PluginAPI["mixed"];
+  cornerSmoothing: number;
+
+
+  x: number;
+  y: number;
+  rotation: number;
+  width: number;
+  height: number;
+  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
+}
+
+
+export class ReflectRectangleNode extends ReflectDefaultShapeMixin implements
+  ReflectCornerMixin,
+  ReflectRectangleCornerMixin {
+  readonly type = "RECTANGLE";
+}
+
+export class ReflectEllipseNode extends ReflectDefaultShapeMixin {
+  readonly type = "ELLIPSE";
+}
+
+//#region frame
+interface ReflectFrameMixin {
   layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
   counterAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
 
@@ -72,30 +158,37 @@ export interface AltFrameMixin {
 }
 
 
+export class ReflectFrameNode
+  extends ReflectBaseNode implements ReflectFrameMixin,
+  ReflectChildrenMixin,
+  ReflectGeometryMixin,
+  ReflectCornerMixin,
+  ReflectRectangleCornerMixin,
+  ReflectBlendMixin,
+  ReflectLayoutMixin {
 
-export class AltDefaultShapeMixin
-  implements AltBaseNodeMixin,
-  AltBlendMixin,
-  AltGeometryMixin,
-  AltRectangleCornerMixin,
-  AltCornerMixin,
-  AltLayoutMixin {
-
-  id: string;
-  parent: (ReflectSceneNode & AltChildrenMixin) | null;
-  name: string;
-  readonly pluginData: { [key: string]: string };
+  readonly type = "FRAME";
 
 
-  opacity: number;
-  blendMode: "PASS_THROUGH" | BlendMode;
-  isMask: boolean;
-  effects: ReadonlyArray<Effect>;
-  effectStyleId: string;
-  visible: boolean;
-  radius: number;
+  // frame mixin
+  layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
+  counterAxisSizingMode: "FIXED" | "AUTO";
+  itemSpacing: number;
+  paddingRight: number;
+  paddingLeft: number;
+  paddingTop: number;
+  paddingBottom: number;
+  layoutGrids: ReadonlyArray<LayoutGrid>;
+  gridStyleId: string;
+  clipsContent: boolean;
+  guides: ReadonlyArray<Guide>;
 
 
+  // children mixin
+  children: Array<ReflectSceneNode>;
+  isRelative?: boolean;
+
+  // geometry mixin
   fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
   strokes: ReadonlyArray<Paint>;
   strokeWeight: number;
@@ -107,70 +200,83 @@ export class AltDefaultShapeMixin
   fillStyleId: string | PluginAPI["mixed"];
   strokeStyleId: string;
 
+  // corner mixin
+  cornerRadius: number | PluginAPI["mixed"];
+  cornerSmoothing: number;
 
 
+  // rectangle corner mixin
   topLeftRadius: number;
   topRightRadius: number;
   bottomLeftRadius: number;
   bottomRightRadius: number;
 
-  cornerRadius: number | PluginAPI["mixed"];
-  cornerSmoothing: number;
+
+  // blend mixin
+  opacity: number;
+  blendMode: "PASS_THROUGH" | BlendMode;
+  isMask: boolean;
+  effects: ReadonlyArray<Effect>;
+  effectStyleId: string;
+  visible: boolean;
+  radius: number;
 
 
+  // layout mixin
+  x: number;
+  y: number;
+  rotation: number; // In degrees
+  width: number;
+  height: number;
+  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
+}
+//#endregion
+
+
+
+//#region group node
+export class ReflectGroupNode
+  extends ReflectBaseNode implements
+  ReflectChildrenMixin,
+  ReflectBlendMixin,
+  ReflectLayoutMixin {
+  readonly type = "GROUP";
+
+  // base node mixin
+  id: string;
+  parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
+  name: string;
+  readonly pluginData: { [key: string]: string };
+
+  // children mixin
+  children: Array<ReflectSceneNode>;
+  isRelative?: boolean;
+
+  // blend mixin
+  opacity: number;
+  blendMode: "PASS_THROUGH" | BlendMode;
+  isMask: boolean;
+  effects: ReadonlyArray<Effect>;
+  effectStyleId: string;
+  visible: boolean;
+  radius: number;
+
+  // layout mixin
   x: number;
   y: number;
   rotation: number;
-
   width: number;
   height: number;
-
   layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
+
 }
 
+//#endregion
 
-
-
-export class ReflectRectangleNode extends AltDefaultShapeMixin implements
-  AltCornerMixin,
-  AltRectangleCornerMixin {
-  readonly type = "RECTANGLE";
-}
-
-
-export class AltEllipseNode {
-  readonly type = "ELLIPSE";
-}
-export class AltFrameNode {
-  readonly type = "FRAME";
-}
-export class AltGroupNode {
-  readonly type = "GROUP";
-}
-export class AltTextNode {
+export class ReflectTextNode extends
+  ReflectDefaultShapeMixin {
   readonly type = "TEXT";
-}
 
-
-export interface AltEllipseNode extends AltDefaultShapeMixin, AltCornerMixin { }
-
-export interface AltFrameNode
-  extends AltFrameMixin,
-  AltBaseNodeMixin,
-  AltChildrenMixin,
-  AltGeometryMixin,
-  AltCornerMixin,
-  AltRectangleCornerMixin,
-  AltBlendMixin,
-  AltLayoutMixin { }
-
-export interface AltGroupNode
-  extends AltBaseNodeMixin,
-  AltChildrenMixin,
-  AltBlendMixin,
-  AltLayoutMixin { }
-
-interface AltTextMixin {
   characters: string;
   textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";
 
@@ -189,20 +295,8 @@ interface AltTextMixin {
   lineHeight: LineHeight | PluginAPI["mixed"];
 }
 
-export interface AltTextNode
-  extends AltTextMixin,
-  AltDefaultShapeMixin,
-  AltBaseNodeMixin,
-  AltLayoutMixin { }
 
-export interface AltBaseNodeMixin {
-  id: string;
-  parent: (ReflectSceneNode & AltChildrenMixin) | null;
-  name: string;
-  readonly pluginData: { [key: string]: string };
-}
-
-export interface AltChildrenMixin {
+interface ReflectChildrenMixin {
   children: Array<ReflectSceneNode>;
   isRelative?: boolean;
 }

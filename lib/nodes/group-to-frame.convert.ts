@@ -1,7 +1,7 @@
-import { ReflectSceneNode, AltFrameNode, AltGroupNode } from "./mixin";
+import { ReflectSceneNode, ReflectFrameNode, ReflectGroupNode } from "./mixin";
 
-export function convertGroupToFrame(node: AltGroupNode): AltFrameNode {
-  const newNode = new AltFrameNode();
+export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
+  const newNode = new ReflectFrameNode();
 
   newNode.id = node.id;
   newNode.name = node.name;
@@ -27,7 +27,7 @@ export function convertGroupToFrame(node: AltGroupNode): AltFrameNode {
   newNode.parent = node.parent;
 
   // update the children's x and y position. Modify the 'original' node, then pass them.
-  updateChildrenXY(node) as AltFrameNode;
+  updateChildrenXY(node) as ReflectFrameNode;
   newNode.children = node.children;
 
   newNode.children.forEach((d) => {

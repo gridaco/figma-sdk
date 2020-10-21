@@ -1,4 +1,4 @@
-import { AltFrameNode, AltGroupNode, ReflectSceneNode } from "./mixin";
+import { ReflectFrameNode, ReflectGroupNode, ReflectSceneNode } from "./mixin";
 import { convertGroupToFrame } from "./group-to-frame.convert";
 
 /**
@@ -8,7 +8,7 @@ import { convertGroupToFrame } from "./group-to-frame.convert";
  * If it finds, add the correct attributes. When original node is a Group,
  * convert it to Frame before adding the attributes. Group doesn't have AutoLayout properties.
  */
-export function convertToAutoLayout(node: AltFrameNode | AltGroupNode): AltFrameNode | AltGroupNode {
+export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): ReflectFrameNode | ReflectGroupNode {
   // only go inside when AutoLayout is not already set.
   if (("layoutMode" in node &&
     node.layoutMode === "NONE" &&
@@ -157,7 +157,7 @@ function calculateInterval(children: ReadonlyArray<ReflectSceneNode>,
  * Calculate the Padding.
  * This is very verbose, but also more performant than calculating them independently.
  */
-function detectAutoLayoutPadding(node: AltFrameNode): {
+function detectAutoLayoutPadding(node: ReflectFrameNode): {
   left: number;
   right: number;
   top: number;
@@ -236,7 +236,7 @@ function detectAutoLayoutPadding(node: AltFrameNode): {
  * Result is the layoutAlign attribute
  */
 function layoutAlignInChild(node: ReflectSceneNode,
-  parentNode: AltFrameNode): "MIN" | "CENTER" | "MAX" | "STRETCH" {
+  parentNode: ReflectFrameNode): "MIN" | "CENTER" | "MAX" | "STRETCH" {
   // parentNode.layoutMode can't be NONE.
   if (parentNode.layoutMode === "VERTICAL") {
     const nodeCenteredPosX = node.x + node.width / 2;
