@@ -1,14 +1,17 @@
-import { ReflectSceneNode } from "../nodes";
+import { ReflectGroupNode, ReflectSceneNode } from "../nodes";
 
 
 export type LCRS = "Left" | "Center" | "Right" | "Stretch" | "Scale" | "Mixed"
 
 
 export function getNodeLCRS(node: ReflectSceneNode): LCRS {
-    if (node.type == "INSTANCE" || node.type == "COMPONENT" || node.type == "FRAME" || node.type == "RECTANGLE") {
-        return X_ALIGN_FIGMA_TO_REFLECT.get(node.constraints.horizontal)
-    } else if (node.type == "GROUP") {
+    if (node instanceof ReflectGroupNode) {
         return getGroupLCRS(node);
+    }
+    else {
+        try {
+            return X_ALIGN_FIGMA_TO_REFLECT.get(node.constraints.horizontal)
+        } catch (e) { /* ignore */ }
     }
 }
 
@@ -17,26 +20,23 @@ export function getNodeLCRS(node: ReflectSceneNode): LCRS {
  * https://github.com/figma/plugin-typings/issues/9
  * @param node 
  */
-export function getGroupLCRS(node: ReflectSceneNode): LCRS {
-    let lastLCRS: LCRS;
-    if (node.type == "GROUP") {
-        for (const c of node.children) {
-            const lcrs = getGroupLCRS(c)
-            if (lastLCRS) {
-                if (lastLCRS === lcrs) {
-                    // do nothing if lcrs matches
-                } else {
-                    // return mixed, if last lcrs does not match current one.
-                    return "Mixed"
-                }
+export function getGroupLCRS(node: ReflectGroupNode): LCRS {
+    let lastChildLCRS: LCRS;
+    for (const c of node.children) {
+        const childLCRS = getNodeLCRS(c)
+        console.warn(c, childLCRS)
+        if (lastChildLCRS) {
+            if (lastChildLCRS === childLCRS) {
+                // do nothing if lcrs matches
             } else {
-                lastLCRS = lcrs
+                // return mixed, if last lcrs does not match current one.
+                return "Mixed"
             }
+        } else {
+            lastChildLCRS = childLCRS
         }
-        return lastLCRS
-    } else {
-        return getNodeLCRS(node)
     }
+    return lastChildLCRS
 }
 
 const X_ALIGN_FIGMA_TO_REFLECT: Map<ConstraintType, LCRS> = new Map([
@@ -62,7 +62,7 @@ const SAFE_DAMPING_PX = 0.5
  * @param containerWidth 
  * @param centerPosition 
  */
-export function getLCRS(args: {
+export function calculateLCRS(args: {
     containerWidth: number, centerPosition: number, startPosition: number, width: number
 }): LCRS {
     const { containerWidth, centerPosition, startPosition, width } = args

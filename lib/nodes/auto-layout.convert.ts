@@ -10,48 +10,52 @@ import { convertGroupToFrame } from "./group-to-frame.convert";
  */
 export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): ReflectFrameNode | ReflectGroupNode {
   // only go inside when AutoLayout is not already set.
-  if (("layoutMode" in node &&
+  if ((node instanceof ReflectFrameNode &&
     node.layoutMode === "NONE" &&
     node.children.length > 0) ||
-    node.type === "GROUP") {
+    node instanceof ReflectGroupNode) {
     const [orderedChildren, direction, itemSpacing] = reorderChildrenIfAligned(
       node.children
     );
     node.children = orderedChildren;
 
-    if (direction === "NONE" && node.children.length > 1) {
-      node.isRelative = true;
-    }
-
-    if (direction === "NONE" && node.children.length !== 1) {
-      // catches when children is 0 or children is larger than 1
-      return node;
-    }
-
     // if node is a group, convert to frame
-    if (node.type === "GROUP") {
-      node = convertGroupToFrame(node);
-    }
-
-    if (direction === "NONE" && node.children.length === 1) {
-      // Add fake AutoLayout when there is a single item. This is done for the Padding.
-      node.layoutMode = "HORIZONTAL";
+    let frame: ReflectFrameNode;
+    if (node instanceof ReflectGroupNode) {
+      frame = convertGroupToFrame(node);
     } else {
-      node.layoutMode = direction;
+      frame = node
     }
 
-    node.itemSpacing = itemSpacing > 0 ? itemSpacing : 0;
+    if (direction === "NONE" && frame.children.length > 1) {
+      frame.isRelative = true;
+    }
+
+    if (direction === "NONE" && frame.children.length !== 1) {
+      // catches when children is 0 or children is larger than 1
+      return frame;
+    }
+
+
+    if (direction === "NONE" && frame.children.length === 1) {
+      // Add fake AutoLayout when there is a single item. This is done for the Padding.
+      frame.layoutMode = "HORIZONTAL";
+    } else {
+      frame.layoutMode = direction;
+    }
+
+    frame.itemSpacing = itemSpacing > 0 ? itemSpacing : 0;
 
     // todo while this is similar to Figma, verify if this is good enough or if padding should be allowed in all four directions.
-    const padding = detectAutoLayoutPadding(node);
+    const padding = detectAutoLayoutPadding(frame);
 
-    node.paddingTop = padding.top;
-    node.paddingBottom = padding.bottom;
-    node.paddingLeft = padding.left;
-    node.paddingRight = padding.right;
+    frame.paddingTop = padding.top;
+    frame.paddingBottom = padding.bottom;
+    frame.paddingLeft = padding.left;
+    frame.paddingRight = padding.right;
 
     // update the layoutAlign attribute for every child
-    node.children = node.children.map((d) => {
+    frame.children = frame.children.map((d) => {
       // @ts-ignore current node can't be AltGroupNode because it was converted into AltFrameNode
       d.layoutAlign = layoutAlignInChild(d, node);
       return d;
