@@ -102,6 +102,10 @@ class ReflectBaseNode implements ReflectLayoutMixin, ReflectBlendMixin {
     // DANGEROUS
     return checkIfRoot(this as any)
   }
+
+  toString(): string {
+    return `"${this.name}"`
+  }
 }
 
 
