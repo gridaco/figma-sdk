@@ -1,4 +1,4 @@
-import { ReflectSceneNode, ReflectFrameNode, ReflectGroupNode } from "./types";
+import { ReflectSceneNode, ReflectFrameNode, ReflectGroupNode } from "../types";
 
 export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   const newNode = new ReflectFrameNode({

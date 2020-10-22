@@ -1,4 +1,4 @@
-import { ReflectFrameNode, ReflectGroupNode, ReflectSceneNode } from "./types";
+import { ReflectFrameNode, ReflectGroupNode, ReflectSceneNode } from "../types";
 import { convertGroupToFrame } from "./group-to-frame.convert";
 
 /**

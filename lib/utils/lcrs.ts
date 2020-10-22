@@ -39,6 +39,30 @@ export function getGroupLCRS(node: ReflectGroupNode): LCRS {
     return lastChildLCRS
 }
 
+
+/**
+ * 
+ * @param target the target node a.k.a current node
+ * @param reletiveTo the parent node of target node in generatl.
+ */
+export function getReletiveLCRS(target: ReflectSceneNode, reletiveTo: ReflectSceneNode): LCRS {
+
+    // FIXME rel does not work with group as expected.
+    const relX = target.x
+    const relXCenter = relX + (target.width / 2)
+    const relY = target.y
+    const relYCenter = relY + (target.height / 2)
+
+    const lcrs = calculateLCRS({
+        centerPosition: relXCenter,
+        startPosition: target.x,
+        containerWidth: reletiveTo.width,
+        width: target.width
+    })
+
+    return lcrs
+}
+
 const X_ALIGN_FIGMA_TO_REFLECT: Map<ConstraintType, LCRS> = new Map([
     ["MIN", "Left"],
     ["MAX", "Right"],

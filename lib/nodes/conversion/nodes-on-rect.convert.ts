@@ -3,7 +3,7 @@ import {
   ReflectFrameNode,
   ReflectGroupNode,
   ReflectSceneNode,
-} from "./types";
+} from "../types";
 import { convertToAutoLayout } from "./auto-layout.convert";
 
 /**
