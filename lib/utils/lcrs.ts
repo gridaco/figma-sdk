@@ -5,10 +5,13 @@ export type LCRS = "Left" | "Center" | "Right" | "Stretch" | "Scale" | "Mixed"
 
 
 export function getNodeLCRS(node: ReflectSceneNode): LCRS {
-    if (node.type == "INSTANCE" || node.type == "COMPONENT" || node.type == "FRAME" || node.type == "RECTANGLE") {
-        return X_ALIGN_FIGMA_TO_REFLECT.get(node.constraints.horizontal)
-    } else if (node.type == "GROUP") {
+    if (node instanceof ReflectGroupNode) {
         return getGroupLCRS(node);
+    }
+    else {
+        try {
+            return X_ALIGN_FIGMA_TO_REFLECT.get(node.constraints.horizontal)
+        } catch (e) { /* ignore */ }
     }
 }
 

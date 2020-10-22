@@ -107,7 +107,9 @@ class ReflectBaseNode implements ReflectLayoutMixin, ReflectBlendMixin {
 
 export class ReflectConstraintMixin extends ReflectBaseNode {
   // @ts-ignore
-  type = ReflectSceneNodeType.constraint
+  get type() {
+    return ReflectSceneNodeType.constraint
+  }
   constraints: Constraints
 
   /**
@@ -196,7 +198,9 @@ export abstract class ReflectDefaultShapeMixin
 
 
 export class ReflectLineNode extends ReflectDefaultShapeMixin {
-  readonly type = ReflectSceneNodeType.line
+  get type() {
+    return ReflectSceneNodeType.line
+  }
 }
 
 /**
@@ -225,12 +229,17 @@ function getReletiveLCRS(target: ReflectSceneNode, reletiveTo: ReflectSceneNode)
 export class ReflectRectangleNode extends ReflectDefaultShapeMixin implements
   ReflectCornerMixin,
   ReflectRectangleCornerMixin {
-  readonly type = ReflectSceneNodeType.rectangle;
+
+  get type() {
+    return ReflectSceneNodeType.rectangle
+  }
 
 }
 
 export class ReflectEllipseNode extends ReflectDefaultShapeMixin {
-  readonly type = ReflectSceneNodeType.ellipse;
+  get type() {
+    return ReflectSceneNodeType.ellipse
+  }
 }
 
 //#region frame
@@ -254,7 +263,8 @@ interface ReflectFrameMixin {
   guides: ReadonlyArray<Guide>;
 }
 
-class ReflectChildrenMixin extends ReflectConstraintMixin {
+export abstract class ReflectChildrenMixin extends ReflectConstraintMixin {
+
   children: Array<ReflectSceneNode>;
   get constraintableChildren(): Array<ReflectConstraintMixin> {
     return filterConstraintableChildren(this)
@@ -281,7 +291,9 @@ export class ReflectFrameNode
   ReflectBlendMixin,
   ReflectLayoutMixin {
 
-  readonly type = ReflectSceneNodeType.frame;
+  get type() {
+    return ReflectSceneNodeType.frame;
+  }
 
   constraints: Constraints
 
@@ -374,8 +386,9 @@ export class ReflectGroupNode
   ReflectChildrenMixin,
   ReflectBlendMixin,
   ReflectLayoutMixin {
-  readonly type = ReflectSceneNodeType.group;
-
+  get type() {
+    return ReflectSceneNodeType.group
+  }
 
   // base node mixin
   id: string;
@@ -410,7 +423,9 @@ export class ReflectGroupNode
 
 export class ReflectTextNode extends
   ReflectDefaultShapeMixin {
-  readonly type = ReflectSceneNodeType.text;
+  get type() {
+    return ReflectSceneNodeType.text
+  }
 
   characters: string;
   textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";
