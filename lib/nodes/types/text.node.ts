@@ -1,4 +1,5 @@
 import { ReflectSceneNodeType } from ".";
+import { getTextStyleById } from "../../figma";
 import { ReflectDefaultShapeMixin } from "./mixins";
 
 export class ReflectTextNode extends
@@ -23,5 +24,20 @@ export class ReflectTextNode extends
     textDecoration: TextDecoration | PluginAPI["mixed"];
     letterSpacing: LetterSpacing | PluginAPI["mixed"];
     lineHeight: LineHeight | PluginAPI["mixed"];
+
+    get hasTextStyle(): boolean {
+        if (this.textStyleId !== "") {
+            return true
+        }
+        return false
+    }
+
+    get textStyle(): TextStyle {
+        try {
+            return getTextStyleById(this.textStyleId as string)
+        } catch (e) {
+            return undefined
+        }
+    }
 }
 
