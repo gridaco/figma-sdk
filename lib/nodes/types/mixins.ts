@@ -1,5 +1,5 @@
 import { ReflectBaseNode, ReflectSceneNodeType, ReflectSceneNode } from ".";
-import { LCRS, getNodeLCRS, getReletiveLCRS } from "../../utils/lcrs";
+import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../utils/lcrs";
 
 export interface ReflectBlendMixin {
     opacity: number;
@@ -33,14 +33,14 @@ export class ReflectConstraintMixin extends ReflectBaseNode {
     constraints: Constraints
 
     /**
-     * the current node's LCRS positioning.
+     * the current node's constraint LCRS positioning. as is.
      */
-    get lcrs(): LCRS {
-        return getNodeLCRS(this)
+    get constraintLcrs(): LCRS {
+        return getNodeActualLCRS(this)
     }
 
     /**
-     * the cureent node's LCRS positioning actually relative to parent.
+     * the cureent node's visual LCRS positioning actually relative to parent.
      */
     get relativeLcrs(): LCRS {
         return getReletiveLCRS(this, this.parent);

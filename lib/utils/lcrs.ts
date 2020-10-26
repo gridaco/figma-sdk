@@ -4,7 +4,7 @@ import { ReflectGroupNode, ReflectSceneNode } from "../nodes";
 export type LCRS = "Left" | "Center" | "Right" | "Stretch" | "Scale" | "Mixed"
 
 
-export function getNodeLCRS(node: ReflectSceneNode): LCRS {
+export function getNodeActualLCRS(node: ReflectSceneNode): LCRS {
     if (node instanceof ReflectGroupNode) {
         return getGroupLCRS(node);
     }
@@ -23,7 +23,7 @@ export function getNodeLCRS(node: ReflectSceneNode): LCRS {
 export function getGroupLCRS(node: ReflectGroupNode): LCRS {
     let lastChildLCRS: LCRS;
     for (const c of node.children) {
-        const childLCRS = getNodeLCRS(c)
+        const childLCRS = getNodeActualLCRS(c)
         console.warn(c, childLCRS)
         if (lastChildLCRS) {
             if (lastChildLCRS === childLCRS) {
@@ -48,10 +48,13 @@ export function getGroupLCRS(node: ReflectGroupNode): LCRS {
 export function getReletiveLCRS(target: ReflectSceneNode, reletiveTo: ReflectSceneNode): LCRS {
 
     // FIXME rel does not work with group as expected.
+
+    // the x position of the target node. this is a x start position.
     const relX = target.x
+
+    // the center x position of the target node. since x is a start position, we have to add half of the width to the start point to get the center x position.
     const relXCenter = relX + (target.width / 2)
-    const relY = target.y
-    const relYCenter = relY + (target.height / 2)
+
 
     const lcrs = calculateLCRS({
         centerPosition: relXCenter,
@@ -72,6 +75,11 @@ const X_ALIGN_FIGMA_TO_REFLECT: Map<ConstraintType, LCRS> = new Map([
 ])
 
 
+/**
+ * safe damping value for addjusting non even number devision addjustment.
+ * If the parent and child's center position is not an even number allow it to be calculdated with this damping value,
+ * so 0.5 px can be ignored, even if it does not match exactly.
+ */
 const SAFE_DAMPING_PX = 0.5
 /**
  * calculate the position element in X plane of givven container
@@ -83,7 +91,7 @@ const SAFE_DAMPING_PX = 0.5
  * |--------R|
  * 
  * the safe margin in non even numbers of PXs are dampped with @const SAFE_DAMPING_PX
- * @param containerWidth 
+ * @param containerWidth aka parent's width
  * @param centerPosition 
  */
 export function calculateLCRS(args: {
@@ -97,19 +105,23 @@ export function calculateLCRS(args: {
         return "Stretch"
     }
 
-
-
+    // check if container (parent)'s width value is a even number
     const isContainerWidthEven = containerWidth % 2 == 0
+    // check if target's center position value is a even number
     const isCenterPositionEven = centerPosition % 2 == 0
+
+    // the center point x of the container
+    const containerCenterXPos = containerWidth / 2;
 
     /** if one of the givven parameter is not a even number, than apply damping rule with @const SAFE_DAMPING_PX */
     const damp = isContainerWidthEven && isCenterPositionEven ? 0 : SAFE_DAMPING_PX
 
-    const centerDiff = Math.abs((containerWidth / 2) - centerPosition)
-    if (centerDiff + damp < 0) {
+    const centerDiff = containerCenterXPos - centerPosition
+    console.log("center diff", centerDiff)
+    if (centerDiff - damp > 0) {
         // this is visually on the left side
         return "Left"
-    } else if (centerDiff - damp > 0) {
+    } else if (centerDiff + damp < 0) {
         // this is visually on the right side
         return "Right"
     }
