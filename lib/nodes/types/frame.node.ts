@@ -1,4 +1,5 @@
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
+import { hasImage } from "../../utils/has-image";
 import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectRectangleCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
 
 //#region frame
@@ -30,6 +31,10 @@ export class ReflectFrameNode
     ReflectRectangleCornerMixin,
     ReflectBlendMixin,
     ReflectLayoutMixin {
+
+    hasImage(): boolean {
+        return hasImage(this.fills)
+    }
 
     get type() {
         return ReflectSceneNodeType.frame;

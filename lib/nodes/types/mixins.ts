@@ -1,4 +1,5 @@
 import { ReflectBaseNode, ReflectSceneNodeType, ReflectSceneNode } from ".";
+import { hasImage } from "../../utils/has-image";
 import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../utils/lcrs";
 
 export interface ReflectBlendMixin {
@@ -74,7 +75,7 @@ export interface ReflectRectangleCornerMixin {
 }
 
 
-export abstract class ReflectDefaultShapeMixin
+export class ReflectDefaultShapeMixin
     extends ReflectConstraintMixin implements
     ReflectGeometryMixin,
     ReflectRectangleCornerMixin,
@@ -114,6 +115,10 @@ export abstract class ReflectDefaultShapeMixin
     width: number;
     height: number;
     layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
+
+    hasImage() {
+        return hasImage(this.fills)
+    }
 }
 
 
