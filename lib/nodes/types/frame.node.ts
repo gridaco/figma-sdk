@@ -32,8 +32,16 @@ export class ReflectFrameNode
     ReflectBlendMixin,
     ReflectLayoutMixin {
 
-    hasImage(): boolean {
+    get hasImage(): boolean {
         return hasImage(this.fills)
+    }
+
+    get images(): Array<Image> {
+        throw 'get: images not implemented for frame node'
+    }
+
+    get primaryImage(): Image {
+        throw 'get: primaryImage not implemented for frame node'
     }
 
     get type() {

@@ -1,6 +1,7 @@
 import { ReflectBaseNode, ReflectSceneNodeType, ReflectSceneNode } from ".";
-import { hasImage } from "../../utils/has-image";
+import { hasImage, isImage } from "../../utils/has-image";
 import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../utils/lcrs";
+import { retrieveImageFills, retrievePrimaryImageFill } from "../../utils/retrieve-image-fills";
 
 export interface ReflectBlendMixin {
     opacity: number;
@@ -116,11 +117,22 @@ export class ReflectDefaultShapeMixin
     height: number;
     layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
 
-    hasImage() {
+    get hasImage(): boolean {
         return hasImage(this.fills)
     }
-}
 
+    get images(): Array<Image> {
+        if (Array.isArray(this.fills)) {
+            return retrieveImageFills(this.fills);
+        }
+    }
+
+    get primaryImage(): Image {
+        if (Array.isArray(this.fills)) {
+            return retrievePrimaryImageFill(this.fills)
+        }
+    }
+}
 
 
 
