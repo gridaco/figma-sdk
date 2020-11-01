@@ -6,9 +6,10 @@
         "postinstall": "tsc"
     },
     "dependencies": {
+        "@figma/plugin-typings": "^1.18.1",
         "@reflect.bridged.xyz/uiutils": "0.0.1"
     },
     "devDependencies": {
-        "typescript": "^3.4.3"
+        "typescript": "^4.0.5"
     }
 }
