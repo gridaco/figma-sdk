@@ -1,5 +1,4 @@
 import { IReflectNodeReference, ReflectBaseNode } from "./base.node";
-import { ReflectComponentNode, ReflectInstanceNode } from "./component.node";
 import { ReflectEllipseNode } from "./ellipse.node";
 import { ReflectFrameNode } from "./frame.node";
 import { ReflectGroupNode } from "./group.node";
@@ -21,8 +20,6 @@ export {
     ReflectGroupNode,
     ReflectTextNode,
     ReflectLineNode,
-    ReflectComponentNode,
-    ReflectInstanceNode,
     ReflectLayoutMixin,
     ReflectConstraintMixin,
     ReflectChildrenMixin,

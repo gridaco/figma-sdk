@@ -3,7 +3,8 @@ import { ReflectSceneNode, ReflectFrameNode, ReflectGroupNode } from "../types";
 export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   const newNode = new ReflectFrameNode({
     id: node.id,
-    name: node.name
+    name: node.name,
+    parent: node.parent
   });
 
   newNode.x = node.x;
@@ -23,8 +24,6 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   newNode.layoutGrids = [];
   newNode.gridStyleId = "";
   newNode.guides = [];
-
-  newNode.parent = node.parent;
 
   // update the children's x and y position. Modify the 'original' node, then pass them.
   updateChildrenXY(node) as ReflectFrameNode;

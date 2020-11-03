@@ -15,10 +15,12 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
 
     constructor(props: {
         id: string,
-        name: string
+        name: string,
+        parent?: (ReflectSceneNode & ReflectChildrenMixin) | null
     }) {
         this.id = props.id
         this.name = props.name
+        this.parent = props.parent
     }
 
     locked: boolean
@@ -47,7 +49,11 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     //
 
     get isComponent(): boolean {
-        return this.type === "COMPONENT" || this.type == "INSTANCE";
+        return [ReflectSceneNodeType.component, ReflectSceneNodeType.instance, ReflectSceneNodeType.variant].includes(this.type)
+    }
+
+    get isInstance(): boolean {
+        return this.type === "INSTANCE"
     }
 
     get isMasterComponent(): boolean {

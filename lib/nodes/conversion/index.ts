@@ -12,6 +12,7 @@ import {
     ReflectDefaultShapeMixin,
     ReflectEllipseNode,
     ReflectConstraintMixin,
+    ReflectLineNode,
 } from "../types";
 import { convertToAutoLayout } from "./auto-layout.convert";
 import { notEmpty } from "../../utils/general";
@@ -22,7 +23,7 @@ export function convertSingleNodeToAlt(node: SceneNode,
     return convertIntoReflectNodes([node], parent)[0];
 }
 
-export function frameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
+export function convertFrameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
     altParent: ReflectFrameNode | ReflectGroupNode | null = null): ReflectRectangleNode | ReflectFrameNode | ReflectGroupNode {
     if (node.children.length === 0) {
         // if it has no children, convert frame to rectangle
@@ -32,16 +33,13 @@ export function frameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
     const altNode = new ReflectFrameNode(
         {
             id: node.id,
-            name: node.name
+            name: node.name,
+            parent: altParent
         }
     );
 
     altNode.id = node.id;
     altNode.name = node.name;
-
-    if (altParent) {
-        altNode.parent = altParent;
-    }
 
     convertDefaultShape(altNode, node);
     convertFrame(altNode, node);
@@ -60,13 +58,10 @@ function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
     const newNode = new ReflectRectangleNode(
         {
             id: node.id,
-            name: node.name
+            name: node.name,
+            parent: altParent
         }
     );
-
-    if (altParent) {
-        newNode.parent = altParent;
-    }
 
     convertDefaultShape(newNode, node);
     convertRectangleCorner(newNode, node);
@@ -115,10 +110,24 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                 convertCorner(altNode, node);
 
                 return altNode;
-            } else if (node.type === "FRAME" ||
+            } else if (node.type === "LINE") {
+                const altNode = new ReflectLineNode({
+                    id: node.id,
+                    name: node.name,
+                    parent: altParent
+                })
+
+                convertDefaultShape(altNode, node)
+                convertBlend(altNode, node);
+                convertConstraint(altNode, node);
+                // TODO finalize line support. there are some missing conversions.
+
+                return altNode;
+            }
+            else if (node.type === "FRAME" ||
                 node.type === "INSTANCE" ||
                 node.type === "COMPONENT") {
-                return frameNodeToAlt(node, altParent);
+                return convertFrameNodeToAlt(node, altParent);
             } else if (node.type === "GROUP") {
                 if (node.children.length === 1 && node.visible !== false) {
                     // if Group is visible and has only one child, Group should disappear.
@@ -129,13 +138,9 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
 
                 const altNode = new ReflectGroupNode({
                     id: node.id,
-                    name: node.name
+                    name: node.name,
+                    parent: altParent
                 });
-
-
-                if (altParent) {
-                    altNode.parent = altParent;
-                }
 
                 convertLayout(altNode, node);
                 convertBlend(altNode, node);
@@ -149,28 +154,28 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
             } else if (node.type === "TEXT") {
                 const altNode = new ReflectTextNode({
                     id: node.id,
-                    name: node.name
+                    name: node.name,
+                    parent: altParent
                 });
-
-
-                if (altParent) {
-                    altNode.parent = altParent;
-                }
 
                 convertDefaultShape(altNode, node);
                 convertIntoReflectText(altNode, node);
                 convertConstraint(altNode, node);
 
                 return altNode;
-            } else if (node.type === "VECTOR") {
+            }
+            else if (node.type == "COMPONENT_SET") {
+                // todo handle this case
+            }
+            else if (node.type === "POLYGON" || node.type === "STAR") {
+                // todo export as a svg and display it directly.
+            }
+            else if (node.type === "VECTOR") {
                 const altNode = new ReflectRectangleNode({
                     id: node.id,
-                    name: node.name
+                    name: node.name,
+                    parent: altParent
                 });
-
-                if (altParent) {
-                    altNode.parent = altParent;
-                }
 
                 convertConstraint(altNode, node);
                 convertDefaultShape(altNode, node);

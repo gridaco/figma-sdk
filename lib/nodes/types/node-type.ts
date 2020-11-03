@@ -1,4 +1,4 @@
-import { ReflectFrameNode, ReflectGroupNode, ReflectRectangleNode, ReflectEllipseNode, ReflectTextNode, ReflectLineNode, ReflectComponentNode, ReflectInstanceNode, ReflectConstraintMixin, ReflectChildrenMixin } from ".";
+import { ReflectFrameNode, ReflectGroupNode, ReflectRectangleNode, ReflectEllipseNode, ReflectTextNode, ReflectLineNode, ReflectConstraintMixin, ReflectChildrenMixin } from ".";
 
 export type ReflectSceneNode =
     | ReflectFrameNode
@@ -7,8 +7,6 @@ export type ReflectSceneNode =
     | ReflectEllipseNode
     | ReflectTextNode
     | ReflectLineNode
-    | ReflectComponentNode
-    | ReflectInstanceNode
     | ReflectConstraintMixin
     | ReflectChildrenMixin
 // TODO
@@ -18,9 +16,10 @@ export type ReflectSceneNode =
 
 export enum ReflectSceneNodeType {
     group = "GROUP",
-    component = "COMPONENT",
+    component = "COMPONENT", // this should be not a type, but a property
+    variant = "COMPONENT_SET", // this should be not a type, but a property
     constraint = "CONSTRAINT",
-    instance = "INSTANCE",
+    instance = "INSTANCE", // this should be not a type, but a property
     text = "TEXT",
     frame = "FRAME",
     ellipse = "ELLIPSE",
