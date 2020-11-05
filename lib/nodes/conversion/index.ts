@@ -164,9 +164,9 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
 
                 return altNode;
             }
-            else if (node.type == "COMPONENT_SET") {
-                // todo handle this case
-            }
+            // else if (node.type == "COMPONENT_SET") {
+            // todo handle this case
+            // }
             else if (node.type === "POLYGON" || node.type === "STAR") {
                 // todo export as a svg and display it directly.
             }
