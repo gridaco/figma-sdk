@@ -6,12 +6,17 @@ export function retrieveImageFills(fills: ReadonlyArray<Paint>): Array<Image> {
         const imagePaints: Array<ImagePaint> = fills
         for (const fill of imagePaints) {
             if (isImage(fill)) {
-                const image = figma.getImageByHash(fill.imageHash)
+                const image = retrieveImageFill(fill)
                 images.push(image)
             }
         }
     }
     return images
+}
+
+
+export function retrieveImageFill(fill: ImagePaint): Image {
+    return figma.getImageByHash(fill.imageHash)
 }
 
 export function retrievePrimaryImageFill(fills: ReadonlyArray<Paint>): Image {
