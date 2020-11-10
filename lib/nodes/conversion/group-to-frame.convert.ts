@@ -41,7 +41,7 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
 };
 
 /**
- * Update all children's X and Y value from a Group.
+ * Updates all children's X and Y value from a Group.
  * Group uses relative values, while Frame use absolute. So child.x - group.x = child.x on Frames.
  * This isn't recursive, because it is going to run from the inner-most to outer-most element. Therefore, it would calculate wrongly otherwise.
  *
@@ -50,10 +50,12 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
  */
 function updateChildrenXY(node: ReflectSceneNode): ReflectSceneNode {
   // the second condition is necessary, so it can convert the root
+  // TODO migrate this logic inside ReflectSceneNode's relative position getter
   if (node instanceof ReflectGroupNode) {
     node.children.forEach((d) => {
       d.x = d.x - node.x;
       d.y = d.y - node.y;
+      updateChildrenXY(d);
     });
     return node;
   } else {
