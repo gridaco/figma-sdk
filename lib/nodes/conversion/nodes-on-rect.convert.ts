@@ -69,7 +69,8 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
   const frameNode = new ReflectFrameNode(
     {
       id: rect.id,
-      name: rect.name
+      name: rect.name,
+      origin: rect.origin
     }
   );
 

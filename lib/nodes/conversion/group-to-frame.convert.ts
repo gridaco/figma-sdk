@@ -4,7 +4,8 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   const newNode = new ReflectFrameNode({
     id: node.id,
     name: node.name,
-    parent: node.parent
+    parent: node.parent,
+    origin: node.origin
   });
 
   newNode.x = node.x;

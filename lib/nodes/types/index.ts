@@ -6,7 +6,7 @@ import { ReflectLineNode } from "./line.node";
 import { ReflectBlendMixin, ReflectChildrenMixin, ReflectConstraintMixin, ReflectCornerMixin, ReflectDefaultShapeMixin, ReflectGeometryMixin, ReflectLayoutMixin, ReflectRectangleCornerMixin } from "./mixins";
 import { ReflectSceneNode, ReflectSceneNodeType } from "./node-type";
 import { ReflectRectangleNode } from "./rectangle.node";
-import { ReflectTextNode } from "./text.node";
+import { ReflectTextNode, TextHorizontalAligment, TextVerticalAligment } from "./text.node";
 
 
 
@@ -18,6 +18,8 @@ export {
     ReflectBaseNode,
     ReflectFrameNode,
     ReflectGroupNode,
+    TextHorizontalAligment,
+    TextVerticalAligment,
     ReflectTextNode,
     ReflectLineNode,
     ReflectLayoutMixin,

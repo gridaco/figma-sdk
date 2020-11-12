@@ -1,4 +1,5 @@
 import { ReflectBaseNode, ReflectSceneNodeType, ReflectSceneNode } from ".";
+import { filterFills, retrieveFill, retrievePrimaryColor } from "../../utils";
 import { hasImage, isImage } from "../../utils/has-image";
 import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../utils/lcrs";
 import { retrieveImageFills, retrievePrimaryImageFill } from "../../utils/retrieve-image-fills";
@@ -131,6 +132,29 @@ export class ReflectDefaultShapeMixin
         if (Array.isArray(this.fills)) {
             return retrievePrimaryImageFill(this.fills)
         }
+    }
+
+    get hasFills(): boolean {
+        if (Array.isArray(this.fills)) {
+            return this.fills.length > 0
+        }
+        return false
+    }
+
+    get hasVisibleFills(): boolean {
+        return this.visibleFills.length > 0
+    }
+
+    get visibleFills(): ReadonlyArray<Paint> {
+        return filterFills(this.fills as Paint[], { visibleOnly: true })
+    }
+
+    get primaryFill(): Paint {
+        return retrieveFill(this.fills)
+    }
+
+    get primaryColor(): RGBA {
+        return retrievePrimaryColor(this.fills as Paint[])
     }
 }
 

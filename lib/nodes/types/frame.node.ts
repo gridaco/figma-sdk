@@ -1,4 +1,5 @@
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
+import { filterFills, retrieveFill, retrievePrimaryColor } from "../../utils";
 import { hasImage } from "../../utils/has-image";
 import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectRectangleCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
 
@@ -46,6 +47,30 @@ export class ReflectFrameNode
 
     get type() {
         return ReflectSceneNodeType.frame;
+    }
+
+
+    get hasFills(): boolean {
+        if (Array.isArray(this.fills)) {
+            return this.fills.length > 0
+        }
+        return false
+    }
+
+    get hasVisibleFills(): boolean {
+        return this.visibleFills.length > 0
+    }
+
+    get visibleFills(): ReadonlyArray<Paint> {
+        return filterFills(this.fills as Paint[], { visibleOnly: true })
+    }
+
+    get primaryFill(): Paint {
+        return retrieveFill(this.fills)
+    }
+
+    get primaryColor(): RGBA {
+        return retrievePrimaryColor(this.fills as Paint[])
     }
 
     constraints: Constraints

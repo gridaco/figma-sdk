@@ -1,4 +1,5 @@
 import { ReflectSceneNode, ReflectSceneNodeType } from ".";
+import { rawTypeToReflectType } from "../../utils";
 import { checkIfRoot } from "../../utils/check-if-root";
 import { ReflectLayoutMixin, ReflectBlendMixin, ReflectChildrenMixin } from "./mixins";
 
@@ -12,15 +13,20 @@ export interface IReflectNodeReference {
 
 export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixin, ReflectBlendMixin {
     readonly type: ReflectSceneNodeType
+    origin: ReflectSceneNodeType
+    originRaw: string
 
     constructor(props: {
         id: string,
         name: string,
         parent?: (ReflectSceneNode & ReflectChildrenMixin) | null
+        origin: string
     }) {
         this.id = props.id
         this.name = props.name
         this.parent = props.parent
+        this.origin = rawTypeToReflectType(props.origin)
+        this.originRaw = props.origin
     }
 
     locked: boolean

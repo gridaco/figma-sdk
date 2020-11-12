@@ -34,7 +34,8 @@ export function convertFrameNodeToAlt(node: FrameNode | InstanceNode | Component
         {
             id: node.id,
             name: node.name,
-            parent: altParent
+            parent: altParent,
+            origin: node.type
         }
     );
 
@@ -59,7 +60,8 @@ function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
         {
             id: node.id,
             name: node.name,
-            parent: altParent
+            parent: altParent,
+            origin: node.type
         }
     );
 
@@ -89,7 +91,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                 if (node.type === "RECTANGLE") {
                     altNode = new ReflectRectangleNode({
                         id: node.id,
-                        name: node.name
+                        name: node.name,
+                        origin: node.type
                     });
                     convertConstraint(altNode, node);
                     convertRectangleCorner(altNode, node);
@@ -97,7 +100,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                 else if (node.type === "ELLIPSE") {
                     altNode = new ReflectEllipseNode({
                         id: node.id,
-                        name: node.name
+                        name: node.name,
+                        origin: node.type
                     });
                 }
 
@@ -114,7 +118,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                 const altNode = new ReflectLineNode({
                     id: node.id,
                     name: node.name,
-                    parent: altParent
+                    parent: altParent,
+                    origin: node.type
                 })
 
                 convertDefaultShape(altNode, node)
@@ -139,14 +144,14 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                 const altNode = new ReflectGroupNode({
                     id: node.id,
                     name: node.name,
-                    parent: altParent
+                    parent: altParent,
+                    origin: node.type
                 });
 
                 convertLayout(altNode, node);
                 convertBlend(altNode, node);
 
                 altNode.children = convertIntoReflectNodes(node.children, altNode);
-
                 // try to find big rect and regardless of that result, also try to convert to autolayout.
                 // There is a big chance this will be returned as a Frame
                 // also, Group will always have at least 2 children.
@@ -155,7 +160,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                 const altNode = new ReflectTextNode({
                     id: node.id,
                     name: node.name,
-                    parent: altParent
+                    parent: altParent,
+                    origin: node.type
                 });
 
                 convertDefaultShape(altNode, node);
@@ -174,7 +180,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                 const altNode = new ReflectRectangleNode({
                     id: node.id,
                     name: node.name,
-                    parent: altParent
+                    parent: altParent,
+                    origin: node.type
                 });
 
                 convertConstraint(altNode, node);

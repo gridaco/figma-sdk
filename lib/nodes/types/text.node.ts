@@ -2,6 +2,11 @@ import { ReflectSceneNodeType } from ".";
 import { getTextStyleById } from "../../figma";
 import { ReflectDefaultShapeMixin } from "./mixins";
 
+
+export type TextHorizontalAligment = "LEFT" | "CENTER" | "RIGHT" | "JUSTIFIED";
+export type TextVerticalAligment = "TOP" | "CENTER" | "BOTTOM";
+
+
 export class ReflectTextNode extends
     ReflectDefaultShapeMixin {
     get type() {
@@ -11,8 +16,8 @@ export class ReflectTextNode extends
     characters: string;
     textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";
 
-    textAlignHorizontal: "LEFT" | "CENTER" | "RIGHT" | "JUSTIFIED";
-    textAlignVertical: "TOP" | "CENTER" | "BOTTOM";
+    textAlignHorizontal: TextHorizontalAligment
+    textAlignVertical: TextVerticalAligment
 
     paragraphIndent: number;
     paragraphSpacing: number;
