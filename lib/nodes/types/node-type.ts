@@ -26,5 +26,6 @@ export enum ReflectSceneNodeType {
     rectangle = "RECTANGLE",
     line = "LINE",
     vector = "VECTOR",
+    image = "IMAGE",
     unknown = "UNKNOWN"
 }

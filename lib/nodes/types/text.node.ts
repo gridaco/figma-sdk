@@ -5,7 +5,7 @@ import { ReflectDefaultShapeMixin } from "./mixins";
 
 export type TextHorizontalAligment = "LEFT" | "CENTER" | "RIGHT" | "JUSTIFIED";
 export type TextVerticalAligment = "TOP" | "CENTER" | "BOTTOM";
-
+export type TextAutoResize = "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT"
 
 export class ReflectTextNode extends
     ReflectDefaultShapeMixin {

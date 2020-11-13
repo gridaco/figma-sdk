@@ -1,5 +1,5 @@
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
-import { filterFills, retrieveFill, retrievePrimaryColor } from "../../utils";
+import { filterFills, mapGrandchildren, retrieveFill, retrievePrimaryColor } from "../../utils";
 import { hasImage } from "../../utils/has-image";
 import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectRectangleCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
 
@@ -71,6 +71,14 @@ export class ReflectFrameNode
 
     get primaryColor(): RGBA {
         return retrievePrimaryColor(this.fills as Paint[])
+    }
+
+    get grandchildren(): ReadonlyArray<ReflectSceneNode> {
+        return this.getGrandchildren()
+    }
+
+    getGrandchildren(options?: { includeThis: boolean }) {
+        return mapGrandchildren(this, options)
     }
 
     constraints: Constraints

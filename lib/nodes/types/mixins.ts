@@ -1,5 +1,5 @@
 import { ReflectBaseNode, ReflectSceneNodeType, ReflectSceneNode } from ".";
-import { filterFills, retrieveFill, retrievePrimaryColor } from "../../utils";
+import { filterFills, mapGrandchildren, retrieveFill, retrievePrimaryColor } from "../../utils";
 import { hasImage, isImage } from "../../utils/has-image";
 import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../utils/lcrs";
 import { retrieveImageFills, retrievePrimaryImageFill } from "../../utils/retrieve-image-fills";
@@ -156,6 +156,8 @@ export class ReflectDefaultShapeMixin
     get primaryColor(): RGBA {
         return retrievePrimaryColor(this.fills as Paint[])
     }
+
+
 }
 
 
@@ -167,6 +169,14 @@ export abstract class ReflectChildrenMixin extends ReflectConstraintMixin {
         return filterConstraintableChildren(this)
     }
     isRelative?: boolean;
+
+    get grandchildren(): ReadonlyArray<ReflectSceneNode> {
+        return this.getGrandchildren()
+    }
+
+    getGrandchildren(options?: { includeThis: boolean }) {
+        return mapGrandchildren(this, options)
+    }
 }
 
 function filterConstraintableChildren(node: ReflectChildrenMixin) {
