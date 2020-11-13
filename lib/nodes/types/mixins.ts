@@ -1,4 +1,4 @@
-import { ReflectBaseNode, ReflectSceneNodeType, ReflectSceneNode } from ".";
+import { ReflectBaseNode, ReflectSceneNodeType, ReflectSceneNode, mixed } from ".";
 import { filterFills, mapGrandchildren, retrieveFill, retrievePrimaryColor } from "../../utils";
 import { hasImage, isImage } from "../../utils/has-image";
 import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../utils/lcrs";
@@ -16,6 +16,7 @@ export interface ReflectBlendMixin {
 
 
 export interface ReflectLayoutMixin {
+    absoluteTransform: Transform
     x: number;
     y: number;
     rotation: number; // In degrees
@@ -48,24 +49,29 @@ export class ReflectConstraintMixin extends ReflectBaseNode {
     get relativeLcrs(): LCRS {
         return getReletiveLCRS(this, this.parent);
     }
+
+    getRelativeToLcrs(to: ReflectSceneNode) {
+        // TODO add validation if 'to' node is somewhere on the parent tree of this node
+        return getReletiveLCRS(this, to);
+    }
 }
 
 
 export interface ReflectGeometryMixin {
-    fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
+    fills: ReadonlyArray<Paint> | undefined
     strokes: ReadonlyArray<Paint>;
     strokeWeight: number;
     strokeMiterLimit: number;
     strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
-    strokeCap: StrokeCap | PluginAPI["mixed"];
-    strokeJoin: StrokeJoin | PluginAPI["mixed"];
+    strokeCap: StrokeCap | undefined
+    strokeJoin: StrokeJoin | undefined
     dashPattern: ReadonlyArray<number>;
-    fillStyleId: string | PluginAPI["mixed"];
+    fillStyleId: string | undefined
     strokeStyleId: string;
 }
 
 export interface ReflectCornerMixin {
-    cornerRadius: number | PluginAPI["mixed"];
+    cornerRadius: number | typeof mixed
     cornerSmoothing: number;
 }
 
@@ -91,15 +97,15 @@ export class ReflectDefaultShapeMixin
     visible: boolean;
     radius: number;
 
-    fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
+    fills: ReadonlyArray<Paint> | undefined
     strokes: ReadonlyArray<Paint>;
     strokeWeight: number;
     strokeMiterLimit: number;
     strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
-    strokeCap: StrokeCap | PluginAPI["mixed"];
-    strokeJoin: StrokeJoin | PluginAPI["mixed"];
+    strokeCap: StrokeCap | undefined
+    strokeJoin: StrokeJoin | undefined
     dashPattern: ReadonlyArray<number>;
-    fillStyleId: string | PluginAPI["mixed"];
+    fillStyleId: string | undefined
     strokeStyleId: string;
 
     topLeftRadius: number;
@@ -107,7 +113,7 @@ export class ReflectDefaultShapeMixin
     bottomLeftRadius: number;
     bottomRightRadius: number;
 
-    cornerRadius: number | PluginAPI["mixed"];
+    cornerRadius: number | typeof mixed
     cornerSmoothing: number;
 
 

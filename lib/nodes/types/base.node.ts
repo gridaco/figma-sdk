@@ -31,6 +31,7 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
 
     locked: boolean
     id: string;
+    absoluteTransform: Transform
     parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
     name: string;
     readonly pluginData: { [key: string]: string };
@@ -38,6 +39,17 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     // layout related
     x: number;
     y: number;
+    get absoluteX(): number {
+        // x point on affine space
+        return this.absoluteTransform[0][2]
+    }
+
+    get absoluteY(): number {
+        // y point on affine space
+        return this.absoluteTransform[1][2]
+    }
+
+
     rotation: number; // In degrees
     width: number;
     height: number;

@@ -1,6 +1,7 @@
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
 import { filterFills, mapGrandchildren, retrieveFill, retrievePrimaryColor } from "../../utils";
 import { hasImage } from "../../utils/has-image";
+import { mixed } from "./mixed";
 import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectRectangleCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
 
 //#region frame
@@ -103,19 +104,19 @@ export class ReflectFrameNode
     isRelative?: boolean;
 
     // geometry mixin
-    fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
+    fills: ReadonlyArray<Paint> | undefined
     strokes: ReadonlyArray<Paint>;
     strokeWeight: number;
     strokeMiterLimit: number;
     strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
-    strokeCap: StrokeCap | PluginAPI["mixed"];
-    strokeJoin: StrokeJoin | PluginAPI["mixed"];
+    strokeCap: StrokeCap | undefined
+    strokeJoin: StrokeJoin | undefined
     dashPattern: ReadonlyArray<number>;
-    fillStyleId: string | PluginAPI["mixed"];
+    fillStyleId: string | undefined
     strokeStyleId: string;
 
     // corner mixin
-    cornerRadius: number | PluginAPI["mixed"];
+    cornerRadius: number | typeof mixed
     cornerSmoothing: number;
 
 

@@ -50,7 +50,7 @@ export function getReletiveLCRS(target: ReflectSceneNode, reletiveTo: ReflectSce
     // FIXME rel does not work with group as expected.
 
     // the x position of the target node. this is a x start position.
-    const relX = target.x
+    const relX = target.absoluteX
 
     // the center x position of the target node. since x is a start position, we have to add half of the width to the start point to get the center x position.
     const relXCenter = relX + (target.width / 2)
@@ -58,7 +58,8 @@ export function getReletiveLCRS(target: ReflectSceneNode, reletiveTo: ReflectSce
 
     const lcrs = calculateLCRS({
         centerPosition: relXCenter,
-        startPosition: target.x,
+        containerStartPosition: reletiveTo.absoluteX,
+        startPosition: target.absoluteX,
         containerWidth: reletiveTo.width,
         width: target.width
     })
@@ -95,13 +96,14 @@ const SAFE_DAMPING_PX = 0.5
  * @param centerPosition 
  */
 export function calculateLCRS(args: {
-    containerWidth: number, centerPosition: number, startPosition: number, width: number
+    containerWidth: number, containerStartPosition: number, centerPosition: number, startPosition: number, width: number
 }): LCRS {
-    const { containerWidth, centerPosition, startPosition, width } = args
+    const { containerWidth, containerStartPosition, centerPosition, startPosition, width } = args
+    console.log('calculateLCRS', containerWidth, containerStartPosition, startPosition, width, centerPosition)
 
     // stretch inspection
     // if the size of child is same as parent, and start point is starting from 0, inspect it as "Stretch"
-    if (containerWidth == width && startPosition == 0) {
+    if (containerWidth == width && startPosition == containerStartPosition) {
         return "Stretch"
     }
 
@@ -111,7 +113,7 @@ export function calculateLCRS(args: {
     const isCenterPositionEven = centerPosition % 2 == 0
 
     // the center point x of the container
-    const containerCenterXPos = containerWidth / 2;
+    const containerCenterXPos = containerStartPosition + containerWidth / 2;
 
     /** if one of the givven parameter is not a even number, than apply damping rule with @const SAFE_DAMPING_PX */
     const damp = isContainerWidthEven && isCenterPositionEven ? 0 : SAFE_DAMPING_PX

@@ -22,13 +22,13 @@ export class ReflectTextNode extends
     paragraphIndent: number;
     paragraphSpacing: number;
 
-    fontSize: number | PluginAPI["mixed"];
-    fontName: FontName | PluginAPI["mixed"];
-    textStyleId: string | PluginAPI['mixed']
-    textCase: TextCase | PluginAPI["mixed"];
-    textDecoration: TextDecoration | PluginAPI["mixed"];
-    letterSpacing: LetterSpacing | PluginAPI["mixed"];
-    lineHeight: LineHeight | PluginAPI["mixed"];
+    fontSize: number | undefined
+    fontName: FontName | undefined
+    textStyleId: string | undefined
+    textCase: TextCase | undefined
+    textDecoration: TextDecoration | undefined
+    letterSpacing: LetterSpacing | undefined
+    lineHeight: LineHeight | undefined //PluginAPI["mixed"];
 
     get hasTextStyle(): boolean {
         if (this.textStyleId !== "") {

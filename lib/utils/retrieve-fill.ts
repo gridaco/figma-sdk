@@ -1,7 +1,7 @@
 /**
  * Retrieve the first visible color that is being used by the layer, in case there are more than one.
  */
-export function retrieveFill<T extends Paint>(fills: ReadonlyArray<Paint> | Paint | PluginAPI["mixed"], options?: {
+export function retrieveFill<T extends Paint>(fills: ReadonlyArray<Paint> | Paint, options?: {
     onlySolid?: boolean
 }): T | undefined {
 
@@ -21,7 +21,7 @@ export function retrieveFill<T extends Paint>(fills: ReadonlyArray<Paint> | Pain
             return [...fills].reverse().find(filter) as T;
         }
     } else {
-        if (fills !== figma.mixed) {
+        if (fills) {
             return fills as T
         }
     }

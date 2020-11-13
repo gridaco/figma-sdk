@@ -13,64 +13,12 @@ import {
     ReflectEllipseNode,
     ReflectConstraintMixin,
     ReflectLineNode,
+    mixed,
 } from "../types";
 import { convertToAutoLayout } from "./auto-layout.convert";
 import { notEmpty } from "../../utils/general";
 import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
-
-export function convertSingleNodeToAlt(node: SceneNode,
-    parent: ReflectFrameNode | ReflectGroupNode | null = null): ReflectSceneNode {
-    return convertIntoReflectNodes([node], parent)[0];
-}
-
-export function convertFrameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
-    altParent: ReflectFrameNode | ReflectGroupNode | null = null): ReflectRectangleNode | ReflectFrameNode | ReflectGroupNode {
-    if (node.children.length === 0) {
-        // if it has no children, convert frame to rectangle
-        return frameToRectangleNode(node, altParent);
-    }
-
-    const altNode = new ReflectFrameNode(
-        {
-            id: node.id,
-            name: node.name,
-            parent: altParent,
-            origin: node.type
-        }
-    );
-
-    altNode.id = node.id;
-    altNode.name = node.name;
-
-    convertDefaultShape(altNode, node);
-    convertFrame(altNode, node);
-    convertCorner(altNode, node);
-    convertRectangleCorner(altNode, node);
-    convertConstraint(altNode, node);
-
-    altNode.children = convertIntoReflectNodes(node.children, altNode);
-
-    return convertToAutoLayout(convertNodesOnRectangle(altNode));
-}
-
-// auto convert Frame to Rectangle when Frame has no Children
-function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
-    altParent: ReflectFrameNode | ReflectGroupNode | null): ReflectRectangleNode {
-    const newNode = new ReflectRectangleNode(
-        {
-            id: node.id,
-            name: node.name,
-            parent: altParent,
-            origin: node.type
-        }
-    );
-
-    convertDefaultShape(newNode, node);
-    convertRectangleCorner(newNode, node);
-    convertCorner(newNode, node);
-    convertConstraint(newNode, node);
-    return newNode;
-}
+import { shouldIgnoreNode } from "../../features/ignore";
 
 /**
  * restrictied to single selection
@@ -82,10 +30,27 @@ export function convertIntoReflectNode(sceneNode: SceneNode,
     return convertIntoReflectNodes([sceneNode], altParent,)[0]
 }
 
+
 export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
     altParent: ReflectFrameNode | ReflectGroupNode | null = null): Array<ReflectSceneNode> {
     const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
         (node: SceneNode) => {
+
+
+            // pre-filtering
+            const ignoreResult = shouldIgnoreNode(node.name)
+            if (ignoreResult.ignored) {
+                console.info(`ignoring`, ignoreResult.reason)
+                return null
+            }
+
+
+            const isVisible = node.visible
+            if (!isVisible) {
+                return null
+            }
+
+
             if (node.type === "RECTANGLE" || node.type === "ELLIPSE") {
                 let altNode;
                 if (node.type === "RECTANGLE") {
@@ -204,6 +169,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
 function convertLayout(altNode: ReflectLayoutMixin, node: LayoutMixin) {
     altNode.x = node.x;
     altNode.y = node.y;
+    altNode.absoluteTransform = node.absoluteTransform
     altNode.width = node.width;
     altNode.height = node.height;
     altNode.rotation = node.rotation;
@@ -227,15 +193,15 @@ function convertFrame(altNode: ReflectFrameNode, node: DefaultFrameMixin) {
 }
 
 function convertGeometry(altNode: ReflectGeometryMixin, node: GeometryMixin) {
-    altNode.fills = node.fills;
+    altNode.fills = figmaToReflectProperty(node.fills);
     altNode.strokes = node.strokes;
     altNode.strokeWeight = node.strokeWeight;
     altNode.strokeMiterLimit = node.strokeMiterLimit;
     altNode.strokeAlign = node.strokeAlign;
-    altNode.strokeCap = node.strokeCap;
-    altNode.strokeJoin = node.strokeJoin;
+    altNode.strokeCap = figmaToReflectProperty(node.strokeCap);
+    altNode.strokeJoin = figmaToReflectProperty(node.strokeJoin);
     altNode.dashPattern = node.dashPattern;
-    altNode.fillStyleId = node.fillStyleId;
+    altNode.fillStyleId = figmaToReflectProperty(node.fillStyleId);
     altNode.strokeStyleId = node.strokeStyleId;
 }
 
@@ -267,7 +233,7 @@ function convertDefaultShape(altNode: ReflectDefaultShapeMixin,
 }
 
 function convertCorner(altNode: ReflectCornerMixin, node: CornerMixin) {
-    altNode.cornerRadius = node.cornerRadius;
+    altNode.cornerRadius = figmaAccessibleMixedToReflectProperty(node.cornerRadius)
     altNode.cornerSmoothing = node.cornerSmoothing;
 }
 
@@ -284,15 +250,88 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
     altNode.textAlignVertical = node.textAlignVertical;
     altNode.paragraphIndent = node.paragraphIndent;
     altNode.paragraphSpacing = node.paragraphSpacing;
-    altNode.fontSize = node.fontSize;
-    altNode.fontName = node.fontName;
-    altNode.textCase = node.textCase;
-    altNode.textDecoration = node.textDecoration;
-    altNode.textStyleId = node.textStyleId;
-    altNode.letterSpacing = node.letterSpacing;
+    altNode.fontSize = figmaToReflectProperty(node.fontSize);
+    altNode.fontName = figmaToReflectProperty(node.fontName);
+    altNode.textCase = figmaToReflectProperty(node.textCase);
+    altNode.textDecoration = figmaToReflectProperty(node.textDecoration);
+    altNode.textStyleId = figmaToReflectProperty(node.textStyleId);
+    altNode.letterSpacing = figmaToReflectProperty(node.letterSpacing);
     altNode.textAutoResize = node.textAutoResize;
-    altNode.characters = node.characters;
-    altNode.lineHeight = node.lineHeight;
+    altNode.characters = node.characters
+    altNode.lineHeight = figmaToReflectProperty(node.lineHeight);
 }
 
 
+// drops the useless figma's mixed symbol
+function figmaToReflectProperty<T>(origin: T | PluginAPI['mixed']): T | undefined {
+    if (origin === figma.mixed) {
+        return undefined
+    }
+    return origin as T
+}
+
+
+// usually figma.mixed is useless, since it does not provide any furthre data for the mixed value, but in somecase, such like corner radius, we can access mixed value by other properties like leftTopCorderRadius.
+// in this case, we provide reflect's mixed symbol
+function figmaAccessibleMixedToReflectProperty<T>(origin: T | PluginAPI['mixed']): T | typeof mixed {
+    if (origin === figma.mixed) {
+        return mixed as any
+    }
+    return origin as T
+}
+
+
+
+export function convertSingleNodeToAlt(node: SceneNode,
+    parent: ReflectFrameNode | ReflectGroupNode | null = null): ReflectSceneNode {
+    return convertIntoReflectNodes([node], parent)[0];
+}
+
+export function convertFrameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
+    altParent: ReflectFrameNode | ReflectGroupNode | null = null): ReflectRectangleNode | ReflectFrameNode | ReflectGroupNode {
+    if (node.children.length === 0) {
+        // if it has no children, convert frame to rectangle
+        return frameToRectangleNode(node, altParent);
+    }
+
+    const altNode = new ReflectFrameNode(
+        {
+            id: node.id,
+            name: node.name,
+            parent: altParent,
+            origin: node.type
+        }
+    );
+
+    altNode.id = node.id;
+    altNode.name = node.name;
+
+    convertDefaultShape(altNode, node);
+    convertFrame(altNode, node);
+    convertCorner(altNode, node);
+    convertRectangleCorner(altNode, node);
+    convertConstraint(altNode, node);
+
+    altNode.children = convertIntoReflectNodes(node.children, altNode);
+
+    return convertToAutoLayout(convertNodesOnRectangle(altNode));
+}
+
+// auto convert Frame to Rectangle when Frame has no Children
+function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
+    altParent: ReflectFrameNode | ReflectGroupNode | null): ReflectRectangleNode {
+    const newNode = new ReflectRectangleNode(
+        {
+            id: node.id,
+            name: node.name,
+            parent: altParent,
+            origin: node.type
+        }
+    );
+
+    convertDefaultShape(newNode, node);
+    convertRectangleCorner(newNode, node);
+    convertCorner(newNode, node);
+    convertConstraint(newNode, node);
+    return newNode;
+}

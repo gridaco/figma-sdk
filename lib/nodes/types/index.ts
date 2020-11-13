@@ -7,10 +7,11 @@ import { ReflectBlendMixin, ReflectChildrenMixin, ReflectConstraintMixin, Reflec
 import { ReflectSceneNode, ReflectSceneNodeType } from "./node-type";
 import { ReflectRectangleNode } from "./rectangle.node";
 import { ReflectTextNode, TextHorizontalAligment, TextVerticalAligment } from "./text.node";
-
+import { mixed } from "./mixed"
 
 
 export {
+    mixed,
     ReflectSceneNode,
     ReflectSceneNodeType,
     ReflectRectangleNode,
