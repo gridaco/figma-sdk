@@ -10,48 +10,64 @@ export interface IReflectNodeReference {
     parentReference?: IReflectNodeReference
 }
 
-// export type LayoutAlign = VerticalAlign | HorizontalAlign
-// export enum VerticalAlign {
-//     top = "MIN",
-//     center = "CENTER",
-//     bottom = "MAX",
-//     topAndBottom = "STRETCH"
-// }
-
-// export enum HorizontalAlign {
-//     left = "MIN",
-//     center = "CENTER",
-//     right = "MAX",
-//     leftAndRight = "STRETCH"
-// }
 
 export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixin, ReflectBlendMixin {
     readonly type: ReflectSceneNodeType
     origin: ReflectSceneNodeType
     originRaw: string
-    hierachyIndex: number
+    originParentId: string
+    hierachyIndex: number = 0
 
 
     constructor(props: {
-        id: string,
+        readonly id: string,
         name: string,
-        parent?: (ReflectSceneNode & ReflectChildrenMixin) | null
+        parent: (ReflectSceneNode & ReflectChildrenMixin) | null
         origin: string,
+        originParentId: string,
         absoluteTransform: Transform
+        childrenCount?: number
     }) {
         this.id = props.id
+        this.originParentId = props.originParentId
         this.name = props.name
         this.parent = props.parent
         this.origin = rawTypeToReflectType(props.origin)
         this.originRaw = props.origin
         this.absoluteTransform = props.absoluteTransform
+        this.childrenCount = props.childrenCount
+
+        if (!this.originParentId) {
+            this.hierachyIndex = 0
+        } else {
+            // TODO - fix this hierachy calculation to rely on origin nodes 100% or change the child initiallizing process.
+            const parentHierachyIndex = !Number.isNaN(this.parent.hierachyIndex) ? this.parent.hierachyIndex : 0
+            let hierachyOnParent = this.getHierachyIndexOnParent()
+            hierachyOnParent = !Number.isNaN(hierachyOnParent) ? hierachyOnParent : 0
+            this.hierachyIndex = parentHierachyIndex + hierachyOnParent + 1
+        }
+    }
+
+    getHierachyIndexOnParent(): number {
+        if (this.originParentNode) {
+            const children = (this.originParentNode as ChildrenMixin)?.children
+            if (children) {
+                for (let childIndex = 0; childIndex < children.length; childIndex++) {
+                    if (children[childIndex].id === this.id) {
+                        return childIndex
+                    }
+                }
+            }
+        }
+        return 0
     }
 
     locked: boolean
-    id: string;
-    absoluteTransform: Transform
+    readonly id: string;
+    readonly absoluteTransform: Transform
     parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
-    name: string;
+    readonly childrenCount: number = 0
+    readonly name: string;
     readonly pluginData: { [key: string]: string };
     getPluginData(key: string): string {
         return this.originNode.getPluginData(key)
@@ -59,8 +75,17 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     setPluginData(key: string, value: string): void {
         return this.originNode.setPluginData(key, value)
     }
+
+    get originParentNode(): SceneNode {
+        return figma.getNodeById(this.originParentId) as SceneNode
+    }
     get originNode(): SceneNode {
-        return figma.getNodeById(this.id) as SceneNode
+        try {
+            console.log('figma.getNodeById(this.id)', figma.getNodeById(this.id))
+            return figma.getNodeById(this.id) as SceneNode
+        } catch (e) {
+            console.error('error while getting origin node', e)
+        }
     }
 
     // Namespace is a string that must be at least 3 alphanumeric characters, and should
@@ -92,7 +117,7 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
     //
 
-    // blen related
+    // blend related
     opacity: number;
     blendMode: "PASS_THROUGH" | BlendMode;
     isMask: boolean;
@@ -143,14 +168,21 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
         }
     }
 
-    get images(): Array<Image> {
-        throw 'get: images not implemented for frame node'
+    get images(): Array<Image> | undefined {
+        if (this instanceof ReflectDefaultShapeMixin) {
+            if (Array.isArray(this.fills)) {
+                return retrieveImageFills(this.fills);
+            }
+        }
     }
 
     get primaryImage(): Image {
-        throw 'get: primaryImage not implemented for frame node'
+        if (this instanceof ReflectDefaultShapeMixin) {
+            if (Array.isArray(this.fills)) {
+                return retrievePrimaryImageFill(this.fills)
+            }
+        }
     }
-
 
 
     get hasFills(): boolean {
@@ -320,44 +352,6 @@ export class ReflectDefaultShapeMixin
     height: number;
     layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
 
-    get hasImage(): boolean {
-        return hasImage(this.fills)
-    }
-
-    get images(): Array<Image> {
-        if (Array.isArray(this.fills)) {
-            return retrieveImageFills(this.fills);
-        }
-    }
-
-    get primaryImage(): Image {
-        if (Array.isArray(this.fills)) {
-            return retrievePrimaryImageFill(this.fills)
-        }
-    }
-
-    get hasFills(): boolean {
-        if (Array.isArray(this.fills)) {
-            return this.fills.length > 0
-        }
-        return false
-    }
-
-    get hasVisibleFills(): boolean {
-        return this.visibleFills.length > 0
-    }
-
-    get visibleFills(): ReadonlyArray<Paint> {
-        return filterFills(this.fills, { visibleOnly: true })
-    }
-
-    get primaryFill(): Paint {
-        return retrieveFill(this.fills)
-    }
-
-    get primaryColor(): RGBA {
-        return retrievePrimaryColor(this.fills)
-    }
 
 }
 
@@ -369,15 +363,8 @@ export abstract class ReflectChildrenMixin extends ReflectConstraintMixin {
     get constraintableChildren(): Array<ReflectConstraintMixin> {
         return filterConstraintableChildren(this)
     }
-    isRelative?: boolean;
+    isRelative?: boolean
 
-    get grandchildren(): ReadonlyArray<ReflectSceneNode> {
-        return this.getGrandchildren()
-    }
-
-    getGrandchildren(options?: { includeThis: boolean }) {
-        return mapGrandchildren(this, options)
-    }
 
     get mostUsedColor(): ReadonlyArray<RGBA> {
         throw 'not implemented'

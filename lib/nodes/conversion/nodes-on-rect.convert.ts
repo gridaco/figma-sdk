@@ -71,6 +71,8 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
       id: rect.id,
       name: rect.name,
       origin: rect.origin,
+      originParentId: rect.originParentId,
+      parent: rect.parent,
       absoluteTransform: rect.absoluteTransform
     }
   );

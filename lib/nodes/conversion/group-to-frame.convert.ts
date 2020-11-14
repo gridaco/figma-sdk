@@ -5,6 +5,7 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
     id: node.id,
     name: node.name,
     parent: node.parent,
+    originParentId: node.originParentId,
     origin: node.origin,
     absoluteTransform: node.absoluteTransform
   });

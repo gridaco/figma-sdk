@@ -37,6 +37,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
         (node: SceneNode) => {
 
 
+
             // pre-filtering
             const ignoreResult = shouldIgnoreNode(node.name)
             if (ignoreResult.ignored) {
@@ -58,6 +59,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                         id: node.id,
                         name: node.name,
                         origin: node.type,
+                        parent: altParent,
+                        originParentId: node.parent?.id,
                         absoluteTransform: node.absoluteTransform,
                     });
                     convertConstraint(altNode, node);
@@ -68,6 +71,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                         id: node.id,
                         name: node.name,
                         origin: node.type,
+                        parent: altParent,
+                        originParentId: node.parent?.id,
                         absoluteTransform: node.absoluteTransform,
                     });
                 }
@@ -87,6 +92,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     name: node.name,
                     parent: altParent,
                     origin: node.type,
+                    originParentId: node.parent?.id,
                     absoluteTransform: node.absoluteTransform,
                 })
 
@@ -114,6 +120,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     name: node.name,
                     parent: altParent,
                     origin: node.type,
+                    originParentId: node.parent?.id,
                     absoluteTransform: node.absoluteTransform,
                 });
 
@@ -131,6 +138,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     name: node.name,
                     parent: altParent,
                     origin: node.type,
+                    originParentId: node.parent?.id,
                     absoluteTransform: node.absoluteTransform,
                 });
 
@@ -151,6 +159,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     id: node.id,
                     name: node.name,
                     parent: altParent,
+                    originParentId: node.parent?.id,
                     origin: node.type,
                     absoluteTransform: node.absoluteTransform,
                 });
@@ -306,12 +315,10 @@ export function convertFrameNodeToAlt(node: FrameNode | InstanceNode | Component
             name: node.name,
             parent: altParent,
             origin: node.type,
+            originParentId: node.parent?.id,
             absoluteTransform: node.absoluteTransform,
         }
     );
-
-    altNode.id = node.id;
-    altNode.name = node.name;
 
     convertDefaultShape(altNode, node);
     convertFrame(altNode, node);
@@ -333,6 +340,7 @@ function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
             name: node.name,
             parent: altParent,
             origin: node.type,
+            originParentId: node.parent?.id,
             absoluteTransform: node.absoluteTransform,
         }
     );
