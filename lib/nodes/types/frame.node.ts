@@ -1,6 +1,4 @@
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
-import { filterFills, mapGrandchildren, retrieveFill, retrievePrimaryColor } from "../../utils";
-import { hasImage } from "../../utils/has-image";
 import { mixed } from "./mixed";
 import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectRectangleCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
 
@@ -34,52 +32,8 @@ export class ReflectFrameNode
     ReflectBlendMixin,
     ReflectLayoutMixin {
 
-    get hasImage(): boolean {
-        return hasImage(this.fills)
-    }
-
-    get images(): Array<Image> {
-        throw 'get: images not implemented for frame node'
-    }
-
-    get primaryImage(): Image {
-        throw 'get: primaryImage not implemented for frame node'
-    }
-
     get type() {
         return ReflectSceneNodeType.frame;
-    }
-
-
-    get hasFills(): boolean {
-        if (Array.isArray(this.fills)) {
-            return this.fills.length > 0
-        }
-        return false
-    }
-
-    get hasVisibleFills(): boolean {
-        return this.visibleFills.length > 0
-    }
-
-    get visibleFills(): ReadonlyArray<Paint> {
-        return filterFills(this.fills as Paint[], { visibleOnly: true })
-    }
-
-    get primaryFill(): Paint {
-        return retrieveFill(this.fills)
-    }
-
-    get primaryColor(): RGBA {
-        return retrievePrimaryColor(this.fills as Paint[])
-    }
-
-    get grandchildren(): ReadonlyArray<ReflectSceneNode> {
-        return this.getGrandchildren()
-    }
-
-    getGrandchildren(options?: { includeThis: boolean }) {
-        return mapGrandchildren(this, options)
     }
 
     constraints: Constraints

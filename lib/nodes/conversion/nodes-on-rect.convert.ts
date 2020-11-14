@@ -70,7 +70,8 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
     {
       id: rect.id,
       name: rect.name,
-      origin: rect.origin
+      origin: rect.origin,
+      absoluteTransform: rect.absoluteTransform
     }
   );
 
@@ -87,6 +88,7 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
   // when invisible, add the layer but don't fill it; he designer might use invisible layers for alignment.
   // visible can be undefined in tests
   if (rect.visible !== false) {
+    // FIXEME - on converting fills, it does not handles the rectnode's layer opacity. so dimmed color rect will be convered as non-dimmed color frame node.
     frameNode.fills = rect.fills;
     frameNode.fillStyleId = rect.fillStyleId;
 

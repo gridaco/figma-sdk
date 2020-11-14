@@ -57,7 +57,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     altNode = new ReflectRectangleNode({
                         id: node.id,
                         name: node.name,
-                        origin: node.type
+                        origin: node.type,
+                        absoluteTransform: node.absoluteTransform,
                     });
                     convertConstraint(altNode, node);
                     convertRectangleCorner(altNode, node);
@@ -66,7 +67,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     altNode = new ReflectEllipseNode({
                         id: node.id,
                         name: node.name,
-                        origin: node.type
+                        origin: node.type,
+                        absoluteTransform: node.absoluteTransform,
                     });
                 }
 
@@ -84,7 +86,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     id: node.id,
                     name: node.name,
                     parent: altParent,
-                    origin: node.type
+                    origin: node.type,
+                    absoluteTransform: node.absoluteTransform,
                 })
 
                 convertDefaultShape(altNode, node)
@@ -110,7 +113,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     id: node.id,
                     name: node.name,
                     parent: altParent,
-                    origin: node.type
+                    origin: node.type,
+                    absoluteTransform: node.absoluteTransform,
                 });
 
                 convertLayout(altNode, node);
@@ -126,7 +130,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     id: node.id,
                     name: node.name,
                     parent: altParent,
-                    origin: node.type
+                    origin: node.type,
+                    absoluteTransform: node.absoluteTransform,
                 });
 
                 convertDefaultShape(altNode, node);
@@ -146,7 +151,8 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                     id: node.id,
                     name: node.name,
                     parent: altParent,
-                    origin: node.type
+                    origin: node.type,
+                    absoluteTransform: node.absoluteTransform,
                 });
 
                 convertConstraint(altNode, node);
@@ -299,7 +305,8 @@ export function convertFrameNodeToAlt(node: FrameNode | InstanceNode | Component
             id: node.id,
             name: node.name,
             parent: altParent,
-            origin: node.type
+            origin: node.type,
+            absoluteTransform: node.absoluteTransform,
         }
     );
 
@@ -325,7 +332,8 @@ function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
             id: node.id,
             name: node.name,
             parent: altParent,
-            origin: node.type
+            origin: node.type,
+            absoluteTransform: node.absoluteTransform,
         }
     );
 
