@@ -152,7 +152,7 @@ export class ReflectDefaultShapeMixin
     }
 
     get visibleFills(): ReadonlyArray<Paint> {
-        return filterFills(this.fills as Paint[], { visibleOnly: true })
+        return filterFills(this.fills, { visibleOnly: true })
     }
 
     get primaryFill(): Paint {
@@ -160,9 +160,8 @@ export class ReflectDefaultShapeMixin
     }
 
     get primaryColor(): RGBA {
-        return retrievePrimaryColor(this.fills as Paint[])
+        return retrievePrimaryColor(this.fills)
     }
-
 
 }
 
@@ -182,6 +181,10 @@ export abstract class ReflectChildrenMixin extends ReflectConstraintMixin {
 
     getGrandchildren(options?: { includeThis: boolean }) {
         return mapGrandchildren(this, options)
+    }
+
+    get mostUsedColor(): ReadonlyArray<RGBA> {
+        throw 'not implemented'
     }
 }
 
