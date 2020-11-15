@@ -1,5 +1,5 @@
 import { mixed, ReflectSceneNode, ReflectSceneNodeType } from ".";
-import { filterFills, hasImage, mapGrandchildren, rawTypeToReflectType, retrieveFill, retrievePrimaryColor } from "../../utils";
+import { filterFills, hasImage, mapGrandchildren, notEmpty, rawTypeToReflectType, retrieveFill, retrievePrimaryColor } from "../../utils";
 import { checkIfRoot } from "../../utils/check-if-root";
 // import { ReflectLayoutMixin, ReflectBlendMixin, ReflectChildrenMixin, ReflectDefaultShapeMixin } from "./mixins";
 
@@ -206,6 +206,15 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     }
 
     get primaryFill(): Paint {
+        if (this instanceof ReflectChildrenMixin) {
+            const availableNodes = this.getGrandchildren({
+                includeThis: true
+            })
+
+            let fillsMap = availableNodes.map((n) => n.visibleFills).filter((n) => notEmpty(n))
+            const fills = [].concat.apply([], fillsMap);
+            return retrieveFill(fills)
+        }
         if (this instanceof ReflectDefaultShapeMixin) {
             return retrieveFill(this.fills)
         }
