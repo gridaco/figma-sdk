@@ -200,8 +200,10 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     }
 
     get visibleFills(): ReadonlyArray<Paint> | undefined {
-        if (this instanceof ReflectDefaultShapeMixin) {
-            return filterFills(this.fills as Paint[], { visibleOnly: true })
+        try {
+            return filterFills((this as any as ReflectDefaultShapeMixin).fills as Paint[], { visibleOnly: true })
+        } catch (_) {
+            console.log(`tried to filter fills, but no fills found. ${this.toString()}`, this)
         }
     }
 
