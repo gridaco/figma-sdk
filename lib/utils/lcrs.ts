@@ -99,7 +99,7 @@ export function calculateLCRS(args: {
     containerWidth: number, containerStartPosition: number, centerPosition: number, startPosition: number, width: number
 }): LCRS {
     const { containerWidth, containerStartPosition, centerPosition, startPosition, width } = args
-    console.log('calculateLCRS', containerWidth, containerStartPosition, startPosition, width, centerPosition)
+    // console.log('calculateLCRS', containerWidth, containerStartPosition, startPosition, width, centerPosition)
 
     // stretch inspection
     // if the size of child is same as parent, and start point is starting from 0, inspect it as "Stretch"

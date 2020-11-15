@@ -155,6 +155,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                 // todo export as a svg and display it directly.
             }
             else if (node.type === "VECTOR") {
+                console.log(`converting vector node "${node.name}" to reflect rectangle node.`)
                 const altNode = new ReflectRectangleNode({
                     id: node.id,
                     name: node.name,
