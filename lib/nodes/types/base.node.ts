@@ -66,6 +66,7 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     readonly id: string;
     readonly absoluteTransform: Transform
     parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
+    readonly children: Array<ReflectSceneNode> = []
     readonly childrenCount: number = 0
     readonly name: string;
     readonly pluginData: { [key: string]: string };
