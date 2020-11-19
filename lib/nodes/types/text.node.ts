@@ -1,10 +1,13 @@
+import { TextAlign, TextAlignVertical } from "@reflect.bridged.xyz/core/lib";
 import { ReflectSceneNodeType } from ".";
 import { getTextStyleById } from "../../figma";
 import { ReflectDefaultShapeMixin } from "./mixins";
 
+export {
+    TextAlign as TextAlign,
+    TextAlignVertical as TextAlignVertical
+}
 
-export type TextHorizontalAligment = "LEFT" | "CENTER" | "RIGHT" | "JUSTIFIED";
-export type TextVerticalAligment = "TOP" | "CENTER" | "BOTTOM";
 export type TextAutoResize = "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT"
 
 export class ReflectTextNode extends
@@ -16,8 +19,8 @@ export class ReflectTextNode extends
     characters: string;
     textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";
 
-    textAlignHorizontal: TextHorizontalAligment
-    textAlignVertical: TextVerticalAligment
+    textAlignHorizontal: TextAlign
+    textAlignVertical: TextAlignVertical
 
     paragraphIndent: number;
     paragraphSpacing: number;

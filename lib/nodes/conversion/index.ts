@@ -19,6 +19,7 @@ import { convertToAutoLayout } from "./auto-layout.convert";
 import { notEmpty } from "../../utils/general";
 import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
 import { shouldIgnoreNode } from "../../features/ignore";
+import { convertTextAlignHorizontalToReflect, convertTextAlignVerticalToReflect } from "../../figma/converters/text-align.converter";
 
 /**
  * restrictied to single selection
@@ -262,8 +263,8 @@ function convertRectangleCorner(altNode: ReflectRectangleCornerMixin,
 }
 
 function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
-    altNode.textAlignHorizontal = node.textAlignHorizontal;
-    altNode.textAlignVertical = node.textAlignVertical;
+    altNode.textAlignHorizontal = convertTextAlignHorizontalToReflect(node.textAlignHorizontal);
+    altNode.textAlignVertical = convertTextAlignVerticalToReflect(node.textAlignVertical);
     altNode.paragraphIndent = node.paragraphIndent;
     altNode.paragraphSpacing = node.paragraphSpacing;
     altNode.fontSize = figmaToReflectProperty(node.fontSize);
