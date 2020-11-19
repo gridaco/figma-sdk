@@ -20,6 +20,7 @@ import { notEmpty } from "../../utils/general";
 import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
 import { shouldIgnoreNode } from "../../features/ignore";
 import { convertTextAlignHorizontalToReflect, convertTextAlignVerticalToReflect } from "../../figma/converters/text-align.converter";
+import { convertTextDecorationToReflect } from "../../figma/converters/tetx-decoration.convert";
 
 /**
  * restrictied to single selection
@@ -270,7 +271,9 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
     altNode.fontSize = figmaToReflectProperty(node.fontSize);
     altNode.fontName = figmaToReflectProperty(node.fontName);
     altNode.textCase = figmaToReflectProperty(node.textCase);
-    altNode.textDecoration = figmaToReflectProperty(node.textDecoration);
+
+    // TODO = > convertTextDecorationToReflect(this)
+    altNode.textDecoration = (figmaToReflectProperty(node.textDecoration));
     altNode.textStyleId = figmaToReflectProperty(node.textStyleId);
     altNode.letterSpacing = figmaToReflectProperty(node.letterSpacing);
     altNode.textAutoResize = node.textAutoResize;

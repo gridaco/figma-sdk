@@ -2,7 +2,7 @@ import { TextAlign, TextAlignVertical } from "@reflect.bridged.xyz/core/lib";
 import { ReflectSceneNodeType } from ".";
 import { getTextStyleById } from "../../figma";
 import { ReflectDefaultShapeMixin } from "./mixins";
-
+// import { TextDecoration } from "@reflect.bridged.xyz/core/lib"
 export {
     TextAlign as TextAlign,
     TextAlignVertical as TextAlignVertical
