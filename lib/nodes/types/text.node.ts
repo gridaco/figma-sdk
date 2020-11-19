@@ -1,6 +1,10 @@
-import { TextAlign, TextAlignVertical } from "@reflect.bridged.xyz/core/lib";
+import { TextAlign, TextAlignVertical, TextStyle, TextStyleManifest } from "@reflect.bridged.xyz/core";
 import { ReflectSceneNodeType } from ".";
 import { getTextStyleById } from "../../figma";
+import { convertFontStyleToReflect } from "../../figma/converters/font-style.convert";
+import { convertFontWeightToReflect } from "../../figma/converters/font-weight.convert";
+import { convertTextDecorationToReflect } from "../../figma/converters/tetx-decoration.convert";
+import { extractTextStyleFromTextNode } from "../../figma/converters/text-style.convert";
 import { ReflectDefaultShapeMixin } from "./mixins";
 // import { TextDecoration } from "@reflect.bridged.xyz/core/lib"
 export {
@@ -40,11 +44,12 @@ export class ReflectTextNode extends
         return false
     }
 
-    get textStyle(): TextStyle {
+    get textStyle(): TextStyleManifest {
         try {
             return getTextStyleById(this.textStyleId as string)
         } catch (e) {
-            return undefined
+            // console.error(`error occcured while getting text style by id`, e)
+            return extractTextStyleFromTextNode(this)
         }
     }
 }

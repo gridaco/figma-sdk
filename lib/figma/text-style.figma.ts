@@ -1,13 +1,14 @@
 import { typographyIntelisenceMapping } from "@reflect.bridged.xyz/linter/lib/constants/naming-conventions/text-theme.naming"
+import { TextStyle, TextStyleManifest } from "@reflect.bridged.xyz/core"
+import { convertTextStyleToReflect } from "./converters/text-style.convert";
 
-
-export function getTextStyleById(id: string): TextStyle {
-    if (id === undefined || id === null) {
+export function getTextStyleById(id: string): TextStyleManifest {
+    if (id === undefined || id === null || id === '') {
         throw `the parameter id of ${id} is not valid. maybe your text does not have a assiged textstyle`;
     }
     for (const s of figma.getLocalTextStyles()) {
         if (id === s.id) {
-            return s;
+            return convertTextStyleToReflect(s);
         }
     }
     throw `text style of id "${id}" is not found by api`;
@@ -19,10 +20,10 @@ export function getTextStyleById(id: string): TextStyle {
  */
 const INDEX_UPDATE_INTERVAL_MS = 1000
 export class TextStyleRepository {
-    private static _textThemeMapping: Map<TextThemeStyles, Map<string, TextStyle>>
-    private static _mapping: Map<string, TextStyle>
+    private static _textThemeMapping: Map<TextThemeStyles, Map<string, TextStyleManifest>>
+    private static _mapping: Map<string, TextStyleManifest>
     private static _lastIndex: number = 0
-    static get textThemeMapping(): Map<TextThemeStyles, Map<string, TextStyle>> {
+    static get textThemeMapping(): Map<TextThemeStyles, Map<string, TextStyleManifest>> {
         const indexingRequired = (!this._textThemeMapping || Date.now() - this._lastIndex > INDEX_UPDATE_INTERVAL_MS)
         if (indexingRequired) {
             this.index()
@@ -31,29 +32,30 @@ export class TextStyleRepository {
     }
 
     private static index() {
-        this._textThemeMapping = new Map<TextThemeStyles, Map<string, TextStyle>>()
-        this._mapping = new Map<string, TextStyle>()
+        this._textThemeMapping = new Map<TextThemeStyles, Map<string, TextStyleManifest>>()
+        this._mapping = new Map<string, TextStyleManifest>()
         const textThemeStyles = figma.getLocalTextStyles()
-        for (const textThemeStyle of textThemeStyles) {
-            this._mapping[textThemeStyle.name] = textThemeStyle
-            const style = findOneStyle(textThemeStyle.name)
+        for (let textThemeStyle of textThemeStyles) {
+            const convertedTextThemeStyle = convertTextStyleToReflect(textThemeStyle)
+            this._mapping[textThemeStyle.name] = convertedTextThemeStyle
+            const style = findOneStyle(convertedTextThemeStyle.name)
             if (style) {
                 if (!this._textThemeMapping[style.type]) {
-                    this._textThemeMapping[style.type] = new Map<string, TextStyle>()
+                    this._textThemeMapping[style.type] = new Map<string, TextStyleManifest>()
                 }
-                (this._textThemeMapping[style.type] as Map<string, TextStyle>)[style.variant] = textThemeStyle
+                (this._textThemeMapping[style.type] as Map<string, TextStyleManifest>)[style.variant] = convertedTextThemeStyle
             }
         }
     }
 
-    static getDefaultDesignTextStyleFromRegistry(textStyle: TextThemeStyles): TextStyle {
+    static getDefaultDesignTextStyleFromRegistry(textStyle: TextThemeStyles): TextStyleManifest {
         const set = this.getDesignTextStyleSetFromRegistry(textStyle)
         const keys = Object.keys(set)
         // return first as default
         return set[keys[0]]
     }
 
-    static getDesignTextStyleSetFromRegistry(textStyle: TextThemeStyles): Map<string, TextStyle> {
+    static getDesignTextStyleSetFromRegistry(textStyle: TextThemeStyles): Map<string, TextStyleManifest> {
         return this.textThemeMapping[textStyle]
     }
 
@@ -62,7 +64,7 @@ export class TextStyleRepository {
         for (const typekey of Object.keys(themeMapping)) {
             const variantMap = themeMapping[typekey]
             for (const variantkey of Object.keys(variantMap)) {
-                const textStyle: TextStyle = variantMap[variantkey] as TextStyle
+                const textStyle: TextStyleManifest = variantMap[variantkey] as TextStyleManifest
                 if (textStyle.name === textStyleName) {
                     return TextThemeStyles[typekey];
                 }

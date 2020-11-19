@@ -1,3 +1,7 @@
 export function convertLineHeightToReflect(origin: LineHeight): number {
-    throw 'not implemented'
+    if (origin.unit === 'PIXELS') {
+        return origin.value
+    } else {
+        return undefined
+    }
 }
