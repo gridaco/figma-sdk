@@ -224,8 +224,12 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     }
 
     get primaryColor(): RGBA {
-        if (this instanceof ReflectDefaultShapeMixin) {
-            return retrievePrimaryColor(this.fills as Paint[])
+        try {
+            if (this instanceof ReflectDefaultShapeMixin) {
+                return retrievePrimaryColor(this.fills as Paint[])
+            }
+        } catch (_) {
+            console.log(`error while fetching primarycolor from ${this.toString()}`)
         }
     }
 
