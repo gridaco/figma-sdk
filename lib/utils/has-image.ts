@@ -12,6 +12,10 @@ export function hasImage(fills: ReadonlyArray<Paint>): boolean {
     return false;
 }
 
+/**
+ * returns true if fill is visible and type of image. if fill is invisible, always returns false
+ * @param fill 
+ */
 export function isImage(fill: Paint) {
-    return fill.type === "IMAGE"
+    return fill.visible && fill.type === "IMAGE"
 }

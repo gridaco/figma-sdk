@@ -163,10 +163,26 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     }
 
 
+    /**
+     * returns true if "this" fill contains image. does not looks through its children.
+     */
     get hasImage(): boolean {
         if (this instanceof ReflectDefaultShapeMixin) {
             return hasImage(this.fills)
         }
+    }
+
+    /**
+     * check if "this" node is exportable as svg. if one of the children contains image, this will return false.
+     */
+    get vectorExportable(): boolean {
+        if ('children' in this) {
+            const hasimage = this.children.every((c) => !c.hasImage)
+            if (hasimage) {
+                return false
+            }
+        }
+        return !this.hasImage
     }
 
     get images(): Array<Image> | undefined {
