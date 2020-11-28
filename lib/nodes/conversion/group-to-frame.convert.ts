@@ -23,17 +23,21 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
 
   newNode.layoutMode = "NONE";
   newNode.counterAxisSizingMode = "AUTO";
+  newNode.primaryAxisSizingMode = "AUTO";
+  newNode.primaryAxisAlignItems = "CENTER";
+  newNode.primaryAxisAlignItems = "CENTER";
   newNode.clipsContent = false;
   newNode.layoutGrids = [];
   newNode.gridStyleId = "";
   newNode.guides = [];
 
-  // update the children's x and y position. Modify the 'original' node, then pass them.
+  // figma: update the children's x and y position.
   updateChildrenXY(node) as ReflectFrameNode;
   newNode.children = node.children;
 
+  // update the iterating child's  parent
+  // todo - this should better be done on construction level
   newNode.children.forEach((d) => {
-    // update the parent of each child
     d.parent = newNode;
   });
 

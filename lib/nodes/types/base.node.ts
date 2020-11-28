@@ -89,6 +89,11 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
         }
     }
 
+
+    get hasParent(): boolean {
+        return this.parent !== null && this.parent !== undefined
+    }
+
     // Namespace is a string that must be at least 3 alphanumeric characters, and should
     // be a name related to your plugin. Other plugins will be able to read this data.
     getSharedPluginData(namespace: string, key: string): string {
@@ -115,8 +120,30 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     rotation: number; // In degrees
     width: number;
     height: number;
-    layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
-    //
+    layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+    layoutGrow: number
+
+
+    /**
+     * layoutMode is only available for frame node
+     */
+    layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
+
+    /**
+     * figma: this property is only available when layoutMode != "NONE"
+     */
+    // region
+    primaryAxisSizingMode: "FIXED" | "AUTO";
+    counterAxisSizingMode: "FIXED" | "AUTO";
+    primaryAxisAlignItems: FigmaMainAxisAlignment;
+    counterAxisAlignItems: FigmaCrossAxisAligment;
+    // endregion
+
+    paddingRight: number;
+    paddingLeft: number;
+    paddingTop: number;
+    paddingBottom: number;
+
 
     // blend related
     opacity: number;
@@ -263,6 +290,7 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
 
 import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../utils/lcrs";
 import { retrieveImageFills, retrievePrimaryImageFill } from "../../utils/retrieve-image-fills";
+import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "./property-types";
 
 export interface ReflectBlendMixin {
     opacity: number;
@@ -284,7 +312,11 @@ export interface ReflectLayoutMixin {
     width: number;
     height: number;
 
-    layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH"; // applicable only inside auto-layout frames
+    /**
+     * fimgma: this property is only applicable when frame is auto-layout frame.
+     */
+    layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+    layoutGrow: number
 }
 
 
@@ -349,6 +381,7 @@ export class ReflectDefaultShapeMixin
     ReflectRectangleCornerMixin,
     ReflectCornerMixin,
     ReflectLayoutMixin {
+    layoutGrow: number;
     opacity: number;
     blendMode: "PASS_THROUGH" | BlendMode;
     isMask: boolean;
@@ -382,7 +415,7 @@ export class ReflectDefaultShapeMixin
     rotation: number;
     width: number;
     height: number;
-    layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
+    layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
 
 
 }

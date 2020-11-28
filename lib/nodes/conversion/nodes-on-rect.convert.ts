@@ -101,8 +101,10 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
     frameNode.effectStyleId = rect.effectStyleId;
   }
 
-  // inner Rectangle shall get a FIXED size
+  frameNode.counterAxisAlignItems = "MIN";
   frameNode.counterAxisSizingMode = "FIXED";
+  frameNode.primaryAxisAlignItems = "MIN";
+  frameNode.primaryAxisSizingMode = "FIXED";
 
   frameNode.strokeAlign = rect.strokeAlign;
   frameNode.strokeCap = rect.strokeCap;

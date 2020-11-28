@@ -1,27 +1,23 @@
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
 import { mixed } from "./mixed";
 import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectRectangleCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
+import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "./property-types";
 
 //#region frame
 interface ReflectFrameMixin {
-    layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
-    counterAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
 
-    // horizontal and vertical were replaced by individual padding in each direction.
-    // horizontalPadding: number; // applicable only if layoutMode != "NONE"
-    // verticalPadding: number; // applicable only if layoutMode != "NONE"
-    itemSpacing: number; // applicable only if layoutMode != "NONE"
 
-    paddingRight: number;
-    paddingLeft: number;
-    paddingTop: number;
-    paddingBottom: number;
+    /**
+     * figma: this property is only available when layoutMode != "NONE"
+     */
+    itemSpacing: number;
 
     layoutGrids: ReadonlyArray<LayoutGrid>;
     gridStyleId: string;
     clipsContent: boolean;
     guides: ReadonlyArray<Guide>;
 }
+
 
 
 export class ReflectFrameNode
@@ -32,12 +28,18 @@ export class ReflectFrameNode
     ReflectBlendMixin,
     ReflectLayoutMixin {
 
+
     get type() {
         return ReflectSceneNodeType.frame;
     }
 
     constraints: Constraints
 
+
+    layoutGrow: number;
+    primaryAxisSizingMode: "FIXED" | "AUTO";
+    primaryAxisAlignItems: FigmaMainAxisAlignment;
+    counterAxisAlignItems: FigmaCrossAxisAligment;
 
     // frame mixin
     layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
@@ -97,6 +99,6 @@ export class ReflectFrameNode
     rotation: number; // In degrees
     width: number;
     height: number;
-    layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
+    layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
 }
 //#endregion

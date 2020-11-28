@@ -194,20 +194,25 @@ function convertLayout(altNode: ReflectLayoutMixin, node: LayoutMixin) {
     altNode.layoutAlign = node.layoutAlign;
 }
 
-function convertFrame(altNode: ReflectFrameNode, node: DefaultFrameMixin) {
-    altNode.layoutMode = node.layoutMode;
-    altNode.counterAxisSizingMode = node.counterAxisSizingMode;
+function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
+    rfNode.layoutMode = node.layoutMode;
 
-    altNode.paddingLeft = node.horizontalPadding;
-    altNode.paddingRight = node.horizontalPadding;
-    altNode.paddingTop = node.verticalPadding;
-    altNode.paddingBottom = node.verticalPadding;
+    rfNode.primaryAxisSizingMode = node.primaryAxisSizingMode;
+    rfNode.counterAxisSizingMode = node.counterAxisSizingMode;
 
-    altNode.itemSpacing = node.itemSpacing;
-    altNode.layoutGrids = node.layoutGrids;
-    altNode.gridStyleId = node.gridStyleId;
-    altNode.clipsContent = node.clipsContent;
-    altNode.guides = node.guides;
+    rfNode.primaryAxisAlignItems = node.primaryAxisAlignItems;
+    rfNode.counterAxisAlignItems = node.counterAxisAlignItems;
+
+    rfNode.paddingLeft = node.horizontalPadding;
+    rfNode.paddingRight = node.horizontalPadding;
+    rfNode.paddingTop = node.verticalPadding;
+    rfNode.paddingBottom = node.verticalPadding;
+
+    rfNode.itemSpacing = node.itemSpacing;
+    rfNode.layoutGrids = node.layoutGrids;
+    rfNode.gridStyleId = node.gridStyleId;
+    rfNode.clipsContent = node.clipsContent;
+    rfNode.guides = node.guides;
 }
 
 function convertGeometry(altNode: ReflectGeometryMixin, node: GeometryMixin) {

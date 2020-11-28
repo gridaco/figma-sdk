@@ -1,6 +1,7 @@
 import { ReflectFrameNode, ReflectGroupNode, ReflectSceneNode } from "../types";
 import { convertGroupToFrame } from "./group-to-frame.convert";
-
+import { mostFrequent } from "general-utils/lib/array.utils";
+import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "../types/property-types";
 /**
  * Add AutoLayout attributes if layout has items aligned (either vertically or horizontally).
  * To make the calculation, the average position of every child, ordered, needs to pass a threshold.
@@ -46,22 +47,32 @@ export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): 
 
     frame.itemSpacing = itemSpacing > 0 ? itemSpacing : 0;
 
-    // todo while this is similar to Figma, verify if this is good enough or if padding should be allowed in all four directions.
     const padding = detectAutoLayoutPadding(frame);
 
-    frame.paddingTop = padding.top;
-    frame.paddingBottom = padding.bottom;
-    frame.paddingLeft = padding.left;
-    frame.paddingRight = padding.right;
+    frame.paddingTop = Math.max(padding.top, 0);
+    frame.paddingBottom = Math.max(padding.bottom, 0);
+    frame.paddingLeft = Math.max(padding.left, 0);
+    frame.paddingRight = Math.max(padding.right, 0);
 
-    // update the layoutAlign attribute for every child
-    frame.children = frame.children.map((d) => {
-      // @ts-ignore current node can't be AltGroupNode because it was converted into AltFrameNode
-      d.layoutAlign = layoutAlignInChild(d, node);
-      return d;
+    // update the child's layoutAlign attribute as INHERIT or STRETCH
+    frame.children.map((child) => {
+      layoutAlignInChild(child, node as ReflectFrameNode);
     });
 
-    // todo counterAxisSizingMode = ??? auto when autolayout? auto when it was a group?
+    const allChildrenDirection = node.children.map((d) =>
+      primaryAxisDirection(d, node)
+    );
+
+    const primaryDirection = allChildrenDirection.map((d) => d.primary);
+    const counterDirection = allChildrenDirection.map((d) => d.counter);
+
+    // FIXME
+    // figma: currently figma randomly returns wrong value for below 2 properties.
+    frame.primaryAxisAlignItems = mostFrequent(primaryDirection) as FigmaMainAxisAlignment;
+    frame.counterAxisAlignItems = mostFrequent(counterDirection) as FigmaCrossAxisAligment;
+
+    frame.counterAxisSizingMode = "FIXED";
+    frame.primaryAxisSizingMode = "FIXED";
   }
 
   return node;
@@ -159,7 +170,6 @@ function calculateInterval(children: ReadonlyArray<ReflectSceneNode>,
 
 /**
  * Calculate the Padding.
- * This is very verbose, but also more performant than calculating them independently.
  */
 function detectAutoLayoutPadding(node: ReflectFrameNode): {
   left: number;
@@ -236,40 +246,66 @@ function detectAutoLayoutPadding(node: ReflectFrameNode): {
 }
 
 /**
- * Detect if children are aligned at the start, end or center of parent.
- * Result is the layoutAlign attribute
+ * figma: check if children to be STRETCH or INHERIT
  */
 function layoutAlignInChild(node: ReflectSceneNode,
-  parentNode: ReflectFrameNode): "MIN" | "CENTER" | "MAX" | "STRETCH" {
-  // parentNode.layoutMode can't be NONE.
+  parentNode: ReflectFrameNode) {
+  const sameWidth =
+    node.width - 2 >
+    parentNode.width - parentNode.paddingLeft - parentNode.paddingRight;
+
+  const sameHeight =
+    node.height - 2 >
+    parentNode.height - parentNode.paddingTop - parentNode.paddingBottom;
+
   if (parentNode.layoutMode === "VERTICAL") {
-    const nodeCenteredPosX = node.x + node.width / 2;
-    const parentCenteredPosX = parentNode.width / 2;
-
-    const paddingX = nodeCenteredPosX - parentCenteredPosX;
-
-    // allow a small threshold
-    if (paddingX < -4) {
-      return "MIN";
-    } else if (paddingX > 4) {
-      return "MAX";
-    } else {
-      return "CENTER";
-    }
+    node.layoutAlign = sameWidth ? "STRETCH" : "INHERIT";
   } else {
-    // parentNode.layoutMode === "HORIZONTAL"
-    const nodeCenteredPosY = node.y + node.height / 2;
-    const parentCenteredPosY = parentNode.height / 2;
+    node.layoutAlign = sameHeight ? "STRETCH" : "INHERIT";
+  }
+  // with custom AutoLayout, this is never going to be 1.
+  node.layoutGrow = 0;
+}
 
-    const paddingY = nodeCenteredPosY - parentCenteredPosY;
 
-    // allow a small threshold
-    if (paddingY < -4) {
-      return "MIN";
-    } else if (paddingY > 4) {
-      return "MAX";
-    } else {
-      return "CENTER";
-    }
+
+function primaryAxisDirection(
+  node: ReflectSceneNode,
+  parentNode: ReflectSceneNode
+): { primary: "MIN" | "CENTER" | "MAX"; counter: "MIN" | "CENTER" | "MAX" } {
+  // parentNode.layoutMode can't be NONE.
+  const nodeCenteredPosX = node.x + node.width / 2;
+  const parentCenteredPosX = parentNode.width / 2;
+
+  const centerXPosition = nodeCenteredPosX - parentCenteredPosX;
+
+  const nodeCenteredPosY = node.y + node.height / 2;
+  const parentCenteredPosY = parentNode.height / 2;
+
+  const centerYPosition = nodeCenteredPosY - parentCenteredPosY;
+
+  if (parentNode.layoutMode === "VERTICAL") {
+    return {
+      primary: getPaddingDirection(centerYPosition),
+      counter: getPaddingDirection(centerXPosition),
+    };
+  } else {
+    return {
+      primary: getPaddingDirection(centerXPosition),
+      counter: getPaddingDirection(centerYPosition),
+    };
+  }
+}
+
+
+
+function getPaddingDirection(position: number): "MIN" | "CENTER" | "MAX" {
+  // allow a small threshold
+  if (position < -4) {
+    return "MIN";
+  } else if (position > 4) {
+    return "MAX";
+  } else {
+    return "CENTER";
   }
 }
