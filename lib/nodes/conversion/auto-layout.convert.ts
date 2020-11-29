@@ -66,10 +66,11 @@ export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): 
     const primaryDirection = allChildrenDirection.map((d) => d.primary);
     const counterDirection = allChildrenDirection.map((d) => d.counter);
 
-    // FIXME
+    // FIXME - inspect this
     // figma: currently figma randomly returns wrong value for below 2 properties.
-    frame.primaryAxisAlignItems = mostFrequent(primaryDirection) as FigmaMainAxisAlignment;
-    frame.counterAxisAlignItems = mostFrequent(counterDirection) as FigmaCrossAxisAligment;
+    const priorityOrders = ["MIN", "MAX", "CENTER",]
+    frame.primaryAxisAlignItems = mostFrequent(primaryDirection, priorityOrders) as FigmaMainAxisAlignment;
+    frame.counterAxisAlignItems = mostFrequent(counterDirection, priorityOrders) as FigmaCrossAxisAligment;
 
     frame.counterAxisSizingMode = "FIXED";
     frame.primaryAxisSizingMode = "FIXED";
