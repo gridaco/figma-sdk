@@ -21,6 +21,8 @@ import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
 import { shouldIgnoreNode } from "../../features/ignore";
 import { convertTextAlignHorizontalToReflect, convertTextAlignVerticalToReflect } from "../../figma/converters/text-align.converter";
 import { convertTextDecorationToReflect } from "../../figma/converters/tetx-decoration.convert";
+import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
+import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
 
 /**
  * restrictied to single selection
@@ -200,8 +202,8 @@ function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
     rfNode.primaryAxisSizingMode = node.primaryAxisSizingMode;
     rfNode.counterAxisSizingMode = node.counterAxisSizingMode;
 
-    rfNode.primaryAxisAlignItems = node.primaryAxisAlignItems;
-    rfNode.counterAxisAlignItems = node.counterAxisAlignItems;
+    rfNode.mainAxisAlignment = convertPrimaryAxisAlignItemsToMainAxisAlignment(node.primaryAxisAlignItems);
+    rfNode.crossAxisAlignment = convertCounterAxisAlignItemsToCrossAxisAlignment(node.counterAxisAlignItems);
 
     rfNode.paddingLeft = node.horizontalPadding;
     rfNode.paddingRight = node.horizontalPadding;

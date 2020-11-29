@@ -1,7 +1,7 @@
+import { CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
 import { mixed } from "./mixed";
 import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectRectangleCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
-import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "./property-types";
 
 //#region frame
 interface ReflectFrameMixin {
@@ -36,13 +36,13 @@ export class ReflectFrameNode
     constraints: Constraints
 
 
-    layoutGrow: number;
-    primaryAxisSizingMode: "FIXED" | "AUTO";
-    primaryAxisAlignItems: FigmaMainAxisAlignment;
-    counterAxisAlignItems: FigmaCrossAxisAligment;
 
     // frame mixin
+    layoutGrow: number;
+    mainAxisAlignment: MainAxisAlignment;
+    crossAxisAlignment: CrossAxisAlignment;
     layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
+    primaryAxisSizingMode: "FIXED" | "AUTO";
     counterAxisSizingMode: "FIXED" | "AUTO";
     itemSpacing: number;
     paddingRight: number;

@@ -1,3 +1,4 @@
+import { MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import { ReflectSceneNode, ReflectFrameNode, ReflectGroupNode } from "../types";
 
 export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
@@ -24,8 +25,8 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   newNode.layoutMode = "NONE";
   newNode.counterAxisSizingMode = "AUTO";
   newNode.primaryAxisSizingMode = "AUTO";
-  newNode.primaryAxisAlignItems = "CENTER";
-  newNode.primaryAxisAlignItems = "CENTER";
+  newNode.mainAxisAlignment = MainAxisAlignment.center
+  newNode.mainAxisAlignment = MainAxisAlignment.center
   newNode.clipsContent = false;
   newNode.layoutGrids = [];
   newNode.gridStyleId = "";

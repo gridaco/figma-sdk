@@ -1,3 +1,4 @@
+import { CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import {
   ReflectRectangleNode,
   ReflectFrameNode,
@@ -101,9 +102,9 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
     frameNode.effectStyleId = rect.effectStyleId;
   }
 
-  frameNode.counterAxisAlignItems = "MIN";
+  frameNode.crossAxisAlignment = CrossAxisAlignment.start;
   frameNode.counterAxisSizingMode = "FIXED";
-  frameNode.primaryAxisAlignItems = "MIN";
+  frameNode.mainAxisAlignment = MainAxisAlignment.start
   frameNode.primaryAxisSizingMode = "FIXED";
 
   frameNode.strokeAlign = rect.strokeAlign;

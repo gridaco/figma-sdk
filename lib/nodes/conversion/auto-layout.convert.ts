@@ -1,7 +1,9 @@
 import { ReflectFrameNode, ReflectGroupNode, ReflectSceneNode } from "../types";
 import { convertGroupToFrame } from "./group-to-frame.convert";
 import { mostFrequent } from "general-utils/lib/array.utils";
-import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "../types/property-types";
+import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
+import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "../../figma/types";
+import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
 /**
  * Add AutoLayout attributes if layout has items aligned (either vertically or horizontally).
  * To make the calculation, the average position of every child, ordered, needs to pass a threshold.
@@ -69,8 +71,8 @@ export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): 
     // FIXME - inspect this
     // figma: currently figma randomly returns wrong value for below 2 properties.
     const priorityOrders = ["MIN", "MAX", "CENTER",]
-    frame.primaryAxisAlignItems = mostFrequent(primaryDirection, priorityOrders) as FigmaMainAxisAlignment;
-    frame.counterAxisAlignItems = mostFrequent(counterDirection, priorityOrders) as FigmaCrossAxisAligment;
+    frame.mainAxisAlignment = convertPrimaryAxisAlignItemsToMainAxisAlignment(mostFrequent(primaryDirection, priorityOrders) as FigmaMainAxisAlignment);
+    frame.crossAxisAlignment = convertCounterAxisAlignItemsToCrossAxisAlignment(mostFrequent(counterDirection, priorityOrders) as FigmaCrossAxisAligment);
 
     frame.counterAxisSizingMode = "FIXED";
     frame.primaryAxisSizingMode = "FIXED";

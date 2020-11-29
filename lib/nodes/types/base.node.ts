@@ -1,4 +1,6 @@
+import { CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import { mixed, ReflectSceneNode, ReflectSceneNodeType } from ".";
+import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "../../figma/types";
 import { filterFills, hasImage, mapGrandchildren, notEmpty, rawTypeToReflectType, retrieveFill, retrievePrimaryColor } from "../../utils";
 import { checkIfRoot } from "../../utils/check-if-root";
 // import { ReflectLayoutMixin, ReflectBlendMixin, ReflectChildrenMixin, ReflectDefaultShapeMixin } from "./mixins";
@@ -135,8 +137,8 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     // region
     primaryAxisSizingMode: "FIXED" | "AUTO";
     counterAxisSizingMode: "FIXED" | "AUTO";
-    primaryAxisAlignItems: FigmaMainAxisAlignment;
-    counterAxisAlignItems: FigmaCrossAxisAligment;
+    mainAxisAlignment: MainAxisAlignment;
+    crossAxisAlignment: CrossAxisAlignment;
     // endregion
 
     paddingRight: number;
@@ -290,7 +292,6 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
 
 import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../utils/lcrs";
 import { retrieveImageFills, retrievePrimaryImageFill } from "../../utils/retrieve-image-fills";
-import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "./property-types";
 
 export interface ReflectBlendMixin {
     opacity: number;
