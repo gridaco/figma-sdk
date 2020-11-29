@@ -85,7 +85,7 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
   frameNode.x = rect.x;
   frameNode.y = rect.y;
   frameNode.rotation = rect.rotation;
-  frameNode.layoutMode = "NONE";
+  frameNode.layoutMode = undefined;
 
   // opacity should be ignored, else it will affect children
   // when invisible, add the layer but don't fill it; he designer might use invisible layers for alignment.

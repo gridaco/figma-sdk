@@ -1,4 +1,4 @@
-import { CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
+import { Axis, CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
 import { mixed } from "./mixed";
 import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectRectangleCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
@@ -41,7 +41,7 @@ export class ReflectFrameNode
     layoutGrow: number;
     mainAxisAlignment: MainAxisAlignment;
     crossAxisAlignment: CrossAxisAlignment;
-    layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
+    layoutMode?: Axis | undefined;
     primaryAxisSizingMode: "FIXED" | "AUTO";
     counterAxisSizingMode: "FIXED" | "AUTO";
     itemSpacing: number;

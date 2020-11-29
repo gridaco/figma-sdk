@@ -23,6 +23,7 @@ import { convertTextAlignHorizontalToReflect, convertTextAlignVerticalToReflect 
 import { convertTextDecorationToReflect } from "../../figma/converters/tetx-decoration.convert";
 import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
 import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
+import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.convert";
 
 /**
  * restrictied to single selection
@@ -197,7 +198,7 @@ function convertLayout(altNode: ReflectLayoutMixin, node: LayoutMixin) {
 }
 
 function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
-    rfNode.layoutMode = node.layoutMode;
+    rfNode.layoutMode = convertLayoutModeToAxis(node.layoutMode);
 
     rfNode.primaryAxisSizingMode = node.primaryAxisSizingMode;
     rfNode.counterAxisSizingMode = node.counterAxisSizingMode;

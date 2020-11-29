@@ -1,4 +1,4 @@
-import { CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
+import { Axis, CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import { mixed, ReflectSceneNode, ReflectSceneNodeType } from ".";
 import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "../../figma/types";
 import { filterFills, hasImage, mapGrandchildren, notEmpty, rawTypeToReflectType, retrieveFill, retrievePrimaryColor } from "../../utils";
@@ -129,7 +129,7 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     /**
      * layoutMode is only available for frame node
      */
-    layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
+    layoutMode?: Axis | undefined;
 
     /**
      * figma: this property is only available when layoutMode != "NONE"

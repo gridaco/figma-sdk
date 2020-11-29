@@ -4,6 +4,8 @@ import { mostFrequent } from "general-utils/lib/array.utils";
 import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
 import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "../../figma/types";
 import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
+import { Axis } from "@reflect.bridged.xyz/core/lib";
+import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.convert";
 /**
  * Add AutoLayout attributes if layout has items aligned (either vertically or horizontally).
  * To make the calculation, the average position of every child, ordered, needs to pass a threshold.
@@ -14,7 +16,7 @@ import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/co
 export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): ReflectFrameNode | ReflectGroupNode {
   // only go inside when AutoLayout is not already set.
   if ((node instanceof ReflectFrameNode &&
-    node.layoutMode === "NONE" &&
+    node.layoutMode === undefined &&
     node.children.length > 0) ||
     node instanceof ReflectGroupNode) {
     const [orderedChildren, direction, itemSpacing] = reorderChildrenIfAligned(
@@ -42,9 +44,9 @@ export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): 
 
     if (direction === "NONE" && frame.children.length === 1) {
       // Add fake AutoLayout when there is a single item. This is done for the Padding.
-      frame.layoutMode = "HORIZONTAL";
+      frame.layoutMode = Axis.horizontal;
     } else {
-      frame.layoutMode = direction;
+      frame.layoutMode = convertLayoutModeToAxis(direction);
     }
 
     frame.itemSpacing = itemSpacing > 0 ? itemSpacing : 0;
@@ -198,7 +200,7 @@ function detectAutoLayoutPadding(node: ReflectFrameNode): {
       top: top,
       bottom: bottom,
     };
-  } else if (node.layoutMode === "VERTICAL") {
+  } else if (node.layoutMode === Axis.vertical) {
     // top padding is first element's y value
     const top = node.children[0].y;
 
@@ -261,7 +263,7 @@ function layoutAlignInChild(node: ReflectSceneNode,
     node.height - 2 >
     parentNode.height - parentNode.paddingTop - parentNode.paddingBottom;
 
-  if (parentNode.layoutMode === "VERTICAL") {
+  if (parentNode.layoutMode === Axis.vertical) {
     node.layoutAlign = sameWidth ? "STRETCH" : "INHERIT";
   } else {
     node.layoutAlign = sameHeight ? "STRETCH" : "INHERIT";
@@ -287,7 +289,7 @@ function primaryAxisDirection(
 
   const centerYPosition = nodeCenteredPosY - parentCenteredPosY;
 
-  if (parentNode.layoutMode === "VERTICAL") {
+  if (parentNode.layoutMode === Axis.vertical) {
     return {
       primary: getPaddingDirection(centerYPosition),
       counter: getPaddingDirection(centerXPosition),

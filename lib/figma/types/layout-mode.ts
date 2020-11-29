@@ -1,0 +1,1 @@
+export type FigmaLayoutMode = "NONE" | "HORIZONTAL" | "VERTICAL"

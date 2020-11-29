@@ -22,7 +22,7 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   newNode.effects = [];
   newNode.cornerRadius = 0;
 
-  newNode.layoutMode = "NONE";
+  newNode.layoutMode = undefined;
   newNode.counterAxisSizingMode = "AUTO";
   newNode.primaryAxisSizingMode = "AUTO";
   newNode.mainAxisAlignment = MainAxisAlignment.center
