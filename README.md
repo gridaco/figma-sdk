@@ -3,7 +3,7 @@ A mid wrapper for building consistant figma &amp; sketch &amp; reflection plugin
 
 > developed and maintained by [bridged's assistant](https://github.com/bridgedxyz/assistant)
 
-> write once, run every whre. supports reflection, figma, sketch
+> write once, run every whre. supports bridged, figma, sketch
 
 
 ## Sketch reference
