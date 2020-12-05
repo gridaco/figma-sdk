@@ -1,4 +1,5 @@
 import { Axis, CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
+import { BoxShadowManifest } from "@reflect.bridged.xyz/core/lib/box-shadow";
 import { mixed, ReflectSceneNode, ReflectSceneNodeType } from ".";
 import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "../../figma/types";
 import { filterFills, hasImage, mapGrandchildren, notEmpty, rawTypeToReflectType, retrieveFill, retrievePrimaryColor } from "../../utils";
@@ -157,6 +158,35 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     radius: number;
     //
 
+
+    get shadows(): ReadonlyArray<BoxShadowManifest> {
+        return this.effects.map((s) => {
+            if (!s.visible) return;
+            if (s.type === 'DROP_SHADOW' || s.type === 'INNER_SHADOW') {
+                return <BoxShadowManifest>{
+                    spreadRadius: s.spread,
+                    blurRadius: s.radius,
+                    color: s.color,
+                    offset: {
+                        dx: s.offset.x,
+                        dy: s.offset.y
+                    }
+                }
+            }
+        }).filter(e => e !== undefined)
+    }
+
+    /**
+     * visible, and the top shadow set by designer
+     */
+    get primaryShadow(): BoxShadowManifest | undefined {
+        try {
+            return this.shadows[0]
+        } catch (_) {
+            return
+        }
+    }
+
     get isComponent(): boolean {
         return [ReflectSceneNodeType.component, ReflectSceneNodeType.instance, ReflectSceneNodeType.variant].includes(this.type)
     }
@@ -274,7 +304,7 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
                 return retrievePrimaryColor(this.fills as Paint[])
             }
         } catch (_) {
-            console.log(`error while fetching primarycolor from ${this.toString()}`)
+            console.error(`error while fetching primarycolor from ${this.toString()}`)
         }
     }
 
