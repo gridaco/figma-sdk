@@ -8,7 +8,6 @@ import {
     ReflectGeometryMixin,
     ReflectBlendMixin,
     ReflectCornerMixin,
-    ReflectRectangleCornerMixin,
     ReflectDefaultShapeMixin,
     ReflectEllipseNode,
     ReflectConstraintMixin,
@@ -263,7 +262,7 @@ function convertCorner(altNode: ReflectCornerMixin, node: CornerMixin) {
     altNode.cornerSmoothing = node.cornerSmoothing;
 }
 
-function convertRectangleCorner(altNode: ReflectRectangleCornerMixin,
+function convertRectangleCorner(altNode: ReflectCornerMixin,
     node: RectangleCornerMixin) {
     altNode.topLeftRadius = node.topLeftRadius;
     altNode.topRightRadius = node.topRightRadius;

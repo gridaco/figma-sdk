@@ -1,10 +1,8 @@
 import { Axis, CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import { BoxShadowManifest } from "@reflect.bridged.xyz/core/lib/box-shadow";
 import { mixed, ReflectSceneNode, ReflectSceneNodeType } from ".";
-import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "../../figma/types";
 import { filterFills, hasImage, mapGrandchildren, notEmpty, rawTypeToReflectType, retrieveFill, retrievePrimaryColor } from "../../utils";
 import { checkIfRoot } from "../../utils/check-if-root";
-// import { ReflectLayoutMixin, ReflectBlendMixin, ReflectChildrenMixin, ReflectDefaultShapeMixin } from "./mixins";
 
 export interface IReflectNodeReference {
     readonly type: ReflectSceneNodeType
@@ -125,7 +123,7 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
     height: number;
     layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
     layoutGrow: number
-
+    fills?: ReadonlyArray<Paint>
 
     /**
      * layoutMode is only available for frame node
@@ -300,9 +298,7 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
 
     get primaryColor(): RGBA {
         try {
-            if (this instanceof ReflectDefaultShapeMixin) {
-                return retrievePrimaryColor(this.fills as Paint[])
-            }
+            return retrievePrimaryColor(this.fills as Paint[])
         } catch (_) {
             console.error(`error while fetching primarycolor from ${this.toString()}`)
         }
@@ -396,9 +392,6 @@ export interface ReflectGeometryMixin {
 export interface ReflectCornerMixin {
     cornerRadius: number | typeof mixed
     cornerSmoothing: number;
-}
-
-export interface ReflectRectangleCornerMixin {
     topLeftRadius: number;
     topRightRadius: number;
     bottomLeftRadius: number;
@@ -409,7 +402,6 @@ export interface ReflectRectangleCornerMixin {
 export class ReflectDefaultShapeMixin
     extends ReflectConstraintMixin implements
     ReflectGeometryMixin,
-    ReflectRectangleCornerMixin,
     ReflectCornerMixin,
     ReflectLayoutMixin {
     layoutGrow: number;

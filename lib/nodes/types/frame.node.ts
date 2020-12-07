@@ -1,7 +1,7 @@
 import { Axis, CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
 import { mixed } from "./mixed";
-import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectRectangleCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
+import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
 
 //#region frame
 interface ReflectFrameMixin {
@@ -24,7 +24,6 @@ export class ReflectFrameNode
     extends ReflectChildrenMixin implements ReflectFrameMixin,
     ReflectGeometryMixin,
     ReflectCornerMixin,
-    ReflectRectangleCornerMixin,
     ReflectBlendMixin,
     ReflectLayoutMixin {
 
@@ -34,7 +33,6 @@ export class ReflectFrameNode
     }
 
     constraints: Constraints
-
 
 
     // frame mixin

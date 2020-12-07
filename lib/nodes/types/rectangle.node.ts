@@ -1,9 +1,8 @@
 import { ReflectSceneNodeType } from ".";
-import { ReflectDefaultShapeMixin, ReflectCornerMixin, ReflectRectangleCornerMixin } from "./mixins";
+import { ReflectDefaultShapeMixin, ReflectCornerMixin } from "./mixins";
 
 export class ReflectRectangleNode extends ReflectDefaultShapeMixin implements
-    ReflectCornerMixin,
-    ReflectRectangleCornerMixin {
+    ReflectCornerMixin {
 
     get type() {
         return ReflectSceneNodeType.rectangle

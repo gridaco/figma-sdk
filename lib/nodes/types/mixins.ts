@@ -6,5 +6,4 @@ export {
     ReflectConstraintMixin,
     ReflectGeometryMixin,
     ReflectCornerMixin,
-    ReflectRectangleCornerMixin,
 } from "./base.node"
