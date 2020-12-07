@@ -23,6 +23,7 @@ import { convertTextDecorationToReflect } from "../../figma/converters/tetx-deco
 import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
 import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
 import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.convert";
+import { convertFigmaCornerRadiusToBorderRadius } from "../../figma/converters/corner-radius.convert";
 
 /**
  * restrictied to single selection
@@ -68,7 +69,7 @@ export function convertIntoReflectNodes(sceneNode: ReadonlyArray<SceneNode>,
                         absoluteTransform: node.absoluteTransform,
                     });
                     convertConstraint(altNode, node);
-                    convertRectangleCorner(altNode, node);
+                    convertCorner(altNode, node);
                 }
                 else if (node.type === "ELLIPSE") {
                     altNode = new ReflectEllipseNode({
@@ -257,17 +258,15 @@ function convertDefaultShape(altNode: ReflectDefaultShapeMixin,
     convertLayout(altNode, node);
 }
 
-function convertCorner(altNode: ReflectCornerMixin, node: CornerMixin) {
-    altNode.cornerRadius = figmaAccessibleMixedToReflectProperty(node.cornerRadius)
-    altNode.cornerSmoothing = node.cornerSmoothing;
-}
-
-function convertRectangleCorner(altNode: ReflectCornerMixin,
-    node: RectangleCornerMixin) {
-    altNode.topLeftRadius = node.topLeftRadius;
-    altNode.topRightRadius = node.topRightRadius;
-    altNode.bottomLeftRadius = node.bottomLeftRadius;
-    altNode.bottomRightRadius = node.bottomRightRadius;
+function convertCorner(altNode: ReflectCornerMixin, node: CornerMixin | RectangleCornerMixin) {
+    altNode.cornerRadius = convertFigmaCornerRadiusToBorderRadius({
+        cornerRadius: figmaAccessibleMixedToReflectProperty((node as CornerMixin).cornerRadius),
+        topLeftRadius: (node as RectangleCornerMixin).topLeftRadius,
+        topRightRadius: (node as RectangleCornerMixin).topRightRadius,
+        bottomLeftRadius: (node as RectangleCornerMixin).bottomLeftRadius,
+        bottomRightRadius: (node as RectangleCornerMixin).bottomRightRadius,
+    });
+    altNode.cornerSmoothing = (node as CornerMixin).cornerSmoothing;
 }
 
 function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
@@ -335,7 +334,6 @@ export function convertFrameNodeToAlt(node: FrameNode | InstanceNode | Component
     convertDefaultShape(altNode, node);
     convertFrame(altNode, node);
     convertCorner(altNode, node);
-    convertRectangleCorner(altNode, node);
     convertConstraint(altNode, node);
 
     altNode.children = convertIntoReflectNodes(node.children, altNode);
@@ -358,7 +356,6 @@ function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
     );
 
     convertDefaultShape(newNode, node);
-    convertRectangleCorner(newNode, node);
     convertCorner(newNode, node);
     convertConstraint(newNode, node);
     return newNode;

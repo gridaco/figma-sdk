@@ -1,6 +1,6 @@
+import { BorderRadiusManifest } from "@reflect.bridged.xyz/core/lib/ui/border-radius";
 import { Axis, CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import { ReflectSceneNodeType, ReflectSceneNode } from ".";
-import { mixed } from "./mixed";
 import { ReflectChildrenMixin, ReflectGeometryMixin, ReflectCornerMixin, ReflectBlendMixin, ReflectLayoutMixin } from "./mixins";
 
 //#region frame
@@ -70,7 +70,7 @@ export class ReflectFrameNode
     strokeStyleId: string;
 
     // corner mixin
-    cornerRadius: number | typeof mixed
+    cornerRadius: BorderRadiusManifest
     cornerSmoothing: number;
 
 

@@ -1,3 +1,4 @@
+import { BorderRadiusManifest } from "@reflect.bridged.xyz/core/lib/ui/border-radius";
 import { Axis, CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
 import { BoxShadowManifest } from "@reflect.bridged.xyz/core/lib/box-shadow";
 import { mixed, ReflectSceneNode, ReflectSceneNodeType } from ".";
@@ -390,12 +391,8 @@ export interface ReflectGeometryMixin {
 }
 
 export interface ReflectCornerMixin {
-    cornerRadius: number | typeof mixed
     cornerSmoothing: number;
-    topLeftRadius: number;
-    topRightRadius: number;
-    bottomLeftRadius: number;
-    bottomRightRadius: number;
+    cornerRadius: BorderRadiusManifest
 }
 
 
@@ -424,14 +421,8 @@ export class ReflectDefaultShapeMixin
     fillStyleId: string | undefined
     strokeStyleId: string;
 
-    topLeftRadius: number;
-    topRightRadius: number;
-    bottomLeftRadius: number;
-    bottomRightRadius: number;
-
-    cornerRadius: number | typeof mixed
+    cornerRadius: BorderRadiusManifest
     cornerSmoothing: number;
-
 
     x: number;
     y: number;

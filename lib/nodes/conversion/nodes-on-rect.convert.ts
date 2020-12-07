@@ -1,4 +1,5 @@
 import { CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
+import { convertFigmaCornerRadiusToBorderRadius } from "../../figma/converters/corner-radius.convert";
 import {
   ReflectRectangleNode,
   ReflectFrameNode,
@@ -113,12 +114,8 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
   frameNode.strokeMiterLimit = rect.strokeMiterLimit;
   frameNode.strokeWeight = rect.strokeWeight;
 
-  frameNode.cornerRadius = rect.cornerRadius;
+  frameNode.cornerRadius = rect.cornerRadius
   frameNode.cornerSmoothing = rect.cornerSmoothing;
-  frameNode.topLeftRadius = rect.topLeftRadius;
-  frameNode.topRightRadius = rect.topRightRadius;
-  frameNode.bottomLeftRadius = rect.bottomLeftRadius;
-  frameNode.bottomRightRadius = rect.bottomRightRadius;
   frameNode.constraints = rect.constraints
 
   return frameNode;

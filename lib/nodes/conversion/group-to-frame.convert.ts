@@ -20,7 +20,7 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   newNode.fills = [];
   newNode.strokes = [];
   newNode.effects = [];
-  newNode.cornerRadius = 0;
+  newNode.cornerRadius = { all: 0 };
 
   newNode.layoutMode = undefined;
   newNode.counterAxisSizingMode = "AUTO";
