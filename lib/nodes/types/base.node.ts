@@ -180,9 +180,14 @@ export class ReflectBaseNode implements IReflectNodeReference, ReflectLayoutMixi
      */
     get primaryShadow(): BoxShadowManifest | undefined {
         try {
-            return this.shadows[0]
+            if (this.shadows && this.shadows.length > 0) {
+                return this.shadows[0]
+            } else {
+                return undefined
+            }
         } catch (_) {
-            return
+            console.error(`error while fetching primary shadow on ${this.toString()}`, _)
+            return undefined
         }
     }
 
