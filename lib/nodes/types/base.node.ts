@@ -353,11 +353,21 @@ export class ReflectBaseNode
     return this.getGrandchildren();
   }
 
+  /**
+   * fetches the children's children including all under this node.
+   * *NOTE* this can also be used on non-parent node. if includeThis option is provided, this will return array in shape of `[this]`
+   * @param options
+   */
   getGrandchildren(options?: {
     includeThis: boolean;
   }): ReadonlyArray<ReflectSceneNode> | undefined {
     if (this instanceof ReflectChildrenMixin) {
       return mapGrandchildren(this, options);
+    } else {
+      // if include this option is set to yes, then, return this even if this is not a children-containing node.
+      if (options?.includeThis) {
+        return [this as any];
+      }
     }
   }
 }
