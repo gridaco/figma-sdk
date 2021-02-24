@@ -212,6 +212,9 @@ export class ReflectBaseNode
     }
   }
 
+  /**
+   * is this node on of component, instance or variant?
+   */
   get isComponent(): boolean {
     return [
       ReflectSceneNodeType.component,
