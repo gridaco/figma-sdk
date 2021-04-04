@@ -1,8 +1,11 @@
 import { ReflectFrameNode, ReflectGroupNode, ReflectSceneNode } from "../types";
 import { convertGroupToFrame } from "./group-to-frame.convert";
-import { mostFrequent } from "general-utils/lib/array.utils";
+import { mostFrequent } from "@reflect.bridged.xyz/uiutils/lib/misc";
 import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
-import { FigmaCrossAxisAligment, FigmaMainAxisAlignment } from "../../figma/types";
+import {
+  FigmaCrossAxisAligment,
+  FigmaMainAxisAlignment,
+} from "../../figma/types";
 import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
 import { Axis } from "@reflect.bridged.xyz/core/lib";
 import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.convert";
@@ -13,12 +16,16 @@ import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.conv
  * If it finds, add the correct attributes. When original node is a Group,
  * convert it to Frame before adding the attributes. Group doesn't have AutoLayout properties.
  */
-export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): ReflectFrameNode | ReflectGroupNode {
+export function convertToAutoLayout(
+  node: ReflectFrameNode | ReflectGroupNode
+): ReflectFrameNode | ReflectGroupNode {
   // only go inside when AutoLayout is not already set.
-  if ((node instanceof ReflectFrameNode &&
-    node.layoutMode === undefined &&
-    node.children.length > 0) ||
-    node instanceof ReflectGroupNode) {
+  if (
+    (node instanceof ReflectFrameNode &&
+      node.layoutMode === undefined &&
+      node.children.length > 0) ||
+    node instanceof ReflectGroupNode
+  ) {
     const [orderedChildren, direction, itemSpacing] = reorderChildrenIfAligned(
       node.children
     );
@@ -29,7 +36,7 @@ export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): 
     if (node instanceof ReflectGroupNode) {
       frame = convertGroupToFrame(node);
     } else {
-      frame = node
+      frame = node;
     }
 
     if (direction === "NONE" && frame.children.length > 1) {
@@ -40,7 +47,6 @@ export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): 
       // catches when children is 0 or children is larger than 1
       return frame;
     }
-
 
     if (direction === "NONE" && frame.children.length === 1) {
       // Add fake AutoLayout when there is a single item. This is done for the Padding.
@@ -72,9 +78,13 @@ export function convertToAutoLayout(node: ReflectFrameNode | ReflectGroupNode): 
 
     // FIXME - inspect this
     // figma: currently figma randomly returns wrong value for below 2 properties.
-    const priorityOrders = ["MIN", "MAX", "CENTER",]
-    frame.mainAxisAlignment = convertPrimaryAxisAlignItemsToMainAxisAlignment(mostFrequent(primaryDirection, priorityOrders) as FigmaMainAxisAlignment);
-    frame.crossAxisAlignment = convertCounterAxisAlignItemsToCrossAxisAlignment(mostFrequent(counterDirection, priorityOrders) as FigmaCrossAxisAligment);
+    const priorityOrders = ["MIN", "MAX", "CENTER"];
+    frame.mainAxisAlignment = convertPrimaryAxisAlignItemsToMainAxisAlignment(
+      mostFrequent(primaryDirection, priorityOrders) as FigmaMainAxisAlignment
+    );
+    frame.crossAxisAlignment = convertCounterAxisAlignItemsToCrossAxisAlignment(
+      mostFrequent(counterDirection, priorityOrders) as FigmaCrossAxisAligment
+    );
 
     frame.counterAxisSizingMode = "FIXED";
     frame.primaryAxisSizingMode = "FIXED";
@@ -100,7 +110,9 @@ const threshold = -2;
 /**
  * Verify if children are sorted by their relative position and return them sorted, if identified.
  */
-function reorderChildrenIfAligned(children: ReadonlyArray<ReflectSceneNode>): [Array<ReflectSceneNode>, "HORIZONTAL" | "VERTICAL" | "NONE", number] {
+function reorderChildrenIfAligned(
+  children: ReadonlyArray<ReflectSceneNode>
+): [Array<ReflectSceneNode>, "HORIZONTAL" | "VERTICAL" | "NONE", number] {
   if (children.length === 1) {
     return [[...children], "NONE", 0];
   }
@@ -128,7 +140,9 @@ function reorderChildrenIfAligned(children: ReadonlyArray<ReflectSceneNode>): [A
  * If no correspondence is found, returns "NONE".
  * In a previous version, it used a "standard deviation", but "average" performed better.
  */
-function shouldVisit(children: ReadonlyArray<ReflectSceneNode>): ["HORIZONTAL" | "VERTICAL" | "NONE", number] {
+function shouldVisit(
+  children: ReadonlyArray<ReflectSceneNode>
+): ["HORIZONTAL" | "VERTICAL" | "NONE", number] {
   const intervalY = calculateInterval(children, "y");
   const intervalX = calculateInterval(children, "x");
 
@@ -156,8 +170,10 @@ function shouldVisit(children: ReadonlyArray<ReflectSceneNode>): ["HORIZONTAL" |
  * This function calculates the distance (interval) between items.
  * Example: for [item]--8--[item]--8--[item], the result is [8, 8]
  */
-function calculateInterval(children: ReadonlyArray<ReflectSceneNode>,
-  xOrY: "x" | "y"): Array<number> {
+function calculateInterval(
+  children: ReadonlyArray<ReflectSceneNode>,
+  xOrY: "x" | "y"
+): Array<number> {
   const hOrW: "width" | "height" = xOrY === "x" ? "width" : "height";
 
   // sort children based on X or Y values
@@ -176,7 +192,9 @@ function calculateInterval(children: ReadonlyArray<ReflectSceneNode>,
 /**
  * Calculate the Padding.
  */
-function detectAutoLayoutPadding(node: ReflectFrameNode): {
+function detectAutoLayoutPadding(
+  node: ReflectFrameNode
+): {
   left: number;
   right: number;
   top: number;
@@ -253,8 +271,10 @@ function detectAutoLayoutPadding(node: ReflectFrameNode): {
 /**
  * figma: check if children to be STRETCH or INHERIT
  */
-function layoutAlignInChild(node: ReflectSceneNode,
-  parentNode: ReflectFrameNode) {
+function layoutAlignInChild(
+  node: ReflectSceneNode,
+  parentNode: ReflectFrameNode
+) {
   const sameWidth =
     node.width - 2 >
     parentNode.width - parentNode.paddingLeft - parentNode.paddingRight;
@@ -271,8 +291,6 @@ function layoutAlignInChild(node: ReflectSceneNode,
   // with custom AutoLayout, this is never going to be 1.
   node.layoutGrow = 0;
 }
-
-
 
 function primaryAxisDirection(
   node: ReflectSceneNode,
@@ -301,8 +319,6 @@ function primaryAxisDirection(
     };
   }
 }
-
-
 
 function getPaddingDirection(position: number): "MIN" | "CENTER" | "MAX" {
   // allow a small threshold
