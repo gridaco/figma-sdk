@@ -9,7 +9,7 @@
         "@figma/plugin-typings": "^1.19.0",
         "@reflect.bridged.xyz/uiutils": "0.0.1",
         "@reflect.bridged.xyz/core": "0.0.2-rc.4.local",
-        "@reflect.bridged.xyz/linter": "0.0.3"
+        "@reflect.bridged.xyz/linter": "0.0.4-rc"
     },
     "devDependencies": {
         "typescript": "^4.0.5"
