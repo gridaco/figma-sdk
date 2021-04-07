@@ -1,6 +1,6 @@
 import { ReflectFrameNode, ReflectGroupNode, ReflectSceneNode } from "../types";
 import { convertGroupToFrame } from "./group-to-frame.convert";
-import { mostFrequent } from "@reflect.bridged.xyz/uiutils/lib/misc";
+import { mostFrequent } from "@reflect-ui/uiutils/lib";
 import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
 import {
   FigmaCrossAxisAligment,
