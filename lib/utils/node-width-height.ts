@@ -1,5 +1,5 @@
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
-import { Axis } from "@reflect.bridged.xyz/core/lib";
+import { Axis } from "@reflect-ui/core/lib";
 
 export const magicMargin = 32;
 
@@ -8,8 +8,10 @@ type SizeResult = {
   readonly height: responsive | number | null;
 };
 
-export function nodeWidthHeight(node: ReflectSceneNode,
-  allowRelative: boolean): SizeResult {
+export function nodeWidthHeight(
+  node: ReflectSceneNode,
+  allowRelative: boolean
+): SizeResult {
   if (node.layoutAlign === "STRETCH" && node.layoutGrow === 1) {
     return {
       width: "full",
@@ -183,7 +185,8 @@ function childLargerThanMaxSize(node: ReflectSceneNode, axis: "x" | "y") {
     const widthHeight: "width" | "height" = axis === "x" ? "width" : "height";
     const lastChild = node.children[node.children.length - 1];
 
-    const maxLen = lastChild[axis] + lastChild[widthHeight] - node.children[0][axis];
+    const maxLen =
+      lastChild[axis] + lastChild[widthHeight] - node.children[0][axis];
     return maxLen > 256;
   }
   return false;
@@ -202,8 +205,10 @@ type responsive =
   | "5/6"
   | "1/12";
 
-function calculateResponsiveW(node: ReflectSceneNode,
-  nodeWidth: number): responsive {
+function calculateResponsiveW(
+  node: ReflectSceneNode,
+  nodeWidth: number
+): responsive {
   let propWidth: responsive = "";
 
   if (nodeWidth > 256 || childLargerThanMaxSize(node, "x")) {
@@ -216,10 +221,12 @@ function calculateResponsiveW(node: ReflectSceneNode,
 
   let parentWidth;
 
-  if (node.parent &&
+  if (
+    node.parent &&
     "layoutMode" in node.parent &&
     (node.parent.paddingLeft || node.parent.paddingRight) &&
-    node.parent.layoutMode !== undefined) {
+    node.parent.layoutMode !== undefined
+  ) {
     parentWidth =
       node.parent.width - node.parent.paddingLeft - node.parent.paddingRight;
     // currently ignoring h-full
@@ -261,8 +268,6 @@ function calculateResponsiveW(node: ReflectSceneNode,
 
   return propWidth;
 }
-
-
 
 const calculateResponsiveWH = (
   node: ReflectSceneNode,

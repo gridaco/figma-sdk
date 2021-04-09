@@ -1,11 +1,15 @@
-import { FontStyle } from "@reflect.bridged.xyz/core";
+import { FontStyle } from "@reflect-ui/core";
 
-export function convertFontStyleToReflect(original: FontName): FontStyle | undefined {
-    if (!original) { return }
+export function convertFontStyleToReflect(
+  original: FontName
+): FontStyle | undefined {
+  if (!original) {
+    return;
+  }
 
-    let fontStyle: FontStyle
-    if (original && original.style.toLowerCase().match("italic")) {
-        fontStyle = FontStyle.italic
-    }
-    return fontStyle
+  let fontStyle: FontStyle;
+  if (original && original.style.toLowerCase().match("italic")) {
+    fontStyle = FontStyle.italic;
+  }
+  return fontStyle;
 }

@@ -1,5 +1,4 @@
-import { CrossAxisAlignment, MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
-import { convertFigmaCornerRadiusToBorderRadius } from "../../figma/converters/corner-radius.convert";
+import { CrossAxisAlignment, MainAxisAlignment } from "@reflect-ui/core/lib";
 import {
   ReflectRectangleNode,
   ReflectFrameNode,
@@ -11,7 +10,9 @@ import { convertToAutoLayout } from "./auto-layout.convert";
 /**
  * Identify all nodes that are inside Rectangles and transform those Rectangles into Frames containing those nodes.
  */
-export function convertNodesOnRectangle(node: ReflectFrameNode | ReflectGroupNode): ReflectFrameNode | ReflectGroupNode {
+export function convertNodesOnRectangle(
+  node: ReflectFrameNode | ReflectGroupNode
+): ReflectFrameNode | ReflectGroupNode {
   if (node.children.length < 2) {
     return node;
   }
@@ -68,16 +69,14 @@ export function convertNodesOnRectangle(node: ReflectFrameNode | ReflectGroupNod
 function convertRectangleToFrame(rect: ReflectRectangleNode) {
   // if a Rect with elements inside were identified, extract this Rect
   // outer methods are going to use it.
-  const frameNode = new ReflectFrameNode(
-    {
-      id: rect.id,
-      name: rect.name,
-      origin: rect.origin,
-      originParentId: rect.originParentId,
-      parent: rect.parent,
-      absoluteTransform: rect.absoluteTransform
-    }
-  );
+  const frameNode = new ReflectFrameNode({
+    id: rect.id,
+    name: rect.name,
+    origin: rect.origin,
+    originParentId: rect.originParentId,
+    parent: rect.parent,
+    absoluteTransform: rect.absoluteTransform,
+  });
 
   frameNode.parent = rect.parent;
 
@@ -105,7 +104,7 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
 
   frameNode.crossAxisAlignment = CrossAxisAlignment.start;
   frameNode.counterAxisSizingMode = "FIXED";
-  frameNode.mainAxisAlignment = MainAxisAlignment.start
+  frameNode.mainAxisAlignment = MainAxisAlignment.start;
   frameNode.primaryAxisSizingMode = "FIXED";
 
   frameNode.strokeAlign = rect.strokeAlign;
@@ -114,9 +113,9 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
   frameNode.strokeMiterLimit = rect.strokeMiterLimit;
   frameNode.strokeWeight = rect.strokeWeight;
 
-  frameNode.cornerRadius = rect.cornerRadius
+  frameNode.cornerRadius = rect.cornerRadius;
   frameNode.cornerSmoothing = rect.cornerSmoothing;
-  frameNode.constraints = rect.constraints
+  frameNode.constraints = rect.constraints;
 
   return frameNode;
 }
@@ -126,7 +125,9 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
  * This is O(n^2), but is optimized to only do j=i+1 until length, and avoid repeated entries.
  * A Node can only have a single parent. The order is defined by layer order.
  */
-function retrieveCollidingItems(children: ReadonlyArray<ReflectSceneNode>): Record<string, Array<ReflectSceneNode>> {
+function retrieveCollidingItems(
+  children: ReadonlyArray<ReflectSceneNode>
+): Record<string, Array<ReflectSceneNode>> {
   const used: Record<string, boolean> = {};
   const groups: Record<string, Array<ReflectSceneNode>> = {};
 
@@ -141,11 +142,13 @@ function retrieveCollidingItems(children: ReadonlyArray<ReflectSceneNode>): Reco
     for (let j = i + 1; j < children.length; j++) {
       const item2 = children[j];
 
-      if (!used[item2.id] &&
+      if (
+        !used[item2.id] &&
         item1.x <= item2.x &&
         item1.y <= item2.y &&
         item1.x + item1.width >= item2.x + item2.width &&
-        item1.y + item1.height >= item2.y + item2.height) {
+        item1.y + item1.height >= item2.y + item2.height
+      ) {
         if (!groups[item1.id]) {
           groups[item1.id] = [item2];
         } else {

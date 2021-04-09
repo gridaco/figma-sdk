@@ -1,4 +1,4 @@
-import { MainAxisAlignment } from "@reflect.bridged.xyz/core/lib";
+import { MainAxisAlignment } from "@reflect-ui/core/lib";
 import { ReflectSceneNode, ReflectFrameNode, ReflectGroupNode } from "../types";
 
 export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
@@ -8,7 +8,7 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
     parent: node.parent,
     originParentId: node.originParentId,
     origin: node.origin,
-    absoluteTransform: node.absoluteTransform
+    absoluteTransform: node.absoluteTransform,
   });
 
   newNode.x = node.x;
@@ -25,8 +25,8 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   newNode.layoutMode = undefined;
   newNode.counterAxisSizingMode = "AUTO";
   newNode.primaryAxisSizingMode = "AUTO";
-  newNode.mainAxisAlignment = MainAxisAlignment.center
-  newNode.mainAxisAlignment = MainAxisAlignment.center
+  newNode.mainAxisAlignment = MainAxisAlignment.center;
+  newNode.mainAxisAlignment = MainAxisAlignment.center;
   newNode.clipsContent = false;
   newNode.layoutGrids = [];
   newNode.gridStyleId = "";
@@ -46,7 +46,7 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   // .children =... calls convertGroupToFrame() which returns the correct node
 
   return newNode;
-};
+}
 
 /**
  * Updates all children's X and Y value from a Group.

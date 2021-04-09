@@ -1,10 +1,10 @@
-import { BorderRadiusManifest } from "@reflect.bridged.xyz/core/lib/ui/border-radius";
+import { BorderRadiusManifest } from "@reflect-ui/core/lib/ui/border-radius";
 import {
   Axis,
   CrossAxisAlignment,
   MainAxisAlignment,
-} from "@reflect.bridged.xyz/core/lib";
-import { BoxShadowManifest } from "@reflect.bridged.xyz/core/lib/box-shadow";
+} from "@reflect-ui/core/lib";
+import { BoxShadowManifest } from "@reflect-ui/core/lib/box-shadow";
 import { mixed, ReflectSceneNode, ReflectSceneNodeType } from ".";
 import {
   filterFills,

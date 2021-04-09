@@ -7,7 +7,7 @@ import {
   FigmaMainAxisAlignment,
 } from "../../figma/types";
 import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
-import { Axis } from "@reflect.bridged.xyz/core/lib";
+import { Axis } from "@reflect-ui/core/lib";
 import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.convert";
 /**
  * Add AutoLayout attributes if layout has items aligned (either vertically or horizontally).
