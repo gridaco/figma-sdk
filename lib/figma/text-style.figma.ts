@@ -1,5 +1,5 @@
-import { typographyIntelisenceMapping } from "@reflect.bridged.xyz/linter/lib/constants/naming-conventions/text-theme.naming";
-import { TextStyle, TextStyleManifest } from "@reflect-ui/core";
+import { typographyIntelisenceMapping } from "@reflect-ui/lint/lib/constants/naming-conventions/text-theme.naming";
+import { TextStyleManifest } from "@reflect-ui/core";
 import { convertTextStyleToReflect } from "./converters/text-style.convert";
 
 export function getTextStyleById(id: string): TextStyleManifest {
