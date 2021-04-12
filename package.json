@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "@figma/plugin-typings": "^1.19.0",
-        "@reflect-ui/uiutils": "0.0.5",
+        "@reflect-ui/uiutils": "0.0.7",
         "@reflect-ui/core": "0.0.2-rc.5.local",
         "@reflect.bridged.xyz/linter": "0.0.4-rc"
     },
