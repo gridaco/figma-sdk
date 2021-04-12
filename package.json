@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "@reflect-ui/uiutils": "0.0.7",
-        "@reflect-ui/core": "0.0.2-rc.7",
+        "@reflect-ui/core": "0.0.2-rc.5.local",
         "@reflect-ui/lint": "0.0.5-rc"
     },
     "devDependencies": {
