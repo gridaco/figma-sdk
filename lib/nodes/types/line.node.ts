@@ -1,8 +1,8 @@
-import { ReflectSceneNodeType } from ".";
 import { ReflectDefaultShapeMixin } from "./mixins";
+import { ReflectSceneNodeType } from "./node-type";
 
 export class ReflectLineNode extends ReflectDefaultShapeMixin {
-    get type() {
-        return ReflectSceneNodeType.line
-    }
+  get type() {
+    return ReflectSceneNodeType.line;
+  }
 }

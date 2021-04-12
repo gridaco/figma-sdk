@@ -4,7 +4,7 @@ import {
   TextStyle,
   TextStyleManifest,
 } from "@reflect-ui/core";
-import { ReflectSceneNodeType } from ".";
+import { ReflectSceneNodeType } from "./node-type";
 import { getTextStyleById } from "../../figma";
 import { extractTextStyleFromTextNode } from "../../figma/converters/text-style.convert";
 import { ReflectDefaultShapeMixin } from "./mixins";

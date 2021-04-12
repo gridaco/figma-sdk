@@ -1,11 +1,10 @@
-import { BorderRadiusManifest } from "@reflect-ui/core/lib/ui/border-radius";
 import {
   Axis,
   CrossAxisAlignment,
   MainAxisAlignment,
 } from "@reflect-ui/core/lib";
 import { BoxShadowManifest } from "@reflect-ui/core/lib/box-shadow";
-import { mixed, ReflectSceneNode, ReflectSceneNodeType } from ".";
+import { ReflectSceneNode, ReflectSceneNodeType } from "./node-type";
 import {
   filterFills,
   hasImage,
@@ -391,32 +390,9 @@ import {
   retrieveImageFills,
   retrievePrimaryImageFill,
 } from "../../utils/retrieve-image-fills";
-
-export interface ReflectBlendMixin {
-  opacity: number;
-  blendMode: "PASS_THROUGH" | BlendMode;
-  isMask: boolean;
-  effects: ReadonlyArray<Effect>;
-  effectStyleId: string;
-  visible: boolean;
-  radius: number;
-}
-
-export interface ReflectLayoutMixin {
-  absoluteTransform: Transform;
-  x: number;
-  y: number;
-  rotation: number; // In degrees
-
-  width: number;
-  height: number;
-
-  /**
-   * fimgma: this property is only applicable when frame is auto-layout frame.
-   */
-  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
-  layoutGrow: number;
-}
+import { ReflectDefaultShapeMixin } from "./mixins/default-shape.mixin";
+import { ReflectLayoutMixin } from "./mixins/layout.mixin";
+import { ReflectBlendMixin } from "./mixins/blend.mixin";
 
 export class ReflectConstraintMixin extends ReflectBaseNode {
   // @ts-ignore
@@ -443,58 +419,6 @@ export class ReflectConstraintMixin extends ReflectBaseNode {
     // TODO add validation if 'to' node is somewhere on the parent tree of this node
     return getReletiveLCRS(this, to);
   }
-}
-
-export interface ReflectGeometryMixin {
-  fills: ReadonlyArray<Paint> | undefined;
-  strokes: ReadonlyArray<Paint>;
-  strokeWeight: number;
-  strokeMiterLimit: number;
-  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
-  strokeCap: StrokeCap | undefined;
-  strokeJoin: StrokeJoin | undefined;
-  dashPattern: ReadonlyArray<number>;
-  fillStyleId: string | undefined;
-  strokeStyleId: string;
-}
-
-export interface ReflectCornerMixin {
-  cornerSmoothing: number;
-  cornerRadius: BorderRadiusManifest;
-}
-
-export class ReflectDefaultShapeMixin
-  extends ReflectConstraintMixin
-  implements ReflectGeometryMixin, ReflectCornerMixin, ReflectLayoutMixin {
-  layoutGrow: number;
-  opacity: number;
-  blendMode: "PASS_THROUGH" | BlendMode;
-  isMask: boolean;
-  effects: ReadonlyArray<Effect>;
-  effectStyleId: string;
-  visible: boolean;
-  radius: number;
-
-  fills: ReadonlyArray<Paint> | undefined;
-  strokes: ReadonlyArray<Paint>;
-  strokeWeight: number;
-  strokeMiterLimit: number;
-  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
-  strokeCap: StrokeCap | undefined;
-  strokeJoin: StrokeJoin | undefined;
-  dashPattern: ReadonlyArray<number>;
-  fillStyleId: string | undefined;
-  strokeStyleId: string;
-
-  cornerRadius: BorderRadiusManifest;
-  cornerSmoothing: number;
-
-  x: number;
-  y: number;
-  rotation: number;
-  width: number;
-  height: number;
-  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
 }
 
 export abstract class ReflectChildrenMixin extends ReflectConstraintMixin {

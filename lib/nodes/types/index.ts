@@ -1,12 +1,15 @@
-export { IReflectNodeReference, ReflectBaseNode } from "./base.node";
+export {
+  IReflectNodeReference,
+  ReflectBaseNode,
+  ReflectChildrenMixin,
+  ReflectConstraintMixin,
+} from "./base.node";
 export { ReflectEllipseNode } from "./ellipse.node";
 export { ReflectFrameNode } from "./frame.node";
 export { ReflectGroupNode } from "./group.node";
 export { ReflectLineNode } from "./line.node";
 export {
   ReflectBlendMixin,
-  ReflectChildrenMixin,
-  ReflectConstraintMixin,
   ReflectCornerMixin,
   ReflectDefaultShapeMixin,
   ReflectGeometryMixin,

@@ -1,13 +1,10 @@
-import {
-  ReflectFrameNode,
-  ReflectGroupNode,
-  ReflectRectangleNode,
-  ReflectEllipseNode,
-  ReflectTextNode,
-  ReflectLineNode,
-  ReflectConstraintMixin,
-  ReflectChildrenMixin,
-} from ".";
+import { ReflectChildrenMixin, ReflectConstraintMixin } from "./base.node";
+import { ReflectEllipseNode } from "./ellipse.node";
+import { ReflectFrameNode } from "./frame.node";
+import { ReflectGroupNode } from "./group.node";
+import { ReflectLineNode } from "./line.node";
+import { ReflectRectangleNode } from "./rectangle.node";
+import { ReflectTextNode } from "./text.node";
 
 export type ReflectSceneNode =
   | ReflectFrameNode

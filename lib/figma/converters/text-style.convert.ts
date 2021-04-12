@@ -1,5 +1,4 @@
 import { TextStyleManifest } from "@reflect-ui/core/lib";
-import { ReflectTextNode } from "../../nodes";
 import { convertFontStyleToReflect } from "./font-style.convert";
 import { convertFontWeightToReflect } from "./font-weight.convert";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
@@ -12,6 +11,7 @@ import {
   LetterSpacing,
   LineHeight,
 } from "../types/v1";
+import { ReflectTextNode } from "../../nodes/types/text.node";
 
 export function convertTextStyleToReflect(
   origin: TextStyle,

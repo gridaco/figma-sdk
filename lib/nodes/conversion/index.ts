@@ -1,19 +1,19 @@
+import { ReflectFrameNode } from "../types/frame.node";
+import { ReflectGroupNode } from "../types/group.node";
+import { ReflectSceneNode } from "../types/node-type";
+import { ReflectRectangleNode } from "../types/rectangle.node";
+import { ReflectEllipseNode } from "../types/ellipse.node";
+import { ReflectLineNode } from "../types/line.node";
+import { ReflectTextNode } from "../types/text.node";
 import {
-  ReflectSceneNode,
-  ReflectRectangleNode,
-  ReflectFrameNode,
-  ReflectTextNode,
-  ReflectGroupNode,
-  ReflectLayoutMixin,
-  ReflectGeometryMixin,
   ReflectBlendMixin,
   ReflectCornerMixin,
   ReflectDefaultShapeMixin,
-  ReflectEllipseNode,
-  ReflectConstraintMixin,
-  ReflectLineNode,
-  mixed,
-} from "../types";
+  ReflectGeometryMixin,
+  ReflectLayoutMixin,
+} from "../types/mixins";
+import { mixed } from "../types/mixed";
+
 import { convertToAutoLayout } from "./auto-layout.convert";
 import { notEmpty } from "../../utils/general";
 import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
@@ -44,6 +44,7 @@ import {
   InstanceNode,
   ComponentNode,
 } from "../../figma/types/v1";
+import { ReflectConstraintMixin } from "../types/base.node";
 
 /**
  * restrictied to single selection

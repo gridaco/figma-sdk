@@ -4,9 +4,7 @@ import {
   CrossAxisAlignment,
   MainAxisAlignment,
 } from "@reflect-ui/core/lib";
-import { ReflectSceneNodeType, ReflectSceneNode } from ".";
 import {
-  ReflectChildrenMixin,
   ReflectGeometryMixin,
   ReflectCornerMixin,
   ReflectBlendMixin,
@@ -23,6 +21,8 @@ import {
   StrokeCap,
   Effect,
 } from "../../figma/types/v1";
+import { ReflectSceneNode, ReflectSceneNodeType } from "./node-type";
+import { ReflectChildrenMixin } from "./base.node";
 
 //#region frame
 interface ReflectFrameMixin {

@@ -1,4 +1,3 @@
-import { ReflectFrameNode, ReflectGroupNode, ReflectSceneNode } from "../types";
 import { convertGroupToFrame } from "./group-to-frame.convert";
 import { mostFrequent } from "@reflect-ui/uiutils/lib";
 import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
@@ -9,6 +8,9 @@ import {
 import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
 import { Axis } from "@reflect-ui/core/lib";
 import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.convert";
+import { ReflectFrameNode } from "../types/frame.node";
+import { ReflectGroupNode } from "../types/group.node";
+import { ReflectSceneNode } from "../types/node-type";
 /**
  * Add AutoLayout attributes if layout has items aligned (either vertically or horizontally).
  * To make the calculation, the average position of every child, ordered, needs to pass a threshold.
