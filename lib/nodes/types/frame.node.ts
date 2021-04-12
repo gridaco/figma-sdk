@@ -13,6 +13,17 @@ import {
   ReflectLayoutMixin,
 } from "./mixins";
 
+import {
+  LayoutGrid,
+  Guide,
+  Constraints,
+  Paint,
+  BlendMode,
+  StrokeJoin,
+  StrokeCap,
+  Effect,
+} from "../../figma/types/v1";
+
 //#region frame
 interface ReflectFrameMixin {
   /**

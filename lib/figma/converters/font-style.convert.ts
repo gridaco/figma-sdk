@@ -1,5 +1,5 @@
 import { FontStyle } from "@reflect-ui/core";
-
+import { FontName } from "../types/v1";
 export function convertFontStyleToReflect(
   original: FontName
 ): FontStyle | undefined {

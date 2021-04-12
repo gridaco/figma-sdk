@@ -1,4 +1,5 @@
 import { TargetPlatform } from "../platform";
+import { figma } from "../figma/types/v1";
 
 abstract class ProxyClient {
   readonly platform: TargetPlatform;

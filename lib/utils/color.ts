@@ -1,3 +1,4 @@
+import { GradientPaint } from "../figma/types/v1";
 
 export function gradientAngle(fill: GradientPaint): number {
   const decomposed = decomposeRelativeTransform(
@@ -9,13 +10,15 @@ export function gradientAngle(fill: GradientPaint): number {
 }
 
 // from https://math.stackexchange.com/a/2888105
-export function decomposeRelativeTransform(t1: [number, number, number],
-  t2: [number, number, number]): {
-    translation: [number, number];
-    rotation: number;
-    scale: [number, number];
-    skew: [number, number];
-  } {
+export function decomposeRelativeTransform(
+  t1: [number, number, number],
+  t2: [number, number, number]
+): {
+  translation: [number, number];
+  rotation: number;
+  scale: [number, number];
+  skew: [number, number];
+} {
   const a: number = t1[0];
   const b: number = t1[1];
   const c: number = t1[2];

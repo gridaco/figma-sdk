@@ -17,6 +17,20 @@ import {
 } from "../../utils";
 import { checkIfRoot } from "../../utils/check-if-root";
 
+import {
+  figma,
+  ChildrenMixin,
+  SceneNode,
+  Paint,
+  BlendMode,
+  Effect,
+  Image,
+  Constraints,
+  StrokeCap,
+  StrokeJoin,
+} from "../../figma/types/v1";
+import { Transform, RGBAF } from "@reflect-ui/uiutils/lib/types";
+
 export interface IReflectNodeReference {
   readonly type: ReflectSceneNodeType;
   name: string;
@@ -339,7 +353,7 @@ export class ReflectBaseNode
     }
   }
 
-  get primaryColor(): RGBA {
+  get primaryColor(): RGBAF {
     try {
       return retrievePrimaryColor(this.fills as Paint[]);
     } catch (_) {
@@ -490,7 +504,7 @@ export abstract class ReflectChildrenMixin extends ReflectConstraintMixin {
   }
   isRelative?: boolean;
 
-  get mostUsedColor(): ReadonlyArray<RGBA> {
+  get mostUsedColor(): ReadonlyArray<RGBAF> {
     throw "not implemented";
   }
 }

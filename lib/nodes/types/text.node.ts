@@ -8,6 +8,13 @@ import { ReflectSceneNodeType } from ".";
 import { getTextStyleById } from "../../figma";
 import { extractTextStyleFromTextNode } from "../../figma/converters/text-style.convert";
 import { ReflectDefaultShapeMixin } from "./mixins";
+import {
+  FontName,
+  TextCase,
+  TextDecoration,
+  LetterSpacing,
+  LineHeight,
+} from "../../figma/types/v1";
 
 export { TextAlign, TextAlignVertical };
 

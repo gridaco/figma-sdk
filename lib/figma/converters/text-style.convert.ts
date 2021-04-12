@@ -5,6 +5,13 @@ import { convertFontWeightToReflect } from "./font-weight.convert";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
 import { convertLineHeightToReflect } from "./line-height.convert";
 import { convertTextDecorationToReflect } from "./tetx-decoration.convert";
+import {
+  TextStyle,
+  TextNode,
+  FontName,
+  LetterSpacing,
+  LineHeight,
+} from "../types/v1";
 
 export function convertTextStyleToReflect(
   origin: TextStyle,
