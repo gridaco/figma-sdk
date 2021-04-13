@@ -3,6 +3,10 @@ import { TextAlign } from "@reflect-ui/core";
 export function convertSketchTextAligntmentToReflectTextAlignment(
   sketch: TextHorizontalAlignment
 ): TextAlign {
+  if (sketch === undefined) {
+    return TextAlign.start;
+  }
+
   switch (sketch) {
     case TextHorizontalAlignment.Centered:
       return TextAlign.center;
@@ -15,5 +19,6 @@ export function convertSketchTextAligntmentToReflectTextAlignment(
     case TextHorizontalAlignment.Right:
       return TextAlign.right;
   }
+
   throw `${sketch} is not supported for reflect conversion`;
 }
