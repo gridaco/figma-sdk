@@ -25,6 +25,7 @@ import {
   BlendMode,
   Effect,
   Image,
+  InstanceNode,
 } from "../../figma/types/v1";
 import {
   retrieveImageFills,
@@ -34,7 +35,7 @@ import { IReflectLayoutMixin } from "./mixins/layout.mixin";
 import { IReflectBlendMixin } from "./mixins/blend.mixin";
 import { IReflectNodeReference } from "./reflect-node-reference";
 import { Transform, RGBAF } from "@reflect-ui/uiutils/lib/types";
-import { swapInstance } from "../../utils/swap-instance";
+import { swapVariant } from "../../utils/variant/swap-instance";
 
 export class ReflectBaseNode
   implements IReflectNodeReference, IReflectLayoutMixin, IReflectBlendMixin {
@@ -266,16 +267,10 @@ export class ReflectBaseNode
 
   swapVariant(name: string): boolean {
     if (this.hasVariant) {
-      const swapTargetMasterComponent = this.parent.children.find(
-        (c) => c.name == name
-      );
-      return swapInstance(
-        figma.getNodeById(this.id) as InstanceNode,
-        figma.getNodeById(swapTargetMasterComponent.id) as ComponentNode
-      );
+      return swapVariant((this as any) as InstanceNode, name);
     }
 
-    // somehow failed
+    // invalid request. this is not a variant compat node
     return false;
   }
 
