@@ -1,11 +1,12 @@
-import { ReflectGroupNode, ReflectSceneNode } from "../nodes";
+import type { ReflectGroupNode, ReflectSceneNode } from "../nodes";
+import { ReflectSceneNodeType } from "../nodes/types/node-type";
 import { ConstraintType } from "../figma/types/v1";
 
 export type LCRS = "Left" | "Center" | "Right" | "Stretch" | "Scale" | "Mixed";
 
 export function getNodeActualLCRS(node: ReflectSceneNode): LCRS {
-  if (node instanceof ReflectGroupNode) {
-    return getGroupLCRS(node);
+  if (node.type == ReflectSceneNodeType.group) {
+    return getGroupLCRS(node as ReflectGroupNode);
   } else {
     try {
       return X_ALIGN_FIGMA_TO_REFLECT.get(node.constraints.horizontal);

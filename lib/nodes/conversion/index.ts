@@ -1,16 +1,16 @@
 import { ReflectFrameNode } from "../types/frame.node";
 import { ReflectGroupNode } from "../types/group.node";
-import { ReflectSceneNode } from "../types/node-type";
+import type { ReflectSceneNode } from "../types/node-type-alias";
 import { ReflectRectangleNode } from "../types/rectangle.node";
 import { ReflectEllipseNode } from "../types/ellipse.node";
 import { ReflectLineNode } from "../types/line.node";
 import { ReflectTextNode } from "../types/text.node";
 import {
-  ReflectBlendMixin,
-  ReflectCornerMixin,
+  IReflectBlendMixin,
+  IReflectCornerMixin,
   ReflectDefaultShapeMixin,
-  ReflectGeometryMixin,
-  ReflectLayoutMixin,
+  IReflectGeometryMixin,
+  IReflectLayoutMixin,
 } from "../types/mixins";
 import { mixed } from "../types/mixed";
 
@@ -44,7 +44,7 @@ import {
   InstanceNode,
   ComponentNode,
 } from "../../figma/types/v1";
-import { ReflectConstraintMixin } from "../types/base.node";
+import { ReflectConstraintMixin } from "../types/mixins/constraint.mixin";
 
 /**
  * restrictied to single selection
@@ -86,6 +86,7 @@ export function convertIntoReflectNodes(
             parent: altParent,
             originParentId: node.parent?.id,
             absoluteTransform: node.absoluteTransform,
+            childrenCount: 0,
           });
           convertConstraint(altNode, node);
           convertCorner(altNode, node);
@@ -97,6 +98,7 @@ export function convertIntoReflectNodes(
             parent: altParent,
             originParentId: node.parent?.id,
             absoluteTransform: node.absoluteTransform,
+            childrenCount: 0,
           });
         }
 
@@ -116,6 +118,7 @@ export function convertIntoReflectNodes(
           origin: node.type,
           originParentId: node.parent?.id,
           absoluteTransform: node.absoluteTransform,
+          childrenCount: 0,
         });
 
         convertDefaultShape(altNode, node);
@@ -147,6 +150,7 @@ export function convertIntoReflectNodes(
           origin: node.type,
           originParentId: node.parent?.id,
           absoluteTransform: node.absoluteTransform,
+          childrenCount: node.children.length,
         });
 
         convertLayout(altNode, node);
@@ -165,6 +169,7 @@ export function convertIntoReflectNodes(
           origin: node.type,
           originParentId: node.parent?.id,
           absoluteTransform: node.absoluteTransform,
+          childrenCount: 0,
         });
 
         convertDefaultShape(altNode, node);
@@ -189,6 +194,7 @@ export function convertIntoReflectNodes(
           originParentId: node.parent?.id,
           origin: node.type,
           absoluteTransform: node.absoluteTransform,
+          childrenCount: 0,
         });
 
         convertConstraint(altNode, node);
@@ -208,7 +214,7 @@ export function convertIntoReflectNodes(
   return mapped.filter(notEmpty);
 }
 
-function convertLayout(altNode: ReflectLayoutMixin, node: LayoutMixin) {
+function convertLayout(altNode: IReflectLayoutMixin, node: LayoutMixin) {
   altNode.x = node.x;
   altNode.y = node.y;
   altNode.absoluteTransform = node.absoluteTransform;
@@ -231,10 +237,10 @@ function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
     node.counterAxisAlignItems
   );
 
-  rfNode.paddingLeft = node.horizontalPadding;
-  rfNode.paddingRight = node.horizontalPadding;
-  rfNode.paddingTop = node.verticalPadding;
-  rfNode.paddingBottom = node.verticalPadding;
+  rfNode.paddingLeft = node.paddingLeft;
+  rfNode.paddingRight = node.paddingLeft;
+  rfNode.paddingTop = node.paddingTop;
+  rfNode.paddingBottom = node.paddingBottom;
 
   rfNode.itemSpacing = node.itemSpacing;
   rfNode.layoutGrids = node.layoutGrids;
@@ -243,7 +249,7 @@ function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
   rfNode.guides = node.guides;
 }
 
-function convertGeometry(altNode: ReflectGeometryMixin, node: GeometryMixin) {
+function convertGeometry(altNode: IReflectGeometryMixin, node: GeometryMixin) {
   altNode.fills = figmaToReflectProperty(node.fills);
   altNode.strokes = node.strokes;
   altNode.strokeWeight = node.strokeWeight;
@@ -264,7 +270,7 @@ function convertConstraint(
 }
 
 function convertBlend(
-  altNode: ReflectBlendMixin,
+  altNode: IReflectBlendMixin,
   node: BlendMixin & SceneNodeMixin
 ) {
   altNode.opacity = node.opacity;
@@ -291,7 +297,7 @@ function convertDefaultShape(
 }
 
 function convertCorner(
-  altNode: ReflectCornerMixin,
+  altNode: IReflectCornerMixin,
   node: CornerMixin | RectangleCornerMixin
 ) {
   altNode.cornerRadius = convertFigmaCornerRadiusToBorderRadius({
@@ -372,6 +378,7 @@ export function convertFrameNodeToAlt(
     origin: node.type,
     originParentId: node.parent?.id,
     absoluteTransform: node.absoluteTransform,
+    childrenCount: node.children.length,
   });
 
   convertDefaultShape(altNode, node);
@@ -396,6 +403,7 @@ function frameToRectangleNode(
     origin: node.type,
     originParentId: node.parent?.id,
     absoluteTransform: node.absoluteTransform,
+    childrenCount: 0,
   });
 
   convertDefaultShape(newNode, node);

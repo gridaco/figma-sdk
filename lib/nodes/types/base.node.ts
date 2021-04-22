@@ -4,7 +4,8 @@ import {
   MainAxisAlignment,
 } from "@reflect-ui/core/lib";
 import { BoxShadowManifest } from "@reflect-ui/core/lib/box-shadow";
-import { ReflectSceneNode, ReflectSceneNodeType } from "./node-type";
+import type { ReflectSceneNode } from "./node-type-alias";
+import { ReflectSceneNodeType } from "./node-type";
 import {
   filterFills,
   hasImage,
@@ -24,21 +25,18 @@ import {
   BlendMode,
   Effect,
   Image,
-  Constraints,
-  StrokeCap,
-  StrokeJoin,
 } from "../../figma/types/v1";
+import {
+  retrieveImageFills,
+  retrievePrimaryImageFill,
+} from "../../utils/retrieve-image-fills";
+import { IReflectLayoutMixin } from "./mixins/layout.mixin";
+import { IReflectBlendMixin } from "./mixins/blend.mixin";
+import { IReflectNodeReference } from "./reflect-node-reference";
 import { Transform, RGBAF } from "@reflect-ui/uiutils/lib/types";
 
-export interface IReflectNodeReference {
-  readonly type: ReflectSceneNodeType;
-  name: string;
-  id: string;
-  parentReference?: IReflectNodeReference;
-}
-
 export class ReflectBaseNode
-  implements IReflectNodeReference, ReflectLayoutMixin, ReflectBlendMixin {
+  implements IReflectNodeReference, IReflectLayoutMixin, IReflectBlendMixin {
   readonly type: ReflectSceneNodeType;
   origin: ReflectSceneNodeType;
   originRaw: string;
@@ -48,11 +46,11 @@ export class ReflectBaseNode
   constructor(props: {
     readonly id: string;
     name: string;
-    parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
+    parent: ReflectSceneNode | null;
     origin: string;
     originParentId: string;
     absoluteTransform: Transform;
-    childrenCount?: number;
+    childrenCount: number;
   }) {
     this.id = props.id;
     this.originParentId = props.originParentId;
@@ -93,7 +91,7 @@ export class ReflectBaseNode
   locked: boolean;
   readonly id: string;
   readonly absoluteTransform: Transform;
-  parent: (ReflectSceneNode & ReflectChildrenMixin) | null;
+  parent: ReflectSceneNode | null;
 
   // region children related
   readonly children: Array<ReflectSceneNode> = [];
@@ -125,7 +123,14 @@ export class ReflectBaseNode
   }
 
   get hasParent(): boolean {
-    return this.parent !== null && this.parent !== undefined;
+    return (
+      this.parent !== null &&
+      this.parent !== undefined &&
+      /**
+       * we add this because parent can be anonymously set to a figma typed page node or so. so we double check that parent is reflect typed, and not a page or some abstract node
+       */
+      this.parent instanceof ReflectBaseNode
+    );
   }
 
   // Namespace is a string that must be at least 3 alphanumeric characters, and should
@@ -273,9 +278,7 @@ export class ReflectBaseNode
    * returns true if "this" fill contains image. does not looks through its children.
    */
   get hasImage(): boolean {
-    if (this instanceof ReflectDefaultShapeMixin) {
-      return hasImage(this.fills);
-    }
+    return hasImage(this.fills);
   }
 
   /**
@@ -292,26 +295,20 @@ export class ReflectBaseNode
   }
 
   get images(): Array<Image> | undefined {
-    if (this instanceof ReflectDefaultShapeMixin) {
-      if (Array.isArray(this.fills)) {
-        return retrieveImageFills(this.fills);
-      }
+    if (Array.isArray(this.fills)) {
+      return retrieveImageFills(this.fills);
     }
   }
 
   get primaryImage(): Image {
-    if (this instanceof ReflectDefaultShapeMixin) {
-      if (Array.isArray(this.fills)) {
-        return retrievePrimaryImageFill(this.fills);
-      }
+    if (Array.isArray(this.fills)) {
+      return retrievePrimaryImageFill(this.fills);
     }
   }
 
   get hasFills(): boolean {
-    if (this instanceof ReflectDefaultShapeMixin) {
-      if (Array.isArray(this.fills)) {
-        return this.fills.length > 0;
-      }
+    if (Array.isArray(this.fills)) {
+      return this.fills.length > 0;
     }
 
     return false;
@@ -323,10 +320,7 @@ export class ReflectBaseNode
 
   get visibleFills(): ReadonlyArray<Paint> | undefined {
     try {
-      return filterFills(
-        ((this as any) as ReflectDefaultShapeMixin).fills as Paint[],
-        { visibleOnly: true }
-      );
+      return filterFills((this as any).fills as Paint[], { visibleOnly: true });
     } catch (_) {
       console.log(
         `tried to filter fills, but no fills found. ${this.toString()}`,
@@ -336,7 +330,7 @@ export class ReflectBaseNode
   }
 
   get primaryFill(): Paint {
-    if (this instanceof ReflectChildrenMixin) {
+    if (this.hasChildren) {
       const availableNodes = this.getGrandchildren({
         includeThis: true,
       });
@@ -347,9 +341,7 @@ export class ReflectBaseNode
       const fills = [].concat.apply([], fillsMap);
       return retrieveFill(fills);
     }
-    if (this instanceof ReflectDefaultShapeMixin) {
-      return retrieveFill(this.fills);
-    }
+    return retrieveFill(this.fills);
   }
 
   get primaryColor(): RGBAF {
@@ -374,8 +366,8 @@ export class ReflectBaseNode
   getGrandchildren(options?: {
     includeThis: boolean;
   }): ReadonlyArray<ReflectSceneNode> | undefined {
-    if (this instanceof ReflectChildrenMixin) {
-      return mapGrandchildren(this, options);
+    if (this.hasChildren) {
+      return mapGrandchildren(this as any, options);
     } else {
       // if include this option is set to yes, then, return this even if this is not a children-containing node.
       if (options?.includeThis) {
@@ -383,71 +375,4 @@ export class ReflectBaseNode
       }
     }
   }
-}
-
-import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../utils/lcrs";
-import {
-  retrieveImageFills,
-  retrievePrimaryImageFill,
-} from "../../utils/retrieve-image-fills";
-import { ReflectDefaultShapeMixin } from "./mixins/default-shape.mixin";
-import { ReflectLayoutMixin } from "./mixins/layout.mixin";
-import { ReflectBlendMixin } from "./mixins/blend.mixin";
-
-export class ReflectConstraintMixin extends ReflectBaseNode {
-  // @ts-ignore
-  get type() {
-    return ReflectSceneNodeType.constraint;
-  }
-  constraints: Constraints;
-
-  /**
-   * the current node's constraint LCRS positioning. as is.
-   */
-  get constraintLcrs(): LCRS {
-    return getNodeActualLCRS(this);
-  }
-
-  /**
-   * the cureent node's visual LCRS positioning actually relative to parent.
-   */
-  get relativeLcrs(): LCRS {
-    return getReletiveLCRS(this, this.parent);
-  }
-
-  getRelativeToLcrs(to: ReflectSceneNode) {
-    // TODO add validation if 'to' node is somewhere on the parent tree of this node
-    return getReletiveLCRS(this, to);
-  }
-}
-
-export abstract class ReflectChildrenMixin extends ReflectConstraintMixin {
-  children: Array<ReflectSceneNode>;
-  get constraintableChildren(): Array<ReflectConstraintMixin> {
-    return filterConstraintableChildren(this);
-  }
-  isRelative?: boolean;
-
-  get mostUsedColor(): ReadonlyArray<RGBAF> {
-    throw "not implemented";
-  }
-}
-
-function filterConstraintableChildren(node: ReflectChildrenMixin) {
-  const constraintables: Array<ReflectConstraintMixin> = [];
-  for (const childNode of node.children) {
-    if (
-      childNode.type == "INSTANCE" ||
-      childNode.type == "COMPONENT" ||
-      childNode.type == "FRAME" ||
-      childNode.type == "RECTANGLE" ||
-      childNode.type == "GROUP" ||
-      childNode.type == "LINE" ||
-      childNode.type == "ELLIPSE" ||
-      childNode.type == "TEXT"
-    ) {
-      constraintables.push(childNode as ReflectConstraintMixin);
-    }
-  }
-  return constraintables;
 }

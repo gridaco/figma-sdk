@@ -5,10 +5,10 @@ import {
   MainAxisAlignment,
 } from "@reflect-ui/core/lib";
 import {
-  ReflectGeometryMixin,
-  ReflectCornerMixin,
-  ReflectBlendMixin,
-  ReflectLayoutMixin,
+  IReflectGeometryMixin,
+  IReflectCornerMixin,
+  IReflectBlendMixin,
+  IReflectLayoutMixin,
 } from "./mixins";
 
 import {
@@ -21,11 +21,12 @@ import {
   StrokeCap,
   Effect,
 } from "../../figma/types/v1";
-import { ReflectSceneNode, ReflectSceneNodeType } from "./node-type";
-import { ReflectChildrenMixin } from "./base.node";
+import { ReflectSceneNodeType } from "./node-type";
+import type { ReflectSceneNode } from "./node-type-alias";
+import { ReflectChildrenMixin } from "./mixins/children.mixin";
 
 //#region frame
-interface ReflectFrameMixin {
+interface IReflectFrameMixin {
   /**
    * figma: this property is only available when layoutMode != "NONE"
    */
@@ -40,14 +41,16 @@ interface ReflectFrameMixin {
 export class ReflectFrameNode
   extends ReflectChildrenMixin
   implements
-    ReflectFrameMixin,
-    ReflectGeometryMixin,
-    ReflectCornerMixin,
-    ReflectBlendMixin,
-    ReflectLayoutMixin {
+    IReflectFrameMixin,
+    IReflectGeometryMixin,
+    IReflectCornerMixin,
+    IReflectBlendMixin,
+    IReflectLayoutMixin {
   get type() {
     return ReflectSceneNodeType.frame;
   }
+
+  absoluteTransform: Transform;
 
   constraints: Constraints;
 

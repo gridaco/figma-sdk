@@ -1,7 +1,7 @@
 import { MainAxisAlignment } from "@reflect-ui/core/lib";
 import { ReflectFrameNode } from "../types/frame.node";
 import { ReflectGroupNode } from "../types/group.node";
-import { ReflectSceneNode } from "../types/node-type";
+import type { ReflectSceneNode } from "../types/node-type-alias";
 
 export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   const newNode = new ReflectFrameNode({
@@ -11,6 +11,7 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
     originParentId: node.originParentId,
     origin: node.origin,
     absoluteTransform: node.absoluteTransform,
+    childrenCount: node.childrenCount,
   });
 
   newNode.x = node.x;

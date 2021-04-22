@@ -10,7 +10,7 @@ import { Axis } from "@reflect-ui/core/lib";
 import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.convert";
 import { ReflectFrameNode } from "../types/frame.node";
 import { ReflectGroupNode } from "../types/group.node";
-import { ReflectSceneNode } from "../types/node-type";
+import type { ReflectSceneNode } from "../types/node-type-alias";
 /**
  * Add AutoLayout attributes if layout has items aligned (either vertically or horizontally).
  * To make the calculation, the average position of every child, ordered, needs to pass a threshold.
@@ -150,6 +150,12 @@ function shouldVisit(
 
   const avgX = average(intervalX);
   const avgY = average(intervalY);
+
+  if (intervalY === undefined || intervalX === undefined) {
+    throw new Error(
+      `both "intervalY" and "intervalX" shall not be undefined. (this is not a user error)`
+    );
+  }
 
   if (!intervalY.every((d) => d >= threshold)) {
     if (!intervalX.every((d) => d >= threshold)) {

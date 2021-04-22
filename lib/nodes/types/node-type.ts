@@ -1,25 +1,3 @@
-import { ReflectChildrenMixin, ReflectConstraintMixin } from "./base.node";
-import { ReflectEllipseNode } from "./ellipse.node";
-import { ReflectFrameNode } from "./frame.node";
-import { ReflectGroupNode } from "./group.node";
-import { ReflectLineNode } from "./line.node";
-import { ReflectRectangleNode } from "./rectangle.node";
-import { ReflectTextNode } from "./text.node";
-
-export type ReflectSceneNode =
-  | ReflectFrameNode
-  | ReflectGroupNode
-  | ReflectRectangleNode
-  | ReflectEllipseNode
-  | ReflectTextNode
-  | ReflectLineNode
-  | ReflectConstraintMixin
-  | ReflectChildrenMixin;
-// TODO
-// | StarNode
-// | LineNode
-// | PolygonNode;
-
 export enum ReflectSceneNodeType {
   group = "GROUP",
   component = "COMPONENT", // this should be not a type, but a property

@@ -1,6 +1,6 @@
 import { Transform } from "@reflect-ui/uiutils/lib/types";
 
-export interface ReflectLayoutMixin {
+export interface IReflectLayoutMixin {
   absoluteTransform: Transform;
   x: number;
   y: number;

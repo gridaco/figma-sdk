@@ -1,6 +1,6 @@
 import { BlendMode, Effect } from "../../../figma/types/v1";
 
-export interface ReflectBlendMixin {
+export interface IReflectBlendMixin {
   opacity: number;
   blendMode: "PASS_THROUGH" | BlendMode;
   isMask: boolean;

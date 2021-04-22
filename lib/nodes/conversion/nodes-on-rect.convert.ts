@@ -1,7 +1,7 @@
 import { CrossAxisAlignment, MainAxisAlignment } from "@reflect-ui/core/lib";
 import { ReflectFrameNode } from "../types/frame.node";
 import { ReflectGroupNode } from "../types/group.node";
-import { ReflectSceneNode } from "../types/node-type";
+import type { ReflectSceneNode } from "../types/node-type-alias";
 import { ReflectRectangleNode } from "../types/rectangle.node";
 import { convertToAutoLayout } from "./auto-layout.convert";
 
@@ -40,7 +40,13 @@ export function convertNodesOnRectangle(
       (d) => !colliding[key].map((dd) => dd.id).includes(d.id) && key !== d.id
     );
 
-    const frameNode = convertRectangleToFrame(parentNode);
+    const frameNode = convertRectangleToFrame(
+      parentNode,
+      /**
+       *  -1 for the rect being converted.
+       */
+      node.children.length - 1
+    );
 
     // todo when the soon-to-be-parent is larger than its parent, things get weird. Happens, for example, when a large image is used in the background. Should this be handled or is this something user should never do?
     frameNode.children = [...colliding[key]];
@@ -64,7 +70,10 @@ export function convertNodesOnRectangle(
   return node;
 }
 
-function convertRectangleToFrame(rect: ReflectRectangleNode) {
+function convertRectangleToFrame(
+  rect: ReflectRectangleNode,
+  inferedChildrenCound: number
+) {
   // if a Rect with elements inside were identified, extract this Rect
   // outer methods are going to use it.
   const frameNode = new ReflectFrameNode({
@@ -74,6 +83,7 @@ function convertRectangleToFrame(rect: ReflectRectangleNode) {
     originParentId: rect.originParentId,
     parent: rect.parent,
     absoluteTransform: rect.absoluteTransform,
+    childrenCount: inferedChildrenCound,
   });
 
   frameNode.parent = rect.parent;

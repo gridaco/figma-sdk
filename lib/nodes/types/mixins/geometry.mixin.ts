@@ -1,6 +1,6 @@
 import { Paint, StrokeCap, StrokeJoin } from "../../../figma/types/v1";
 
-export interface ReflectGeometryMixin {
+export interface IReflectGeometryMixin {
   fills: ReadonlyArray<Paint> | undefined;
   strokes: ReadonlyArray<Paint>;
   strokeWeight: number;

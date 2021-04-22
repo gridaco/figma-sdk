@@ -1,7 +1,4 @@
-import { ReflectConstraintMixin } from "../base.node";
-import { ReflectCornerMixin } from "./corner.mixin";
-import { ReflectGeometryMixin } from "./geometry.mixin";
-import { ReflectLayoutMixin } from "./layout.mixin";
+import { ReflectConstraintMixin } from "../mixins/constraint.mixin";
 
 import {
   Paint,
@@ -11,10 +8,11 @@ import {
   StrokeJoin,
 } from "../../../figma/types/v1";
 import { BorderRadiusManifest } from "@reflect-ui/core/lib/ui/border-radius";
+import { IReflectDefaultShapeMixin } from "../interfaces/default-shape-mixin";
 
 export class ReflectDefaultShapeMixin
   extends ReflectConstraintMixin
-  implements ReflectGeometryMixin, ReflectCornerMixin, ReflectLayoutMixin {
+  implements IReflectDefaultShapeMixin {
   layoutGrow: number;
   opacity: number;
   blendMode: "PASS_THROUGH" | BlendMode;

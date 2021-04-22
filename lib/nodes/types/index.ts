@@ -1,21 +1,44 @@
+import { ReflectBaseNode } from "./base.node";
+import { ReflectChildrenMixin } from "./mixins/children.mixin";
+import { ReflectConstraintMixin } from "./mixins/constraint.mixin";
+import { IReflectNodeReference } from "./reflect-node-reference";
+import { ReflectEllipseNode } from "./ellipse.node";
+import { ReflectFrameNode } from "./frame.node";
+import { ReflectGroupNode } from "./group.node";
+import { ReflectLineNode } from "./line.node";
+import { ReflectRectangleNode } from "./rectangle.node";
+import {
+  IReflectBlendMixin as ReflectBlendMixin,
+  IReflectCornerMixin as ReflectCornerMixin,
+  ReflectDefaultShapeMixin,
+  IReflectGeometryMixin as ReflectGeometryMixin,
+  IReflectLayoutMixin as ReflectLayoutMixin,
+} from "./mixins";
+import { ReflectSceneNodeType } from "./node-type";
+import { ReflectSceneNode } from "./node-type-alias";
+import { ReflectTextNode } from "./text.node";
+import { mixed } from "./mixed";
+
 export {
-  IReflectNodeReference,
+  mixed,
+  // abstract
+  ReflectSceneNode,
+  ReflectSceneNodeType,
   ReflectBaseNode,
   ReflectChildrenMixin,
+  // nodes
+  ReflectTextNode,
   ReflectConstraintMixin,
-} from "./base.node";
-export { ReflectEllipseNode } from "./ellipse.node";
-export { ReflectFrameNode } from "./frame.node";
-export { ReflectGroupNode } from "./group.node";
-export { ReflectLineNode } from "./line.node";
-export {
+  IReflectNodeReference,
+  ReflectEllipseNode,
+  ReflectRectangleNode,
+  ReflectFrameNode,
+  ReflectGroupNode,
+  ReflectLineNode,
+  // mixin
   ReflectBlendMixin,
   ReflectCornerMixin,
   ReflectDefaultShapeMixin,
   ReflectGeometryMixin,
   ReflectLayoutMixin,
-} from "./mixins";
-export { ReflectSceneNode, ReflectSceneNodeType } from "./node-type";
-export { ReflectRectangleNode } from "./rectangle.node";
-export { ReflectTextNode, TextAlign, TextAlignVertical } from "./text.node";
-export { mixed } from "./mixed";
+};

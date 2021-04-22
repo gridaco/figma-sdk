@@ -50,7 +50,11 @@ export function nodeWidthHeight(
   // avoid relative width when parent is relative (therefore, child is probably absolute, which doesn't work nice)
   // ignore for root layer
   // todo should this be kept this way? The issue is w-full which doesn't work well with absolute position.
-  if (allowRelative && node.parent?.isRelative !== true) {
+  if (
+    allowRelative &&
+    "isRelative" in node.parent &&
+    node.parent?.isRelative !== true
+  ) {
     // don't calculate again if it was already calculated
     if (propWidth !== "full") {
       const rW = calculateResponsiveWH(node, nodeWidth, "x");
