@@ -2,7 +2,7 @@ export enum ReflectSceneNodeType {
   group = "GROUP",
   component = "COMPONENT", // this should be not a type, but a property
   // TODO: consider renaming to variant-set. the name variant is ambigious
-  variant = "COMPONENT_SET", // this should be not a type, but a property
+  variant_set = "COMPONENT_SET", // this should be not a type, but a property
   constraint = "CONSTRAINT",
   instance = "INSTANCE", // this should be not a type, but a property
   text = "TEXT",

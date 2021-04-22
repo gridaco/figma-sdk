@@ -34,6 +34,7 @@ import { IReflectLayoutMixin } from "./mixins/layout.mixin";
 import { IReflectBlendMixin } from "./mixins/blend.mixin";
 import { IReflectNodeReference } from "./reflect-node-reference";
 import { Transform, RGBAF } from "@reflect-ui/uiutils/lib/types";
+import { swapInstance } from "../../utils/swap-instance";
 
 export class ReflectBaseNode
   implements IReflectNodeReference, IReflectLayoutMixin, IReflectBlendMixin {
@@ -237,8 +238,45 @@ export class ReflectBaseNode
     return [
       ReflectSceneNodeType.component,
       ReflectSceneNodeType.instance,
-      ReflectSceneNodeType.variant,
+      ReflectSceneNodeType.variant_set,
     ].includes(this.type);
+  }
+
+  get isVariant(): boolean {
+    return (
+      this.parent.type == ReflectSceneNodeType.variant_set &&
+      this.isMasterComponent
+    );
+  }
+
+  get hasVariant(): boolean {
+    return this.variants.length > 0;
+  }
+
+  get variants(): string[] {
+    try {
+      if (this.isVariant) {
+        const variants = this.parent.children;
+        return variants.map((v) => v.name);
+      }
+    } catch (_) {
+      return [];
+    }
+  }
+
+  swapVariant(name: string): boolean {
+    if (this.hasVariant) {
+      const swapTargetMasterComponent = this.parent.children.find(
+        (c) => c.name == name
+      );
+      return swapInstance(
+        figma.getNodeById(this.id) as InstanceNode,
+        figma.getNodeById(swapTargetMasterComponent.id) as ComponentNode
+      );
+    }
+
+    // somehow failed
+    return false;
   }
 
   get isInstance(): boolean {
