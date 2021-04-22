@@ -2,7 +2,17 @@ import type { ReflectSceneNode } from "../node-type-alias";
 import { ReflectConstraintMixin } from "./constraint.mixin";
 import { RGBAF } from "@reflect-ui/uiutils/lib/types";
 
-export abstract class ReflectChildrenMixin extends ReflectConstraintMixin {
+export interface IChildrenMixin<T> {
+  children: Array<T>;
+}
+
+export interface IReflectChildrenMixin
+  extends IChildrenMixin<ReflectSceneNode> {
+  children: Array<ReflectSceneNode>;
+}
+export abstract class ReflectChildrenMixin
+  extends ReflectConstraintMixin
+  implements IReflectChildrenMixin {
   children: Array<ReflectSceneNode>;
   get constraintableChildren(): Array<ReflectConstraintMixin> {
     return filterConstraintableChildren(this);
