@@ -56,6 +56,9 @@ export function swapInstance(from: InstanceNode, swapTo: ComponentNode) {
   instance.rotation = from.rotation;
   //#endregion
 
+  // todo handle data preservation
+  // component override data can be infered.
+
   // insesrt child and remove origin (from)
   sharedParent.insertChild(indexInParent, instance);
   // remove origin

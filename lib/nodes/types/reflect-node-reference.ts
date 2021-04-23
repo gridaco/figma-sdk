@@ -26,7 +26,10 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
     parentReference: {
       name: r.parent.name,
       type: r.parent.type,
-      origin: r.parent.origin,
+      // FIXME somehow parent origin is undefined. (handling this with temporary ?? operator)
+      // this is caused because initially converting the node, we use figma's raw nod as a parent.
+      // reflect conversion must be fixed before resolving this issue.
+      origin: r.parent.origin ?? r.parent.type,
       id: r.parent.id,
       children: r.parent.children.map((c) => ({
         name: c.name,

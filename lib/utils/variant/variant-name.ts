@@ -20,6 +20,7 @@ export function buildVariantName_Figma(
 /**
  * extracts property map from variant component node's name
  * e.g. "on=false, variant=hover" -> { on: false, variant: hover }
+ * this does not contains the type of the property. only value.
  * @param name
  * @returns
  */

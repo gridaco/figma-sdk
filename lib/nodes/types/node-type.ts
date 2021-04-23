@@ -1,3 +1,7 @@
+/**
+ * the enum value must match with figma's origin node type string.
+ * this will be fixed later.
+ */
 export enum ReflectSceneNodeType {
   group = "GROUP",
   component = "COMPONENT", // this should be not a type, but a property
