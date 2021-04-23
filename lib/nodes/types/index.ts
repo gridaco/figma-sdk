@@ -1,7 +1,6 @@
 import { ReflectBaseNode } from "./base.node";
 import { ReflectChildrenMixin } from "./mixins/children.mixin";
 import { ReflectConstraintMixin } from "./mixins/constraint.mixin";
-import { IReflectNodeReference } from "./reflect-node-reference";
 import { ReflectEllipseNode } from "./ellipse.node";
 import { ReflectFrameNode } from "./frame.node";
 import { ReflectGroupNode } from "./group.node";
@@ -29,7 +28,6 @@ export {
   // nodes
   ReflectTextNode,
   ReflectConstraintMixin,
-  IReflectNodeReference,
   ReflectEllipseNode,
   ReflectRectangleNode,
   ReflectFrameNode,
