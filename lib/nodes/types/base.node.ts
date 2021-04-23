@@ -243,7 +243,7 @@ export class ReflectBaseNode
     ].includes(this.type);
   }
 
-  get isVariantSet(): boolean {
+  get isVariant(): boolean {
     return (
       this.parent.type == ReflectSceneNodeType.variant_set &&
       this.isMasterComponent
@@ -256,7 +256,7 @@ export class ReflectBaseNode
 
   get variants(): string[] {
     try {
-      if (this.isVariantSet) {
+      if (this.isVariant) {
         const variants = this.parent.children;
         return variants.map((v) => v.name);
       }
