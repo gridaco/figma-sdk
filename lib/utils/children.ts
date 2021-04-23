@@ -30,15 +30,20 @@ export function mapGrandchildren<
 
   if ("children" in node) {
     const castedNode = node as IChildrenMixin<I>;
-    for (const child of castedNode.children) {
-      if ("children" in child && Array.isArray((child as any).children)) {
-        const grandchildren = mapGrandchildren(child as IReflectChildrenMixin);
-        children.push(...(grandchildren as any));
-      }
+    // children field may exist, but not a array or undefined
+    if (castedNode.children && Array.isArray(castedNode.children)) {
+      for (const child of castedNode.children) {
+        if ("children" in child && Array.isArray((child as any).children)) {
+          const grandchildren = mapGrandchildren(
+            child as IReflectChildrenMixin
+          );
+          children.push(...(grandchildren as any));
+        }
 
-      // frame can be also a child, but not group. group only holds children, so we do not push group nodes
-      if (!((child as any).type == ReflectSceneNodeType.group)) {
-        children.push(child as any);
+        // frame can be also a child, but not group. group only holds children, so we do not push group nodes
+        if (!((child as any).type == ReflectSceneNodeType.group)) {
+          children.push(child as any);
+        }
       }
     }
   }

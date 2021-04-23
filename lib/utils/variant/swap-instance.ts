@@ -58,6 +58,7 @@ export function swapInstance(from: InstanceNode, swapTo: ComponentNode) {
 
   // todo handle data preservation
   // component override data can be infered.
+  // https://github.com/figma/plugin-typings/issues/26 - currently figma does not provided swapComponent api on plugin sdk of their own.
 
   // insesrt child and remove origin (from)
   sharedParent.insertChild(indexInParent, instance);

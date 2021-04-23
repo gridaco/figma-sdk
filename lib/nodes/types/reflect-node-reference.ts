@@ -1,5 +1,5 @@
 import type { ReflectBaseNode } from ".";
-import { ReflectSceneNodeType } from "./node-type";
+import type { ReflectSceneNodeType } from "./node-type";
 
 export interface IReflectNodeReference {
   readonly type: ReflectSceneNodeType;
