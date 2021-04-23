@@ -33,7 +33,7 @@ import {
 } from "../../utils/retrieve-image-fills";
 import { IReflectLayoutMixin } from "./mixins/layout.mixin";
 import { IReflectBlendMixin } from "./mixins/blend.mixin";
-import { IReflectNodeReference } from "./reflect-node-reference";
+import { IReflectNodeReference, makeReference } from "./reflect-node-reference";
 import { Transform, RGBAF } from "@reflect-ui/uiutils/lib/types";
 import { swapVariant } from "../../utils/variant/swap-instance";
 
@@ -243,7 +243,7 @@ export class ReflectBaseNode
     ].includes(this.type);
   }
 
-  get isVariant(): boolean {
+  get isVariantSet(): boolean {
     return (
       this.parent.type == ReflectSceneNodeType.variant_set &&
       this.isMasterComponent
@@ -256,7 +256,7 @@ export class ReflectBaseNode
 
   get variants(): string[] {
     try {
-      if (this.isVariant) {
+      if (this.isVariantSet) {
         const variants = this.parent.children;
         return variants.map((v) => v.name);
       }
@@ -295,16 +295,7 @@ export class ReflectBaseNode
    * retrieves interface, json exportable node reference data. (containing essensial data only) Mostly used for debugging, logging purpose.
    */
   copyAsSnippet(): IReflectNodeReference {
-    return <IReflectNodeReference>{
-      id: this.id,
-      name: this.name,
-      type: this.type,
-      parentReference: {
-        id: this.parent.id,
-        name: this.parent.name,
-        type: this.parent.type,
-      },
-    };
+    return makeReference(this);
   }
 
   /**
