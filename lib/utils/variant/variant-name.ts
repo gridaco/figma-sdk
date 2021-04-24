@@ -99,15 +99,6 @@ export function buildVariantNameIncluding_Figma(params: {
     return formatName(exn) == _built_name;
   });
 
-  console.log(
-    f_o_n,
-    f_o_v,
-    origin_replacingPartialParamName,
-    target_replacingPartialParamName,
-    _built_name,
-    existingName
-  );
-
   return existingName;
 }
 
