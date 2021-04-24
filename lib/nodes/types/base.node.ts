@@ -10,11 +10,11 @@ import {
   filterFills,
   hasImage,
   mapGrandchildren,
-  notEmpty,
   rawTypeToReflectType,
   retrieveFill,
   retrievePrimaryColor,
 } from "../../utils";
+import { array } from "@reflect-ui/uiutils";
 import { checkIfRoot } from "../../utils/check-if-root";
 
 import {
@@ -35,7 +35,7 @@ import { IReflectLayoutMixin } from "./mixins/layout.mixin";
 import { IReflectBlendMixin } from "./mixins/blend.mixin";
 import { IReflectNodeReference, makeReference } from "./reflect-node-reference";
 import { Transform, RGBAF } from "@reflect-ui/uiutils/lib/types";
-import { swapVariant } from "../../utils/variant/swap-instance";
+import { swapVariant } from "../../features/variant/swap-instance";
 
 export class ReflectBaseNode
   implements IReflectNodeReference, IReflectLayoutMixin, IReflectBlendMixin {
@@ -363,7 +363,7 @@ export class ReflectBaseNode
 
       let fillsMap = availableNodes
         .map((n) => n.visibleFills)
-        .filter((n) => notEmpty(n));
+        .filter((n) => array.filters.notEmpty(n));
       const fills = [].concat.apply([], fillsMap);
       return retrieveFill(fills);
     }

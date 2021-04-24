@@ -15,7 +15,7 @@ import {
 import { mixed } from "../types/mixed";
 
 import { convertToAutoLayout } from "./auto-layout.convert";
-import { notEmpty } from "../../utils/general";
+import { array } from "@reflect-ui/uiutils";
 import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
 import { shouldIgnore } from "../../features/key-annotations";
 
@@ -55,14 +55,14 @@ import { makeComponentReference } from "../types/reflect-node-reference";
  * @param sceneNode
  * @param altParent
  */
-export function convertIntoReflectNode(
+export function intoReflectNode(
   sceneNode: SceneNode,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null
 ): ReflectSceneNode {
-  return convertIntoReflectNodes([sceneNode], altParent)[0];
+  return intoReflectNodes([sceneNode], altParent)[0];
 }
 
-export function convertIntoReflectNodes(
+export function intoReflectNodes(
   sceneNode: ReadonlyArray<SceneNode>,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null
 ): Array<ReflectSceneNode> {
@@ -146,7 +146,7 @@ export function convertIntoReflectNodes(
           console.warn(
             `the givven node ${node.name} was type of GROUP, but it has single children, converting it to single node`
           );
-          return convertIntoReflectNodes(node.children, altParent)[0];
+          return intoReflectNodes(node.children, altParent)[0];
         }
 
         const altNode = new ReflectGroupNode({
@@ -162,7 +162,7 @@ export function convertIntoReflectNodes(
         convertLayout(altNode, node);
         convertBlend(altNode, node);
 
-        altNode.children = convertIntoReflectNodes(node.children, altNode);
+        altNode.children = intoReflectNodes(node.children, altNode);
         // try to find big rect and regardless of that result, also try to convert to autolayout.
         // There is a big chance this will be returned as a Frame
         // also, Group will always have at least 2 children.
@@ -217,7 +217,7 @@ export function convertIntoReflectNodes(
     }
   );
 
-  return mapped.filter(notEmpty);
+  return mapped.filter(array.filters.notEmpty);
 }
 
 function blendMainComponent(altNode: ReflectBaseNode, node: InstanceNode) {
@@ -369,7 +369,7 @@ export function convertSingleNodeToAlt(
   node: SceneNode,
   parent: ReflectFrameNode | ReflectGroupNode | null = null
 ): ReflectSceneNode {
-  return convertIntoReflectNodes([node], parent)[0];
+  return intoReflectNodes([node], parent)[0];
 }
 
 export function convertFrameNodeToAlt(
@@ -396,7 +396,7 @@ export function convertFrameNodeToAlt(
   convertCorner(altNode, node);
   convertConstraint(altNode, node);
 
-  altNode.children = convertIntoReflectNodes(node.children, altNode);
+  altNode.children = intoReflectNodes(node.children, altNode);
 
   return convertToAutoLayout(convertNodesOnRectangle(altNode));
 }

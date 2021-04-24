@@ -1,6 +1,10 @@
 import { ReflectBaseNode } from "../base.node";
 import { ReflectSceneNodeType } from "../node-type";
-import { LCRS, getNodeActualLCRS, getReletiveLCRS } from "../../../utils/lcrs";
+import {
+  LCRS,
+  getNodeActualLCRS,
+  getReletiveLCRS,
+} from "../../../features/constraints/lcrs";
 import type { ReflectSceneNode } from "../node-type-alias";
 
 export class ReflectConstraintMixin extends ReflectBaseNode {

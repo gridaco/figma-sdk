@@ -16,10 +16,6 @@ import {
   LineHeight,
 } from "../../figma/types/v1";
 
-export { TextAlign, TextAlignVertical };
-
-export type TextAutoResize = "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";
-
 export class ReflectTextNode extends ReflectDefaultShapeMixin {
   get type() {
     return ReflectSceneNodeType.text;

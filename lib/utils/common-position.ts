@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
+import type { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { coordinates } from "./coordinates";
 
 type Position =
@@ -25,9 +25,11 @@ export function commonPosition(node: ReflectSceneNode): Position {
     vPadding = (node.parent.paddingTop ?? 0) + (node.parent.paddingBottom ?? 0);
   }
 
-  if (!node.parent ||
+  if (
+    !node.parent ||
     (node.width === node.parent.width - hPadding &&
-      node.height === node.parent.height - vPadding)) {
+      node.height === node.parent.height - vPadding)
+  ) {
     return "";
   }
 
@@ -42,16 +44,19 @@ export function commonPosition(node: ReflectSceneNode): Position {
   }
 
   // < 4 is a threshold. If === is used, there can be rounding errors (28.002 !== 28)
-  const centerX = Math.abs(2 * (node.x - parentX) + node.width - node.parent.width) <
+  const centerX =
+    Math.abs(2 * (node.x - parentX) + node.width - node.parent.width) <
     threshold;
-  const centerY = Math.abs(2 * (node.y - parentY) + node.height - node.parent.height) <
+  const centerY =
+    Math.abs(2 * (node.y - parentY) + node.height - node.parent.height) <
     threshold;
 
   const minX = node.x - parentX < threshold;
   const minY = node.y - parentY < threshold;
 
   const maxX = node.parent.width - (node.x - parentX + node.width) < threshold;
-  const maxY = node.parent.height - (node.y - parentY + node.height) < threshold;
+  const maxY =
+    node.parent.height - (node.y - parentY + node.height) < threshold;
 
   // this needs to be on top, because Tailwind is incompatible with Center, so this will give preference.
   if (minX && minY) {

@@ -1,11 +1,9 @@
 export * from "./check-if-root";
 export * from "./filter-fills";
-export * from "./general";
 export * from "./has-image";
-export * from "./lcrs";
+export * from "../features/constraints/lcrs";
 export * from "./retrieve-fill";
 export * from "./retrieve-image-fills";
 export * from "./nodetype-map";
 export * from "./primary-color";
 export * from "./children";
-export * as variant from "./variant";

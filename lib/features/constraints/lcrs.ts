@@ -1,7 +1,10 @@
-import type { ReflectGroupNode, ReflectSceneNode } from "../nodes";
-import { ReflectSceneNodeType } from "../nodes/types/node-type";
-import { ConstraintType } from "../figma/types/v1";
+import type { ReflectGroupNode, ReflectSceneNode } from "../../nodes";
+import { ReflectSceneNodeType } from "../../nodes/types/node-type";
+import { ConstraintType } from "../../figma/types/v1";
 
+/**
+ * represents a constraints relative to parent node
+ */
 export type LCRS = "Left" | "Center" | "Right" | "Stretch" | "Scale" | "Mixed";
 
 export function getNodeActualLCRS(node: ReflectSceneNode): LCRS {
