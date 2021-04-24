@@ -45,6 +45,9 @@ import {
   ComponentNode,
 } from "../../figma/types/v1";
 import { ReflectConstraintMixin } from "../types/mixins/constraint.mixin";
+import { ReflectBaseNode } from "../types";
+import { makeReference } from "../lignt";
+import { makeComponentReference } from "../types/reflect-node-reference";
 
 /**
  * restrictied to single selection
@@ -130,7 +133,11 @@ export function convertIntoReflectNodes(
         node.type === "INSTANCE" ||
         node.type === "COMPONENT"
       ) {
-        return convertFrameNodeToAlt(node, altParent);
+        const altNode = convertFrameNodeToAlt(node, altParent);
+        if (node.type == "INSTANCE") {
+          blendMainComponent(altNode, node);
+        }
+        return altNode;
       } else if (node.type === "GROUP") {
         if (node.children.length === 1 && node.visible !== false) {
           // if Group is visible and has only one child, Group should disappear.
@@ -210,6 +217,10 @@ export function convertIntoReflectNodes(
   );
 
   return mapped.filter(notEmpty);
+}
+
+function blendMainComponent(altNode: ReflectBaseNode, node: InstanceNode) {
+  altNode.mainComponent = makeComponentReference(node.mainComponent);
 }
 
 function convertLayout(altNode: IReflectLayoutMixin, node: LayoutMixin) {

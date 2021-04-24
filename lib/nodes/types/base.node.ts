@@ -39,6 +39,7 @@ import { swapVariant } from "../../utils/variant/swap-instance";
 
 export class ReflectBaseNode
   implements IReflectNodeReference, IReflectLayoutMixin, IReflectBlendMixin {
+  readonly $schema: string = "reflect-ui.com";
   readonly type: ReflectSceneNodeType;
   origin: ReflectSceneNodeType;
   originRaw: string;
@@ -94,6 +95,7 @@ export class ReflectBaseNode
   readonly id: string;
   readonly absoluteTransform: Transform;
   parent: ReflectSceneNode | null;
+  mainComponent?: IReflectNodeReference | null;
 
   // region children related
   readonly children: Array<ReflectSceneNode> = [];
