@@ -7,7 +7,27 @@ import { array } from "@reflect-ui/uiutils";
 import { ReflectSceneNodeType } from "../../nodes/types/node-type";
 import type { IReflectNodeReference } from "../../nodes/lignt";
 
-export function getVariantNamesSet_Figma(
+import { Figma } from "../../figma";
+
+export function getVariantNamesSetFromRawNode_Figma(from: Figma.SceneNode) {
+  let masterVariantSet: Figma.ComponentSetNode;
+
+  if (from.type == "COMPONENT") {
+    masterVariantSet = from.parent as Figma.ComponentSetNode;
+  }
+
+  if (from.type == "INSTANCE") {
+    masterVariantSet = from.mainComponent.parent as Figma.ComponentSetNode;
+  }
+
+  if (from.type == "COMPONENT_SET") {
+    masterVariantSet = from;
+  }
+
+  return masterVariantSet.children.map((c) => c.name);
+}
+
+export function getVariantNamesSetFromReference_Figma(
   from: IReflectNodeReference
 ): string[] {
   let masterVariantSet: IReflectNodeReference;
@@ -39,6 +59,56 @@ export function buildVariantName_Figma(
       return `${key}=${value}`;
     })
     .join(", ");
+}
+
+/**
+ * e.g.
+ * serching targets : ['a=1, b=1, c=1', 'a=1, b=2', 'a=1, b=2, c=1']
+ * origin : 'a=1, b=1, c=1'
+ * changing property: b to 2
+ * result: 'a=1, b=2, c=1'
+ * @param params
+ */
+export function buildVariantNameIncluding_Figma(params: {
+  including: {
+    swapPropertyName: string;
+    swapPropertyValue: string;
+    thisOriginName: string;
+  };
+  existing: {
+    names: string[];
+  };
+}): string {
+  const { including, existing } = params;
+
+  const f_o_n = formatName(including.thisOriginName);
+  const f_o_v = extractPropertiesFromVariantName_Figma(f_o_n);
+
+  const origin_replacingPartialParamName = buildVariantName_Figma(f_o_v);
+  const target_replacingPartialParamName = buildVariantName_Figma(
+    new Map([[including.swapPropertyName, including.swapPropertyValue]])
+  );
+
+  // "a=1, b=1, c=1" to "a=2, b=1, c=1"
+  const _built_name = f_o_n.replace(
+    origin_replacingPartialParamName,
+    target_replacingPartialParamName
+  );
+
+  const existingName = existing.names.find((exn) => {
+    return formatName(exn) == _built_name;
+  });
+
+  console.log(
+    f_o_n,
+    f_o_v,
+    origin_replacingPartialParamName,
+    target_replacingPartialParamName,
+    _built_name,
+    existingName
+  );
+
+  return existingName;
 }
 
 /**
@@ -253,6 +323,45 @@ function _normalizeName(name: string): string {
   final = final.replace(/\s/g, "");
   // replace commas
   final = final.replace(/,/g, "");
+
+  return final;
+}
+
+/**
+ * used for comparing persice value
+ *
+ * from : "a=1,  b=1 , c= 3"
+ *
+ * to: "a=1, b=1, c=3"
+ *
+ * rulse are...
+ * 1. no double spaces
+ * 2. no spaces before and after "="
+ * 3. no spaces before ","
+ * 4. one space after ","
+ * @param name
+ * @returns
+ */
+function formatName(name: string): string {
+  const invalidPatterns = ["  ", " =", "= ", " ,"];
+  const _max_loop = 200;
+  let final = name;
+
+  const containsInvalid = () => invalidPatterns.some((s) => final.includes(s));
+
+  let _i = 0;
+  while (containsInvalid()) {
+    final = final.replace("  ", " ");
+    final = final.replace(" =", "=");
+    final = final.replace("= ", "=");
+    final = final.replace(" ,", ",");
+
+    // safe break
+    _i++;
+    if (_i > _max_loop) {
+      break;
+    }
+  }
 
   return final;
 }

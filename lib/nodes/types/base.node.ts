@@ -267,13 +267,13 @@ export class ReflectBaseNode
     }
   }
 
-  swapVariant(name: string): boolean {
+  swapVariant(name: string): InstanceNode {
     if (this.hasVariant) {
       return swapVariant((this as any) as InstanceNode, name);
     }
 
     // invalid request. this is not a variant compat node
-    return false;
+    return undefined;
   }
 
   get isInstance(): boolean {

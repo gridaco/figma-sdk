@@ -10,7 +10,7 @@ import { findMatchingVariantName, isVariantMatchingName } from "./variant-name";
  * @param from
  * @param name
  */
-export function swapVariant(from: InstanceNode, name: string): boolean {
+export function swapVariant(from: InstanceNode, name: string): InstanceNode {
   if (!from) {
     throw `cannot swap variant to "${name}". from instance not provided. the value is undefined (null)`;
   }
@@ -24,17 +24,16 @@ export function swapVariant(from: InstanceNode, name: string): boolean {
       throw `there are no matching variant to swap with name "${name}" for currently existing instance node ${from.name}`;
     }
 
-    swapInstance(
+    return swapInstance(
       // safely retrieve origin node again
       figma.getNodeById(from.id) as InstanceNode,
       // safely retrieve origin node again
       figma.getNodeById(swapTargetMasterComponent.id) as ComponentNode
     );
-    return true;
   } catch (_) {
     // somehow failed
     console.warn("swapping variant failed", _);
-    return false;
+    return from;
   }
 }
 
@@ -42,7 +41,10 @@ export function swapVariant(from: InstanceNode, name: string): boolean {
  * swaps current instance to other component instance (variant)
  * this is mostly used for mocking user's variant switch action in figma, which is not provided by the figma plugin api
  */
-export function swapInstance(from: InstanceNode, swapTo: ComponentNode) {
+export function swapInstance(
+  from: InstanceNode,
+  swapTo: ComponentNode
+): InstanceNode {
   const sharedParent = from.parent;
   const indexInParent = from.parent.children.findIndex((c) => c.id == from.id);
   const instance = swapTo.createInstance();
@@ -64,4 +66,6 @@ export function swapInstance(from: InstanceNode, swapTo: ComponentNode) {
   sharedParent.insertChild(indexInParent, instance);
   // remove origin
   from.remove();
+
+  return instance;
 }
