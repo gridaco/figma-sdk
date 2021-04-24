@@ -1,5 +1,5 @@
 import { MainAxisAlignment } from "@reflect-ui/core/lib";
-import { FigmaMainAxisAlignment } from "../types";
+import { FigmaMainAxisAlignment } from "../../figma/types";
 
 export function convertPrimaryAxisAlignItemsToMainAxisAlignment(
   origin: FigmaMainAxisAlignment

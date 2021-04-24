@@ -1,6 +1,6 @@
 import { BorderRadiusManifest } from "@reflect-ui/core/lib/ui/border-radius";
 import { mixed } from "../../nodes";
-import { FigmaCornerRadius } from "../types/corner-radius";
+import { FigmaCornerRadius } from "../../figma/types";
 
 export function convertFigmaCornerRadiusToBorderRadius(
   origin: FigmaCornerRadius

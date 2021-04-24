@@ -1,13 +1,15 @@
 import { convertGroupToFrame } from "./group-to-frame.convert";
 import { mostFrequent } from "@reflect-ui/uiutils/lib";
-import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
 import {
   FigmaCrossAxisAligment,
   FigmaMainAxisAlignment,
 } from "../../figma/types";
-import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
+import {
+  convertLayoutModeToAxis,
+  convertPrimaryAxisAlignItemsToMainAxisAlignment,
+  convertCounterAxisAlignItemsToCrossAxisAlignment,
+} from "../../converters/figma";
 import { Axis } from "@reflect-ui/core/lib";
-import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.convert";
 import { ReflectFrameNode } from "../types/frame.node";
 import { ReflectGroupNode } from "../types/group.node";
 import type { ReflectSceneNode } from "../types/node-type-alias";

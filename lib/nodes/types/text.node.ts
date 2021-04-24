@@ -6,7 +6,7 @@ import {
 } from "@reflect-ui/core";
 import { ReflectSceneNodeType } from "./node-type";
 import { getTextStyleById } from "../../figma";
-import { extractTextStyleFromTextNode } from "../../figma/converters/text-style.convert";
+import { converters } from "../../";
 import { ReflectDefaultShapeMixin } from "./mixins";
 import {
   FontName,
@@ -58,7 +58,7 @@ export class ReflectTextNode extends ReflectDefaultShapeMixin {
       return getTextStyleById(this.textStyleId as string);
     } catch (e) {
       // console.error(`error occcured while getting text style by id`, e)
-      return extractTextStyleFromTextNode(this);
+      return converters.figma.extractTextStyleFromTextNode(this);
     }
   }
 }

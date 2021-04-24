@@ -1,4 +1,4 @@
-import { TextNode, LetterSpacing, figma } from "../types/v1";
+import { TextNode, LetterSpacing, figma } from "../../figma/types/v1";
 export function convertLetterSpacingToReflect(
   origin: LetterSpacing,
   node?: TextNode

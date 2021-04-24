@@ -1,6 +1,11 @@
 import { Color as ReflectColor, ColorFormat } from "@reflect-ui/core/lib/color";
 import { colorToRGBA } from "@reflect-ui/core/lib/converters/color.convert";
-import { FigmaColor, FigmaColorFormat, FigmaRGB, FigmaRGBA } from "../types";
+import {
+  FigmaColor,
+  FigmaColorFormat,
+  FigmaRGB,
+  FigmaRGBA,
+} from "../../figma/types";
 
 export function reflectColorToFigmaColor(
   reflectColor: ReflectColor,

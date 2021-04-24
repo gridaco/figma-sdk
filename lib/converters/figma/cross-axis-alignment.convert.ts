@@ -1,5 +1,5 @@
 import { CrossAxisAlignment } from "@reflect-ui/core/lib";
-import { FigmaCrossAxisAligment } from "../types";
+import { FigmaCrossAxisAligment } from "../../figma/types";
 
 export function convertCounterAxisAlignItemsToCrossAxisAlignment(
   origin: FigmaCrossAxisAligment

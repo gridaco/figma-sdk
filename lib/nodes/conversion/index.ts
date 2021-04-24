@@ -18,14 +18,15 @@ import { convertToAutoLayout } from "./auto-layout.convert";
 import { notEmpty } from "../../utils/general";
 import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
 import { shouldIgnore } from "../../features/key-annotations";
+
 import {
   convertTextAlignHorizontalToReflect,
   convertTextAlignVerticalToReflect,
-} from "../../figma/converters/text-align.converter";
-import { convertPrimaryAxisAlignItemsToMainAxisAlignment } from "../../figma/converters/main-axis-alignment.convert";
-import { convertCounterAxisAlignItemsToCrossAxisAlignment } from "../../figma/converters/cross-axis-alignment.convert";
-import { convertLayoutModeToAxis } from "../../figma/converters/layout-mode.convert";
-import { convertFigmaCornerRadiusToBorderRadius } from "../../figma/converters/corner-radius.convert";
+  convertLayoutModeToAxis,
+  convertPrimaryAxisAlignItemsToMainAxisAlignment,
+  convertCounterAxisAlignItemsToCrossAxisAlignment,
+  convertFigmaCornerRadiusToBorderRadius,
+} from "../../converters/figma";
 import {
   figma,
   SceneNode,

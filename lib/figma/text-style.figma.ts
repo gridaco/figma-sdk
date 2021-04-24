@@ -1,6 +1,6 @@
 import { typographyIntelisenceMapping } from "@reflect-ui/lint/lib/constants/naming-conventions/text-theme.naming";
 import { TextStyleManifest } from "@reflect-ui/core";
-import { convertTextStyleToReflect } from "./converters/text-style.convert";
+import { convertTextStyleToReflect } from "../converters/figma";
 import { figma } from "./types/v1";
 
 export function getTextStyleById(id: string): TextStyleManifest {

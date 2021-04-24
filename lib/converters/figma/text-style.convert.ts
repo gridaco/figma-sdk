@@ -1,6 +1,6 @@
 import { TextStyleManifest } from "@reflect-ui/core/lib";
 import { convertFontStyleToReflect } from "./font-style.convert";
-import { convertFontWeightToReflect } from "./font-weight.convert";
+import { convertFontWeightToReflect } from "../general/font-weight.convert";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
 import { convertLineHeightToReflect } from "./line-height.convert";
 import { convertTextDecorationToReflect } from "./tetx-decoration.convert";
@@ -10,7 +10,7 @@ import {
   FontName,
   LetterSpacing,
   LineHeight,
-} from "../types/v1";
+} from "../../figma/types/v1";
 import { ReflectTextNode } from "../../nodes/types/text.node";
 
 export function convertTextStyleToReflect(

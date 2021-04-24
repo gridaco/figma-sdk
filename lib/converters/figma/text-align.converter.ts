@@ -1,11 +1,8 @@
 import { TextAlignVertical, TextAlign } from "@reflect-ui/core/lib";
-
-export type FigmaTextHorizontalAligment =
-  | "LEFT"
-  | "CENTER"
-  | "RIGHT"
-  | "JUSTIFIED";
-export type FigmaTextVerticalAligment = "TOP" | "CENTER" | "BOTTOM";
+import {
+  FigmaTextHorizontalAligment,
+  FigmaTextVerticalAligment,
+} from "../../figma/types";
 
 export function convertTextAlignHorizontalToReflect(
   origin: FigmaTextHorizontalAligment
