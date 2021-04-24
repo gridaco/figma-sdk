@@ -18,6 +18,9 @@ export interface IReflectNodeReference {
 }
 
 export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
+  if (!r) {
+    throw 'canno perform "makeReference". input node to make reference was empty';
+  }
   return <IReflectNodeReference>{
     name: r.name,
     type: r.type,
