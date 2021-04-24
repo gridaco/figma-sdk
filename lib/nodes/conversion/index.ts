@@ -17,7 +17,7 @@ import { mixed } from "../types/mixed";
 import { convertToAutoLayout } from "./auto-layout.convert";
 import { notEmpty } from "../../utils/general";
 import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
-import { IgnoreKeys, shouldIgnoreNode } from "../../features/ignore";
+import { shouldIgnore } from "../../features/key-annotations";
 import {
   convertTextAlignHorizontalToReflect,
   convertTextAlignVerticalToReflect,
@@ -65,12 +65,7 @@ export function convertIntoReflectNodes(
   const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
     (node: SceneNode) => {
       // pre-filtering
-      const ignoreResult = shouldIgnoreNode(node.name);
-      if (
-        ignoreResult.ignored &&
-        ignoreResult.type == IgnoreKeys.KEY_IGNORE_ALL
-      ) {
-        console.info(`ignoring`, ignoreResult.reason);
+      if (shouldIgnore(node.name)) {
         return null;
       }
 
