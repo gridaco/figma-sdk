@@ -6,7 +6,7 @@
         "prepack": "tsc"
     },
     "dependencies": {
-        "@reflect-ui/uiutils": "0.0.7",
+        "@reflect-ui/uiutils": "0.0.8",
         "@reflect-ui/core": "0.0.2-rc.5.local",
         "@reflect-ui/lint": "0.0.5-rc"
     },
