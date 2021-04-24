@@ -1,17 +1,28 @@
-import { IgnoreKeys } from "./keys"
-export * from "./keys"
-
-
-interface IgnoreResult {
-    ignored: boolean,
-    reason?: string[]
-}
+import { IgnoreKeys } from "./keys";
+import { IgnoreResult, IgnoranceType } from "./types";
+export * from "./keys";
 
 export function shouldIgnoreNode(name: string): IgnoreResult {
-    const ignored = name.includes(IgnoreKeys.KEY_IGNORE_ALL)
-
+  const ignoreType = ignoranceTypeFrom(name);
+  if (ignoreType) {
     return {
-        ignored: ignored,
-        reason: ignored ? [`ignored since it contains key ${IgnoreKeys.KEY_IGNORE_ALL}`] : []
+      type: ignoreType,
+      ignored: true,
+      reason: [`ignored since it contains key ${ignoreType}`],
+    };
+  }
+
+  return {
+    ignored: false,
+  };
+}
+
+export function ignoranceTypeFrom(name: string): IgnoranceType {
+  // TODO support glob pattern matching
+  for (const kk of Object.keys(IgnoreKeys)) {
+    const v = IgnoreKeys[kk];
+    if (name.includes(v)) {
+      return v;
     }
+  }
 }

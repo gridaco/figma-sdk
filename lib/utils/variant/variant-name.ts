@@ -2,6 +2,30 @@
 /// this file's function implementation follows figma's variant component naming convention, which splits property and value by comma (,) in single line node name.
 ///
 
+import { array } from "@reflect-ui/uiutils";
+
+import { ReflectSceneNodeType } from "../../nodes/types/node-type";
+import type { IReflectNodeReference } from "../../nodes/lignt";
+
+export function getVariantNamesSet_Figma(
+  from: IReflectNodeReference
+): string[] {
+  let masterVariantSet: IReflectNodeReference;
+  if (from.origin == ReflectSceneNodeType.component) {
+    // if component & parent is variant set
+    if (from.parentReference.origin == ReflectSceneNodeType.variant_set) {
+      masterVariantSet = from.parentReference;
+    } else {
+      throw "the givven component is not variant compat component";
+    }
+  } else if (from.origin == ReflectSceneNodeType.variant_set) {
+    masterVariantSet = from;
+  } else {
+    throw `currently, nothing than variant set or variant component is supported. the input node's type was "${from.origin}"`;
+  }
+  return masterVariantSet.children.map((c) => c.name);
+}
+
 /**
  * builds property map to figma variant component node name
  * e.g. { on: false, variant: hover } -> "on=false, variant=hover"
@@ -35,11 +59,14 @@ export function extractPropertiesFromVariantName_Figma(
   return properties;
 }
 
-type FigmaVariantPropertyCompatType = "enum" | "boolean" | "string";
-interface FimaVariantPropertyData {
+type FigmaEnum = string[];
+type FigmaBoolean = "boolean";
+type FigmaUnique = "unique";
+type FigmaVariantPropertyCompatType = FigmaEnum | FigmaBoolean | FigmaUnique;
+export interface FimaVariantPropertyData {
   name: string;
   type: FigmaVariantPropertyCompatType;
-  defaultValue: string;
+  defaultValue?: string;
   nullable: boolean;
 }
 
@@ -51,8 +78,14 @@ interface FimaVariantPropertyData {
  * @param params
  */
 export function extractTypeFromVariantNames_Figma(
-  names: string[]
+  names: string[],
+  defaultName?: string
 ): FimaVariantPropertyData[] {
+  if (!names || names.length == 0) {
+    console.log("you might want to check this. input names were empty");
+    return [];
+  }
+
   // some names may not contain value, which means there are some blanked property by names (varaints)
   // so, we'll need to find the longest property container to be a sample.
 
@@ -76,20 +109,95 @@ export function extractTypeFromVariantNames_Figma(
     Array<FigmaVariantPropertyCompatType>
   >();
 
-  // iterates through single property
-  highestBidder.forEach((v, k) => {
-    const p_name = k;
-    const p_value = v;
-    const p_infered_type = inferTypeFromVariantValue_Figma(v);
-    inferedPropertyTypeMap[k];
+  const _tmp_uniqueValuesMap = new Map<string, Array<string>>();
+
+  // iterates throught all so we can collect all values for properties
+  propertyMaps.forEach((v) => {
+    v.forEach((p_value, p_name) => {
+      const p_infered_type = inferTypeFromVariantValue_Figma(p_value);
+
+      //
+      const _tmp_uniquValuesForThis = _tmp_uniqueValuesMap.get(p_name);
+      if (_tmp_uniquValuesForThis) {
+        _tmp_uniqueValuesMap.set(
+          p_name,
+          _tmp_uniquValuesForThis.concat(p_value)
+        );
+      } else {
+        _tmp_uniqueValuesMap.set(p_name, [p_value]);
+      }
+      //
+
+      //
+      const inferedPropertyTypesForThis = inferedPropertyTypeMap.get(p_name);
+      if (inferedPropertyTypesForThis) {
+        inferedPropertyTypeMap.set(
+          p_name,
+          inferedPropertyTypesForThis.concat(p_infered_type)
+        );
+      } else {
+        inferedPropertyTypeMap.set(p_name, [p_infered_type]);
+      }
+      //
+    });
   });
 
+  // the final solid fixed type map by key (property name)
+  const fixedPropertyTypeMap = new Map<
+    string,
+    FigmaVariantPropertyCompatType
+  >();
   // inferedPropertyTypeMap to fixed type
-  // inferedPropertyTypeMap.forEach((v, k) => {
-  //   if (k.)
-  // })
+  inferedPropertyTypeMap.forEach((v, k) => {
+    const _len = v.length;
 
-  return [];
+    if (_len == 1) {
+      // fallback to string
+      fixedPropertyTypeMap.set(k, "unique");
+    } else if (_len >= 2) {
+      if (array.isAllEqual(v) && v[0] == "boolean") {
+        // return boolean
+        fixedPropertyTypeMap.set(k, "boolean");
+      } else {
+        // if not all equal or not boolean (string, string) will be treated as (enum)
+        // fallback to enum
+
+        // set unum
+        const uniqueValues: FigmaEnum = _tmp_uniqueValuesMap
+          .get(k)
+          .filter(array.filters.onlyUnique);
+        fixedPropertyTypeMap.set(k, uniqueValues);
+      }
+    } else {
+      // when len is 0
+      throw "this cannot be happening";
+    }
+  });
+
+  // set default value map if possible
+  let defaultPropertyValuesMap: Map<string, string> | undefined;
+  if (defaultName) {
+    defaultPropertyValuesMap = extractPropertiesFromVariantName_Figma(
+      defaultName
+    );
+  }
+  //
+
+  const final: FimaVariantPropertyData[] = [];
+
+  fixedPropertyTypeMap.forEach((v, k) => {
+    final.push({
+      name: k,
+      defaultValue: defaultPropertyValuesMap
+        ? defaultPropertyValuesMap.get(k)
+        : null,
+      type: v,
+      // implement nullable feature
+      nullable: true,
+    });
+  });
+
+  return final;
 }
 
 const FIGMA_BOOLEAN_REPRESENTERS = ["on", "off", "true", "false"];
@@ -99,7 +207,7 @@ function inferTypeFromVariantValue_Figma(
   if (FIGMA_BOOLEAN_REPRESENTERS.includes(value)) {
     return "boolean";
   } else {
-    return "string";
+    return "unique";
   }
 }
 
