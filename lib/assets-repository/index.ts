@@ -1,1 +1,2 @@
-export * from "./image-repository"
+export * from "./hosting";
+export * from "./image-repository";
