@@ -54,23 +54,32 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
 }
 
 export function makeComponentReference(r: Figma.ComponentNode) {
+  if (!r) {
+    console.warn(
+      "the givven input was empty. cannot perform 'makeComponentReference'"
+    );
+    return;
+  }
   if (r.type == "COMPONENT") {
     return <IReflectNodeReference>{
       name: r.name,
       type: r.type,
       origin: r.type,
       id: r.id,
-      parentReference: {
+      parentReference: r.parent && {
         name: r.parent.name,
         type: r.parent.type,
         origin: r.parent.type,
         id: r.parent.id,
-        children: r.parent.children.map((c) => ({
-          name: c.name,
-          type: c.type,
-          origin: c.type,
-          id: c.id,
-        })),
+        children: r.parent.children.map(
+          (c) =>
+            c && {
+              name: c.name,
+              type: c.type,
+              origin: c.type,
+              id: c.id,
+            }
+        ),
       },
       children:
         "children" in r
