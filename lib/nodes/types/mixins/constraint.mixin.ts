@@ -6,6 +6,7 @@ import {
   getReletiveLCRS,
 } from "../../../features/constraints/lcrs";
 import type { ReflectSceneNode } from "../node-type-alias";
+import { Constraints } from "../../../figma/types/v1";
 
 export class ReflectConstraintMixin extends ReflectBaseNode {
   // @ts-ignore

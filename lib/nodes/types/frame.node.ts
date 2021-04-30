@@ -20,6 +20,7 @@ import {
   StrokeJoin,
   StrokeCap,
   Effect,
+  Transform,
 } from "../../figma/types/v1";
 import { ReflectSceneNodeType } from "./node-type";
 import type { ReflectSceneNode } from "./node-type-alias";
