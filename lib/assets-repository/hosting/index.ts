@@ -1,4 +1,4 @@
-import { upload } from "@bridged.xyz/client-sdk/lib/hosting";
+import { hosting } from "@bridged.xyz/base-sdk";
 import { ImageAsset, TransportableImageRepository } from "../image-repository";
 
 export class ImageHostingRepository {
@@ -46,7 +46,7 @@ async function hostImage(key: string, data: Uint8Array): Promise<string> {
   });
   // const uploaded = await upload(fileName, fileBlob)
 
-  const uploaded = await upload({
+  const uploaded = await hosting.upload({
     file: fileBlob,
     name: fileName,
   });

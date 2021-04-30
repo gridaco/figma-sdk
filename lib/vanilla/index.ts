@@ -1,9 +1,10 @@
 import {
-  StorableLayerType,
-  StorableSceneType,
   TransportLayer,
   VanillaSceneTransport,
-} from "@bridged.xyz/client-sdk/lib";
+  StorableLayerType,
+  StorableSceneType,
+} from "@bridged.xyz/base-sdk";
+
 import {
   ReflectFrameNode,
   ReflectSceneNode,

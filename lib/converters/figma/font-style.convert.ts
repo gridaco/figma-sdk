@@ -8,7 +8,7 @@ export function convertFontStyleToReflect(
   }
 
   let fontStyle: FontStyle;
-  if (original && original.style.toLowerCase().match("italic")) {
+  if (original && original.style?.toLowerCase().match("italic")) {
     fontStyle = FontStyle.italic;
   }
   return fontStyle;

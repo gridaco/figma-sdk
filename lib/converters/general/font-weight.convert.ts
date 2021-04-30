@@ -2,7 +2,7 @@ import { FontWeight } from "@reflect-ui/core";
 
 // Convert generic named weights to numbers, which is the way tailwind understands
 export function convertFontWeightToReflect(weight: string): FontWeight {
-  weight = weight.toLowerCase();
+  weight = weight?.toLowerCase();
   switch (weight) {
     case "thin":
       return FontWeight.w100;
@@ -27,6 +27,9 @@ export function convertFontWeightToReflect(weight: string): FontWeight {
     case "black":
       return FontWeight.w900;
     default:
+      console.warn(
+        `"${weight}" not handled properly. converting it as regular instead.`
+      );
       return FontWeight.w400;
   }
 }
