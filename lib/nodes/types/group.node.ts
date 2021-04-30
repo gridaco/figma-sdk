@@ -1,5 +1,5 @@
 import { BlendMode, Effect } from "../../figma/types/v1";
-import { Transform } from "@reflect-ui/uiutils/lib/types";
+import { types } from "@reflect-ui/uiutils";
 import { ReflectChildrenMixin } from "./mixins/children.mixin";
 import { IReflectBlendMixin, IReflectLayoutMixin } from "./mixins";
 import { ReflectSceneNodeType } from "./node-type";
@@ -16,7 +16,7 @@ export class ReflectGroupNode
   effectStyleId: string;
   visible: boolean;
   radius: number;
-  absoluteTransform: Transform;
+  absoluteTransform: types.Transform;
   x: number;
   y: number;
   rotation: number;

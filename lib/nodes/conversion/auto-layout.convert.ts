@@ -1,5 +1,5 @@
 import { convertGroupToFrame } from "./group-to-frame.convert";
-import { mostFrequent } from "@reflect-ui/uiutils/lib";
+import { mostFrequent } from "@reflect-ui/uiutils";
 import {
   FigmaCrossAxisAligment,
   FigmaMainAxisAlignment,

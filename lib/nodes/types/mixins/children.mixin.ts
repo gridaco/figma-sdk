@@ -1,6 +1,6 @@
 import type { ReflectSceneNode } from "../node-type-alias";
 import { ReflectConstraintMixin } from "./constraint.mixin";
-import { RGBAF } from "@reflect-ui/uiutils/lib/types";
+import { types } from "@reflect-ui/uiutils";
 
 export interface IChildrenMixin<T> {
   children: Array<T>;
@@ -19,7 +19,7 @@ export abstract class ReflectChildrenMixin
   }
   isRelative?: boolean;
 
-  get mostUsedColor(): ReadonlyArray<RGBAF> {
+  get mostUsedColor(): ReadonlyArray<types.RGBAF> {
     throw "not implemented";
   }
 }

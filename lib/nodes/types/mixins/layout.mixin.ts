@@ -1,7 +1,7 @@
-import { Transform } from "@reflect-ui/uiutils/lib/types";
+import { types } from "@reflect-ui/uiutils";
 
 export interface IReflectLayoutMixin {
-  absoluteTransform: Transform;
+  absoluteTransform: types.Transform;
   x: number;
   y: number;
   rotation: number; // In degrees

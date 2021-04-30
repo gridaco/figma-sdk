@@ -34,7 +34,10 @@ import {
 import { IReflectLayoutMixin } from "./mixins/layout.mixin";
 import { IReflectBlendMixin } from "./mixins/blend.mixin";
 import { IReflectNodeReference, makeReference } from "./reflect-node-reference";
-import { Transform, RGBAF } from "@reflect-ui/uiutils/lib/types";
+import { types } from "@reflect-ui/uiutils";
+type Transform = types.Transform;
+type RGBAF = types.RGBAF;
+
 import { swapVariant } from "../../features/variant/swap-instance";
 
 export class ReflectBaseNode
