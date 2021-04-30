@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "@reflect-ui/core": "0.0.2-rc.5.local",
-        "@reflect-ui/lint": "0.0.5-rc"
+        "@reflect-ui/namings": "0.0.3"
     },
     "devDependencies": {
         "typescript": "^4.0.5"
