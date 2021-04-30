@@ -69,13 +69,17 @@ export function intoReflectNodes(
   const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
     (node: SceneNode) => {
       // pre-filtering
+      console.log("node", node);
       if (shouldIgnore(node.name)) {
         return null;
       }
 
-      const isVisible = node.visible;
-      if (!isVisible) {
-        return null;
+      // figma non context data does not contain field 'visible', so we'll need to check it explicitly
+      if (node.visible !== undefined) {
+        const isVisible = node.visible === true;
+        if (!isVisible) {
+          return null;
+        }
       }
 
       if (node.type === "RECTANGLE" || node.type === "ELLIPSE") {
@@ -348,7 +352,7 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
 function figmaToReflectProperty<T>(
   origin: T | PluginAPI["mixed"]
 ): T | undefined {
-  if (origin === figma.mixed) {
+  if (origin === figma?.mixed) {
     return undefined;
   }
   return origin as T;
@@ -359,7 +363,7 @@ function figmaToReflectProperty<T>(
 function figmaAccessibleMixedToReflectProperty<T>(
   origin: T | PluginAPI["mixed"]
 ): T | typeof mixed {
-  if (origin === figma.mixed) {
+  if (origin === figma?.mixed) {
     return mixed as any;
   }
   return origin as T;
