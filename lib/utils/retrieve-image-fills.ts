@@ -16,7 +16,7 @@ export function retrieveImageFills(fills: ReadonlyArray<Paint>): Array<Image> {
 }
 
 export function retrieveImageFill(fill: ImagePaint): Image {
-  return figma.getImageByHash(fill.imageHash);
+  return figma?.getImageByHash(fill.imageHash);
 }
 
 export function retrievePrimaryImageFill(fills: ReadonlyArray<Paint>): Image {
