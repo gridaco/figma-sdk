@@ -11,8 +11,7 @@ import {
   ReflectSceneNodeType,
   ReflectTextNode,
 } from "@bridged.xyz/design-sdk/lib/nodes";
-import { TextManifest, ImageManifest } from "@reflect-ui/core/lib";
-import { converters } from "@reflect-ui/core/lib";
+import { converters, TextManifest, ImageManifest } from "@reflect-ui/core";
 import { ImageRepository } from "../assets-repository";
 import { makeCGRect } from "./make";
 

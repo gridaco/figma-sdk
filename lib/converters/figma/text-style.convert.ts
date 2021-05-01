@@ -1,4 +1,4 @@
-import { TextStyleManifest } from "@reflect-ui/core/lib";
+import { TextStyleManifest } from "@reflect-ui/core";
 import { convertFontStyleToReflect } from "./font-style.convert";
 import { convertFontWeightToReflect } from "../general/font-weight.convert";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
