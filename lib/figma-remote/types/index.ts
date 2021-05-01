@@ -206,7 +206,7 @@ export interface FrameBase extends Global {
    * "TOP" and "BOTTOM". * In vertical auto-layout frames, "MIN" and
    * "MAX" correspond to "LEFT" and "RIGHT".
    */
-  readonly layoutAlign?: string;
+  readonly layoutAlign?: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
   /**
    * Node ID of node to transition to in prototyping
    * @default null

@@ -10,6 +10,8 @@ import { convertFigmaRemoteEffectsToFigma } from "../converters/effect.convert";
 import { convertFigmaRemoteFillsToFigma } from "../converters/fills.convert";
 import { convertFigmaRemoteStrokesToFigma } from "../converters/strokes.convert";
 import { figmaRemoteLineHeightToFigma } from "../converters/line-height.convert";
+import { MappingTextNode } from "./mapping-instance";
+import { blendBaseNode } from "../blenders/general.blend";
 
 /**
  * @todo not fully implemented
@@ -28,6 +30,12 @@ export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
     [number, number, number],
     [number, number, number]
   ];
+
+  // const mapping = new MappingTextNode();
+  // blendBaseNode({
+  //   target: mapping,
+  //   source: remText,
+  // });
 
   return {
     type: "TEXT",
