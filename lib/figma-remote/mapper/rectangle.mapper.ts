@@ -1,7 +1,31 @@
-import { Rect } from "../types";
+import { Rectangle } from "../types";
 import { Figma } from "../../figma";
-export function mapFigmaRemoteTextToFigma(remRect: Rect): Figma.RectangleNode {
+import { MappingRectangleNode } from "./mapping-instance";
+import { blendBaseNode } from "../blenders";
+import {
+  blendCornerNode,
+  blendRectangleCornerNode,
+} from "../blenders/corner.blend";
+export function mapFigmaRemoteRectangleToFigma(
+  remRect: Rectangle
+): Figma.RectangleNode {
+  const mapping = new MappingRectangleNode();
+  blendBaseNode({
+    target: mapping,
+    source: remRect,
+  });
+
+  blendCornerNode({
+    target: mapping,
+    source: remRect,
+  });
+
+  blendRectangleCornerNode({
+    target: mapping,
+    source: remRect,
+  });
+
   return <Figma.RectangleNode>{
-    width: remRect.width,
+    ...mapping,
   };
 }

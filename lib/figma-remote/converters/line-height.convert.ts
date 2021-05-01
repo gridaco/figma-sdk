@@ -18,7 +18,7 @@ export function figmaRemoteLineHeightToFigma(params: {
     };
   } else {
     console.warn(
-      "figma api version might have been updated. this cannot be thrown. check this."
+      `cannot perform "figmaRemoteLineHeightToFigma" with "${params}"figma api version might have been updated. this cannot be thrown. check this.`
     );
     // safely return fallback
     return {

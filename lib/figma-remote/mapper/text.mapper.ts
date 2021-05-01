@@ -19,51 +19,16 @@ import { blendBaseNode } from "../blenders/general.blend";
  * @returns
  */
 export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
-  const _constraints = convertFigmaRemoteLayoutConstraintsToFigmaConstraints(
-    remText.constraints
-  );
-
-  const _effects = convertFigmaRemoteEffectsToFigma(...remText.effects);
-  const _fills = convertFigmaRemoteFillsToFigma(...remText.fills);
-  const _strokes = convertFigmaRemoteStrokesToFigma(...remText.strokes);
-  const _transform = remText.relativeTransform as [
-    [number, number, number],
-    [number, number, number]
-  ];
-
-  // const mapping = new MappingTextNode();
-  // blendBaseNode({
-  //   target: mapping,
-  //   source: remText,
-  // });
+  const mapping = new MappingTextNode();
+  blendBaseNode({
+    target: mapping,
+    source: remText,
+  });
 
   return {
+    ...mapping,
+
     type: "TEXT",
-
-    // BaseNodeMixin
-    id: remText.id,
-    name: remText.name,
-    x: remText.absoluteBoundingBox.x,
-    y: remText.absoluteBoundingBox.y,
-    width: remText.absoluteBoundingBox.width,
-    height: remText.absoluteBoundingBox.height,
-
-    visible: remText.visible,
-    layoutAlign: remText.layoutAlign,
-
-    opacity: remText.opacity,
-    exportSettings: remText.exportSettings,
-    blendMode: remText.blendMode,
-    relativeTransform: _transform,
-    effects: _effects,
-    isMask: remText.isMask,
-    fills: _fills,
-    strokes: _strokes,
-    strokeWeight: remText.strokeWeight,
-    strokeAlign: remText.strokeAlign,
-
-    // constraints
-    constraints: _constraints,
 
     // pure text
     textAlignHorizontal: remText.style.textAlignHorizontal,
@@ -94,25 +59,7 @@ export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
     // static override
     hasMissingFont: false,
     textStyleId: undefined,
-    effectStyleId: undefined,
-    strokeStyleId: undefined,
-    fillStyleId: undefined,
     autoRename: false,
-    removed: false,
-    locked: undefined,
-    parent: undefined,
-    strokeCap: undefined,
-    strokeMiterLimit: undefined,
-    strokeJoin: undefined,
-    dashPattern: undefined,
-    outlineStroke: undefined,
-    constrainProportions: undefined,
-    layoutGrow: undefined,
-
-    // TODO
-    reactions: undefined,
-    rotation: 0, // calculate with transform
-    absoluteTransform: undefined, // calculate with transform
 
     //
     toString: __TO_STRING__CALL(remText.id, remText.name),
@@ -126,6 +73,7 @@ export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
     rescale: _FILL_INTERFACE_METHODS,
     resizeWithoutConstraints: _FILL_INTERFACE_METHODS,
     exportAsync: _FILL_INTERFACE_METHODS, // TODO - support this with remote api
+    outlineStroke: _FILL_INTERFACE_METHODS,
 
     //
     clone: _FILL_INTERFACE_METHODS,

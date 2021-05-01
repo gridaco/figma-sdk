@@ -5,7 +5,10 @@
 ////
 import { Figma } from "../../figma";
 
-export type MappingNode = MappingRectangleNode | MappingTextNode;
+export type MappingNode =
+  | MappingRectangleNode
+  | MappingFrameNode
+  | MappingTextNode;
 
 /**
  * RectangleNode Mapping
@@ -286,4 +289,132 @@ export class MappingTextNode implements Figma.TextNode {
     throw new Error("Method not implemented.");
   }
   constraints: Figma.Constraints;
+}
+
+export class MappingFrameNode implements Figma.FrameNode {
+  type: "FRAME";
+  clone(): Figma.FrameNode {
+    throw new Error("Method not implemented.");
+  }
+  layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
+  primaryAxisSizingMode: "FIXED" | "AUTO";
+  counterAxisSizingMode: "FIXED" | "AUTO";
+  primaryAxisAlignItems: "CENTER" | "MIN" | "MAX" | "SPACE_BETWEEN";
+  counterAxisAlignItems: "CENTER" | "MIN" | "MAX";
+  paddingLeft: number;
+  paddingRight: number;
+  paddingTop: number;
+  paddingBottom: number;
+  itemSpacing: number;
+  horizontalPadding: number;
+  verticalPadding: number;
+  layoutGrids: readonly Figma.LayoutGrid[];
+  gridStyleId: string;
+  clipsContent: boolean;
+  guides: readonly Figma.Guide[];
+  id: string;
+  parent: Figma.BaseNode & Figma.ChildrenMixin;
+  name: string;
+  removed: boolean;
+  toString(): string {
+    throw new Error("Method not implemented.");
+  }
+  remove(): void {
+    throw new Error("Method not implemented.");
+  }
+  getPluginData(key: string): string {
+    throw new Error("Method not implemented.");
+  }
+  setPluginData(key: string, value: string): void {
+    throw new Error("Method not implemented.");
+  }
+  getSharedPluginData(namespace: string, key: string): string {
+    throw new Error("Method not implemented.");
+  }
+  setSharedPluginData(namespace: string, key: string, value: string): void {
+    throw new Error("Method not implemented.");
+  }
+  setRelaunchData(data: { [command: string]: string }): void {
+    throw new Error("Method not implemented.");
+  }
+  visible: boolean;
+  locked: boolean;
+  children: readonly Figma.SceneNode[];
+  appendChild(child: Figma.SceneNode): void {
+    throw new Error("Method not implemented.");
+  }
+  insertChild(index: number, child: Figma.SceneNode): void {
+    throw new Error("Method not implemented.");
+  }
+  findChildren(
+    callback?: (node: Figma.SceneNode) => boolean
+  ): Figma.SceneNode[] {
+    throw new Error("Method not implemented.");
+  }
+  findChild(callback: (node: Figma.SceneNode) => boolean): Figma.SceneNode {
+    throw new Error("Method not implemented.");
+  }
+  findAll(callback?: (node: Figma.SceneNode) => boolean): Figma.SceneNode[] {
+    throw new Error("Method not implemented.");
+  }
+  findOne(callback: (node: Figma.SceneNode) => boolean): Figma.SceneNode {
+    throw new Error("Method not implemented.");
+  }
+  expanded: boolean;
+  backgrounds: readonly Figma.Paint[];
+  backgroundStyleId: string;
+  fills: readonly Figma.Paint[] | Figma.PluginAPI["mixed"];
+  strokes: readonly Figma.Paint[];
+  strokeWeight: number;
+  strokeMiterLimit: number;
+  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
+  strokeCap: Figma.PluginAPI["mixed"] | Figma.StrokeCap;
+  strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
+  dashPattern: readonly number[];
+  fillStyleId: string | Figma.PluginAPI["mixed"];
+  strokeStyleId: string;
+  outlineStroke(): Figma.VectorNode {
+    throw new Error("Method not implemented.");
+  }
+  cornerRadius: number | Figma.PluginAPI["mixed"];
+  cornerSmoothing: number;
+  topLeftRadius: number;
+  topRightRadius: number;
+  bottomLeftRadius: number;
+  bottomRightRadius: number;
+  opacity: number;
+  blendMode: "PASS_THROUGH" | Figma.BlendMode;
+  isMask: boolean;
+  effects: readonly Figma.Effect[];
+  effectStyleId: string;
+  constraints: Figma.Constraints;
+  absoluteTransform: Figma.Transform;
+  relativeTransform: Figma.Transform;
+  x: number;
+  y: number;
+  rotation: number;
+  width: number;
+  height: number;
+  constrainProportions: boolean;
+  layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  layoutGrow: number;
+  resize(width: number, height: number): void {
+    throw new Error("Method not implemented.");
+  }
+  resizeWithoutConstraints(width: number, height: number): void {
+    throw new Error("Method not implemented.");
+  }
+  rescale(scale: number): void {
+    throw new Error("Method not implemented.");
+  }
+  exportSettings: readonly Figma.ExportSettings[];
+  exportAsync(settings?: Figma.ExportSettings): Promise<Uint8Array> {
+    throw new Error("Method not implemented.");
+  }
+  overflowDirection: Figma.OverflowDirection;
+  numberOfFixedChildren: number;
+  overlayPositionType: Figma.OverlayPositionType;
+  overlayBackground: Figma.OverlayBackground;
+  overlayBackgroundInteraction: Figma.OverlayBackgroundInteraction;
+  reactions: readonly Figma.Reaction[];
 }

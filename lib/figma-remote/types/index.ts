@@ -145,7 +145,9 @@ export interface Canvas extends Global {
 export interface FrameBase extends Global {
   /** An array of nodes that are direct children of this node */
   readonly children: ReadonlyArray<Node>;
-  /** Background of the node. This is deprecated, as backgrounds for frames are now in the fills field. */
+  /**
+   * @deprecated Background of the node. This is deprecated, as backgrounds for frames are now in the fills field.
+   */
   readonly background: ReadonlyArray<Paint>;
   /** Background color of the node. This is deprecated, as frames now support more than a solid color as a fills. Please use the fills field instead. */
   readonly backgroundColor: Color;

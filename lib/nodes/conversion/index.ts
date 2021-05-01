@@ -69,7 +69,6 @@ export function intoReflectNodes(
   const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
     (node: SceneNode) => {
       // pre-filtering
-      console.log("node", node);
       if (shouldIgnore(node.name)) {
         return null;
       }

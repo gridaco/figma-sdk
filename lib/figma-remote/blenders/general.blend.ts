@@ -9,9 +9,16 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.id = source.id;
   target.name = source.name;
   target.visible = source.visible;
+  target.opacity = source.opacity;
   target.layoutAlign = source.layoutAlign;
+  target.exportSettings = source.exportSettings;
+  target.blendMode = source.blendMode;
+  target.isMask = source.isMask;
 
   target.strokes = convertFigmaRemoteStrokesToFigma(...source.strokes);
+  target.strokeWeight = source.strokeWeight;
+  target.strokeAlign = source.strokeAlign;
+
   target.fills = convertFigmaRemoteFillsToFigma(...source.fills);
   target.effects = convertFigmaRemoteEffectsToFigma(...source.effects);
 
@@ -25,8 +32,27 @@ export function blendBaseNode(p: MappingBlendInput) {
   );
 
   // for some reason, xywh is not available for some node types by figma rem api.
-  target.x = source["x"];
-  target.y = source["y"];
-  target.width = source["width"];
-  target.height = source["height"];
+  target.x = source.absoluteBoundingBox.x;
+  target.y = source.absoluteBoundingBox.y;
+  target.width = source.absoluteBoundingBox.width;
+  target.height = source.absoluteBoundingBox.height;
+
+  // static override
+  target.effectStyleId = undefined;
+  target.strokeStyleId = undefined;
+  target.fillStyleId = undefined;
+  target.removed = false;
+  target.locked = false;
+  target.parent = undefined;
+  target.strokeCap = undefined;
+  target.strokeMiterLimit = undefined;
+  target.strokeJoin = undefined;
+  target.dashPattern = undefined;
+  target.constrainProportions = undefined;
+  target.layoutGrow = undefined;
+
+  // TODO
+  target.reactions = undefined;
+  target.rotation = 0; // calculate with transform
+  target.absoluteTransform = undefined; // calculate with transform
 }
