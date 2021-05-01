@@ -7,3 +7,4 @@ export * from "./retrieve-image-fills";
 export * from "./nodetype-map";
 export * from "./primary-color";
 export * from "./children";
+export * as figmaApi from "./figma-api-utils";
