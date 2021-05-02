@@ -1,5 +1,5 @@
 import { Color as ReflectColor, ColorFormat } from "@reflect-ui/core/lib/color";
-import { colorToRGBA } from "@reflect-ui/core/lib/converters/color.convert";
+import { convert_colors } from "@reflect-ui/core";
 import {
   FigmaColor,
   FigmaColorFormat,
@@ -11,7 +11,10 @@ export function reflectColorToFigmaColor(
   reflectColor: ReflectColor,
   format: FigmaColorFormat = FigmaColorFormat.rgb
 ): FigmaColor {
-  const convertedColor = colorToRGBA(reflectColor, ColorFormat.rgbaF);
+  const convertedColor = convert_colors.colorToRGBA(
+    reflectColor,
+    ColorFormat.rgbaF
+  );
   if (format == FigmaColorFormat.rgb) {
     return {
       r: convertedColor.r,

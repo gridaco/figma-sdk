@@ -6,7 +6,7 @@
         "prepack": "tsc"
     },
     "dependencies": {
-        "@reflect-ui/core": "0.0.2-rc.5.local",
+        "@reflect-ui/core": "0.0.2-rc.7",
         "@reflect-ui/namings": "0.0.3",
         "@bridged.xyz/base-sdk": "0.0.1-19"
     },
