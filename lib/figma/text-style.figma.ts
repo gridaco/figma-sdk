@@ -96,6 +96,7 @@ export class TextStyleRepository {
   }
 }
 
+// todo - migrate this to reflect core
 export enum TextThemeStyles {
   headline1 = "headline1",
   headline2 = "headline2",
