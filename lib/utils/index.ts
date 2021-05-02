@@ -8,3 +8,4 @@ export * from "./nodetype-map";
 export * from "./primary-color";
 export * from "./children";
 export * as figmaApi from "./figma-api-utils";
+export * as colors from "./colors";

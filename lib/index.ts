@@ -4,8 +4,6 @@ export * as converters from "./converters";
 // platform converters
 export * as convert from "./nodes/conversion";
 
-export * as utils from "./utils";
-
 // region features
 export * as features from "./features";
 export { keyAnnotations, variant, constraints } from "./features";
@@ -23,3 +21,7 @@ export * as _platform from "./platform";
 export * as vanilla from "./vanilla";
 
 export * as repo_assets from "./assets-repository";
+
+// utils
+export * as utils from "./utils";
+export * as color_utils from "./utils/colors";
