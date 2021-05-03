@@ -724,9 +724,6 @@ export interface BaseFrameMixin
   paddingBottom: number; // applicable only if layoutMode != "NONE"
   itemSpacing: number; // applicable only if layoutMode != "NONE"
 
-  horizontalPadding: number; // DEPRECATED: use the individual paddings
-  verticalPadding: number; // DEPRECATED: use the individual paddings
-
   layoutGrids: ReadonlyArray<LayoutGrid>;
   gridStyleId: string;
   clipsContent: boolean;

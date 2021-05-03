@@ -114,6 +114,8 @@ export class ReflectFrameNode
   layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
 
   get isAutoLayout(): boolean {
+    // FIXME ?
+    // This part needs to be fixed. this may not be a correct way to detemine autolayout. -> this.layoutMode !== undefined
     return this.origin == "FRAME" && this.layoutMode !== undefined;
   }
 }

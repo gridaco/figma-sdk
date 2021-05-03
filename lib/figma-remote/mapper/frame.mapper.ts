@@ -24,11 +24,20 @@ export function mapFigmaRemoteFrameToFigma(remFrame: Frame): Figma.FrameNode {
     source: remFrame,
   });
 
-  //   console.log("remFrame", remFrame);
-  //   console.log("mapping", mapping);
-
   return <Figma.FrameNode>{
     ...mapping,
     type: "FRAME",
+
+    layoutAlign: remFrame.layoutAlign,
+    layoutMode: remFrame.layoutMode ?? "NONE",
+    primaryAxisSizingMode: remFrame.primaryAxisSizingMode ?? "AUTO",
+    counterAxisSizingMode: remFrame.counterAxisSizingMode ?? "AUTO",
+    primaryAxisAlignItems: remFrame.primaryAxisAlignItems ?? "MIN",
+    counterAxisAlignItems: remFrame.counterAxisAlignItems ?? "MIN",
+    itemSpacing: remFrame.itemSpacing ?? 0,
+    paddingLeft: remFrame.paddingLeft ?? 0,
+    paddingRight: remFrame.paddingRight ?? 0,
+    paddingTop: remFrame.paddingTop ?? 0,
+    paddingBottom: remFrame.paddingBottom ?? 0,
   };
 }

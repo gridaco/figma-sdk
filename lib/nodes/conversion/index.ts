@@ -66,7 +66,7 @@ export function intoReflectNodes(
   sceneNode: ReadonlyArray<SceneNode>,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null
 ): Array<ReflectSceneNode> {
-  console.log("converting figma scene node to reflect node", sceneNode);
+  // console.log("converting figma scene node to reflect node", sceneNode);
   const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
     (node: SceneNode) => {
       // pre-filtering
@@ -244,12 +244,17 @@ function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
   rfNode.primaryAxisSizingMode = node.primaryAxisSizingMode;
   rfNode.counterAxisSizingMode = node.counterAxisSizingMode;
 
-  rfNode.mainAxisAlignment = convertPrimaryAxisAlignItemsToMainAxisAlignment(
+  const _primaryAxisAlign = convertPrimaryAxisAlignItemsToMainAxisAlignment(
     node.primaryAxisAlignItems
   );
-  rfNode.crossAxisAlignment = convertCounterAxisAlignItemsToCrossAxisAlignment(
+
+  const _counterAxisAlign = convertCounterAxisAlignItemsToCrossAxisAlignment(
     node.counterAxisAlignItems
   );
+
+  rfNode.mainAxisAlignment = _primaryAxisAlign;
+  rfNode.crossAxisAlignment = _counterAxisAlign;
+  console.log("applied", rfNode.mainAxisAlignment, rfNode.crossAxisAlignment);
 
   rfNode.paddingLeft = node.paddingLeft ?? 0;
   rfNode.paddingRight = node.paddingLeft ?? 0;

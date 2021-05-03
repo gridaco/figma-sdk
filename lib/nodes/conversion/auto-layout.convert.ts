@@ -29,7 +29,6 @@ export function convertToAutoLayout(
   // 1. check if frame is already set with auto layout.
   if (node.type == ReflectSceneNodeType.frame) {
     if ((node as ReflectFrameNode).isAutoLayout) {
-      console.log("already auto layout", node);
       return node;
     }
   }
@@ -93,18 +92,28 @@ export function convertToAutoLayout(
     const primaryDirection = allChildrenDirection.map((d) => d.primary);
     const counterDirection = allChildrenDirection.map((d) => d.counter);
 
-    // FIXME - inspect this
-    // figma: currently figma randomly returns wrong value for below 2 properties.
-    const priorityOrders = ["MIN", "MAX", "CENTER"];
-    frame.mainAxisAlignment = convertPrimaryAxisAlignItemsToMainAxisAlignment(
-      mostFrequent(primaryDirection, priorityOrders) as FigmaMainAxisAlignment
-    );
-    frame.crossAxisAlignment = convertCounterAxisAlignItemsToCrossAxisAlignment(
-      mostFrequent(counterDirection, priorityOrders) as FigmaCrossAxisAligment
-    );
+    const _priorityOrders = ["MIN", "MAX", "CENTER"];
+    if (frame.mainAxisAlignment == undefined) {
+      frame.mainAxisAlignment = convertPrimaryAxisAlignItemsToMainAxisAlignment(
+        mostFrequent(
+          primaryDirection,
+          _priorityOrders
+        ) as FigmaMainAxisAlignment
+      );
+    }
 
-    frame.counterAxisSizingMode = "FIXED";
-    frame.primaryAxisSizingMode = "FIXED";
+    if (frame.crossAxisAlignment == undefined) {
+      frame.crossAxisAlignment = convertCounterAxisAlignItemsToCrossAxisAlignment(
+        mostFrequent(
+          counterDirection,
+          _priorityOrders
+        ) as FigmaCrossAxisAligment
+      );
+    }
+
+    // TODO inspect this. is this required?
+    frame.counterAxisSizingMode = frame.counterAxisSizingMode ?? "FIXED";
+    frame.primaryAxisSizingMode = frame.primaryAxisSizingMode ?? "FIXED";
   }
 
   return node;

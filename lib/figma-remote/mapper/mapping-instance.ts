@@ -387,8 +387,6 @@ export class MappingFrameNode implements Figma.FrameNode {
   paddingTop: number;
   paddingBottom: number;
   itemSpacing: number;
-  horizontalPadding: number;
-  verticalPadding: number;
   layoutGrids: readonly Figma.LayoutGrid[];
   gridStyleId: string;
   clipsContent: boolean;

@@ -35,8 +35,6 @@ export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   newNode.layoutMode = undefined;
   newNode.counterAxisSizingMode = "AUTO";
   newNode.primaryAxisSizingMode = "AUTO";
-  newNode.mainAxisAlignment = MainAxisAlignment.center;
-  newNode.mainAxisAlignment = MainAxisAlignment.center;
   newNode.clipsContent = false;
   newNode.layoutGrids = [];
   newNode.gridStyleId = "";
