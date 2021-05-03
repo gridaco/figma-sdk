@@ -3,6 +3,13 @@ import { ReflectFrameNode } from "../types/frame.node";
 import { ReflectGroupNode } from "../types/group.node";
 import type { ReflectSceneNode } from "../types/node-type-alias";
 
+// TODO - Additional feature, this needs to be migrated to @designto/token/logics
+/**
+ * @todo
+ * @deprecated leave the current usage, but don't use this for future usage. this is not fully tested. converting group to centered frame is dangerous.
+ * @param node
+ * @returns
+ */
 export function convertGroupToFrame(node: ReflectGroupNode): ReflectFrameNode {
   const newNode = new ReflectFrameNode({
     id: node.id,

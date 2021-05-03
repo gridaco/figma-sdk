@@ -145,12 +145,12 @@ export interface Canvas extends Global {
 export interface FrameBase extends Global {
   /** An array of nodes that are direct children of this node */
   readonly children: ReadonlyArray<Node>;
+
   /**
-   * @deprecated Background of the node. This is deprecated, as backgrounds for frames are now in the fills field.
+   * If true, layer is locked and cannot be edited
    */
-  readonly background: ReadonlyArray<Paint>;
-  /** Background color of the node. This is deprecated, as frames now support more than a solid color as a fills. Please use the fills field instead. */
-  readonly backgroundColor: Color;
+  readonly locked: boolean;
+
   /**
    * An array of fill paints applied to the node
    * @default []
@@ -261,31 +261,57 @@ export interface FrameBase extends Global {
    * This property is only applicable for auto-layout frames
    * @default AUTO
    */
+
+  /**
+   *
+   */
+  readonly primaryAxisSizingMode: "FIXED" | "AUTO";
+
   readonly counterAxisSizingMode?: "FIXED" | "AUTO";
+
+  /**
+   * Determines how the auto-layout frame’s children should be aligned in the primary axis direction. This property is only applicable for auto-layout frames.
+   */
+  readonly primaryAxisAlignItems: "MIN" | "CENTER" | "MAX" | "SPACE_BETWEEN";
+
+  /**
+   * Determines how the auto-layout frame’s children should be aligned in the counter axis direction. This property is only applicable for auto-layout frames.
+   */
+  readonly counterAxisAlignItems: "MIN" | "CENTER" | "MAX";
+
+  readonly paddingLeft: number;
+  readonly paddingRight: number;
+  readonly paddingTop: number;
+  readonly paddingBottom: number;
+
   /**
    * The horizontal padding between the borders of the frame and its
    * children. This property is only applicable for auto-layout frames.
    * @default 0
    */
   readonly horizontalPadding?: number;
+
   /**
    * The vertical padding between the borders of the frame and its
    * children. This property is only applicable for auto-layout frames.
    * @default 0
    */
   readonly verticalPadding?: number;
+
   /**
    * The distance between children of the frame. This property is only
    * applicable for auto-layout frames.
    * @default 0
    */
   readonly itemSpacing?: number;
+
   /**
    * An array of layout grids attached to this node (see layout grids section
    * for more details). GROUP nodes do not have this attribute
    * @default []
    */
   readonly layoutGrids?: ReadonlyArray<LayoutGrid>;
+
   /**
    * Defines the scrolling behavior of the frame, if there exist contents
    * outside of the frame boundaries. The frame can either scroll
@@ -297,18 +323,26 @@ export interface FrameBase extends Global {
    * HORIZONTAL_AND_VERTICAL_SCROLLING
    * @default NONE
    */
-  readonly overflowDirection?: string;
+  readonly overflowDirection?:
+    | "NONE"
+    | "HORIZONTAL_SCROLLING"
+    | "VERTICAL_SCROLLING"
+    | "HORIZONTAL_AND_VERTICAL_SCROLLING";
+
   /**
    * An array of effects attached to this node
    * (see effects sectionfor more details)
    * @default []
    */
   readonly effects: ReadonlyArray<Effect>;
+
   /**
    * Does this node mask sibling nodes in front of it?
    * @default false
    */
   readonly isMask?: boolean;
+
+  readonly isMaskOutline?: boolean;
 }
 
 /** A node of fixed size containing other nodes */
