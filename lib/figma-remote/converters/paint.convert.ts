@@ -14,6 +14,11 @@ import {
  * @returns
  */
 export function figmaRemotePaintToFigma(remPaint: RemPaint): Paint {
+  // when visible is not provided by api, it's true by default.
+  const _visible = remPaint.visible ?? true;
+  // when opacity is not provided by api, it's 1(100%) by default.
+  const _opacity = remPaint.opacity ?? 1;
+
   switch (remPaint.type) {
     case "EMOJI":
       console.warn("type EMOJI cannot be handled on converter");
@@ -33,8 +38,8 @@ export function figmaRemotePaintToFigma(remPaint: RemPaint): Paint {
           [0, 1, 0],
         ], // remPaint.gradientHandlePositions, TODO
         gradientStops: remPaint.gradientStops,
-        visible: remPaint.visible,
-        opacity: remPaint.opacity,
+        visible: _visible,
+        opacity: _opacity,
         blendMode: remPaint.blendMode,
       };
       break;
@@ -47,8 +52,8 @@ export function figmaRemotePaintToFigma(remPaint: RemPaint): Paint {
         imageTransform: remPaint.imageTransform,
         scalingFactor: remPaint.scalingFactor,
         // FILTER NOT SUPPORTED
-        visible: remPaint.visible,
-        opacity: remPaint.opacity,
+        visible: _visible,
+        opacity: _opacity,
         blendMode: remPaint.blendMode,
       };
       break;
@@ -57,8 +62,8 @@ export function figmaRemotePaintToFigma(remPaint: RemPaint): Paint {
       return <SolidPaint>{
         type: "SOLID",
         color: remPaint.color,
-        visible: remPaint.visible,
-        opacity: remPaint.opacity,
+        visible: _visible,
+        opacity: _opacity,
         blendMode: remPaint.blendMode,
       };
       break;

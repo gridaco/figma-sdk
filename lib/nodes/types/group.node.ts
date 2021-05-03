@@ -25,9 +25,7 @@ export class ReflectGroupNode
   layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
   layoutGrow: number;
 
-  get type() {
-    return ReflectSceneNodeType.group;
-  }
+  type = ReflectSceneNodeType.group;
 
   children: Array<ReflectSceneNode>;
 }

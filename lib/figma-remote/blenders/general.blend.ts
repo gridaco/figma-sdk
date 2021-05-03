@@ -8,12 +8,12 @@ export function blendBaseNode(p: MappingBlendInput) {
   const { target, source } = p;
   target.id = source.id;
   target.name = source.name;
-  target.visible = source.visible;
-  target.opacity = source.opacity;
+  target.visible = source.visible ?? true;
+  target.opacity = source.opacity ?? 1;
   target.layoutAlign = source.layoutAlign;
   target.exportSettings = source.exportSettings;
-  target.blendMode = source.blendMode;
-  target.isMask = source.isMask;
+  target.blendMode = source.blendMode ?? "NORMAL";
+  target.isMask = source.isMask ?? false;
 
   target.strokes = convertFigmaRemoteStrokesToFigma(...source.strokes);
   target.strokeWeight = source.strokeWeight;
@@ -54,5 +54,8 @@ export function blendBaseNode(p: MappingBlendInput) {
   // TODO
   target.reactions = undefined;
   target.rotation = 0; // calculate with transform
-  target.absoluteTransform = undefined; // calculate with transform
+  target.absoluteTransform = [
+    [1, 0, 0],
+    [0, 1, 0],
+  ]; // calculate with transform
 }

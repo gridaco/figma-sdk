@@ -47,9 +47,7 @@ export class ReflectFrameNode
     IReflectCornerMixin,
     IReflectBlendMixin,
     IReflectLayoutMixin {
-  get type() {
-    return ReflectSceneNodeType.frame;
-  }
+  type = ReflectSceneNodeType.frame;
 
   absoluteTransform: Transform;
 
@@ -114,5 +112,9 @@ export class ReflectFrameNode
   width: number;
   height: number;
   layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+
+  get isAutoLayout(): boolean {
+    return this.origin == "FRAME" && this.layoutMode !== undefined;
+  }
 }
 //#endregion

@@ -13,6 +13,7 @@ import { Axis } from "@reflect-ui/core/lib";
 import { ReflectFrameNode } from "../types/frame.node";
 import { ReflectGroupNode } from "../types/group.node";
 import type { ReflectSceneNode } from "../types/node-type-alias";
+import { ReflectSceneNodeType } from "../types";
 /**
  * Add AutoLayout attributes if layout has items aligned (either vertically or horizontally).
  * To make the calculation, the average position of every child, ordered, needs to pass a threshold.
@@ -23,6 +24,18 @@ import type { ReflectSceneNode } from "../types/node-type-alias";
 export function convertToAutoLayout(
   node: ReflectFrameNode | ReflectGroupNode
 ): ReflectFrameNode | ReflectGroupNode {
+  // console.log("convertToAutoLayout", "node", node);
+
+  // 1. check if frame is already set with auto layout.
+  if (node.type == ReflectSceneNodeType.frame) {
+    if ((node as ReflectFrameNode).isAutoLayout) {
+      console.log("already auto layout", node);
+      return node;
+    }
+  }
+
+  // 2. if non set, detect if non auto layout group or frame can be convert as it.
+
   // only go inside when AutoLayout is not already set.
   if (
     (node instanceof ReflectFrameNode &&
@@ -199,6 +212,13 @@ function calculateInterval(
   return interval;
 }
 
+const ZERO_PADDING = {
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+};
+
 /**
  * Calculate the Padding.
  */
@@ -210,6 +230,24 @@ function detectAutoLayoutPadding(
   top: number;
   bottom: number;
 } {
+  // if node is a root node, than no padding is required (to itself, which means relative to its parent - which does not exists since it is root.).
+  if (node.isRoot) {
+    return ZERO_PADDING;
+  }
+
+  // if node is already explicitly set as autolayout (this is usual) by designer, then return as-is
+  if (node.isAutoLayout) {
+    return {
+      left: node.paddingLeft,
+      right: node.paddingRight,
+      top: node.paddingTop,
+      bottom: node.paddingBottom,
+    };
+  }
+
+  // IN OTHER CASES,
+  // from this point, this is dangerous assumption that group or frame might could be represented as a autolayout
+
   // this need to be run before VERTICAL or HORIZONTAL
   if (node.children.length === 1) {
     // left padding is first element's y value
@@ -251,8 +289,7 @@ function detectAutoLayoutPadding(
       top: top,
       bottom: bottom,
     };
-  } else {
-    // node.layoutMode === "HORIZONTAL"
+  } else if (node.layoutMode === Axis.horizontal) {
     // left padding is first element's y value
     const left = node.children[0].x;
 
@@ -276,6 +313,8 @@ function detectAutoLayoutPadding(
       bottom: bottom,
     };
   }
+
+  return ZERO_PADDING;
 }
 
 /**

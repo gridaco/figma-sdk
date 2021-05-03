@@ -24,7 +24,11 @@ export function mapFigmaRemoteFrameToFigma(remFrame: Frame): Figma.FrameNode {
     source: remFrame,
   });
 
+  //   console.log("remFrame", remFrame);
+  //   console.log("mapping", mapping);
+
   return <Figma.FrameNode>{
     ...mapping,
+    type: "FRAME",
   };
 }

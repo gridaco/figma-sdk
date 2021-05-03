@@ -17,9 +17,7 @@ import {
 } from "../../figma/types/v1";
 
 export class ReflectTextNode extends ReflectDefaultShapeMixin {
-  get type() {
-    return ReflectSceneNodeType.text;
-  }
+  type = ReflectSceneNodeType.text;
 
   characters: string;
   textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";

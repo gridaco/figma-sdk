@@ -27,5 +27,6 @@ export function mapFigmaRemoteRectangleToFigma(
 
   return <Figma.RectangleNode>{
     ...mapping,
+    type: "RECTANGLE",
   };
 }

@@ -7,6 +7,11 @@ import { SceneNode } from "../figma/types/v1";
  * @param node
  */
 export function checkIfRoot(node: SceneNode) {
+  // if no parent is provided, it means it is from api or manually generated data, and it is okay to be considered as root.
+  // but we need caution to this logic. (WARNING)
+  if (!node.parent) {
+    return true;
+  }
   if (node.parent.type == "PAGE" && node.type == "FRAME") {
     return true;
   }

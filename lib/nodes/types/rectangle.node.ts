@@ -4,7 +4,5 @@ import { ReflectSceneNodeType } from "./node-type";
 export class ReflectRectangleNode
   extends ReflectDefaultShapeMixin
   implements IReflectCornerMixin {
-  get type() {
-    return ReflectSceneNodeType.rectangle;
-  }
+  type = ReflectSceneNodeType.rectangle;
 }

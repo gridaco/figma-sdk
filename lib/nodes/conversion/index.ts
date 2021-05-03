@@ -66,6 +66,7 @@ export function intoReflectNodes(
   sceneNode: ReadonlyArray<SceneNode>,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null
 ): Array<ReflectSceneNode> {
+  console.log("converting figma scene node to reflect node", sceneNode);
   const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
     (node: SceneNode) => {
       // pre-filtering
@@ -250,10 +251,10 @@ function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
     node.counterAxisAlignItems
   );
 
-  rfNode.paddingLeft = node.paddingLeft;
-  rfNode.paddingRight = node.paddingLeft;
-  rfNode.paddingTop = node.paddingTop;
-  rfNode.paddingBottom = node.paddingBottom;
+  rfNode.paddingLeft = node.paddingLeft ?? 0;
+  rfNode.paddingRight = node.paddingLeft ?? 0;
+  rfNode.paddingTop = node.paddingTop ?? 0;
+  rfNode.paddingBottom = node.paddingBottom ?? 0;
 
   rfNode.itemSpacing = node.itemSpacing;
   rfNode.layoutGrids = node.layoutGrids;

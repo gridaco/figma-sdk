@@ -1,5 +1,6 @@
 import { SceneNode } from "../../figma/types/v1";
 import { Node } from "../types";
+import { mapFigmaRemoteEllipseToFigma } from "./ellipse.mapper";
 import { mapFigmaRemoteFrameToFigma } from "./frame.mapper";
 import { mapFigmaRemoteRectangleToFigma } from "./rectangle.mapper";
 import { mapFigmaRemoteTextToFigma } from "./text.mapper";
@@ -21,10 +22,13 @@ export function mapFigmaRemoteToFigma(remNode: Node): SceneNode {
       nonchildreninstance = mapFigmaRemoteRectangleToFigma(remNode);
       break;
 
-    // Frame conversion is not working as expected. disabling.
-    // case "FRAME":
-    //   nonchildreninstance = mapFigmaRemoteFrameToFigma(remNode);
-    //   break;
+    case "ELLIPSE":
+      nonchildreninstance = mapFigmaRemoteEllipseToFigma(remNode);
+      break;
+
+    case "FRAME":
+      nonchildreninstance = mapFigmaRemoteFrameToFigma(remNode);
+      break;
 
     default:
       console.warn(`type "${remNode.type}" not handled`);
