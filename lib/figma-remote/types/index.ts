@@ -285,6 +285,7 @@ export interface FrameBase extends Global {
   readonly paddingBottom: number;
 
   /**
+   * @deprecated
    * The horizontal padding between the borders of the frame and its
    * children. This property is only applicable for auto-layout frames.
    * @default 0
@@ -292,6 +293,7 @@ export interface FrameBase extends Global {
   readonly horizontalPadding?: number;
 
   /**
+   * @deprecated
    * The vertical padding between the borders of the frame and its
    * children. This property is only applicable for auto-layout frames.
    * @default 0
