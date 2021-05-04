@@ -1,4 +1,4 @@
-import { TextStyleManifest } from "@reflect-ui/core";
+import { FontWeight, TextStyleManifest } from "@reflect-ui/core";
 import { convertFontStyleToReflect } from "./font-style.convert";
 import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
@@ -33,14 +33,30 @@ export function convertTextStyleToReflect(
   };
 }
 
-export function extractTextStyleFromTextNode(origin: ReflectTextNode) {
+export function extractTextStyleFromTextNode(
+  origin: ReflectTextNode
+): TextStyleManifest {
+  let _fontFamily = origin.fontName?.family;
+  let _fontWeight = convertFontStyleNameToFontWeightReflect(
+    origin.fontName?.style
+  );
+  if (!origin.fontName) {
+    console.warn(
+      "this might be a bug (or by multiple textstyle). no fontName was found in text node. the text node was",
+      origin
+    );
+    console.info(
+      'since no fontName was provided, falling back to "Roboto Regular"'
+    );
+    _fontFamily = "Roboto";
+    _fontWeight = FontWeight.normal;
+  }
+
   return {
     name: undefined,
-    fontFamily: (origin.fontName as FontName).family,
-    fontWeight: convertFontStyleNameToFontWeightReflect(
-      (origin.fontName as FontName).style
-    ),
-    fontStyle: convertFontStyleToReflect(origin.fontName as FontName),
+    fontFamily: _fontFamily,
+    fontWeight: _fontWeight,
+    fontStyle: convertFontStyleToReflect(origin.fontName),
     fontSize: origin.fontSize,
     wordSpacing: undefined, // non-figma property
     decoration: convertTextDecorationToReflect(origin.textDecoration),
