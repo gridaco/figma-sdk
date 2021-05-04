@@ -11,6 +11,7 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.visible = source.visible ?? true;
   target.opacity = source.opacity ?? 1;
   target.layoutAlign = source.layoutAlign;
+  target.layoutGrow = source.layoutGrow ?? 0;
   target.exportSettings = source.exportSettings;
   target.blendMode = source.blendMode ?? "NORMAL";
   target.isMask = source.isMask ?? false;

@@ -308,6 +308,11 @@ export interface FrameBase extends Global {
   readonly itemSpacing?: number;
 
   /**
+   * this actually does not exists on figma api type definitions, but it does on plugin api typings. to match the structure, including this property.
+   */
+  readonly layoutGrow?: number;
+
+  /**
    * An array of layout grids attached to this node (see layout grids section
    * for more details). GROUP nodes do not have this attribute
    * @default []
@@ -468,6 +473,11 @@ export interface VectorBase extends Global {
   readonly styles?: StylesObject;
 
   readonly layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+
+  /**
+   * This property is applicable only for direct children of auto-layout frames, ignored otherwise. Determines whether a layer should stretch along the parent’s primary axis. A 0 corresponds to a fixed size and 1 corresponds to stretch
+   */
+  readonly layoutGrow: number;
 }
 
 /** A vector network, consisting of vertices and edges */

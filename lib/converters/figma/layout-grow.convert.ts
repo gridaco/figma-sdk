@@ -1,4 +1,10 @@
-export function convertLayoutGrowToReflect(layoutGrow: number) {
+export function convertLayoutGrowToReflect(
+  layoutGrow: number
+): "FIXED" | "STRETCH" {
+  if (layoutGrow === undefined) {
+    return "FIXED";
+  }
+
   if (layoutGrow === 0) {
     return "FIXED";
   } else if (layoutGrow === 1) {
