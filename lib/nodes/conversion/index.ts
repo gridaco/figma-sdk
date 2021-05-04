@@ -256,7 +256,6 @@ function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
 
   rfNode.mainAxisAlignment = _primaryAxisAlign;
   rfNode.crossAxisAlignment = _counterAxisAlign;
-  console.log("applied", rfNode.mainAxisAlignment, rfNode.crossAxisAlignment);
 
   rfNode.paddingLeft = node.paddingLeft ?? 0;
   rfNode.paddingRight = node.paddingLeft ?? 0;

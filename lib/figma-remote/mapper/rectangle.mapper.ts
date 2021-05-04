@@ -14,6 +14,7 @@ export function mapFigmaRemoteRectangleToFigma(
     target: mapping,
     source: remRect,
   });
+  console.log("mapping.absoluteTransform", mapping.absoluteTransform);
 
   blendCornerNode({
     target: mapping,
