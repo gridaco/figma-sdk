@@ -43,7 +43,7 @@ export function extractTextStyleFromTextNode(origin: ReflectTextNode) {
     fontStyle: convertFontStyleToReflect(origin.fontName as FontName),
     fontSize: origin.fontSize,
     wordSpacing: undefined, // non-figma property
-    decoration: convertTextDecorationToReflect(this.textDecoration),
+    decoration: convertTextDecorationToReflect(origin.textDecoration),
     decorationStyle: undefined,
     decorationThickness: undefined,
     letterSpacing: convertLetterSpacingToReflect(
