@@ -133,7 +133,6 @@ export function calculateLCRS(args: {
     isContainerWidthEven && isCenterPositionEven ? 0 : SAFE_DAMPING_PX;
 
   const centerDiff = containerCenterXPos - centerPosition;
-  console.log("center diff", centerDiff);
   if (centerDiff - damp > 0) {
     // this is visually on the left side
     return "Left";

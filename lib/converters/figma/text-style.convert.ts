@@ -1,6 +1,9 @@
 import { TextStyleManifest } from "@reflect-ui/core";
 import { convertFontStyleToReflect } from "./font-style.convert";
-import { convertFontWeightToReflect } from "../general/font-weight.convert";
+import {
+  convertFontStyleNameToFontWeightReflect,
+  convertFontWeightToReflect,
+} from "../general/font-weight.convert";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
 import { convertLineHeightToReflect } from "./line-height.convert";
 import { convertTextDecorationToReflect } from "./tetx-decoration.convert";
@@ -20,7 +23,7 @@ export function convertTextStyleToReflect(
   return {
     name: origin.name,
     fontFamily: origin.fontName.family,
-    fontWeight: convertFontWeightToReflect(origin.fontName.style),
+    fontWeight: convertFontStyleNameToFontWeightReflect(origin.fontName.style),
     fontStyle: convertFontStyleToReflect(origin.fontName),
     fontSize: origin.fontSize,
     wordSpacing: undefined, // non-figma property
@@ -37,7 +40,9 @@ export function extractTextStyleFromTextNode(origin: ReflectTextNode) {
   return {
     name: undefined,
     fontFamily: (origin.fontName as FontName).family,
-    fontWeight: convertFontWeightToReflect((origin.fontName as FontName).style),
+    fontWeight: convertFontStyleNameToFontWeightReflect(
+      (origin.fontName as FontName).style
+    ),
     fontStyle: convertFontStyleToReflect(origin.fontName as FontName),
     fontSize: origin.fontSize,
     wordSpacing: undefined, // non-figma property
