@@ -1,5 +1,7 @@
 import { FontWeight } from "@reflect-ui/core";
 
+const _DEFAULT_FALLBACK_STYLE = "regular";
+
 /**
  * Scenarios
  *
@@ -13,13 +15,16 @@ import { FontWeight } from "@reflect-ui/core";
  * @param fontStyle
  */
 export function convertFontStyleNameToFontWeightReflect(fontStyle: string) {
+  if (!fontStyle) {
+    return convertFontWeightToReflect(_DEFAULT_FALLBACK_STYLE);
+  }
   const _one_of_the_substring_is_matching_possible_style_name = POSSIBLE_STYLE_INDICATOR_TOKEN_CASES.filter(
     (cases) => {
       return cases.filter((c) => fontStyle.includes(c)).length >= 1;
     }
   );
 
-  let style = "regular"; // falback style. the default text style
+  let style = _DEFAULT_FALLBACK_STYLE; // falback style. the default text style
   switch (_one_of_the_substring_is_matching_possible_style_name.length) {
     case 0: {
       // non was matched
@@ -27,7 +32,7 @@ export function convertFontStyleNameToFontWeightReflect(fontStyle: string) {
         'no standard font style found with givven style name. using "regular" style instead. the givven style name was',
         fontStyle
       );
-      style = "regular";
+      style = _DEFAULT_FALLBACK_STYLE;
       break;
     }
     case 1: {
