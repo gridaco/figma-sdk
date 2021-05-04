@@ -13,7 +13,7 @@ import { IReflectDefaultShapeMixin } from "../interfaces/default-shape-mixin";
 export class ReflectDefaultShapeMixin
   extends ReflectConstraintMixin
   implements IReflectDefaultShapeMixin {
-  layoutGrow: number;
+  layoutGrow: "FIXED" | "STRETCH";
   opacity: number;
   blendMode: "PASS_THROUGH" | BlendMode;
   isMask: boolean;

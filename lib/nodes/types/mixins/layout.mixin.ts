@@ -13,5 +13,9 @@ export interface IReflectLayoutMixin {
    * fimgma: this property is only applicable when frame is auto-layout frame.
    */
   layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
-  layoutGrow: number;
+
+  /**
+   * figma: [layout grow](https://www.figma.com/plugin-docs/api/properties/nodes-layoutgrow)
+   */
+  layoutGrow: "FIXED" | "STRETCH";
 }

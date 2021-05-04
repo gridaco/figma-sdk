@@ -347,7 +347,7 @@ function layoutAlignInChild(
     node.layoutAlign = sameHeight ? "STRETCH" : "INHERIT";
   }
   // with custom AutoLayout, this is never going to be 1.
-  node.layoutGrow = 0;
+  node.layoutGrow = "FIXED";
 }
 
 function primaryAxisDirection(

@@ -23,7 +23,7 @@ export class ReflectGroupNode
   width: number;
   height: number;
   layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
-  layoutGrow: number;
+  layoutGrow: "FIXED" | "STRETCH";
 
   type = ReflectSceneNodeType.group;
 

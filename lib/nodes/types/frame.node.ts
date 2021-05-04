@@ -54,7 +54,7 @@ export class ReflectFrameNode
   constraints: Constraints;
 
   // frame mixin
-  layoutGrow: number;
+  layoutGrow: "FIXED" | "STRETCH";
   mainAxisAlignment: MainAxisAlignment;
   crossAxisAlignment: CrossAxisAlignment;
   layoutMode?: Axis | undefined;

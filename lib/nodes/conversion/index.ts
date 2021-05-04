@@ -26,6 +26,7 @@ import {
   convertPrimaryAxisAlignItemsToMainAxisAlignment,
   convertCounterAxisAlignItemsToCrossAxisAlignment,
   convertFigmaCornerRadiusToBorderRadius,
+  convertLayoutGrowToReflect,
 } from "../../converters/figma";
 import {
   figma,
@@ -236,6 +237,7 @@ function convertLayout(altNode: IReflectLayoutMixin, node: LayoutMixin) {
   altNode.height = node.height;
   altNode.rotation = node.rotation;
   altNode.layoutAlign = node.layoutAlign;
+  altNode.layoutGrow = convertLayoutGrowToReflect(node.layoutGrow);
 }
 
 function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {

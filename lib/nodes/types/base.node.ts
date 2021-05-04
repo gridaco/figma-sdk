@@ -166,7 +166,7 @@ export class ReflectBaseNode
   width: number;
   height: number;
   layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
-  layoutGrow: number;
+  layoutGrow: "FIXED" | "STRETCH";
   fills?: ReadonlyArray<Paint>;
 
   /**
