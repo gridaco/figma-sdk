@@ -1,6 +1,8 @@
 import { ReflectSceneNodeType } from "../nodes/types/node-type";
 
-export function rawTypeToReflectType(type: string): ReflectSceneNodeType {
+export function originFigmaTypeToReflectType(
+  type: string
+): ReflectSceneNodeType {
   if (type in ReflectSceneNodeType) {
     return ReflectSceneNodeType[type];
   }

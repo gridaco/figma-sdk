@@ -6,27 +6,10 @@ import {
 import { BoxShadowManifest } from "@reflect-ui/core/lib/box-shadow";
 import type { ReflectSceneNode } from "./node-type-alias";
 import { ReflectSceneNodeType } from "./node-type";
-import {
-  filterFills,
-  hasImage,
-  mapGrandchildren,
-  rawTypeToReflectType,
-  retrieveFill,
-  retrievePrimaryColor,
-} from "../../utils";
+import { utils } from "../..";
 import { array } from "@reflect-ui/uiutils";
 import { checkIfRoot } from "../../utils/check-if-root";
-
-import {
-  figma,
-  ChildrenMixin,
-  SceneNode,
-  Paint,
-  BlendMode,
-  Effect,
-  Image,
-  InstanceNode,
-} from "../../figma/types/v1";
+import { figma, Figma } from "../../figma";
 import {
   retrieveImageFills,
   retrievePrimaryImageFill,
@@ -62,7 +45,7 @@ export class ReflectBaseNode
     this.originParentId = props.originParentId;
     this.name = props.name;
     this.parent = props.parent;
-    this.origin = rawTypeToReflectType(props.origin);
+    this.origin = utils.originFigmaTypeToReflectType(props.origin);
     this.originRaw = props.origin;
     this.absoluteTransform = props.absoluteTransform;
     this.childrenCount = props.childrenCount;
@@ -82,7 +65,7 @@ export class ReflectBaseNode
 
   getHierachyIndexOnParent(): number {
     if (this.originParentNode) {
-      const children = (this.originParentNode as ChildrenMixin)?.children;
+      const children = (this.originParentNode as Figma.ChildrenMixin)?.children;
       if (children) {
         for (let childIndex = 0; childIndex < children.length; childIndex++) {
           if (children[childIndex].id === this.id) {
@@ -117,13 +100,13 @@ export class ReflectBaseNode
     return this.originNode.setPluginData(key, value);
   }
 
-  get originParentNode(): SceneNode {
-    return figma.getNodeById(this.originParentId) as SceneNode;
+  get originParentNode(): Figma.SceneNode {
+    return figma.getNodeById(this.originParentId) as Figma.SceneNode;
   }
-  get originNode(): SceneNode {
+  get originNode(): Figma.SceneNode {
     try {
       console.log("figma.getNodeById(this.id)", figma.getNodeById(this.id));
-      return figma.getNodeById(this.id) as SceneNode;
+      return figma.getNodeById(this.id) as Figma.SceneNode;
     } catch (e) {
       console.error("error while getting origin node", e);
     }
@@ -167,7 +150,7 @@ export class ReflectBaseNode
   height: number;
   layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
   layoutGrow: "FIXED" | "STRETCH";
-  fills?: ReadonlyArray<Paint>;
+  fills?: ReadonlyArray<Figma.Paint>;
 
   /**
    * layoutMode is only available for frame node
@@ -191,9 +174,9 @@ export class ReflectBaseNode
 
   // blend related
   opacity: number;
-  blendMode: "PASS_THROUGH" | BlendMode;
+  blendMode: "PASS_THROUGH" | Figma.BlendMode;
   isMask: boolean;
-  effects: ReadonlyArray<Effect>;
+  effects: ReadonlyArray<Figma.Effect>;
   effectStyleId: string;
   visible: boolean;
   radius: number;
@@ -270,9 +253,9 @@ export class ReflectBaseNode
     }
   }
 
-  swapVariant(name: string): InstanceNode {
+  swapVariant(name: string): Figma.InstanceNode {
     if (this.hasVariant) {
-      return swapVariant((this as any) as InstanceNode, name);
+      return swapVariant((this as any) as Figma.InstanceNode, name);
     }
 
     // invalid request. this is not a variant compat node
@@ -307,7 +290,7 @@ export class ReflectBaseNode
    * returns true if "this" fill contains image. does not looks through its children.
    */
   get hasImage(): boolean {
-    return hasImage(this.fills);
+    return utils.hasImage(this.fills);
   }
 
   /**
@@ -323,13 +306,13 @@ export class ReflectBaseNode
     return !this.hasImage;
   }
 
-  get images(): Array<Image> | undefined {
+  get images(): Array<Figma.Image> | undefined {
     if (Array.isArray(this.fills)) {
       return retrieveImageFills(this.fills);
     }
   }
 
-  get primaryImage(): Image {
+  get primaryImage(): Figma.Image {
     if (Array.isArray(this.fills)) {
       return retrievePrimaryImageFill(this.fills);
     }
@@ -347,9 +330,11 @@ export class ReflectBaseNode
     return this.visibleFills?.length > 0;
   }
 
-  get visibleFills(): ReadonlyArray<Paint> | undefined {
+  get visibleFills(): ReadonlyArray<Figma.Paint> | undefined {
     try {
-      return filterFills((this as any).fills as Paint[], { visibleOnly: true });
+      return utils.filterFills((this as any).fills as Figma.Paint[], {
+        visibleOnly: true,
+      });
     } catch (_) {
       console.log(
         `tried to filter fills, but no fills found. ${this.toString()}`,
@@ -358,7 +343,7 @@ export class ReflectBaseNode
     }
   }
 
-  get primaryFill(): Paint {
+  get primaryFill(): Figma.Paint {
     if (this.hasChildren) {
       const availableNodes = this.getGrandchildren({
         includeThis: true,
@@ -368,14 +353,14 @@ export class ReflectBaseNode
         .map((n) => n.visibleFills)
         .filter((n) => array.filters.notEmpty(n));
       const fills = [].concat.apply([], fillsMap);
-      return retrieveFill(fills);
+      return utils.retrieveFill(fills);
     }
-    return retrieveFill(this.fills);
+    return utils.retrieveFill(this.fills);
   }
 
   get primaryColor(): RGBAF {
     try {
-      return retrievePrimaryColor(this.fills as Paint[]);
+      return utils.retrievePrimaryColor(this.fills as Figma.Paint[]);
     } catch (_) {
       console.error(
         `error while fetching primarycolor from ${this.toString()}`
@@ -396,7 +381,7 @@ export class ReflectBaseNode
     includeThis: boolean;
   }): ReadonlyArray<ReflectSceneNode> | undefined {
     if (this.hasChildren) {
-      return mapGrandchildren(this as any, options);
+      return utils.mapGrandchildren(this as any, options);
     } else {
       // if include this option is set to yes, then, return this even if this is not a children-containing node.
       if (options?.includeThis) {

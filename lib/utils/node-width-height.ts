@@ -12,7 +12,7 @@ export function nodeWidthHeight(
   node: ReflectSceneNode,
   allowRelative: boolean
 ): SizeResult {
-  if (node.layoutAlign === "STRETCH" && node.layoutGrow === 1) {
+  if (node.layoutAlign === "STRETCH" && node.layoutGrow === "STRETCH") {
     return {
       width: "full",
       height: "full",
@@ -38,7 +38,7 @@ export function nodeWidthHeight(
     }
 
     // Grow means the same direction
-    if (node.layoutGrow === 1) {
+    if (node.layoutGrow === "STRETCH") {
       if (node.parent.layoutMode === Axis.horizontal) {
         propWidth = "full";
       } else {
