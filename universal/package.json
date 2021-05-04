@@ -1,0 +1,9 @@
+{
+    "name": "@design-sdk/universal",
+    "version": "0.0.0",
+    "dependencies": {
+        "@design-sdk/core": "0.0.0",
+        "@design-sdk/figma": "0.0.0",
+        "@design-sdk/sketch": "0.0.0"
+    }
+}

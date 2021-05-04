@@ -1,16 +1,12 @@
 {
-    "name": "@bridged.xyz/design-sdk",
-    "version": "0.1.0",
-    "main": "dist/index.js",
-    "scripts": {
-        "prepack": "tsc"
-    },
-    "dependencies": {
-        "@reflect-ui/core": "0.0.2-rc.7",
-        "@reflect-ui/namings": "0.0.3",
-        "@bridged.xyz/base-sdk": "0.0.2-1"
-    },
-    "devDependencies": {
-        "typescript": "^4.0.5"
-    }
+    "name": "design-sdk",
+    "private": true,
+    "workspaces": [
+        "bridged",
+        "core",
+        "figma",
+        "sketch",
+        "xd",
+        "universal"
+    ]
 }
