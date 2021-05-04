@@ -6,3 +6,4 @@ export * as Figma from "./types/v1";
 export { figma } from "./types/v1";
 export * as types from "./types";
 export * as convert from "./conversion";
+export * as converters from "./converters";
