@@ -1,27 +1,22 @@
-// micro converters
-export * as converters from "./converters";
-
-// platform converters
-export * as convert from "./nodes/conversion";
-
 // region features
-export * as features from "./features";
-export { keyAnnotations, variant, constraints } from "./features";
+export * as features from "@design-sdk/core/features";
+export { keyAnnotations, constraints } from "@design-sdk/core/features";
 // endregion
 
-// figma
-export { figma, Figma } from "./figma";
-
 // node
-export * as nodes from "./nodes";
+export * as nodes from "@design-sdk/core/nodes";
 
 // platform
-export * as _platform from "./platform";
+export * as _platform from "@design-sdk/core/platform";
 
-export * as vanilla from "./vanilla";
+export * as vanilla from "@design-sdk/core/vanilla";
 
-export * as repo_assets from "./assets-repository";
+export * as repo_assets from "@design-sdk/core/assets-repository";
 
 // utils
 export * as utils from "./utils";
-export * as color_utils from "./utils/colors";
+export * as color_utils from "@design-sdk/core/utils/colors";
+
+export * as C from "@design-sdk/core";
+export * as F from "@design-sdk/figma";
+// export * from "@design-sdk/sketch";

@@ -1,8 +1,10 @@
 import { CrossAxisAlignment, MainAxisAlignment } from "@reflect-ui/core/lib";
-import { ReflectFrameNode } from "../types/frame.node";
-import { ReflectGroupNode } from "../types/group.node";
-import type { ReflectSceneNode } from "../types/node-type-alias";
-import { ReflectRectangleNode } from "../types/rectangle.node";
+import {
+  ReflectFrameNode,
+  ReflectRectangleNode,
+  ReflectGroupNode,
+} from "@design-sdk/core/nodes";
+import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { convertToAutoLayout } from "./auto-layout.convert";
 
 /**
