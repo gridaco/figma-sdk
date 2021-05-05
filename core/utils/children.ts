@@ -18,10 +18,23 @@ export function mapGrandchildren<
   O = ReflectSceneNode
 >(
   node: I,
+  depth?: number,
   options?: {
     includeThis?: boolean;
+    depthLimit?: number;
   }
 ): Array<O> {
+  const _current_depth = depth ?? 0;
+
+  // depth limit check
+  // this logic barier wont be executed if "depthLimit" is not provided
+  if (
+    options?.depthLimit !== undefined &&
+    options?.depthLimit == _current_depth
+  ) {
+    return [];
+  }
+
   const children: Array<O> = [];
   // if includeThis option enabled, add this.
   if (options?.includeThis) {
@@ -35,7 +48,11 @@ export function mapGrandchildren<
       for (const child of castedNode.children) {
         if ("children" in child && Array.isArray((child as any).children)) {
           const grandchildren = mapGrandchildren(
-            child as IReflectChildrenMixin
+            child as IReflectChildrenMixin,
+            _current_depth + 1,
+            {
+              depthLimit: options.depthLimit,
+            }
           );
           children.push(...(grandchildren as any));
         }
@@ -49,4 +66,20 @@ export function mapGrandchildren<
   }
 
   return children;
+}
+
+export function mapChildren<
+  I extends MaybeChildrenMixin<any> = IReflectChildrenMixin,
+  O = ReflectSceneNode
+>(
+  node: I,
+  options?: {
+    includeThis?: boolean;
+  }
+): Array<O> {
+  return mapGrandchildren(node, null, {
+    includeThis: options?.includeThis,
+    // depth limit 1 indicates to fetch only direct children
+    depthLimit: 1,
+  });
 }
