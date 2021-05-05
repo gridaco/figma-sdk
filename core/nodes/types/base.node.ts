@@ -384,7 +384,7 @@ export class ReflectBaseNode
     includeThis: boolean;
   }): ReadonlyArray<ReflectSceneNode> | undefined {
     if (this.hasChildren) {
-      return utils.mapGrandchildren(this as any, options);
+      return utils.mapGrandchildren(this as any, null, options);
     } else {
       // if include this option is set to yes, then, return this even if this is not a children-containing node.
       if (options?.includeThis) {
