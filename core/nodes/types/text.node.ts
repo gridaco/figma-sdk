@@ -1,4 +1,5 @@
 import {
+  FontWeight,
   TextAlign,
   TextAlignVertical,
   TextStyleManifest,
@@ -17,6 +18,7 @@ import {
   LineHeight,
 } from "@design-sdk/figma";
 import { extractTextStyleFromTextNode } from "@design-sdk/figma/converters";
+import { convertFontStyleNameToFontWeightReflect } from "../../converters";
 // endregion
 
 export class ReflectTextNode extends ReflectDefaultShapeMixin {
@@ -57,5 +59,13 @@ export class ReflectTextNode extends ReflectDefaultShapeMixin {
       // console.error(`error occcured while getting text style by id`, e)
       return extractTextStyleFromTextNode(this);
     }
+  }
+
+  get fontFamily(): string {
+    return this.fontName.family;
+  }
+
+  get fontWeight(): FontWeight {
+    return convertFontStyleNameToFontWeightReflect(this.fontName.style);
   }
 }
