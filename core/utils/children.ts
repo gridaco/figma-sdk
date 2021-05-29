@@ -51,7 +51,7 @@ export function mapGrandchildren<
             child as IReflectChildrenMixin,
             _current_depth + 1,
             {
-              depthLimit: options.depthLimit,
+              depthLimit: options?.depthLimit,
             }
           );
           children.push(...(grandchildren as any));
