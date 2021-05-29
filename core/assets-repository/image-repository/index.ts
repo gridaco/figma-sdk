@@ -1,5 +1,5 @@
 // hold images that target node holds
-import { IImageRepository } from "@bridged.xyz/base-sdk";
+import { IImageRepository } from "@base-sdk/base";
 
 /**
  * singleton reference holder class since BaseImageRepositories is abstract and gets override by platform

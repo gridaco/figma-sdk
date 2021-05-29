@@ -1,4 +1,4 @@
-import { hosting } from "@bridged.xyz/base-sdk";
+import { hosting } from "@base-sdk/base";
 import { ImageAsset, TransportableImageRepository } from "../image-repository";
 
 export class ImageHostingRepository {

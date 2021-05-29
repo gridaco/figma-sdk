@@ -3,7 +3,7 @@ import {
   VanillaSceneTransport,
   StorableLayerType,
   StorableSceneType,
-} from "@bridged.xyz/base-sdk";
+} from "@base-sdk/base";
 
 import {
   ReflectFrameNode,
