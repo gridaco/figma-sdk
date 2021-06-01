@@ -22,21 +22,42 @@ export function parseFileIdFromUrl_Figma(url: string) {
 }
 
 /**
+ * target node configuration for figma node that contains all fileid, nodeid and the figma url of the target.
+ */
+export interface FigmaTargetNodeConfig {
+  /**
+   * url of target node originated from figma
+   */
+  url: string;
+  /**
+   * id of the file originated from figma
+   */
+  file: string;
+  /**
+   * id of the node originated from figma
+   */
+  node: string;
+}
+
+/**
  * pattern is "https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/bridged?node-id=775%3A112"
  * @param url
  */
 export function parseFileAndNodeIdFromUrl_Figma(
   r_url: string
-): {
-  file: string;
-  node: string;
-} {
-  const url = new URL(r_url);
-  const params = new URLSearchParams(url.search);
-  const nodeId = params.get("node-id");
-  const fileId = parseFileIdFromUrl_Figma(r_url);
-  return {
-    file: fileId,
-    node: nodeId,
-  };
+): FigmaTargetNodeConfig | undefined {
+  try {
+    const url = new URL(r_url);
+    const params = new URLSearchParams(url.search);
+    const nodeId = params.get("node-id");
+    const fileId = parseFileIdFromUrl_Figma(r_url);
+    return {
+      url: r_url,
+      file: fileId,
+      node: nodeId,
+    };
+  } catch (_) {
+    // empty url, invalud url
+    return;
+  }
 }
