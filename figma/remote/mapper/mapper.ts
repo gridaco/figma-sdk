@@ -27,7 +27,10 @@ export function mapFigmaRemoteToFigma(remNode: Node): SceneNode {
       nonchildreninstance = mapFigmaRemoteEllipseToFigma(remNode);
       break;
 
+    case "INSTANCE":
+    case "COMPONENT":
     case "FRAME":
+      //@ts-ignore
       nonchildreninstance = mapFigmaRemoteFrameToFigma(remNode);
       break;
 

@@ -38,8 +38,6 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.y = source.absoluteBoundingBox.y;
   target.width = source.absoluteBoundingBox.width;
   target.height = source.absoluteBoundingBox.height;
-  // target.width = source.size.x;
-  // target.height = source.size.y;
 
   // static override
   target.effectStyleId = undefined;
