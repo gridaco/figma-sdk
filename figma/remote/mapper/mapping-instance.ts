@@ -9,6 +9,7 @@ export type MappingNode =
   | MappingRectangleNode
   | MappingEllipseNode
   | MappingFrameNode
+  | MappingGroupNode
   | MappingTextNode;
 
 /**
@@ -496,4 +497,91 @@ export class MappingFrameNode implements Figma.FrameNode {
   overlayBackground: Figma.OverlayBackground;
   overlayBackgroundInteraction: Figma.OverlayBackgroundInteraction;
   reactions: readonly Figma.Reaction[];
+}
+
+export class MappingGroupNode implements Figma.GroupNode {
+  type: "GROUP";
+  clone(): Figma.GroupNode {
+    throw new Error("Method not implemented.");
+  }
+  id: string;
+  parent: Figma.BaseNode & Figma.ChildrenMixin;
+  name: string;
+  removed: boolean;
+  toString(): string {
+    throw new Error("Method not implemented.");
+  }
+  remove(): void {
+    throw new Error("Method not implemented.");
+  }
+  getPluginData(key: string): string {
+    throw new Error("Method not implemented.");
+  }
+  setPluginData(key: string, value: string): void {
+    throw new Error("Method not implemented.");
+  }
+  getSharedPluginData(namespace: string, key: string): string {
+    throw new Error("Method not implemented.");
+  }
+  setSharedPluginData(namespace: string, key: string, value: string): void {
+    throw new Error("Method not implemented.");
+  }
+  setRelaunchData(data: { [command: string]: string }): void {
+    throw new Error("Method not implemented.");
+  }
+  visible: boolean;
+  locked: boolean;
+  reactions: readonly Figma.Reaction[];
+  children: readonly Figma.SceneNode[];
+  appendChild(child: Figma.SceneNode): void {
+    throw new Error("Method not implemented.");
+  }
+  insertChild(index: number, child: Figma.SceneNode): void {
+    throw new Error("Method not implemented.");
+  }
+  findChildren(
+    callback?: (node: Figma.SceneNode) => boolean
+  ): Figma.SceneNode[] {
+    throw new Error("Method not implemented.");
+  }
+  findChild(callback: (node: Figma.SceneNode) => boolean): Figma.SceneNode {
+    throw new Error("Method not implemented.");
+  }
+  findAll(callback?: (node: Figma.SceneNode) => boolean): Figma.SceneNode[] {
+    throw new Error("Method not implemented.");
+  }
+  findOne(callback: (node: Figma.SceneNode) => boolean): Figma.SceneNode {
+    throw new Error("Method not implemented.");
+  }
+  expanded: boolean;
+  backgrounds: readonly Figma.Paint[];
+  backgroundStyleId: string;
+  opacity: number;
+  blendMode: "PASS_THROUGH" | Figma.BlendMode;
+  isMask: boolean;
+  effects: readonly Figma.Effect[];
+  effectStyleId: string;
+  absoluteTransform: Figma.Transform;
+  relativeTransform: Figma.Transform;
+  x: number;
+  y: number;
+  rotation: number;
+  width: number;
+  height: number;
+  constrainProportions: boolean;
+  layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  layoutGrow: number;
+  resize(width: number, height: number): void {
+    throw new Error("Method not implemented.");
+  }
+  resizeWithoutConstraints(width: number, height: number): void {
+    throw new Error("Method not implemented.");
+  }
+  rescale(scale: number): void {
+    throw new Error("Method not implemented.");
+  }
+  exportSettings: readonly Figma.ExportSettings[];
+  exportAsync(settings?: Figma.ExportSettings): Promise<Uint8Array> {
+    throw new Error("Method not implemented.");
+  }
 }

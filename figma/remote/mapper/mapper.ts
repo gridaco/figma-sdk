@@ -2,6 +2,7 @@ import { SceneNode } from "../../types/v1";
 import { Node } from "../types";
 import { mapFigmaRemoteEllipseToFigma } from "./ellipse.mapper";
 import { mapFigmaRemoteFrameToFigma } from "./frame.mapper";
+import { mapFigmaRemoteGroupToFigma } from "./group.mapper";
 import { mapFigmaRemoteRectangleToFigma } from "./rectangle.mapper";
 import { mapFigmaRemoteTextToFigma } from "./text.mapper";
 export function mapFigmaRemoteToFigma(remNode: Node): SceneNode {
@@ -28,6 +29,10 @@ export function mapFigmaRemoteToFigma(remNode: Node): SceneNode {
 
     case "FRAME":
       nonchildreninstance = mapFigmaRemoteFrameToFigma(remNode);
+      break;
+
+    case "GROUP":
+      nonchildreninstance = mapFigmaRemoteGroupToFigma(remNode);
       break;
 
     default:
