@@ -27,8 +27,10 @@ export function commonPosition(node: ReflectSceneNode): Position {
   let hPadding = 0;
   let vPadding = 0;
   if (node.hasParent && node.parent.layoutMode) {
-    hPadding = (node.parent.paddingLeft ?? 0) + (node.parent.paddingRight ?? 0);
-    vPadding = (node.parent.paddingTop ?? 0) + (node.parent.paddingBottom ?? 0);
+    hPadding =
+      (node.parent.padding.left ?? 0) + (node.parent.padding.right ?? 0);
+    vPadding =
+      (node.parent.padding.top ?? 0) + (node.parent.padding.bottom ?? 0);
   }
 
   if (

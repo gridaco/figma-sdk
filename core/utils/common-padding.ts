@@ -1,4 +1,5 @@
 import { ReflectSceneNode } from "@design-sdk/core/nodes";
+import { EdgeInsets } from "@reflect-ui/core";
 
 type Padding = {
   horizontal: number;
@@ -20,10 +21,13 @@ export function commonPadding(
   if ("layoutMode" in node && node.layoutMode !== undefined) {
     // round the numbers to avoid 5 being different than 5.00001
     // fix it if undefined (in tests)
-    node.paddingLeft = Math.round(node.paddingLeft ?? 0);
-    node.paddingRight = Math.round(node.paddingRight ?? 0);
-    node.paddingTop = Math.round(node.paddingTop ?? 0);
-    node.paddingBottom = Math.round(node.paddingBottom ?? 0);
+
+    node.padding = new EdgeInsets({
+      left: Math.round(node.padding.left ?? 0),
+      right: Math.round(node.padding.right ?? 0),
+      top: Math.round(node.padding.top ?? 0),
+      bottom: Math.round(node.padding.bottom ?? 0),
+    });
 
     const arr: Padding = {
       horizontal: 0,
@@ -35,49 +39,55 @@ export function commonPadding(
     };
 
     if (
-      node.paddingLeft > 0 &&
-      node.paddingLeft === node.paddingRight &&
-      node.paddingLeft === node.paddingBottom &&
-      node.paddingTop === node.paddingBottom
+      node.padding.left > 0 &&
+      node.padding.left === node.padding.right &&
+      node.padding.left === node.padding.bottom &&
+      node.padding.top === node.padding.bottom
     ) {
-      return { all: node.paddingLeft };
-    } else if (node.paddingLeft > 0 && node.paddingLeft === node.paddingRight) {
+      return { all: node.padding.left };
+    } else if (
+      node.padding.left > 0 &&
+      node.padding.left === node.padding.right
+    ) {
       // horizontal padding + vertical + individual paddings
-      arr.horizontal = node.paddingLeft;
+      arr.horizontal = node.padding.left;
 
-      if (node.paddingTop > 0 && node.paddingTop === node.paddingBottom) {
-        arr.vertical = node.paddingTop;
+      if (node.padding.top > 0 && node.padding.top === node.padding.bottom) {
+        arr.vertical = node.padding.top;
       } else {
-        if (node.paddingTop > 0) {
-          arr.top = node.paddingTop;
+        if (node.padding.top > 0) {
+          arr.top = node.padding.top;
         }
-        if (node.paddingBottom > 0) {
-          arr.bottom = node.paddingBottom;
+        if (node.padding.bottom > 0) {
+          arr.bottom = node.padding.bottom;
         }
       }
-    } else if (node.paddingTop > 0 && node.paddingTop === node.paddingBottom) {
+    } else if (
+      node.padding.top > 0 &&
+      node.padding.top === node.padding.bottom
+    ) {
       // vertical padding + individual paddings
-      arr.vertical = node.paddingBottom;
+      arr.vertical = node.padding.bottom;
 
-      if (node.paddingLeft > 0) {
-        arr.left = node.paddingLeft;
+      if (node.padding.left > 0) {
+        arr.left = node.padding.left;
       }
-      if (node.paddingRight > 0) {
-        arr.right = node.paddingRight;
+      if (node.padding.right > 0) {
+        arr.right = node.padding.right;
       }
     } else {
       // individual paddings
-      if (node.paddingLeft > 0) {
-        arr.left = node.paddingLeft;
+      if (node.padding.left > 0) {
+        arr.left = node.padding.left;
       }
-      if (node.paddingRight > 0) {
-        arr.right = node.paddingRight;
+      if (node.padding.right > 0) {
+        arr.right = node.padding.right;
       }
-      if (node.paddingTop > 0) {
-        arr.top = node.paddingTop;
+      if (node.padding.top > 0) {
+        arr.top = node.padding.top;
       }
-      if (node.paddingBottom > 0) {
-        arr.bottom = node.paddingBottom;
+      if (node.padding.bottom > 0) {
+        arr.bottom = node.padding.bottom;
       }
     }
 

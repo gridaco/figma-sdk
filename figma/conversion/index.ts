@@ -52,6 +52,7 @@ import {
   ComponentNode,
 } from "../../figma/types/v1";
 import { convertBlendModeToReflect } from "../converters/blend-mode.convert";
+import { EdgeInsets } from "@reflect-ui/core";
 
 /**
  * restrictied to single selection
@@ -259,10 +260,12 @@ function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
   rfNode.mainAxisAlignment = _primaryAxisAlign;
   rfNode.crossAxisAlignment = _counterAxisAlign;
 
-  rfNode.paddingLeft = node.paddingLeft ?? 0;
-  rfNode.paddingRight = node.paddingLeft ?? 0;
-  rfNode.paddingTop = node.paddingTop ?? 0;
-  rfNode.paddingBottom = node.paddingBottom ?? 0;
+  rfNode.padding = new EdgeInsets({
+    left: node.paddingLeft ?? 0,
+    right: node.paddingRight ?? 0,
+    top: node.paddingTop ?? 0,
+    bottom: node.paddingBottom ?? 0,
+  });
 
   rfNode.itemSpacing = node.itemSpacing;
   rfNode.layoutGrids = node.layoutGrids;

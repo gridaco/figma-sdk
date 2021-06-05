@@ -9,7 +9,7 @@ import {
   convertPrimaryAxisAlignItemsToMainAxisAlignment,
   convertCounterAxisAlignItemsToCrossAxisAlignment,
 } from "@design-sdk/figma/converters";
-import { Axis } from "@reflect-ui/core/lib";
+import { Axis, EdgeInsets, EdgeInsetsManifest } from "@reflect-ui/core/lib";
 import {
   ReflectFrameNode,
   ReflectGroupNode,
@@ -78,10 +78,12 @@ export function convertToAutoLayout(
 
     const padding = detectAutoLayoutPadding(frame);
 
-    frame.paddingTop = Math.max(padding.top, 0);
-    frame.paddingBottom = Math.max(padding.bottom, 0);
-    frame.paddingLeft = Math.max(padding.left, 0);
-    frame.paddingRight = Math.max(padding.right, 0);
+    frame.padding = new EdgeInsets({
+      top: Math.max(padding.top, 0),
+      bottom: Math.max(padding.bottom, 0),
+      left: Math.max(padding.left, 0),
+      right: Math.max(padding.right, 0),
+    });
 
     // update the child's layoutAlign attribute as INHERIT or STRETCH
     frame.children.map((child) => {
@@ -234,14 +236,7 @@ const ZERO_PADDING = {
 /**
  * Calculate the Padding.
  */
-function detectAutoLayoutPadding(
-  node: ReflectFrameNode
-): {
-  left: number;
-  right: number;
-  top: number;
-  bottom: number;
-} {
+function detectAutoLayoutPadding(node: ReflectFrameNode): EdgeInsetsManifest {
   // if node is a root node, than no padding is required (to itself, which means relative to its parent - which does not exists since it is root.).
   if (node.isRoot) {
     return ZERO_PADDING;
@@ -249,12 +244,7 @@ function detectAutoLayoutPadding(
 
   // if node is already explicitly set as autolayout (this is usual) by designer, then return as-is
   if (node.isAutoLayout) {
-    return {
-      left: node.paddingLeft,
-      right: node.paddingRight,
-      top: node.paddingTop,
-      bottom: node.paddingBottom,
-    };
+    return node.padding;
   }
 
   // IN OTHER CASES,
@@ -336,13 +326,18 @@ function layoutAlignInChild(
   node: ReflectSceneNode,
   parentNode: ReflectFrameNode
 ) {
+  // prevent malicious node input
+  if (!(parentNode instanceof ReflectFrameNode)) {
+    return;
+  }
+
   const sameWidth =
     node.width - 2 >
-    parentNode.width - parentNode.paddingLeft - parentNode.paddingRight;
+    parentNode.width - parentNode.padding.left - parentNode.padding.right;
 
   const sameHeight =
     node.height - 2 >
-    parentNode.height - parentNode.paddingTop - parentNode.paddingBottom;
+    parentNode.height - parentNode.padding.top - parentNode.padding.bottom;
 
   if (parentNode.layoutMode === Axis.vertical) {
     node.layoutAlign = sameWidth ? "STRETCH" : "INHERIT";

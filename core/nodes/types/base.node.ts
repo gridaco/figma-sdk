@@ -1,6 +1,7 @@
 import {
   Axis,
   CrossAxisAlignment,
+  EdgeInsets,
   MainAxisAlignment,
 } from "@reflect-ui/core/lib";
 import { BoxShadowManifest } from "@reflect-ui/core/lib/box-shadow";
@@ -23,6 +24,7 @@ import { IReflectBlendMixin } from "./mixins/blend.mixin";
 import { IReflectNodeReference, makeReference } from "./reflect-node-reference";
 import { types } from "@reflect-ui/uiutils";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
+import { EdgeInsetsGeometry } from "@reflect-ui/core/lib/ui/edge-insets-geomatry";
 type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 
@@ -170,10 +172,7 @@ export class ReflectBaseNode
   crossAxisAlignment: CrossAxisAlignment;
   // endregion
 
-  paddingRight: number;
-  paddingLeft: number;
-  paddingTop: number;
-  paddingBottom: number;
+  padding: EdgeInsets;
 
   // blend related
   opacity: number;

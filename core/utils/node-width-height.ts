@@ -89,8 +89,8 @@ export function nodeWidthHeight(
     let hPadding = 0;
     let vPadding = 0;
     if ("layoutMode" in node) {
-      hPadding = node.paddingLeft + node.paddingRight;
-      vPadding = node.paddingTop + node.paddingBottom;
+      hPadding = node.padding.left + node.padding.right;
+      vPadding = node.padding.top + node.padding.bottom;
     }
 
     // set them independently, in case w is equal but h isn't
@@ -228,11 +228,11 @@ function calculateResponsiveW(
   if (
     node.parent &&
     "layoutMode" in node.parent &&
-    (node.parent.paddingLeft || node.parent.paddingRight) &&
+    (node.parent.padding.left || node.parent.padding.right) &&
     node.parent.layoutMode !== undefined
   ) {
     parentWidth =
-      node.parent.width - node.parent.paddingLeft - node.parent.paddingRight;
+      node.parent.width - node.parent.padding.left - node.parent.padding.right;
     // currently ignoring h-full
   } else {
     parentWidth = node.parent.width;
@@ -293,11 +293,15 @@ const calculateResponsiveWH = (
     if (axis === "x") {
       // subtract padding from the layout width, so it can be full when compared with parent.
       parentWidthHeight =
-        node.parent.width - node.parent.paddingLeft - node.parent.paddingRight;
+        node.parent.width -
+        node.parent.padding.left -
+        node.parent.padding.right;
     } else {
       // subtract padding from the layout height, so it can be full when compared with parent.
       parentWidthHeight =
-        node.parent.height - node.parent.paddingTop - node.parent.paddingBottom;
+        node.parent.height -
+        node.parent.padding.top -
+        node.parent.padding.bottom;
     }
   } else {
     parentWidthHeight = axis === "x" ? node.parent.width : node.parent.height;

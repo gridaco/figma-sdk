@@ -2,6 +2,7 @@ import { BorderRadiusManifest } from "@reflect-ui/core/lib/ui/border-radius";
 import {
   Axis,
   CrossAxisAlignment,
+  EdgeInsets,
   MainAxisAlignment,
 } from "@reflect-ui/core/lib";
 import {
@@ -27,6 +28,7 @@ import { ReflectSceneNodeType } from "./node-type";
 import type { ReflectSceneNode } from "./node-type-alias";
 import { ReflectChildrenMixin } from "./mixins/children.mixin";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
+import { EdgeInsetsGeometry } from "@reflect-ui/core/lib/ui/edge-insets-geomatry";
 
 //#region frame
 interface IReflectFrameMixin {
@@ -63,10 +65,7 @@ export class ReflectFrameNode
   primaryAxisSizingMode: "FIXED" | "AUTO";
   counterAxisSizingMode: "FIXED" | "AUTO";
   itemSpacing: number;
-  paddingRight: number;
-  paddingLeft: number;
-  paddingTop: number;
-  paddingBottom: number;
+  padding: EdgeInsets;
   layoutGrids: ReadonlyArray<LayoutGrid>;
   gridStyleId: string;
   clipsContent: boolean;
