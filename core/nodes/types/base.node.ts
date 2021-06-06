@@ -24,7 +24,6 @@ import { IReflectBlendMixin } from "./mixins/blend.mixin";
 import { IReflectNodeReference, makeReference } from "./reflect-node-reference";
 import { types } from "@reflect-ui/uiutils";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
-import { EdgeInsetsGeometry } from "@reflect-ui/core/lib/ui/edge-insets-geomatry";
 type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 

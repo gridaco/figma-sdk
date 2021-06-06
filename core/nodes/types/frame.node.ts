@@ -28,7 +28,6 @@ import { ReflectSceneNodeType } from "./node-type";
 import type { ReflectSceneNode } from "./node-type-alias";
 import { ReflectChildrenMixin } from "./mixins/children.mixin";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
-import { EdgeInsetsGeometry } from "@reflect-ui/core/lib/ui/edge-insets-geomatry";
 
 //#region frame
 interface IReflectFrameMixin {
