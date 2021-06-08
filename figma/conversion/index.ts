@@ -53,6 +53,7 @@ import {
 } from "../../figma/types/v1";
 import { convertBlendModeToReflect } from "../converters/blend-mode.convert";
 import { EdgeInsets } from "@reflect-ui/core";
+import { checkIfAutoLayout } from "@design-sdk/core/utils/check-if-auto-layout";
 
 /**
  * restrictied to single selection
@@ -391,8 +392,10 @@ export function convertFrameNodeToAlt(
   node: FrameNode | InstanceNode | ComponentNode,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null
 ): ReflectRectangleNode | ReflectFrameNode | ReflectGroupNode {
-  if (node.children.length === 0) {
-    // if it has no children, convert frame to rectangle
+  if (!checkIfAutoLayout(node) && node.children.length === 0) {
+    // todo - move this logic somewhere else. (highly Vulnerable)
+    // if not autolayout and, if it has no children, convert frame to rectangle
+    // this frame has no other functionality
     return frameToRectangleNode(node, altParent);
   }
 

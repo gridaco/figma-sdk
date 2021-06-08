@@ -28,6 +28,7 @@ import { ReflectSceneNodeType } from "./node-type";
 import type { ReflectSceneNode } from "./node-type-alias";
 import { ReflectChildrenMixin } from "./mixins/children.mixin";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
+import { checkIfAutoLayout } from "../../utils/check-if-auto-layout";
 
 //#region frame
 interface IReflectFrameMixin {
@@ -114,9 +115,7 @@ export class ReflectFrameNode
   layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
 
   get isAutoLayout(): boolean {
-    // FIXME ?
-    // This part needs to be fixed. this may not be a correct way to detemine autolayout. -> this.layoutMode !== undefined
-    return this.origin == "FRAME" && this.layoutMode !== undefined;
+    return checkIfAutoLayout(this);
   }
 }
 //#endregion
