@@ -4,7 +4,16 @@
  * https://github.com/figma/plugin-typings/commit/e355d78a743797360c819dda783b73b5614485f7
  */
 
-export const figma: PluginAPI = global["figma"];
+export let figma: PluginAPI = global?.["figma"] ?? globalThis?.PluginAPI?.figma;
+
+/**
+ * sometimes figma api cannot be loaded by accessing global["figma"] even on figma platform, so when booting up, we'll need to provide figma interface on figma code host.
+ * this is a function for above specific occasion.
+ * @param _figma
+ */
+export function provideFigma(_figma) {
+  figma = _figma;
+}
 
 export interface PluginAPI {
   readonly apiVersion: "1.0.0";
