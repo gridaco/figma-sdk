@@ -1,0 +1,1 @@
+# Content component indication
