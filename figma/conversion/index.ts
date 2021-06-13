@@ -22,7 +22,7 @@ import { makeComponentReference } from "@design-sdk/core/nodes/types/reflect-nod
 import { convertToAutoLayout } from "./auto-layout.convert";
 import { array } from "@reflect-ui/uiutils";
 import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
-import { shouldIgnore } from "@design-sdk/core/features/key-annotations";
+import { shouldIgnore } from "@design-sdk/key-annotations";
 
 import {
   convertTextAlignHorizontalToReflect,

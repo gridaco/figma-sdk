@@ -4,6 +4,7 @@
     "workspaces": [
         "bridged",
         "core",
+        "key-annotations",
         "figma",
         "sketch",
         "xd",
