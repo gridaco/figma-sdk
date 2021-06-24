@@ -1,16 +1,13 @@
+import { parseFileAndNodeId, parseFileId } from "../lib/parse-url";
 import {
-  parseFigmaFileAndNodeIdFromUrl,
-  parseFigmaFileIdFromUrl,
-} from "../lib/parse-url";
-import {
-  FIGMA_DEMO_DEFAULT_FILE_ID,
-  FIGMA_DEMO_DEFAULT_FILE_URL,
-  FIGMA_DEMO_DEFAULT_FILE_NODE_URL,
+  __FIGMA_DEMO_DEFAULT_FILE_ID,
+  __FIGMA_DEMO_DEFAULT_FILE_URL,
+  __FIGMA_DEMO_DEFAULT_FILE_NODE_URL,
 } from "../lib";
 
 test("parse fileid from url", () => {
-  expect(parseFigmaFileIdFromUrl(FIGMA_DEMO_DEFAULT_FILE_URL)).toBe(
-    FIGMA_DEMO_DEFAULT_FILE_ID
+  expect(parseFileId(__FIGMA_DEMO_DEFAULT_FILE_URL)).toBe(
+    __FIGMA_DEMO_DEFAULT_FILE_ID
   );
 });
 
