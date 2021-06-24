@@ -1,18 +1,18 @@
 /**
- * file id of bridged design - https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/bridged
+ * file id of Grida design - https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/
  */
 export const FIGMA_DEMO_DEFAULT_FILE_ID = "Y0Gh77AqBoHH7dG1GtK3xF";
 
 /**
  * extracts file id from share link
  *
- * e.g. in - "https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/bridged?node-id=775%3A112"
+ * e.g. in - "https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/?node-id=775%3A112"
  *
  * out - "Y0Gh77AqBoHH7dG1GtK3xF"
  * @param url
  * @returns
  */
-export function parseFileIdFromUrl_Figma(url: string) {
+export function parseFigmaFileIdFromUrl(url: string) {
   // this logic is dangerous, but clean and simple. works for now. (think the url format won't change)
   if (url.includes("https://www.figma.com/file/")) {
     return url.split("/")[4];
@@ -40,17 +40,17 @@ export interface FigmaTargetNodeConfig {
 }
 
 /**
- * pattern is "https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/bridged?node-id=775%3A112"
+ * pattern is "https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/?node-id=775%3A112"
  * @param url
  */
-export function parseFileAndNodeIdFromUrl_Figma(
+export function parseFigmaFileAndNodeIdFromUrl(
   r_url: string
 ): FigmaTargetNodeConfig | undefined {
   try {
     const url = new URL(r_url);
     const params = new URLSearchParams(url.search);
     const nodeId = params.get("node-id");
-    const fileId = parseFileIdFromUrl_Figma(r_url);
+    const fileId = parseFigmaFileIdFromUrl(r_url);
     return {
       url: r_url,
       file: fileId,
