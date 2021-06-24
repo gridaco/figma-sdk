@@ -2,6 +2,6 @@
     "name": "@design-sdk/figma",
     "version": "0.0.0",
     "dependencies": {
-        "@design-sdk/figma-url": "0.0.0"
+        "@design-sdk/figma-url": "0.0.2"
     }
 }
