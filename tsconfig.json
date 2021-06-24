@@ -2,29 +2,13 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": [
-      "es2017",
-      "es7",
-      "es6",
-      "dom"
-    ],
+    "lib": ["es2017", "es7", "es6", "dom"],
     "declaration": true,
-    "outDir": "dist",
     "esModuleInterop": true,
     "sourceMap": true,
     "experimentalDecorators": true,
     "noUnusedLocals": false,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@figma",
-      "../../node_modules/@types",
-      "../../node_modules/@figma",
-    ]
+    "typeRoots": ["./node_modules/@types", "../../node_modules/@types"]
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "example",
-    "doc"
-  ]
+  "exclude": ["node_modules", "dist", "example", "doc", "__test__"]
 }

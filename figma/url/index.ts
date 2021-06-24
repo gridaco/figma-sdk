@@ -1,1 +1,1 @@
-export * from "./embed-url";
+export * from "@design-sdk/figma-url";

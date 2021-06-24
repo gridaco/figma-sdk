@@ -1,0 +1,15 @@
+{
+    "name": "@design-sdk/figma-url",
+    "version": "0.0.0",
+    "description": "Figma url utils for sharing & embeding and url inspection",
+    "license": "MIT",
+    "homepage": "https://github.com/gridaco/design-sdk",
+    "repository": "https://github.com/gridaco/design-sdk",
+    "scripts": {
+        "prepack": "tsc"
+    },
+    "files": [
+        "dist/*.js",
+        "dist/*.d.ts"
+    ]
+}
