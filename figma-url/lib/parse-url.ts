@@ -1,9 +1,4 @@
 /**
- * file id of Grida design - https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/
- */
-export const FIGMA_DEMO_DEFAULT_FILE_ID = "Y0Gh77AqBoHH7dG1GtK3xF";
-
-/**
  * extracts file id from share link
  *
  * e.g. in - "https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/?node-id=775%3A112"
