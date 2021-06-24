@@ -1,3 +1,5 @@
+import { FigmaTargetNodeConfig } from "./target-node-config";
+
 /**
  * extracts file id from share link
  *
@@ -7,7 +9,7 @@
  * @param url
  * @returns
  */
-export function parseFigmaFileIdFromUrl(url: string) {
+export function parseFileId(url: string) {
   // this logic is dangerous, but clean and simple. works for now. (think the url format won't change)
   if (url.includes("https://www.figma.com/file/")) {
     return url.split("/")[4];
@@ -17,37 +19,19 @@ export function parseFigmaFileIdFromUrl(url: string) {
 }
 
 /**
- * target node configuration for figma node that contains all fileid, nodeid and the figma url of the target.
- */
-export interface FigmaTargetNodeConfig {
-  /**
-   * url of target node originated from figma
-   */
-  url: string;
-  /**
-   * id of the file originated from figma
-   */
-  file: string;
-  /**
-   * id of the node originated from figma
-   */
-  node: string;
-}
-
-/**
  * pattern is "https://www.figma.com/file/Y0Gh77AqBoHH7dG1GtK3xF/?node-id=775%3A112"
  * @param url
  */
-export function parseFigmaFileAndNodeIdFromUrl(
-  r_url: string
+export function parseFileAndNodeId(
+  url: string
 ): FigmaTargetNodeConfig | undefined {
   try {
-    const url = new URL(r_url);
-    const params = new URLSearchParams(url.search);
+    const _url = new URL(url);
+    const params = new URLSearchParams(_url.search);
     const nodeId = params.get("node-id");
-    const fileId = parseFigmaFileIdFromUrl(r_url);
+    const fileId = parseFileId(url);
     return {
-      url: r_url,
+      url: url,
       file: fileId,
       node: nodeId,
     };
