@@ -19,9 +19,18 @@ export enum FigmaUrlType {
    * url with file & node this can be used for embedding. (can be used as a source)
    */
   node = "node",
+
+  /**
+   * empty url. undefined or ""
+   */
+  empty = "empty",
 }
 
 export function analyze(url: string): FigmaUrlType {
+  if (!url) {
+    // return if url is empty
+    return FigmaUrlType.empty;
+  }
   let _u: URL;
 
   // pre url validation

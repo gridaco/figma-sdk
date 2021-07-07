@@ -32,3 +32,10 @@ test("analyze url - invalid embedding url (only inspecting structure)", () => {
     //
     .toThrow("not a valid figma url.");
 });
+
+test("analyze url - empty embedding url", () => {
+  const _url = undefined; // this is not embeddable 'case of missing "www."
+  expect(analyze(_url))
+    //
+    .toBe(FigmaUrlType.empty);
+});
