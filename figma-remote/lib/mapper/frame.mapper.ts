@@ -1,4 +1,4 @@
-import { Figma } from "../..";
+import { Figma } from "@design-sdk/figma-types";
 import {
   blendBaseNode,
   blendCornerNode,

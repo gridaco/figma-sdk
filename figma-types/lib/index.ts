@@ -10,3 +10,4 @@ export * from "./text-auto-resize";
 export * as v1 from "./v1";
 // default v1 export
 export * from "./v1";
+export * as Figma from "./v1";

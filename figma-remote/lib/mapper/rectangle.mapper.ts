@@ -1,5 +1,5 @@
 import { Rectangle } from "../types";
-import { Figma } from "../..";
+import { Figma } from "@design-sdk/figma-types";
 import { MappingRectangleNode } from "./mapping-instance";
 import { blendBaseNode } from "../blenders";
 import {

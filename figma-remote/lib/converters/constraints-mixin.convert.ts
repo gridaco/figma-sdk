@@ -1,4 +1,4 @@
-import { ConstraintMixin } from "../../types";
+import { ConstraintMixin } from "@design-sdk/figma-types";
 import { LayoutConstraint } from "../types";
 import { convertFigmaRemoteLayoutConstraintsToFigmaConstraints } from "./layout-constraints.convert";
 export function convertForFigmaConstraintsMixin(

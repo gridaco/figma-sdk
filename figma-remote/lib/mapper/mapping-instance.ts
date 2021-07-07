@@ -3,7 +3,7 @@
 //// since we are converting interface to interface, we cannot use functionalities of mixin blending.
 //// to make the blending code simpler, we are making this abstract mapping instance for temporary mapping usage
 ////
-import { Figma } from "../..";
+import { Figma } from "@design-sdk/figma-types";
 
 export type MappingNode =
   | MappingRectangleNode
