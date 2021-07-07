@@ -3,11 +3,12 @@
     "version": "0.0.0",
     "description": "Figma remote api & formats",
     "license": "MIT",
-    "main": "dist/index.js",
+    "main": "index",
     "homepage": "https://github.com/gridaco/design-sdk",
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
-        "prepack": "yarn test && tsc",
+        "clean": "rimraf dist",
+        "prepack": "yarn clean && yarn test && tsc",
         "test": "jest"
     },
     "files": [
@@ -20,5 +21,8 @@
     ],
     "publishConfig": {
         "access": "public"
+    },
+    "devDependencies": {
+        "typescript": "^4.3.5"
     }
 }

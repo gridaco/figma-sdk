@@ -1,4 +1,4 @@
-import { CrossAxisAlignment, MainAxisAlignment } from "@reflect-ui/core/lib";
+import { CrossAxisAlignment, MainAxisAlignment } from "@reflect-ui/core";
 import {
   ReflectFrameNode,
   ReflectRectangleNode,

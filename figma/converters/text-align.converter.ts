@@ -1,4 +1,4 @@
-import { TextAlignVertical, TextAlign } from "@reflect-ui/core/lib";
+import { TextAlignVertical, TextAlign } from "@reflect-ui/core";
 import {
   FigmaTextHorizontalAligment,
   FigmaTextVerticalAligment,

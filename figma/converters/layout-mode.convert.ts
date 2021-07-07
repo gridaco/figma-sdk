@@ -1,5 +1,5 @@
-import { Axis } from "@reflect-ui/core/lib";
-import { FigmaLayoutMode } from "../../figma/types/layout-mode";
+import { Axis } from "@reflect-ui/core";
+import { FigmaLayoutMode } from "@design-sdk/figma-types";
 
 export function convertLayoutModeToAxis(origin: FigmaLayoutMode): Axis {
   switch (origin) {

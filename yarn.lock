@@ -566,6 +566,11 @@
   resolved "https://registry.yarnpkg.com/@reflect-ui/namings/-/namings-0.0.3.tgz#6e9fd4809dd5c9d2a996516236c71b99ea93fbcb"
   integrity sha512-rNNW9nK8qhz+54pOL11MRUTjRhRHTL/rbM5kvtddDY2g7t/1XxGl7d3tLs/0LEoy2LFPtNf/fFZYEgQD/jyoFA==
 
+"@reflect-ui/uiutils@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/uiutils/-/uiutils-0.1.2.tgz#1020e557d2fdbf512a10b97b0c424c430ff7ad38"
+  integrity sha512-uhE5Btrzud86MuNykB23EfEHn/jBJ8BicYjOkq7ZFgh38dnvF54vqZV0/LNYF77Z+3jTgQMwZR++e4gL8zCyHw==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.3.tgz#3802ddd21a50a949b6721ddd72da36e67e7f1b2d"
@@ -2535,6 +2540,11 @@ typescript@^4.2.4, typescript@^4.3.4:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.4.tgz#3f85b986945bcf31071decdd96cf8bfa65f9dcbc"
   integrity sha512-uauPG7XZn9F/mo+7MrsRjyvbxFpzemRjKEZXS4AK83oP2KKOJPvb+9cO/gmnv8arWZvhnjVOXz7B49m1l0e9Ew==
+
+typescript@^4.3.5:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
+  integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
 
 universalify@^0.1.2:
   version "0.1.2"

@@ -1,4 +1,4 @@
-import { TextDecoration } from "@reflect-ui/core/lib";
+import { TextDecoration } from "@reflect-ui/core";
 
 export type FigmaTextDecoration = "NONE" | "UNDERLINE" | "STRIKETHROUGH";
 
