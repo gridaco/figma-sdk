@@ -3,7 +3,7 @@
     "version": "0.0.2",
     "description": "Figma url utils for sharing & embeding and url inspection",
     "license": "MIT",
-    "main": "index",
+    "main": "index.ts",
     "homepage": "https://github.com/gridaco/design-sdk",
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
