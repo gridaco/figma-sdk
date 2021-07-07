@@ -1,7 +1,4 @@
-import {
-  Color as ReflectColor,
-  ColorFormat,
-} from "@reflect-ui/core/dist/color";
+import { Color as ReflectColor, ColorFormat } from "@reflect-ui/core/lib/color";
 import { converters } from "@reflect-ui/core";
 import {
   FigmaColor,
