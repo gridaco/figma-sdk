@@ -1,0 +1,24 @@
+{
+    "name": "@design-sdk/figma-remote",
+    "version": "0.0.0",
+    "description": "Figma remote api & formats",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "homepage": "https://github.com/gridaco/design-sdk",
+    "repository": "https://github.com/gridaco/design-sdk",
+    "scripts": {
+        "prepack": "yarn test && tsc",
+        "test": "jest"
+    },
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
+}

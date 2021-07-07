@@ -6,7 +6,7 @@
         "core",
         "key-annotations",
         "figma",
-        "figma-url",
+        "figma-*",
         "sketch",
         "xd",
         "universal"

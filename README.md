@@ -17,6 +17,20 @@ A mid wrapper for building consistant figma &amp; sketch &amp; reflection plugin
 - Testing supported
 - Provides Web based development environment
 
+## Packages & Usage
+
+```sh
+yarn add @design-sdk/<package>
+```
+
+**Packages**
+
+- figma
+  - figma-remote
+  - figma-url
+- xd
+- sketch
+
 ## Are you looking for universal design converter?
 
 Take a look at [design-file-converter](https://github.com/bridgedxyz/design-file-converter)
