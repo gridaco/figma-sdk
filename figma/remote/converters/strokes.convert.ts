@@ -1,5 +1,5 @@
 import { Paint as RemPaint } from "../types";
-import { Paint } from "../../types/v1";
+import { Paint } from "@design-sdk/figma-types";
 import { figmaRemotePaintToFigma } from "./paint.convert";
 
 export function convertFigmaRemoteStrokesToFigma(

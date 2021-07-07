@@ -50,7 +50,7 @@ import {
   FrameNode,
   InstanceNode,
   ComponentNode,
-} from "../../figma/types/v1";
+} from "@design-sdk/figma-types";
 import { convertBlendModeToReflect } from "../converters/blend-mode.convert";
 import { EdgeInsets } from "@reflect-ui/core";
 import { checkIfAutoLayout } from "@design-sdk/core/utils/check-if-auto-layout";

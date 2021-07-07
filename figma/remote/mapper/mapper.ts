@@ -1,4 +1,4 @@
-import { SceneNode } from "../../types/v1";
+import { SceneNode } from "@design-sdk/figma-types";
 import { Node } from "../types";
 import { mapFigmaRemoteEllipseToFigma } from "./ellipse.mapper";
 import { mapFigmaRemoteFrameToFigma } from "./frame.mapper";
@@ -40,7 +40,7 @@ export function mapFigmaRemoteToFigma(remNode: Node): SceneNode {
 
     default:
       console.warn(`type "${remNode.type}" not handled`);
-      nonchildreninstance = (remNode as any) as SceneNode;
+      nonchildreninstance = remNode as any as SceneNode;
       break;
   }
 

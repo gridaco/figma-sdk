@@ -1,5 +1,10 @@
 import { Paint as RemPaint } from "../types";
-import { Paint, SolidPaint, GradientPaint, ImagePaint } from "../../types/v1";
+import {
+  Paint,
+  SolidPaint,
+  GradientPaint,
+  ImagePaint,
+} from "@design-sdk/figma-types";
 
 /**
  * from: https://www.figma.com/developers/api#paint-type

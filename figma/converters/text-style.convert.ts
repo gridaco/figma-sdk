@@ -7,10 +7,9 @@ import { convertTextDecorationToReflect } from "./tetx-decoration.convert";
 import {
   TextStyle,
   TextNode,
-  FontName,
   LetterSpacing,
   LineHeight,
-} from "../../figma/types/v1";
+} from "@design-sdk/figma-types";
 import { ReflectTextNode } from "@design-sdk/core/nodes";
 
 export function convertTextStyleToReflect(

@@ -1,4 +1,4 @@
-import { LineHeight } from "../../types/v1";
+import { LineHeight } from "@design-sdk/figma-types";
 export function figmaRemoteLineHeightToFigma(params: {
   px?: number;
   unit: string;

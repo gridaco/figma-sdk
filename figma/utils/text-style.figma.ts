@@ -1,7 +1,7 @@
 import { typographyIntelisenceMapping } from "@reflect-ui/namings";
 import { TextStyleManifest } from "@reflect-ui/core";
 import { convertTextStyleToReflect } from "../converters";
-import { figma } from "../types/v1";
+import { figma } from "@design-sdk/figma-types";
 
 export function getTextStyleById(id: string): TextStyleManifest {
   if (id === undefined || id === null || id === "") {
@@ -113,9 +113,7 @@ export enum TextThemeStyles {
   overline = "overline",
 }
 
-function findOneStyle(
-  textStyleName: string
-): {
+function findOneStyle(textStyleName: string): {
   // the type
   type: TextThemeStyles;
   // the variant, e.g. sm/h1, xl/h1

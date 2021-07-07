@@ -1,5 +1,5 @@
 import { LayoutConstraint } from "../types";
-import { Constraints, ConstraintType } from "../../types/v1";
+import { Constraints, ConstraintType } from "@design-sdk/figma-types";
 /**
  *
  * from : https://www.figma.com/developers/api#layoutconstraint-type

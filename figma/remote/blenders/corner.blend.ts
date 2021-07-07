@@ -1,4 +1,4 @@
-import { CornerMixin, RectangleCornerMixin } from "../../types/v1";
+import { CornerMixin, RectangleCornerMixin } from "@design-sdk/figma-types";
 import { Frame, Rectangle } from "../types";
 import { MappingBlendInput } from "./_in";
 

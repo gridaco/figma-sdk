@@ -1,5 +1,5 @@
 import { FontStyle } from "@reflect-ui/core";
-import { FontName } from "../../figma/types/v1";
+import { FontName } from "@design-sdk/figma-types";
 export function convertFontStyleToReflect(
   original: FontName
 ): FontStyle | undefined {

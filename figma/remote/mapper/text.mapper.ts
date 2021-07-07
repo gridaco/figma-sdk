@@ -1,5 +1,5 @@
 import { Text } from "../types";
-import { TextNode } from "../../types/v1";
+import { TextNode } from "@design-sdk/figma-types";
 import {
   _FILL_INTERFACE_METHODS,
   __FIND_PARENT_REFERENCE,

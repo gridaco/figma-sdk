@@ -8,3 +8,5 @@ export * from "./text-auto-resize";
 
 // plugin typings
 export * as v1 from "./v1";
+// default v1 export
+export * from "./v1";

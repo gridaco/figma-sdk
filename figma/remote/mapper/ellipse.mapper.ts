@@ -1,5 +1,5 @@
 import { Ellipse } from "../types";
-import { EllipseNode } from "../../types/v1";
+import { EllipseNode } from "@design-sdk/figma-types";
 import { MappingEllipseNode } from "./mapping-instance";
 import { blendBaseNode } from "../blenders";
 

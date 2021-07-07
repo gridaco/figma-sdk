@@ -1,4 +1,4 @@
-import { figma, NodeType, SceneNode } from "../figma/types/v1";
+import { figma, NodeType, SceneNode } from "@design-sdk/figma-types";
 
 /**
  * list nodes in the document via iteration. page nodes are not supported by design.
