@@ -89,8 +89,8 @@ export function nodeWidthHeight(
     let hPadding = 0;
     let vPadding = 0;
     if ("layoutMode" in node) {
-      hPadding = node.padding.left + node.padding.right;
-      vPadding = node.padding.top + node.padding.bottom;
+      hPadding = node.padding?.left ?? 0 + node.padding?.right ?? 0;
+      vPadding = node.padding?.top ?? 0 + node.padding?.bottom ?? 0;
     }
 
     // set them independently, in case w is equal but h isn't
