@@ -1,9 +1,4 @@
-export type DesignProvider =
-  | "grida"
-  | "nothing"
-  | "figma"
-  | "sketch"
-  | "unknown";
+import { DesignProvider } from "@design-sdk/core-types";
 
 export function analyzeDesignUrl(url: string): DesignProvider {
   try {
