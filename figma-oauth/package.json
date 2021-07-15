@@ -14,7 +14,7 @@
     "homepage": "https://github.com/gridaco/design-sdk/",
     "repository": "https://github.com/gridaco/design-sdk/tree/main/figma-oauth/",
     "authors": "Grida.co",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "scripts": {
         "clean": "rimraf dist",
         "prepack": "yarn clean && tsc",
