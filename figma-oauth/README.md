@@ -14,5 +14,21 @@ npm i @design-sdk/figma-oauth
 ## Usage
 
 ```ts
-import {} from "@design-sdk/figma-oauth";
+import { urls, request } from "@design-sdk/figma-oauth";
+
+const oauthTokenRequestUrl = urls.oauth_token_request_url({
+  client_id,
+  client_secret,
+  redirect_uri,
+  code,
+});
+
+const oauthAuthenticationResult = request.authenticationoauth_token_request_url(
+  {
+    client_id,
+    client_secret,
+    redirect_uri,
+    code,
+  }
+);
 ```
