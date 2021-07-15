@@ -1,9 +1,9 @@
 {
     "name": "@design-sdk/figma-url",
-    "version": "0.0.2-local",
+    "version": "0.0.2",
     "description": "Figma url utils for sharing & embeding and url inspection",
     "license": "MIT",
-    "main": "index.ts",
+    "main": "dist/index.js",
     "homepage": "https://github.com/gridaco/design-sdk",
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
