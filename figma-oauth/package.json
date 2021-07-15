@@ -1,9 +1,22 @@
 {
-    "name": "figma-oauth-link-builder",
-    "description": "description",
+    "name": "@design-dsk/figma-oauth",
+    "description": "OAuth management for figma",
+    "keywords": [
+        "figma",
+        "oauth",
+        "sdk",
+        "design-sdk",
+        "api",
+        "token",
+        "passport"
+    ],
+    "homepage": "https://github.com/gridaco/design-sdk/",
+    "repository": "https://github.com/gridaco/design-sdk/tree/main/figma-oauth/",
     "authors": "Grida.co",
     "version": "0.0.0",
     "scripts": {
+        "clean": "rimraf dist",
+        "prepack": "yarn clean && tsc",
         "test": "jest"
     },
     "peerDependencies": {
@@ -15,5 +28,16 @@
         "jest": "^27.0.6",
         "ts-jest": "^27.0.3",
         "typescript": "^4.3.5"
+    },
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
     }
 }
