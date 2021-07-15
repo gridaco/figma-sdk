@@ -55,3 +55,9 @@ export interface FigmaOAuthTokenRefreshResponse {
   access_token: string;
   expires_in: number;
 }
+
+export type OAuthStage =
+  | "started"
+  //
+  | "authorize"
+  | "token";
