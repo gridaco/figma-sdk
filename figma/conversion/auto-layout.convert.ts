@@ -79,10 +79,10 @@ export function convertToAutoLayout(
     const padding = detectAutoLayoutPadding(frame);
 
     frame.padding = new EdgeInsets({
-      top: Math.max(padding.top, 0),
-      bottom: Math.max(padding.bottom, 0),
-      left: Math.max(padding.left, 0),
-      right: Math.max(padding.right, 0),
+      top: Math.max(padding?.top ?? 0, 0),
+      bottom: Math.max(padding?.bottom ?? 0, 0),
+      left: Math.max(padding?.left ?? 0, 0),
+      right: Math.max(padding?.right ?? 0, 0),
     });
 
     // update the child's layoutAlign attribute as INHERIT or STRETCH
@@ -108,12 +108,13 @@ export function convertToAutoLayout(
     }
 
     if (frame.crossAxisAlignment == undefined) {
-      frame.crossAxisAlignment = convertCounterAxisAlignItemsToCrossAxisAlignment(
-        mostFrequent(
-          counterDirection,
-          _priorityOrders
-        ) as FigmaCrossAxisAligment
-      );
+      frame.crossAxisAlignment =
+        convertCounterAxisAlignItemsToCrossAxisAlignment(
+          mostFrequent(
+            counterDirection,
+            _priorityOrders
+          ) as FigmaCrossAxisAligment
+        );
     }
 
     // TODO inspect this. is this required?

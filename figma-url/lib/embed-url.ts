@@ -24,6 +24,8 @@ export function embed(src: FigmaEmbedInput) {
       return _build(url);
     case FigmaUrlType.node:
       return _build(url);
+    case FigmaUrlType.empty:
+      return;
   }
 }
 

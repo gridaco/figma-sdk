@@ -1,0 +1,7 @@
+{
+    "name": "@design-sdk/url-analysis",
+    "version": "0.0.0",
+    "dependencies": {
+        "@design-sdk/core-types": "0.0.0"
+    }
+}
