@@ -1,6 +1,7 @@
 {
-    "name": "@design-dsk/figma-oauth",
+    "name": "@design-sdk/figma-oauth",
     "description": "OAuth management for figma",
+    "main": "dist/index.js",
     "keywords": [
         "figma",
         "oauth",
