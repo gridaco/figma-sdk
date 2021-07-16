@@ -7,13 +7,14 @@
 export let figma: PluginAPI = global?.["figma"] ?? globalThis?.PluginAPI?.figma;
 
 /**
- * sometimes figma api cannot be loaded by accessing global["figma"] even on figma platform, so when booting up, we'll need to provide figma interface on figma code host.
+ * sometimes figma api cannot be loaded by accessing global["figma"] even on figma platform, so when booting up, we'll need to provide figma export interface on figma code host.
  * this is a function for above specific occasion.
  * @param _figma
  */
 export function provideFigma(_figma) {
   figma = _figma;
 }
+
 
 export interface PluginAPI {
   readonly apiVersion: "1.0.0";
@@ -165,39 +166,40 @@ export interface PluginAPI {
   ): BooleanOperationNode;
 }
 
-interface ClientStorageAPI {
+export interface ClientStorageAPI {
   getAsync(key: string): Promise<any | undefined>;
   setAsync(key: string, value: any): Promise<void>;
 }
 
-interface NotificationOptions {
+export interface NotificationOptions {
   timeout?: number;
 }
 
-interface NotificationHandler {
+export interface NotificationHandler {
   cancel: () => void;
 }
 
-interface ShowUIOptions {
+export interface ShowUIOptions {
   visible?: boolean;
+  title?: string;
   width?: number;
   height?: number;
 }
 
-interface UIPostMessageOptions {
+export interface UIPostMessageOptions {
   origin?: string;
 }
 
-interface OnMessageProperties {
+export interface OnMessageProperties {
   origin: string;
 }
 
-type MessageEventHandler = (
+export type MessageEventHandler = (
   pluginMessage: any,
   props: OnMessageProperties
 ) => void;
 
-interface UIAPI {
+export interface UIAPI {
   show(): void;
   hide(): void;
   resize(width: number, height: number): void;
@@ -210,12 +212,13 @@ interface UIAPI {
   off(type: "message", callback: MessageEventHandler): void;
 }
 
-interface ViewportAPI {
+export interface ViewportAPI {
   center: Vector;
   zoom: number;
   scrollAndZoomIntoView(nodes: ReadonlyArray<BaseNode>): void;
   readonly bounds: Rect;
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 // Datatypes
 
@@ -312,10 +315,10 @@ export interface SolidPaint {
 
 export interface GradientPaint {
   readonly type:
-    | "GRADIENT_LINEAR"
-    | "GRADIENT_RADIAL"
-    | "GRADIENT_ANGULAR"
-    | "GRADIENT_DIAMOND";
+  | "GRADIENT_LINEAR"
+  | "GRADIENT_RADIAL"
+  | "GRADIENT_ANGULAR"
+  | "GRADIENT_DIAMOND";
   readonly gradientTransform: Transform;
   readonly gradientStops: ReadonlyArray<ColorStop>;
 
@@ -330,6 +333,7 @@ export interface ImagePaint {
   readonly imageHash: string | null;
   readonly imageTransform?: Transform; // setting for "CROP"
   readonly scalingFactor?: number; // setting for "TILE"
+  readonly rotation?: number; // setting for "FILL" | "FIT" | "TILE"
   readonly filters?: ImageFilters;
 
   readonly visible?: boolean;
@@ -375,6 +379,7 @@ export interface ExportSettingsConstraints {
 export interface ExportSettingsImage {
   readonly format: "JPG" | "PNG";
   readonly contentsOnly?: boolean; // defaults to true
+  readonly useAbsoluteBounds?: boolean; // defaults to false
   readonly suffix?: string;
   readonly constraint?: ExportSettingsConstraints;
 }
@@ -382,6 +387,7 @@ export interface ExportSettingsImage {
 export interface ExportSettingsSVG {
   readonly format: "SVG";
   readonly contentsOnly?: boolean; // defaults to true
+  readonly useAbsoluteBounds?: boolean; // defaults to false
   readonly suffix?: string;
   readonly svgOutlineText?: boolean; // defaults to true
   readonly svgIdAttribute?: boolean; // defaults to false
@@ -391,6 +397,7 @@ export interface ExportSettingsSVG {
 export interface ExportSettingsPDF {
   readonly format: "PDF";
   readonly contentsOnly?: boolean; // defaults to true
+  readonly useAbsoluteBounds?: boolean; // defaults to false
   readonly suffix?: string;
 }
 
@@ -442,12 +449,21 @@ export interface LetterSpacing {
 
 export type LineHeight =
   | {
-      readonly value: number;
-      readonly unit: "PIXELS" | "PERCENT";
-    }
+    readonly value: number;
+    readonly unit: "PIXELS" | "PERCENT";
+  }
   | {
-      readonly unit: "AUTO";
-    };
+    readonly unit: "AUTO";
+  };
+
+export type HyperlinkTarget = {
+  type: "URL" | "NODE";
+  value: string;
+};
+
+export type TextListOptions = {
+  type: "ORDERED" | "UNORDERED" | "NONE";
+};
 
 export type BlendMode =
   | "NORMAL"
@@ -479,16 +495,16 @@ export type Action =
   | { readonly type: "BACK" | "CLOSE" }
   | { readonly type: "URL"; url: string }
   | {
-      readonly type: "NODE";
-      readonly destinationId: string | null;
-      readonly navigation: Navigation;
-      readonly transition: Transition | null;
-      readonly preserveScrollPosition: boolean;
+    readonly type: "NODE";
+    readonly destinationId: string | null;
+    readonly navigation: Navigation;
+    readonly transition: Transition | null;
+    readonly preserveScrollPosition: boolean;
 
-      // Only present if navigation == "OVERLAY" and the destination uses
-      // overlay position type "RELATIVE"
-      readonly overlayRelativePosition?: Vector;
-    };
+    // Only present if navigation == "OVERLAY" and the destination uses
+    // overlay position export type "RELATIVE"
+    readonly overlayRelativePosition?: Vector;
+  };
 
 export interface SimpleTransition {
   readonly type: "DISSOLVE" | "SMART_ANIMATE" | "SCROLL_ANIMATE";
@@ -509,18 +525,26 @@ export type Transition = SimpleTransition | DirectionalTransition;
 
 export type Trigger =
   | { readonly type: "ON_CLICK" | "ON_HOVER" | "ON_PRESS" | "ON_DRAG" }
-  | { readonly type: "AFTER_TIMEOUT"; readonly timeout: number }
   | {
-      readonly type: "MOUSE_ENTER" | "MOUSE_LEAVE" | "MOUSE_UP" | "MOUSE_DOWN";
-      readonly delay: number;
-    };
+    readonly type: "AFTER_TIMEOUT";
+    readonly timeout: number;
+  }
+  | {
+    readonly type: "MOUSE_ENTER" | "MOUSE_LEAVE" | "MOUSE_UP" | "MOUSE_DOWN";
+    readonly delay: number;
+  }
+  | {
+    readonly type: "ON_KEY_DOWN";
+    readonly device:
+    | "KEYBOARD"
+    | "XBOX_ONE"
+    | "PS4"
+    | "SWITCH_PRO"
+    | "UNKNOWN_CONTROLLER";
+    readonly keyCodes: ReadonlyArray<number>;
+  };
 
-export type Navigation =
-  | "NAVIGATE"
-  | "SWAP"
-  | "OVERLAY"
-  | "SCROLL_TO"
-  | "CHANGE_TO";
+export type Navigation = "NAVIGATE" | "SWAP" | "OVERLAY" | "SCROLL_TO" | "CHANGE_TO";
 
 export interface Easing {
   readonly type: "EASE_IN" | "EASE_OUT" | "EASE_IN_AND_OUT" | "LINEAR";
@@ -692,8 +716,13 @@ export interface ReactionMixin {
   readonly reactions: ReadonlyArray<Reaction>;
 }
 
+export interface DocumentationLink {
+  readonly uri: string;
+}
+
 export interface PublishableMixin {
   description: string;
+  documentationLinks: ReadonlyArray<DocumentationLink>;
   readonly remote: boolean;
   readonly key: string; // The key to use with "importComponentByKeyAsync", "importComponentSetByKeyAsync", and "importStyleByKeyAsync"
   getPublishStatusAsync(): Promise<PublishStatus>;
@@ -701,25 +730,25 @@ export interface PublishableMixin {
 
 export interface DefaultShapeMixin
   extends BaseNodeMixin,
-    SceneNodeMixin,
-    ReactionMixin,
-    BlendMixin,
-    GeometryMixin,
-    LayoutMixin,
-    ExportMixin {}
+  SceneNodeMixin,
+  ReactionMixin,
+  BlendMixin,
+  GeometryMixin,
+  LayoutMixin,
+  ExportMixin { }
 
 export interface BaseFrameMixin
   extends BaseNodeMixin,
-    SceneNodeMixin,
-    ChildrenMixin,
-    ContainerMixin,
-    GeometryMixin,
-    CornerMixin,
-    RectangleCornerMixin,
-    BlendMixin,
-    ConstraintMixin,
-    LayoutMixin,
-    ExportMixin {
+  SceneNodeMixin,
+  ChildrenMixin,
+  ContainerMixin,
+  GeometryMixin,
+  CornerMixin,
+  RectangleCornerMixin,
+  BlendMixin,
+  ConstraintMixin,
+  LayoutMixin,
+  ExportMixin {
   layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
   primaryAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
   counterAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
@@ -741,8 +770,8 @@ export interface BaseFrameMixin
 
 export interface DefaultFrameMixin
   extends BaseFrameMixin,
-    FramePrototypingMixin,
-    ReactionMixin {}
+  FramePrototypingMixin,
+  ReactionMixin { }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Nodes
@@ -785,11 +814,11 @@ export interface PageNode extends BaseNodeMixin, ChildrenMixin, ExportMixin {
   backgrounds: ReadonlyArray<Paint>;
 
   readonly prototypeStartNode:
-    | FrameNode
-    | GroupNode
-    | ComponentNode
-    | InstanceNode
-    | null;
+  | FrameNode
+  | GroupNode
+  | ComponentNode
+  | InstanceNode
+  | null;
 }
 
 export interface FrameNode extends DefaultFrameMixin {
@@ -799,31 +828,31 @@ export interface FrameNode extends DefaultFrameMixin {
 
 export interface GroupNode
   extends BaseNodeMixin,
-    SceneNodeMixin,
-    ReactionMixin,
-    ChildrenMixin,
-    ContainerMixin,
-    BlendMixin,
-    LayoutMixin,
-    ExportMixin {
+  SceneNodeMixin,
+  ReactionMixin,
+  ChildrenMixin,
+  ContainerMixin,
+  BlendMixin,
+  LayoutMixin,
+  ExportMixin {
   readonly type: "GROUP";
   clone(): GroupNode;
 }
 
 export interface SliceNode
   extends BaseNodeMixin,
-    SceneNodeMixin,
-    LayoutMixin,
-    ExportMixin {
+  SceneNodeMixin,
+  LayoutMixin,
+  ExportMixin {
   readonly type: "SLICE";
   clone(): SliceNode;
 }
 
 export interface RectangleNode
   extends DefaultShapeMixin,
-    ConstraintMixin,
-    CornerMixin,
-    RectangleCornerMixin {
+  ConstraintMixin,
+  CornerMixin,
+  RectangleCornerMixin {
   readonly type: "RECTANGLE";
   clone(): RectangleNode;
 }
@@ -833,38 +862,26 @@ export interface LineNode extends DefaultShapeMixin, ConstraintMixin {
   clone(): LineNode;
 }
 
-export interface EllipseNode
-  extends DefaultShapeMixin,
-    ConstraintMixin,
-    CornerMixin {
+export interface EllipseNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
   readonly type: "ELLIPSE";
   clone(): EllipseNode;
   arcData: ArcData;
 }
 
-export interface PolygonNode
-  extends DefaultShapeMixin,
-    ConstraintMixin,
-    CornerMixin {
+export interface PolygonNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
   readonly type: "POLYGON";
   clone(): PolygonNode;
   pointCount: number;
 }
 
-export interface StarNode
-  extends DefaultShapeMixin,
-    ConstraintMixin,
-    CornerMixin {
+export interface StarNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
   readonly type: "STAR";
   clone(): StarNode;
   pointCount: number;
   innerRadius: number;
 }
 
-export interface VectorNode
-  extends DefaultShapeMixin,
-    ConstraintMixin,
-    CornerMixin {
+export interface VectorNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
   readonly type: "VECTOR";
   clone(): VectorNode;
   vectorNetwork: VectorNetwork;
@@ -890,6 +907,7 @@ export interface TextNode extends DefaultShapeMixin, ConstraintMixin {
   textDecoration: TextDecoration | PluginAPI["mixed"];
   letterSpacing: LetterSpacing | PluginAPI["mixed"];
   lineHeight: LineHeight | PluginAPI["mixed"];
+  hyperlink: HyperlinkTarget | null | PluginAPI["mixed"];
 
   characters: string;
   insertCharacters(
@@ -924,12 +942,28 @@ export interface TextNode extends DefaultShapeMixin, ConstraintMixin {
     end: number
   ): LineHeight | PluginAPI["mixed"];
   setRangeLineHeight(start: number, end: number, value: LineHeight): void;
+  getRangeHyperlink(
+    start: number,
+    end: number
+  ): HyperlinkTarget | null | PluginAPI["mixed"];
+  setRangeHyperlink(
+    start: number,
+    end: number,
+    value: HyperlinkTarget | null
+  ): void;
   getRangeFills(start: number, end: number): Paint[] | PluginAPI["mixed"];
   setRangeFills(start: number, end: number, value: Paint[]): void;
   getRangeTextStyleId(start: number, end: number): string | PluginAPI["mixed"];
   setRangeTextStyleId(start: number, end: number, value: string): void;
   getRangeFillStyleId(start: number, end: number): string | PluginAPI["mixed"];
   setRangeFillStyleId(start: number, end: number, value: string): void;
+  getRangeListOptions(
+    start: number,
+    end: number
+  ): TextListOptions | PluginAPI["mixed"];
+  setRangeListOptions(start: number, end: number, value: TextListOptions): void;
+  getRangeIndentation(start: number, end: number): number | PluginAPI["mixed"];
+  setRangeIndentation(start: number, end: number, value: number): void;
 }
 
 export interface ComponentSetNode extends BaseFrameMixin, PublishableMixin {
@@ -948,13 +982,15 @@ export interface InstanceNode extends DefaultFrameMixin {
   readonly type: "INSTANCE";
   clone(): InstanceNode;
   mainComponent: ComponentNode | null;
+  swapComponent(componentNode: ComponentNode): void;
+  detachInstance(): FrameNode;
   scaleFactor: number;
 }
 
 export interface BooleanOperationNode
   extends DefaultShapeMixin,
-    ChildrenMixin,
-    CornerMixin {
+  ChildrenMixin,
+  CornerMixin {
   readonly type: "BOOLEAN_OPERATION";
   clone(): BooleanOperationNode;
   booleanOperation: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
@@ -1043,3 +1079,27 @@ export interface Image {
   readonly hash: string;
   getBytesAsync(): Promise<Uint8Array>;
 }
+
+
+/// https://github.com/figma/plugin-typings/blob/master/LICENSE
+/// MIT License
+/// 
+/// Copyright(c) 2021 Figma, Inc.
+/// 
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files(the "Software"), to deal
+///   in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+/// 
+/// The above copyright notice and this permission notice shall be included in all
+/// copies or substantial portions of the Software.
+/// 
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+///   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+///   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+/// SOFTWARE.
