@@ -1,5 +1,5 @@
 import { CornerMixin, RectangleCornerMixin } from "@design-sdk/figma-types";
-import { Frame, Rectangle } from "../types";
+import { Frame, Rectangle } from "@design-sdk/figma-remote-types";
 import { MappingBlendInput } from "./_in";
 
 type CornerMixinRemoteNode = Rectangle | Frame;
