@@ -198,6 +198,8 @@ export class MappingTextNode implements Figma.TextNode {
   letterSpacing: Figma.PluginAPI["mixed"] | Figma.LetterSpacing;
   lineHeight: Figma.PluginAPI["mixed"] | Figma.LineHeight;
   characters: string;
+  hyperlink: Figma.PluginAPI["mixed"] | Figma.HyperlinkTarget;
+
   insertCharacters(
     start: number,
     characters: string,
@@ -371,6 +373,25 @@ export class MappingTextNode implements Figma.TextNode {
     throw new Error("Method not implemented.");
   }
   constraints: Figma.Constraints;
+
+  getRangeHyperlink(start: number, end: number): Figma.PluginAPI["mixed"] | Figma.HyperlinkTarget {
+    throw new Error("Method not implemented.");
+  }
+  setRangeHyperlink(start: number, end: number, value: Figma.HyperlinkTarget): void {
+    throw new Error("Method not implemented.");
+  }
+  getRangeListOptions(start: number, end: number): Figma.PluginAPI["mixed"] | Figma.TextListOptions {
+    throw new Error("Method not implemented.");
+  }
+  setRangeListOptions(start: number, end: number, value: Figma.TextListOptions): void {
+    throw new Error("Method not implemented.");
+  }
+  getRangeIndentation(start: number, end: number): number | Figma.PluginAPI["mixed"] {
+    throw new Error("Method not implemented.");
+  }
+  setRangeIndentation(start: number, end: number, value: number): void {
+    throw new Error("Method not implemented.");
+  }
 }
 
 export class MappingFrameNode implements Figma.FrameNode {
