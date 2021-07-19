@@ -27,6 +27,7 @@ export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
     type: "TEXT",
 
     // pure text
+    hyperlink: undefined, // TODO: implement hyperlink mapping
     textAlignHorizontal: remText.style.textAlignHorizontal,
     textAlignVertical: remText.style.textAlignVertical,
     textAutoResize: remText.style.textAutoResize,
@@ -39,6 +40,7 @@ export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
     },
     textCase: remText.style.textCase,
     textDecoration: remText.style.textDecoration,
+
 
     letterSpacing: {
       value: remText.style.letterSpacing,
@@ -93,5 +95,12 @@ export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
     setRangeTextStyleId: _FILL_INTERFACE_METHODS,
     getRangeFillStyleId: _FILL_INTERFACE_METHODS,
     setRangeFillStyleId: _FILL_INTERFACE_METHODS,
+
+    getRangeHyperlink: _FILL_INTERFACE_METHODS,
+    setRangeHyperlink: _FILL_INTERFACE_METHODS,
+    setRangeIndentation: _FILL_INTERFACE_METHODS,
+    getRangeIndentation: _FILL_INTERFACE_METHODS,
+    getRangeListOptions: _FILL_INTERFACE_METHODS,
+    setRangeListOptions: _FILL_INTERFACE_METHODS,
   };
 }
