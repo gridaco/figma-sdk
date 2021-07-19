@@ -23,7 +23,9 @@
     "publishConfig": {
         "access": "public"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@design-sdk/figma-remote-api": "0.0.0"
+    },
     "devDependencies": {
         "typescript": "^4.3.5",
         "@design-sdk/figma-remote-types": "0.0.0"

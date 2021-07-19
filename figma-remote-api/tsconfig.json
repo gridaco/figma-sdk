@@ -1,16 +1,9 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "lib": ["es6"],
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
-    "baseUrl": "../",
-    "typeRoots": ["../"],
-    "types": [],
-    "noEmit": true,
-    "forceConsistentCasingInFileNames": true
+    "rootDir": ".",
+    "outDir": "./dist"
   },
-  "files": ["index.d.ts"]
+  "include": ["."],
+  "exclude": ["dist", "node_modules", "__test__"]
 }
