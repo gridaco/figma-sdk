@@ -1,0 +1,44 @@
+{
+    "name": "@design-sdk/figma-auth-store",
+    "description": "Authentication credential management for figma on nodejs",
+    "main": "dist/index.js",
+    "keywords": [
+        "figma",
+        "oauth",
+        "auth",
+        "access-token",
+        "sdk",
+        "design-sdk",
+        "token",
+        "passport"
+    ],
+    "homepage": "https://github.com/gridaco/design-sdk/",
+    "repository": "https://github.com/gridaco/design-sdk/tree/main/figma-auth-store/",
+    "authors": "Grida.co",
+    "version": "0.0.1",
+    "scripts": {
+        "clean": "rimraf dist",
+        "prepack": "yarn clean && tsc",
+        "test": "jest"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@types/jest": "^26.0.24",
+        "@types/node": "^16.3.3",
+        "dotenv": "^10.0.0",
+        "jest": "^27.0.6",
+        "ts-jest": "^27.0.3",
+        "typescript": "^4.3.5"
+    },
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
+}
