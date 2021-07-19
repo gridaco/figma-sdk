@@ -7,6 +7,7 @@
     "homepage": "https://github.com/gridaco/design-sdk",
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
+        "tsc": "tsc",
         "clean": "rimraf dist",
         "prepack": "yarn clean && yarn test && tsc",
         "test": "jest"
