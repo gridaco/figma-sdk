@@ -1,20 +1,39 @@
 import { FigmaAuthStore } from "./figma-auth-store";
+import { isBrowser } from "./is-browser";
+import { _dev_env_var_figma_personal_access_token, __FIGMA_OAUTH_ACCESS_TOKEN_DANGER_LOCAL_DEV } from "./keys";
 
-const ___key = "oauth-access-token"
+const ___key = __FIGMA_OAUTH_ACCESS_TOKEN_DANGER_LOCAL_DEV
 const key = () => {
     return FigmaAuthStore.makekey(___key)
 }
 
-const _dev_env_var_figma_personal_access_token = process.env.FIGMA_PERSONAL_ACCESS_TOKEN
-export function storeFigmaToken(figmaToken: string) {
-    window.localStorage.setItem(key(), figmaToken);
+export function setOAuthAccessToken(figmaToken: string) {
+    if (isBrowser) {
+        window.localStorage.setItem(key(), figmaToken);
+    }
 }
 
-export function getFigmaToken(): string | undefined {
-    const stored = window.localStorage.getItem(key()) as string;
-    return stored || _dev_env_var_figma_personal_access_token;
+export function getOAuthAccessToken(): string | undefined {
+    if (isBrowser) {
+        const stored = window.localStorage.getItem(key()) as string;
+        return stored || _dev_env_var_figma_personal_access_token;
+    }
+}
+
+export function clearOAuthAccessToken() {
+    if (isBrowser) {
+        window.localStorage.removeItem(
+            key()
+        );
+    }
 }
 
 export function refreshFigmaToken() {
     throw 'refresh token not implemented.'
+}
+
+export const oauth = {
+    get: getOAuthAccessToken,
+    set: setOAuthAccessToken,
+    clear: clearOAuthAccessToken
 }
