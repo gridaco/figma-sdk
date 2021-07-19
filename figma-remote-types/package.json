@@ -16,7 +16,7 @@
     "homepage": "https://github.com/gridaco/design-sdk/",
     "repository": "https://github.com/gridaco/design-sdk/tree/main/figma-remote-api/",
     "authors": "Grida.co",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "license": "MIT",
     "scripts": {
         "test": "jest"
