@@ -1,6 +1,6 @@
 // export * from './lib/number';
-import * as Figma from "../types";
-export * from "../types";
+import * as Figma from "@design-sdk/figma-remote-types";
+export * from "@design-sdk/figma-remote-types";
 
 import axios, { AxiosInstance, AxiosPromise } from "axios";
 

@@ -1,7 +1,8 @@
 {
-    "name": "@design-sdk/figma-remote-api",
+    "name": "@design-sdk/figma-remote-types",
     "description": "Light-weight Figma Remote api wrapper with types & authentication",
-    "main": "dist/index.js",
+    "main": "index.d.ts",
+    "types": "index.d.ts",
     "keywords": [
         "figma",
         "oauth",
@@ -18,27 +19,17 @@
     "version": "0.0.0",
     "license": "MIT",
     "scripts": {
-        "clean": "rimraf dist",
-        "prepack": "yarn clean && tsc",
         "test": "jest"
-    },
-    "peerDependencies": {
-        "axios": "^0.21.1"
     },
     "dependencies": {},
     "devDependencies": {
         "@types/jest": "^26.0.24",
-        "@design-sdk/figma-remote-types": "0.0.0",
-        "dotenv": "^10.0.0",
         "jest": "^27.0.6",
         "ts-jest": "^27.0.3",
         "typescript": "^4.3.5"
     },
     "files": [
-        "dist/index.js",
-        "dist/index.d.ts",
-        "dist/**/*.js",
-        "dist/**/*.d.ts",
+        "index.d.ts",
         "README",
         "LICENSE"
     ],

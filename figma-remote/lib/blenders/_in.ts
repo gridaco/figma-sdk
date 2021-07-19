@@ -11,7 +11,7 @@ import {
   Rectangle,
   Component,
   Instance,
-} from "../types";
+} from "@design-sdk/figma-remote-types";
 
 /**
  * Type like Node, but without

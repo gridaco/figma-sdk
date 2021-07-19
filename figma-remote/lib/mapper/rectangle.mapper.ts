@@ -1,4 +1,4 @@
-import { Rectangle } from "../types";
+import { Rectangle } from "@design-sdk/figma-remote-types";
 import { Figma } from "@design-sdk/figma-types";
 import { MappingRectangleNode } from "./mapping-instance";
 import { blendBaseNode } from "../blenders";

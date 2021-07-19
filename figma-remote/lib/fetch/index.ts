@@ -1,4 +1,4 @@
-import * as types from "../types";
+import * as types from "@design-sdk/figma-remote-types";
 import * as mapper from "../mapper";
 import * as api from "../api";
 import * as Figma from "@design-sdk/figma-types";
