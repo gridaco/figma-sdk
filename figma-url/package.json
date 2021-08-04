@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/figma-url",
-    "version": "0.0.3-local",
+    "version": "0.0.3",
     "description": "Figma url utils for sharing & embeding and url inspection",
     "license": "MIT",
     "homepage": "https://github.com/gridaco/design-sdk",
