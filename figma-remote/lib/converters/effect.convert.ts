@@ -1,4 +1,4 @@
-import { Effect as RemEffect } from "../types";
+import { Effect as RemEffect } from "@design-sdk/figma-remote-types";
 import { Effect, ShadowEffect, BlurEffect } from "@design-sdk/figma-types";
 export function convertFigmaRemoteEffectToFigma(remEffect: RemEffect): Effect {
   switch (remEffect.type) {

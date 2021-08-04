@@ -1,4 +1,4 @@
-import { Paint as RemPaint } from "../types";
+import { Paint as RemPaint } from "@design-sdk/figma-remote-types";
 import { Paint } from "@design-sdk/figma-types";
 import { figmaRemotePaintToFigma } from "./paint.convert";
 

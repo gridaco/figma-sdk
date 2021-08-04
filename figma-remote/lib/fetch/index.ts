@@ -1,6 +1,6 @@
-import * as types from "../types";
+import * as types from "@design-sdk/figma-remote-types";
 import * as mapper from "../mapper";
-import * as api from "../api";
+import * as api from "@design-sdk/figma-remote-api";
 import * as Figma from "@design-sdk/figma-types";
 import { default_set } from "./figma-default-set";
 import { convert, nodes } from "@design-sdk/figma";

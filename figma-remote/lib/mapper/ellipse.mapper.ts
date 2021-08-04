@@ -1,4 +1,4 @@
-import { Ellipse } from "../types";
+import { Ellipse } from "@design-sdk/figma-remote-types";
 import { EllipseNode } from "@design-sdk/figma-types";
 import { MappingEllipseNode } from "./mapping-instance";
 import { blendBaseNode } from "../blenders";

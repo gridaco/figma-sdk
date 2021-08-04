@@ -1,4 +1,4 @@
-import { Text } from "../types";
+import { Text } from "@design-sdk/figma-remote-types";
 import { TextNode } from "@design-sdk/figma-types";
 import {
   _FILL_INTERFACE_METHODS,
@@ -40,7 +40,6 @@ export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
     },
     textCase: remText.style.textCase,
     textDecoration: remText.style.textDecoration,
-
 
     letterSpacing: {
       value: remText.style.letterSpacing,
