@@ -26,7 +26,16 @@ export enum FigmaUrlType {
   empty = "empty",
 }
 
-export function analyze(url: string): FigmaUrlType {
+export enum FigmaFileOrNodeIdType {
+  nodeid,
+  maybe_nodeid,
+  fileid,
+  maybe_fileid,
+}
+
+export type FigmaInputAnalysisResult = FigmaUrlType | FigmaFileOrNodeIdType;
+
+export function analyze(url: string): FigmaInputAnalysisResult {
   if (!url) {
     // return if url is empty
     return FigmaUrlType.empty;
@@ -37,6 +46,36 @@ export function analyze(url: string): FigmaUrlType {
   try {
     _u = new URL(url);
   } catch (_) {
+    const maybeidlike = url;
+    if (maybeidlike.length > 0) {
+      if (maybeidlike.includes(":") || maybeidlike.includes("%3A")) {
+        let _target = maybeidlike;
+        // "%3A" is ":" as in url encoding
+        if (_target.includes("%3A")) {
+          // decode value, assuming it is url encoded
+          _target = decodeURI(_target);
+        }
+        // 2. run regex
+        if (_target.match(/[0-9]+:[0-9]+/) !== null) {
+          return FigmaFileOrNodeIdType.maybe_nodeid;
+        }
+      }
+      // e.g. kLzb7R9xYuuphfX4TssVNe
+      // e.g. 4hqwYFw6FKw1njvzEl3VUh
+      // fileid is 22 chars at this point.
+      else if (maybeidlike.length >= 22) {
+        const _taget = decodeURI(maybeidlike);
+        // figma file id does not contain special characters. it's like mongodb id
+        if (_taget.match(/[a-zA-Z0-9]/) !== null) {
+          if (_taget.length == 22) {
+            return FigmaFileOrNodeIdType.fileid;
+          } else {
+            return FigmaFileOrNodeIdType.maybe_fileid;
+          }
+        }
+      }
+    }
+
     throw `this url cannot be analyzed. this is not a valid url string - "${url}"`;
   }
 
