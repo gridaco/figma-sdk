@@ -4,7 +4,7 @@ import {
   blendCornerNode,
   blendRectangleCornerNode,
 } from "../blenders";
-import { Frame } from "../types";
+import { Frame } from "@design-sdk/figma-remote-types";
 import { MappingFrameNode } from "./mapping-instance";
 
 export function mapFigmaRemoteFrameToFigma(remFrame: Frame): Figma.FrameNode {

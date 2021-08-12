@@ -1,5 +1,5 @@
 import { SceneNode } from "@design-sdk/figma-types";
-import { Node } from "../types";
+import { Node } from "@design-sdk/figma-remote-types";
 import { mapFigmaRemoteEllipseToFigma } from "./ellipse.mapper";
 import { mapFigmaRemoteFrameToFigma } from "./frame.mapper";
 import { mapFigmaRemoteGroupToFigma } from "./group.mapper";
