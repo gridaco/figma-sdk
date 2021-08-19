@@ -3,7 +3,7 @@
  * https://github.com/figma/plugin-typings/blob/master/index.d.ts
  * https://github.com/figma/plugin-typings/commit/e355d78a743797360c819dda783b73b5614485f7
  */
-
+//@ts-ignore
 export let figma: PluginAPI = global?.["figma"] ?? globalThis?.PluginAPI?.figma;
 
 /**
@@ -14,7 +14,6 @@ export let figma: PluginAPI = global?.["figma"] ?? globalThis?.PluginAPI?.figma;
 export function provideFigma(_figma) {
   figma = _figma;
 }
-
 
 export interface PluginAPI {
   readonly apiVersion: "1.0.0";
@@ -315,10 +314,10 @@ export interface SolidPaint {
 
 export interface GradientPaint {
   readonly type:
-  | "GRADIENT_LINEAR"
-  | "GRADIENT_RADIAL"
-  | "GRADIENT_ANGULAR"
-  | "GRADIENT_DIAMOND";
+    | "GRADIENT_LINEAR"
+    | "GRADIENT_RADIAL"
+    | "GRADIENT_ANGULAR"
+    | "GRADIENT_DIAMOND";
   readonly gradientTransform: Transform;
   readonly gradientStops: ReadonlyArray<ColorStop>;
 
@@ -449,12 +448,12 @@ export interface LetterSpacing {
 
 export type LineHeight =
   | {
-    readonly value: number;
-    readonly unit: "PIXELS" | "PERCENT";
-  }
+      readonly value: number;
+      readonly unit: "PIXELS" | "PERCENT";
+    }
   | {
-    readonly unit: "AUTO";
-  };
+      readonly unit: "AUTO";
+    };
 
 export type HyperlinkTarget = {
   type: "URL" | "NODE";
@@ -495,16 +494,16 @@ export type Action =
   | { readonly type: "BACK" | "CLOSE" }
   | { readonly type: "URL"; url: string }
   | {
-    readonly type: "NODE";
-    readonly destinationId: string | null;
-    readonly navigation: Navigation;
-    readonly transition: Transition | null;
-    readonly preserveScrollPosition: boolean;
+      readonly type: "NODE";
+      readonly destinationId: string | null;
+      readonly navigation: Navigation;
+      readonly transition: Transition | null;
+      readonly preserveScrollPosition: boolean;
 
-    // Only present if navigation == "OVERLAY" and the destination uses
-    // overlay position export type "RELATIVE"
-    readonly overlayRelativePosition?: Vector;
-  };
+      // Only present if navigation == "OVERLAY" and the destination uses
+      // overlay position export type "RELATIVE"
+      readonly overlayRelativePosition?: Vector;
+    };
 
 export interface SimpleTransition {
   readonly type: "DISSOLVE" | "SMART_ANIMATE" | "SCROLL_ANIMATE";
@@ -526,25 +525,30 @@ export type Transition = SimpleTransition | DirectionalTransition;
 export type Trigger =
   | { readonly type: "ON_CLICK" | "ON_HOVER" | "ON_PRESS" | "ON_DRAG" }
   | {
-    readonly type: "AFTER_TIMEOUT";
-    readonly timeout: number;
-  }
+      readonly type: "AFTER_TIMEOUT";
+      readonly timeout: number;
+    }
   | {
-    readonly type: "MOUSE_ENTER" | "MOUSE_LEAVE" | "MOUSE_UP" | "MOUSE_DOWN";
-    readonly delay: number;
-  }
+      readonly type: "MOUSE_ENTER" | "MOUSE_LEAVE" | "MOUSE_UP" | "MOUSE_DOWN";
+      readonly delay: number;
+    }
   | {
-    readonly type: "ON_KEY_DOWN";
-    readonly device:
-    | "KEYBOARD"
-    | "XBOX_ONE"
-    | "PS4"
-    | "SWITCH_PRO"
-    | "UNKNOWN_CONTROLLER";
-    readonly keyCodes: ReadonlyArray<number>;
-  };
+      readonly type: "ON_KEY_DOWN";
+      readonly device:
+        | "KEYBOARD"
+        | "XBOX_ONE"
+        | "PS4"
+        | "SWITCH_PRO"
+        | "UNKNOWN_CONTROLLER";
+      readonly keyCodes: ReadonlyArray<number>;
+    };
 
-export type Navigation = "NAVIGATE" | "SWAP" | "OVERLAY" | "SCROLL_TO" | "CHANGE_TO";
+export type Navigation =
+  | "NAVIGATE"
+  | "SWAP"
+  | "OVERLAY"
+  | "SCROLL_TO"
+  | "CHANGE_TO";
 
 export interface Easing {
   readonly type: "EASE_IN" | "EASE_OUT" | "EASE_IN_AND_OUT" | "LINEAR";
@@ -730,25 +734,25 @@ export interface PublishableMixin {
 
 export interface DefaultShapeMixin
   extends BaseNodeMixin,
-  SceneNodeMixin,
-  ReactionMixin,
-  BlendMixin,
-  GeometryMixin,
-  LayoutMixin,
-  ExportMixin { }
+    SceneNodeMixin,
+    ReactionMixin,
+    BlendMixin,
+    GeometryMixin,
+    LayoutMixin,
+    ExportMixin {}
 
 export interface BaseFrameMixin
   extends BaseNodeMixin,
-  SceneNodeMixin,
-  ChildrenMixin,
-  ContainerMixin,
-  GeometryMixin,
-  CornerMixin,
-  RectangleCornerMixin,
-  BlendMixin,
-  ConstraintMixin,
-  LayoutMixin,
-  ExportMixin {
+    SceneNodeMixin,
+    ChildrenMixin,
+    ContainerMixin,
+    GeometryMixin,
+    CornerMixin,
+    RectangleCornerMixin,
+    BlendMixin,
+    ConstraintMixin,
+    LayoutMixin,
+    ExportMixin {
   layoutMode: "NONE" | "HORIZONTAL" | "VERTICAL";
   primaryAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
   counterAxisSizingMode: "FIXED" | "AUTO"; // applicable only if layoutMode != "NONE"
@@ -770,8 +774,8 @@ export interface BaseFrameMixin
 
 export interface DefaultFrameMixin
   extends BaseFrameMixin,
-  FramePrototypingMixin,
-  ReactionMixin { }
+    FramePrototypingMixin,
+    ReactionMixin {}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Nodes
@@ -814,11 +818,11 @@ export interface PageNode extends BaseNodeMixin, ChildrenMixin, ExportMixin {
   backgrounds: ReadonlyArray<Paint>;
 
   readonly prototypeStartNode:
-  | FrameNode
-  | GroupNode
-  | ComponentNode
-  | InstanceNode
-  | null;
+    | FrameNode
+    | GroupNode
+    | ComponentNode
+    | InstanceNode
+    | null;
 }
 
 export interface FrameNode extends DefaultFrameMixin {
@@ -828,31 +832,31 @@ export interface FrameNode extends DefaultFrameMixin {
 
 export interface GroupNode
   extends BaseNodeMixin,
-  SceneNodeMixin,
-  ReactionMixin,
-  ChildrenMixin,
-  ContainerMixin,
-  BlendMixin,
-  LayoutMixin,
-  ExportMixin {
+    SceneNodeMixin,
+    ReactionMixin,
+    ChildrenMixin,
+    ContainerMixin,
+    BlendMixin,
+    LayoutMixin,
+    ExportMixin {
   readonly type: "GROUP";
   clone(): GroupNode;
 }
 
 export interface SliceNode
   extends BaseNodeMixin,
-  SceneNodeMixin,
-  LayoutMixin,
-  ExportMixin {
+    SceneNodeMixin,
+    LayoutMixin,
+    ExportMixin {
   readonly type: "SLICE";
   clone(): SliceNode;
 }
 
 export interface RectangleNode
   extends DefaultShapeMixin,
-  ConstraintMixin,
-  CornerMixin,
-  RectangleCornerMixin {
+    ConstraintMixin,
+    CornerMixin,
+    RectangleCornerMixin {
   readonly type: "RECTANGLE";
   clone(): RectangleNode;
 }
@@ -862,26 +866,38 @@ export interface LineNode extends DefaultShapeMixin, ConstraintMixin {
   clone(): LineNode;
 }
 
-export interface EllipseNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
+export interface EllipseNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    CornerMixin {
   readonly type: "ELLIPSE";
   clone(): EllipseNode;
   arcData: ArcData;
 }
 
-export interface PolygonNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
+export interface PolygonNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    CornerMixin {
   readonly type: "POLYGON";
   clone(): PolygonNode;
   pointCount: number;
 }
 
-export interface StarNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
+export interface StarNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    CornerMixin {
   readonly type: "STAR";
   clone(): StarNode;
   pointCount: number;
   innerRadius: number;
 }
 
-export interface VectorNode extends DefaultShapeMixin, ConstraintMixin, CornerMixin {
+export interface VectorNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    CornerMixin {
   readonly type: "VECTOR";
   clone(): VectorNode;
   vectorNetwork: VectorNetwork;
@@ -989,8 +1005,8 @@ export interface InstanceNode extends DefaultFrameMixin {
 
 export interface BooleanOperationNode
   extends DefaultShapeMixin,
-  ChildrenMixin,
-  CornerMixin {
+    ChildrenMixin,
+    CornerMixin {
   readonly type: "BOOLEAN_OPERATION";
   clone(): BooleanOperationNode;
   booleanOperation: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
@@ -1080,22 +1096,21 @@ export interface Image {
   getBytesAsync(): Promise<Uint8Array>;
 }
 
-
 /// https://github.com/figma/plugin-typings/blob/master/LICENSE
 /// MIT License
-/// 
+///
 /// Copyright(c) 2021 Figma, Inc.
-/// 
+///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files(the "Software"), to deal
 ///   in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in all
 /// copies or substantial portions of the Software.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ///   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
