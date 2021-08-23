@@ -2,7 +2,7 @@ import {
   TransportLayer,
   VanillaSceneTransport,
   StorableLayerType,
-  StorableSceneType,
+  legacy_scene,
 } from "@base-sdk/base";
 
 import {
@@ -47,7 +47,7 @@ export function makeVanilla(node: ReflectFrameNode): VanillaSceneTransport {
       tags: [],
       nodeId: node.id,
       cachedPreview: "bridged://temp-asset/current-vanilla-scene",
-      sceneType: StorableSceneType.screen,
+      sceneType: legacy_scene.StorableSceneType.screen,
       width: node.width,
       height: node.height,
       layers: vanillaElements,
