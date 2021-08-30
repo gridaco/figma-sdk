@@ -8,6 +8,12 @@ import { ReflectSceneNodeType } from "@design-sdk/core/nodes/types/node-type";
 import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 
 import { Figma } from "../..";
+import {
+  FigmaBoolean,
+  FigmaUnique,
+  FigmaVariantPropertyCompatType,
+  VariantProperty,
+} from "./variant-property-type";
 
 export function getVariantNamesSetFromRawNode_Figma(from: Figma.SceneNode) {
   let masterVariantSet: Figma.ComponentSetNode;
@@ -120,28 +126,17 @@ export function extractPropertiesFromVariantName_Figma(
   return properties;
 }
 
-type FigmaEnum = string[];
-type FigmaBoolean = "boolean";
-type FigmaUnique = "unique";
-type FigmaVariantPropertyCompatType = FigmaEnum | FigmaBoolean | FigmaUnique;
-export interface FimaVariantPropertyData {
-  name: string;
-  type: FigmaVariantPropertyCompatType;
-  defaultValue?: string;
-  nullable: boolean;
-}
-
 /**
  * figma's variant values' type are ok to be translated as enum (custom type alias) or boolean value since it's all selectable
  * at this point (2021), only boolean and string types are supported and string are hanlded as selectable on figma editor ui.
- * the special strings are ["on", "off", "true", "false"]
+ * the special strings are ["on", "off", "true", "false", "yes", "no"]
  * some values may be nullable if there is a variant that contains no value.
  * @param params
  */
 export function extractTypeFromVariantNames_Figma(
   names: string[],
   defaultName?: string
-): FimaVariantPropertyData[] {
+): VariantProperty[] {
   if (!names || names.length == 0) {
     console.log("you might want to check this. input names were empty");
     return [];
@@ -214,20 +209,23 @@ export function extractTypeFromVariantNames_Figma(
 
     if (_len == 1) {
       // fallback to string
-      fixedPropertyTypeMap.set(k, "unique");
+      fixedPropertyTypeMap.set(k, FigmaUnique);
     } else if (_len >= 2) {
-      if (array.isAllEqual(v) && v[0] == "boolean") {
+      if (array.isAllEqual(v) && v[0] == FigmaBoolean) {
         // return boolean
-        fixedPropertyTypeMap.set(k, "boolean");
+        fixedPropertyTypeMap.set(k, FigmaBoolean);
       } else {
         // if not all equal or not boolean (string, string) will be treated as (enum)
         // fallback to enum
 
         // set unum
-        const uniqueValues: FigmaEnum = _tmp_uniqueValuesMap
+        const uniqueValues = _tmp_uniqueValuesMap
           .get(k)
           .filter(array.filters.onlyUnique);
-        fixedPropertyTypeMap.set(k, uniqueValues);
+        fixedPropertyTypeMap.set(k, {
+          type: "enum",
+          values: uniqueValues,
+        });
       }
     } else {
       // when len is 0
@@ -238,17 +236,16 @@ export function extractTypeFromVariantNames_Figma(
   // set default value map if possible
   let defaultPropertyValuesMap: Map<string, string> | undefined;
   if (defaultName) {
-    defaultPropertyValuesMap = extractPropertiesFromVariantName_Figma(
-      defaultName
-    );
+    defaultPropertyValuesMap =
+      extractPropertiesFromVariantName_Figma(defaultName);
   }
   //
 
-  const final: FimaVariantPropertyData[] = [];
+  const final: VariantProperty[] = [];
 
   fixedPropertyTypeMap.forEach((v, k) => {
     final.push({
-      name: k,
+      key: k,
       defaultValue: defaultPropertyValuesMap
         ? defaultPropertyValuesMap.get(k)
         : null,
@@ -261,14 +258,14 @@ export function extractTypeFromVariantNames_Figma(
   return final;
 }
 
-const FIGMA_BOOLEAN_REPRESENTERS = ["on", "off", "true", "false"];
+const FIGMA_BOOLEAN_REPRESENTERS = ["on", "off", "true", "false", "yes", "no"];
 function inferTypeFromVariantValue_Figma(
   value: string
 ): FigmaVariantPropertyCompatType {
   if (FIGMA_BOOLEAN_REPRESENTERS.includes(value)) {
-    return "boolean";
+    return FigmaBoolean;
   } else {
-    return "unique";
+    return FigmaUnique;
   }
 }
 
