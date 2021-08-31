@@ -12,7 +12,7 @@ import {
   ReflectTextNode,
 } from "@design-sdk/core/nodes";
 import { converters, TextManifest, ImageManifest } from "@reflect-ui/core";
-import { ImageRepository } from "../assets-repository";
+import { ImageRepository } from "@design-sdk/core/assets-repository";
 import { makeCGRect } from "./make";
 
 const vanillaImageRepo = new ImageRepository("vanilla-image-repository");
