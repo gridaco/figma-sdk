@@ -1,4 +1,4 @@
-import { LayoutConstraint } from "../types";
+import { LayoutConstraint } from "@design-sdk/figma-remote-types";
 import { Constraints, ConstraintType } from "@design-sdk/figma-types";
 /**
  *
