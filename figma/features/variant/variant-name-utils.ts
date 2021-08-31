@@ -261,6 +261,12 @@ export function extractTypeFromVariantNames_Figma(
   return final;
 }
 
+export function extractDataByKey(name: string, key: string) {
+  const _props_of_this_single_name =
+    extractPropertiesFromVariantName_Figma(name);
+  return _props_of_this_single_name.get(key);
+}
+
 const FIGMA_BOOLEAN_REPRESENTERS = ["on", "off", "true", "false", "yes", "no"];
 function inferTypeFromVariantValue_Figma(
   value: string
