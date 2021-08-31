@@ -2,15 +2,20 @@ export type FigmaEnum = {
   type: "enum";
   values: string[];
 };
+
+export type FigmaUnique = {
+  type: "unique";
+  value: string;
+};
+
 export const FigmaNumber = Symbol("figma/variant-type/number");
 export const FigmaBoolean = Symbol("figma/variant-type/boolean");
-export const FigmaUnique = Symbol("figma/variant-type/unique");
 
 export type FigmaVariantPropertyCompatType =
   | FigmaEnum
+  | FigmaUnique
   | typeof FigmaNumber
-  | typeof FigmaBoolean
-  | typeof FigmaUnique;
+  | typeof FigmaBoolean;
 
 export function _FigmaVariantPropertyCompatType_to_string(
   t: FigmaVariantPropertyCompatType
@@ -19,9 +24,9 @@ export function _FigmaVariantPropertyCompatType_to_string(
     return "number";
   } else if (t == FigmaBoolean) {
     return "boolean";
-  } else if (t == FigmaUnique) {
+  } else if (t.type == "unique") {
     return "unique";
-  } else {
+  } else if (t.type == "enum") {
     return "enum";
   }
 }

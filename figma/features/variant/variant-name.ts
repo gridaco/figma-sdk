@@ -209,7 +209,10 @@ export function extractTypeFromVariantNames_Figma(
 
     if (_len == 1) {
       // fallback to string
-      fixedPropertyTypeMap.set(k, FigmaUnique);
+      fixedPropertyTypeMap.set(k, <FigmaUnique>{
+        type: "unique",
+        value: k, // TODO: inspect me is this the right value?
+      });
     } else if (_len >= 2) {
       if (array.isAllEqual(v) && v[0] == FigmaBoolean) {
         // return boolean
@@ -265,7 +268,10 @@ function inferTypeFromVariantValue_Figma(
   if (FIGMA_BOOLEAN_REPRESENTERS.includes(value)) {
     return FigmaBoolean;
   } else {
-    return FigmaUnique;
+    return <FigmaUnique>{
+      type: "unique",
+      value: value,
+    };
   }
 }
 
