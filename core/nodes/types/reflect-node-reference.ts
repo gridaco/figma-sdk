@@ -10,7 +10,7 @@ export interface IReflectNodeReference {
   origin: ReflectSceneNodeType;
   name: string;
   id: string;
-  parentReference?: IReflectNodeReference;
+  parent?: IReflectNodeReference;
   children?: Array<IReflectNodeReference>;
   mainComponent?: IReflectNodeReference;
 
@@ -30,7 +30,7 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
       type: r.type,
       origin: r.origin,
       id: r.id,
-      parentReference: {
+      parent: {
         name: r.parent.name,
         type: r.parent.type,
         // FIXME somehow parent origin is undefined. (handling this with temporary ?? operator)
@@ -66,7 +66,7 @@ export function makeComponentReference(r: Figma.ComponentNode) {
       type: r.type,
       origin: r.type,
       id: r.id,
-      parentReference: r.parent && {
+      parent: r.parent && {
         name: r.parent.name,
         type: r.parent.type,
         origin: r.parent.type,

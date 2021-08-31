@@ -20,6 +20,14 @@ export enum ReflectSceneNodeType {
 }
 
 /**
+ * type alias for representing component, instance or variant-set
+ */
+export type ReflectSceneComponentLikeType =
+  | ReflectSceneNodeType.component
+  | ReflectSceneNodeType.instance
+  | ReflectSceneNodeType.variant_set;
+
+/**
  * ReflectSceneNodeType + Primitives e.g. star
  */
 export enum ReflectNodeType {

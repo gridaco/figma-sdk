@@ -3,7 +3,7 @@ import { mostFrequent } from "@reflect-ui/uiutils";
 import {
   FigmaCrossAxisAligment,
   FigmaMainAxisAlignment,
-} from "@design-sdk/figma/types";
+} from "@design-sdk/figma-types";
 import {
   convertLayoutModeToAxis,
   convertPrimaryAxisAlignItemsToMainAxisAlignment,
