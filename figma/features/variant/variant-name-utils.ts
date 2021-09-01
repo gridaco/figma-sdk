@@ -271,7 +271,9 @@ const FIGMA_BOOLEAN_REPRESENTERS = ["on", "off", "true", "false", "yes", "no"];
 function inferTypeFromVariantValue_Figma(
   value: string
 ): FigmaVariantPropertyCompatType {
-  if (FIGMA_BOOLEAN_REPRESENTERS.includes(value)) {
+  /// !note. figma ignores casing of the variant value. e.g. TrUe & FaLsE also are considered as boolean type on figma.
+  const _flat_value = value.toLowerCase();
+  if (FIGMA_BOOLEAN_REPRESENTERS.includes(_flat_value)) {
     return FigmaBoolean;
   } else {
     return <FigmaUnique>{
