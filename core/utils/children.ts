@@ -22,7 +22,11 @@ export function mapGrandchildren<
   options?: {
     includeThis?: boolean;
     depthLimit?: number;
-  }
+  },
+  /**
+   * filter won't be applied to root. rather `includeThis` is set to true or not.
+   */
+  filter?: (node: I) => boolean
 ): Array<O> {
   const _current_depth = depth ?? 0;
 
@@ -41,6 +45,10 @@ export function mapGrandchildren<
     children.push(node as any);
   }
 
+  const add = (...items: I[]) => {
+    children.push(...(items.filter(filter ?? ((_) => true)) as any));
+  };
+
   if ("children" in node) {
     const castedNode = node as IChildrenMixin<I>;
     // children field may exist, but not a array or undefined
@@ -54,12 +62,12 @@ export function mapGrandchildren<
               depthLimit: options?.depthLimit,
             }
           );
-          children.push(...(grandchildren as any));
+          add(...(grandchildren as any));
         }
 
         // frame can be also a child, but not group. group only holds children, so we do not push group nodes
         if (!((child as any).type == ReflectSceneNodeType.group)) {
-          children.push(child as any);
+          add(child as any);
         }
       }
     }
