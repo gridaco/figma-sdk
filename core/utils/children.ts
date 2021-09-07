@@ -15,7 +15,8 @@ type MaybeChildrenMixin<T = any> = IChildrenMixin<T> | object;
  */
 export function mapGrandchildren<
   I extends MaybeChildrenMixin<any> = IReflectChildrenMixin,
-  O = ReflectSceneNode
+  O = ReflectSceneNode,
+  ITEMS = O
 >(
   node: I,
   depth?: number,
@@ -26,7 +27,7 @@ export function mapGrandchildren<
   /**
    * filter won't be applied to root. rather `includeThis` is set to true or not.
    */
-  filter?: (node: I) => boolean
+  filter?: (node: ITEMS) => boolean
 ): Array<O> {
   const _current_depth = depth ?? 0;
 
@@ -45,7 +46,7 @@ export function mapGrandchildren<
     children.push(node as any);
   }
 
-  const add = (...items: I[]) => {
+  const add = (...items: ITEMS[]) => {
     children.push(...(items.filter(filter ?? ((_) => true)) as any));
   };
 
