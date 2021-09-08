@@ -239,8 +239,9 @@ export function extractTypeFromVariantNames_Figma(
   // set default value map if possible
   let defaultPropertyValuesMap: Map<string, string> | undefined;
   if (defaultName) {
-    defaultPropertyValuesMap =
-      extractPropertiesFromVariantName_Figma(defaultName);
+    defaultPropertyValuesMap = extractPropertiesFromVariantName_Figma(
+      defaultName
+    );
   }
   //
 
@@ -262,8 +263,9 @@ export function extractTypeFromVariantNames_Figma(
 }
 
 export function extractDataByKey(name: string, key: string) {
-  const _props_of_this_single_name =
-    extractPropertiesFromVariantName_Figma(name);
+  const _props_of_this_single_name = extractPropertiesFromVariantName_Figma(
+    name
+  );
   return _props_of_this_single_name.get(key);
 }
 
@@ -273,6 +275,10 @@ function inferTypeFromVariantValue_Figma(
 ): FigmaVariantPropertyCompatType {
   /// !note. figma ignores casing of the variant value. e.g. TrUe & FaLsE also are considered as boolean type on figma.
   const _flat_value = value.toLowerCase();
+  if (value === undefined) {
+    throw "value is undefined. cannot infer type.";
+  }
+
   if (FIGMA_BOOLEAN_REPRESENTERS.includes(_flat_value)) {
     return FigmaBoolean;
   } else {
