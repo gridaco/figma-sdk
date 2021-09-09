@@ -21,8 +21,30 @@ export interface IReflectNodeReference {
 
 export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
   if (!r) {
-    throw 'canno perform "makeReference". input node to make reference was empty';
+    throw 'cannot perform "makeReference". input node to make reference was empty';
   }
+
+  const make_infinite_parent_reference = (r: IReflectNodeReference) => {
+    return {
+      name: r.parent.name,
+      type: r.parent.type,
+      // FIXME: somehow parent origin is undefined. (handling this with temporary ?? operator)
+      // this is caused because initially converting the node, we use figma's raw nod as a parent.
+      // reflect conversion must be fixed before resolving this issue.
+      origin: r.parent.origin ?? r.parent.type,
+      id: r.parent.id,
+      parent: r.parent.parent
+        ? make_infinite_parent_reference(r.parent)
+        : undefined,
+      children: r.parent.children.map((c) => ({
+        name: c.name,
+        type: c.type,
+        origin: c.origin,
+        id: c.id,
+      })),
+    };
+  };
+
   // figma node
   if ("$schema" in r) {
     return <IReflectNodeReference>{
@@ -30,21 +52,7 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
       type: r.type,
       origin: r.origin,
       id: r.id,
-      parent: {
-        name: r.parent.name,
-        type: r.parent.type,
-        // FIXME somehow parent origin is undefined. (handling this with temporary ?? operator)
-        // this is caused because initially converting the node, we use figma's raw nod as a parent.
-        // reflect conversion must be fixed before resolving this issue.
-        origin: r.parent.origin ?? r.parent.type,
-        id: r.parent.id,
-        children: r.parent.children.map((c) => ({
-          name: c.name,
-          type: c.type,
-          origin: c.origin,
-          id: c.id,
-        })),
-      },
+      parent: make_infinite_parent_reference(r),
       children: r.hasChildren
         ? r.children.map((c) => makeReference(c))
         : undefined,
