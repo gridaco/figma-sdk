@@ -1,4 +1,4 @@
-import type { ReflectBaseNode } from ".";
+import type { ReflectBaseNode, ReflectSceneNode } from ".";
 import { Figma } from "@design-sdk/figma";
 import type { ReflectSceneNodeType } from "./node-type";
 
@@ -26,17 +26,17 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
 
   const make_infinite_parent_reference = (r: IReflectNodeReference) => {
     return {
-      name: r.parent.name,
-      type: r.parent.type,
+      name: r.name,
+      type: r.type,
       // FIXME: somehow parent origin is undefined. (handling this with temporary ?? operator)
       // this is caused because initially converting the node, we use figma's raw nod as a parent.
       // reflect conversion must be fixed before resolving this issue.
-      origin: r.parent.origin ?? r.parent.type,
-      id: r.parent.id,
-      parent: r.parent.parent
-        ? make_infinite_parent_reference(r.parent)
-        : undefined,
-      children: r.parent.children.map((c) => ({
+      origin: r.origin ?? r.type,
+      id: r.id,
+      parent: r.parent && make_infinite_parent_reference(r.parent),
+      mainComponent:
+        r.mainComponent && _safely_makeComponentReference(r.mainComponent),
+      children: r.children.map((c) => ({
         name: c.name,
         type: c.type,
         origin: c.origin,
@@ -52,12 +52,18 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
       type: r.type,
       origin: r.origin,
       id: r.id,
-      parent: make_infinite_parent_reference(r),
+      parent: make_infinite_parent_reference(r.parent),
       children: r.hasChildren
         ? r.children.map((c) => makeReference(c))
         : undefined,
       mainComponent: r.mainComponent,
     };
+  }
+}
+
+function _safely_makeComponentReference(r: IReflectNodeReference) {
+  if (r.origin === "COMPONENT" || r.type == "COMPONENT") {
+    return makeComponentReference((r as any) as Figma.ComponentNode);
   }
 }
 

@@ -15,7 +15,7 @@ export enum ReflectSceneNodeType {
   rectangle = "RECTANGLE",
   line = "LINE",
   vector = "VECTOR",
-  image = "IMAGE",
+  image = "__IMAGE", // this does not exists in figma
   unknown = "UNKNOWN",
 }
 
