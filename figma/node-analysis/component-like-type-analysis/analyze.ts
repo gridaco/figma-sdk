@@ -12,9 +12,8 @@ export function analyzeNode(node: IReflectNodeReference): SchemaDefinitionLike {
     node.origin != ReflectSceneNodeType.variant_set &&
     node.origin != ReflectSceneNodeType.instance
   ) {
-    // TODO:
-    const __todo_is_parent_component_like = false;
-    if (__todo_is_parent_component_like) {
+    const _is_parent_component_like = isMemberOfComponentLike(node);
+    if (_is_parent_component_like) {
       return "single-layer-property";
     } else {
       return "invalid-target";
@@ -39,6 +38,49 @@ export function analyzeNode(node: IReflectNodeReference): SchemaDefinitionLike {
   return "invalid-target";
 }
 
+/**
+ * rathers check if the node is inside a component-like node
+ *
+ * go up to root until there is no more parent. if one of the parent is component-like, the target is a configurable layer for the compoent-like.
+ * WARNING: since IReflectNodeReference#parent is just a reference, even if parent of parent exists, it won't be present. use with your own notice.
+ * otherwise, when running this on code-thread with RawInput, it will work. @lastupdated Sep 9 2021
+ * @param node
+ * @returns
+ */
+export function isMemberOfComponentLike(
+  node: IReflectNodeReference
+):
+  | {
+      parent: {
+        node: IReflectNodeReference;
+        type: SchemaDefinitionLike;
+      };
+    }
+  | false {
+  let parent = node.parent;
+  while (parent) {
+    const parentIs = analyzeNode(parent);
+    switch (parentIs) {
+      case "base-master-component":
+      case "instance-component":
+      case "master-component":
+      case "master-variant-compoent":
+      case "single-layer-property":
+      case "variant-instance":
+        return {
+          parent: {
+            node: parent,
+            type: parentIs,
+          },
+        };
+      case "invalid-target":
+      case "variant-set":
+        return false;
+    }
+  }
+  return false;
+}
+
 export function isThisInstanceAVariantInstance(node: IReflectNodeReference) {
   const _master = node.mainComponent;
   return isMasterVariant(_master);
@@ -53,7 +95,7 @@ export function isPossibleBeingAVariant(node: IReflectNodeReference) {
   // so, we check
   // 1. if node is type of a component
   // 2. if node has a parent.
-  return node.origin == ReflectSceneNodeType.component && _hasParent(node);
+  return node?.origin == ReflectSceneNodeType.component && _hasParent(node);
   // thant this has a minimal requirement for the possibility being a variant.
   // the exceptional case is that master-component being placed uner some sort of frame. (even if it is not a variant.)
 }
@@ -61,20 +103,13 @@ export function isPossibleBeingAVariant(node: IReflectNodeReference) {
 /**
  * is parent a variant set?
  */
-export function isParentAVariantSet(node: IReflectNodeReference) {
-  return node.parent.origin == ReflectSceneNodeType.variant_set;
+export function isParentAVariantSet(node?: IReflectNodeReference) {
+  return node?.parent?.origin == ReflectSceneNodeType.variant_set;
 }
 
 export function isThisAInstanceOfVariant(node: IReflectNodeReference): boolean {
   throw "no impl";
   return false;
-}
-
-/**
- * rathers check if the node is inside a component-like node
- */
-function isMemberOfComponentLike(node: ReflectSceneNode) {
-  throw "no impl";
 }
 
 function _hasParent(n: IReflectNodeReference): boolean {

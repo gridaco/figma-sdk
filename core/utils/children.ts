@@ -3,6 +3,7 @@ import type {
   IReflectChildrenMixin,
 } from "../nodes/types/mixins/children.mixin";
 import type { ReflectSceneNode } from "../nodes/types/node-type-alias";
+import type { IReflectNodeReference } from "../nodes/lignt";
 import { ReflectSceneNodeType } from "../nodes/types/node-type";
 
 type MaybeChildrenMixin<T = any> = IChildrenMixin<T> | object;
@@ -91,4 +92,16 @@ export function mapChildren<
     // depth limit 1 indicates to fetch only direct children
     depthLimit: 1,
   });
+}
+
+/**
+ * used for determining if wrapping frame can be ignored - (base) usages.
+ * @param node
+ * @returns
+ */
+export function isTheOnlyChild(node: IReflectNodeReference) {
+  if (node.parent.children) {
+    return node.parent.children.length === 1;
+  }
+  throw `cannot operate "isTheOnlyChild". children is undefined for node "${node.parent.name}""`;
 }
