@@ -12,7 +12,13 @@ export function analyzeNode(node: IReflectNodeReference): SchemaDefinitionLike {
     node.origin != ReflectSceneNodeType.variant_set &&
     node.origin != ReflectSceneNodeType.instance
   ) {
-    return "single-layer-property";
+    // TODO:
+    const __todo_is_parent_component_like = false;
+    if (__todo_is_parent_component_like) {
+      return "single-layer-property";
+    } else {
+      return "invalid-target";
+    }
   } else if (node?.origin == ReflectSceneNodeType.variant_set) {
     return "variant-set";
   } else if (node?.origin == ReflectSceneNodeType.instance) {
