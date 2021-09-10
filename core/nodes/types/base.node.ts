@@ -28,8 +28,7 @@ type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 
 export class ReflectBaseNode
-  implements IReflectNodeReference, IReflectLayoutMixin, IReflectBlendMixin
-{
+  implements IReflectNodeReference, IReflectLayoutMixin, IReflectBlendMixin {
   readonly $schema: string = "reflect-ui.com";
   readonly type: ReflectSceneNodeType;
   origin: ReflectSceneNodeType;
@@ -87,6 +86,7 @@ export class ReflectBaseNode
   readonly absoluteTransform: Transform;
   parent: ReflectSceneNode | null;
   mainComponent?: IReflectNodeReference | null;
+  variantProperties?: { [property: string]: string } | null;
 
   // region children related
   readonly children: Array<ReflectSceneNode> = [];
@@ -260,7 +260,7 @@ export class ReflectBaseNode
 
   swapVariant(name: string): Figma.InstanceNode {
     if (this.hasVariant) {
-      return swapVariant(this as any as Figma.InstanceNode, name);
+      return swapVariant((this as any) as Figma.InstanceNode, name);
     }
 
     // invalid request. this is not a variant compat node

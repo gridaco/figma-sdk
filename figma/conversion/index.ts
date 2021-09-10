@@ -146,8 +146,13 @@ export function intoReflectNodes(
         case "INSTANCE":
         case "COMPONENT": {
           const altNode = convertFrameNodeToAlt(node, altParent);
-          if (node.type == "INSTANCE") {
-            blendMainComponent(altNode, node);
+          if (node.type == "INSTANCE" || node.type == "COMPONENT") {
+            // component & instance has variant mixin. we'll map it here.
+            altNode.variantProperties = node.variantProperties;
+            // only for "instance"
+            if (node.type == "INSTANCE") {
+              blendMainComponent(altNode, node);
+            }
           }
           return altNode;
         }
