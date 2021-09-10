@@ -7,28 +7,6 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
     throw 'cannot perform "makeReference". input node to make reference was empty';
   }
 
-  const make_infinite_parent_reference = (r: IReflectNodeReference) => {
-    return {
-      name: r.name,
-      type: r.type,
-      // FIXME: somehow parent origin is undefined. (handling this with temporary ?? operator)
-      // this is caused because initially converting the node, we use figma's raw nod as a parent.
-      // reflect conversion must be fixed before resolving this issue.
-      origin: r.origin ?? r.type,
-      id: r.id,
-      parent: r.parent && make_infinite_parent_reference(r.parent),
-      mainComponent:
-        r.mainComponent && _safely_makeComponentReference(r.mainComponent),
-      variantProperties: r.variantProperties,
-      children: r.children.map((c) => ({
-        name: c.name,
-        type: c.type,
-        origin: c.origin,
-        id: c.id,
-      })),
-    };
-  };
-
   // figma node
   if ("$schema" in r) {
     return <IReflectNodeReference>{
@@ -37,9 +15,8 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
       origin: r.origin,
       id: r.id,
       parent: make_infinite_parent_reference(r.parent),
-      children: r.hasChildren
-        ? r.children.map((c) => makeReference(c))
-        : undefined,
+      children:
+        "children" in r ? r.children.map((c) => makeReference(c)) : undefined,
       mainComponent: r.mainComponent,
       variantProperties: r.variantProperties,
     };
@@ -59,26 +36,6 @@ export function makeComponentReference(r: Figma.ComponentNode) {
     );
     return;
   }
-
-  const make_infinite_children_reference = (
-    children: ReadonlyArray<Figma.SceneNode>
-  ): Array<IReflectNodeReference> => {
-    return children?.map((c) => {
-      return <IReflectNodeReference>{
-        id: c.id,
-        name: c.name,
-        origin: c.type,
-        type: c.type,
-        parent: {
-          id: c.parent.id,
-        },
-        children:
-          "children" in c
-            ? make_infinite_children_reference(c.children)
-            : undefined,
-      };
-    });
-  };
 
   if (r.type == "COMPONENT") {
     return <IReflectNodeReference>{
@@ -110,9 +67,54 @@ export function makeComponentReference(r: Figma.ComponentNode) {
   }
 }
 
-//     PluginSdk.fetchMetadata({
-//   type: "node-meta-fetch-request",
-//   id: id,
-//   namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
-//   key: "layer-property-data",
-// }).then((d) => {
+const should_hold_infinite_children = (r: IReflectNodeReference): boolean => {
+  if (r.origin ?? r.type == "COMPONENT") {
+    return true;
+  }
+};
+
+const make_infinite_parent_reference = (r: IReflectNodeReference) => {
+  return {
+    name: r.name,
+    type: r.type,
+    // FIXME: somehow parent origin is undefined. (handling this with temporary ?? operator)
+    // this is caused because initially converting the node, we use figma's raw nod as a parent.
+    // reflect conversion must be fixed before resolving this issue.
+    origin: r.origin ?? r.type,
+    id: r.id,
+    parent: r.parent && make_infinite_parent_reference(r.parent),
+    mainComponent:
+      r.mainComponent && _safely_makeComponentReference(r.mainComponent),
+    variantProperties: r.variantProperties,
+    children: should_hold_infinite_children(r)
+      ? make_infinite_children_reference(
+          (r.children as any) as ReadonlyArray<Figma.SceneNode>
+        )
+      : r.children.map((c) => ({
+          name: c.name,
+          type: c.type,
+          origin: c.origin,
+          id: c.id,
+        })),
+  };
+};
+
+const make_infinite_children_reference = (
+  children: ReadonlyArray<Figma.SceneNode>
+): Array<IReflectNodeReference> => {
+  return children?.map((c) => {
+    return <IReflectNodeReference>{
+      id: c.id,
+      name: c.name,
+      origin: c.type,
+      type: c.type,
+      parent: {
+        id: c.parent.id,
+      },
+      children:
+        "children" in c
+          ? make_infinite_children_reference(c.children)
+          : undefined,
+    };
+  });
+};

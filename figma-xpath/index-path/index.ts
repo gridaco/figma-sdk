@@ -41,7 +41,14 @@ export function findWithRelativeIndexPath(
     if (i === indexPath.length - 1) {
       return children[at];
     }
-    children = children[at].children;
+    try {
+      children = children[at].children;
+    } catch (_) {
+      console.error(_, root.children, indexPath);
+      throw `givven data is incorrect. we couldn't find target layer from "${
+        root.name
+      }" with givven path ${indexPath.join("/")}`;
+    }
     i++;
   }
 }
