@@ -74,6 +74,27 @@ export function makeComponentReference(r: Figma.ComponentNode) {
     );
     return;
   }
+
+  const make_infinite_children_reference = (
+    children: ReadonlyArray<Figma.SceneNode>
+  ): Array<IReflectNodeReference> => {
+    return children?.map((c) => {
+      return <IReflectNodeReference>{
+        id: c.id,
+        name: c.name,
+        origin: c.type,
+        type: c.type,
+        parent: {
+          id: c.parent.id,
+        },
+        children:
+          "children" in c
+            ? make_infinite_children_reference(c.children)
+            : undefined,
+      };
+    });
+  };
+
   if (r.type == "COMPONENT") {
     return <IReflectNodeReference>{
       name: r.name,
@@ -97,15 +118,15 @@ export function makeComponentReference(r: Figma.ComponentNode) {
       },
       children:
         "children" in r
-          ? r.children.map((c) => {
-              return {
-                id: c.id,
-                name: c.name,
-                origin: c.type,
-                type: c.type,
-              };
-            })
+          ? make_infinite_children_reference(r.children)
           : undefined,
     };
   }
 }
+
+//     PluginSdk.fetchMetadata({
+//   type: "node-meta-fetch-request",
+//   id: id,
+//   namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
+//   key: "layer-property-data",
+// }).then((d) => {
