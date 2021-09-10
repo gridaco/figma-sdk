@@ -65,7 +65,6 @@ export function isMemberOfComponentLike(
       case "instance-component":
       case "master-component":
       case "master-variant-compoent":
-      case "single-layer-property":
       case "variant-instance":
         return {
           parent: {
@@ -73,6 +72,8 @@ export function isMemberOfComponentLike(
             type: parentIs,
           },
         };
+      case "single-layer-property":
+        return isMemberOfComponentLike(parent);
       case "invalid-target":
       case "variant-set":
         return false;
