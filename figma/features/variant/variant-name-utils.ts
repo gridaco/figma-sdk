@@ -216,7 +216,6 @@ export function extractTypeFromVariantNames_Figma(
       });
     } else if (_len >= 2) {
       if (array.isAllEqual(v)) {
-        console.log("t??", v[0]);
         switch (
           v[0] // since it is all equal, we can use first value.
         ) {
