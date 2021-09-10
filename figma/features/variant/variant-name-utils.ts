@@ -10,6 +10,7 @@ import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 import { Figma } from "../..";
 import {
   FigmaBoolean,
+  FigmaNumber,
   FigmaUnique,
   FigmaVariantPropertyCompatType,
   VariantProperty,
@@ -214,9 +215,19 @@ export function extractTypeFromVariantNames_Figma(
         value: k, // TODO: inspect me is this the right value?
       });
     } else if (_len >= 2) {
-      if (array.isAllEqual(v) && v[0] == FigmaBoolean) {
-        // return boolean
-        fixedPropertyTypeMap.set(k, FigmaBoolean);
+      if (array.isAllEqual(v)) {
+        console.log("t??", v[0]);
+        switch (
+          v[0] // since it is all equal, we can use first value.
+        ) {
+          case FigmaBoolean:
+            // return boolean
+            fixedPropertyTypeMap.set(k, FigmaBoolean);
+            break;
+          case FigmaNumber:
+            fixedPropertyTypeMap.set(k, FigmaNumber);
+            break;
+        }
       } else {
         // if not all equal or not boolean (string, string) will be treated as (enum)
         // fallback to enum
@@ -279,14 +290,20 @@ function inferTypeFromVariantValue_Figma(
     throw "value is undefined. cannot infer type.";
   }
 
+  // /^[+-]?\d+(\.\d+)?$/ we can use regex also.
+  if (!Number.isNaN(Number(value))) {
+    // e.g. - if "0" -> may be figma number
+    return FigmaNumber;
+  }
   if (FIGMA_BOOLEAN_REPRESENTERS.includes(_flat_value)) {
     return FigmaBoolean;
-  } else {
-    return <FigmaUnique>{
-      type: "unique",
-      value: value,
-    };
   }
+
+  // else
+  return <FigmaUnique>{
+    type: "unique",
+    value: value,
+  };
 }
 
 /**
