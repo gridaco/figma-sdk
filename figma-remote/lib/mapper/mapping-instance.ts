@@ -219,6 +219,9 @@ export class MappingTextNode implements Figma.TextNode {
   setRangeFontSize(start: number, end: number, value: number): void {
     throw new Error("Method not implemented.");
   }
+  getRangeAllFontNames(start: number, end: number): Figma.FontName[] {
+    throw new Error("Method not implemented.");
+  }
   getRangeFontName(
     start: number,
     end: number
@@ -374,19 +377,36 @@ export class MappingTextNode implements Figma.TextNode {
   }
   constraints: Figma.Constraints;
 
-  getRangeHyperlink(start: number, end: number): Figma.PluginAPI["mixed"] | Figma.HyperlinkTarget {
+  getRangeHyperlink(
+    start: number,
+    end: number
+  ): Figma.PluginAPI["mixed"] | Figma.HyperlinkTarget {
     throw new Error("Method not implemented.");
   }
-  setRangeHyperlink(start: number, end: number, value: Figma.HyperlinkTarget): void {
+  setRangeHyperlink(
+    start: number,
+    end: number,
+    value: Figma.HyperlinkTarget
+  ): void {
     throw new Error("Method not implemented.");
   }
-  getRangeListOptions(start: number, end: number): Figma.PluginAPI["mixed"] | Figma.TextListOptions {
+  getRangeListOptions(
+    start: number,
+    end: number
+  ): Figma.PluginAPI["mixed"] | Figma.TextListOptions {
     throw new Error("Method not implemented.");
   }
-  setRangeListOptions(start: number, end: number, value: Figma.TextListOptions): void {
+  setRangeListOptions(
+    start: number,
+    end: number,
+    value: Figma.TextListOptions
+  ): void {
     throw new Error("Method not implemented.");
   }
-  getRangeIndentation(start: number, end: number): number | Figma.PluginAPI["mixed"] {
+  getRangeIndentation(
+    start: number,
+    end: number
+  ): number | Figma.PluginAPI["mixed"] {
     throw new Error("Method not implemented.");
   }
   setRangeIndentation(start: number, end: number, value: number): void {
