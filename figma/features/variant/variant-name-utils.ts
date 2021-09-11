@@ -41,7 +41,7 @@ export function getVariantNamesSetFromReference_Figma(
   if (from.origin == ReflectSceneNodeType.component) {
     // if component & parent is variant set
     if (from.parent.origin == ReflectSceneNodeType.variant_set) {
-      masterVariantSet = from.parent;
+      masterVariantSet = from.parent as IReflectNodeReference;
     } else {
       throw "the givven component is not variant compat component";
     }

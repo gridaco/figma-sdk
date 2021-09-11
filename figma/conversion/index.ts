@@ -157,14 +157,15 @@ export function intoReflectNodes(
           return altNode;
         }
         case "GROUP": {
-          if (node.children.length === 1 && node.visible !== false) {
-            // if Group is visible and has only one child, Group should disappear.
-            // there will be a single value anyway.
-            console.warn(
-              `the givven node ${node.name} was type of GROUP, but it has single children, converting it to single node`
-            );
-            return intoReflectNodes(node.children, altParent)[0];
-          }
+          /// FIXME: DISABLING GROUP CONVERSION - this should be handled by the design to code side.
+          // if (node.children.length === 1 && node.visible !== false) {
+          //   // if Group is visible and has only one child, Group should disappear.
+          //   // there will be a single value anyway.
+          //   console.warn(
+          //     `the givven node ${node.name} was type of GROUP, but it has single children, converting it to single node`
+          //   );
+          //   return intoReflectNodes(node.children, altParent)[0];
+          // }
 
           const altNode = new ReflectGroupNode({
             id: node.id,

@@ -59,7 +59,7 @@ export function isMemberOfComponentLike(
   | false {
   let parent = node.parent;
   while (parent) {
-    const parentIs = analyzeNode(parent);
+    const parentIs = analyzeNode(parent as IReflectNodeReference);
     switch (parentIs) {
       case "base-master-component":
       case "instance-component":
@@ -68,12 +68,12 @@ export function isMemberOfComponentLike(
       case "variant-instance":
         return {
           parent: {
-            node: parent,
+            node: parent as IReflectNodeReference,
             type: parentIs,
           },
         };
       case "single-layer-property":
-        return isMemberOfComponentLike(parent);
+        return isMemberOfComponentLike(parent as IReflectNodeReference);
       case "invalid-target":
       case "variant-set":
         return false;

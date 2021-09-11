@@ -1,6 +1,13 @@
 import type { ReflectBaseNode } from "..";
 import { Figma } from "@design-sdk/figma";
-import type { IReflectNodeReference } from "./reflect-node-reference";
+import type {
+  InfiniteChildrenReference,
+  IReflectNodeBasicReference,
+  IReflectNodeReference,
+  MinimalNoDependencyNodeReference,
+  ParentWithSingleDepthChildrenReference,
+  SingleDepthChildReference,
+} from "./reflect-node-reference";
 
 export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
   if (!r) {
@@ -19,6 +26,7 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
         "children" in r ? r.children.map((c) => makeReference(c)) : undefined,
       mainComponent: r.mainComponent,
       variantProperties: r.variantProperties,
+      fills: r.fills
     };
   }
 }
@@ -29,7 +37,17 @@ function _safely_makeComponentReference(r: IReflectNodeReference) {
   }
 }
 
-export function makeComponentReference(r: Figma.ComponentNode) {
+interface ComponentReference extends IReflectNodeBasicReference {
+  type;
+  origin;
+  name;
+  parent: ParentWithSingleDepthChildrenReference;
+  children: InfiniteChildrenReference[];
+}
+
+export function makeComponentReference(
+  r: Figma.ComponentNode
+): ComponentReference {
   if (!r) {
     console.warn(
       "the givven input was empty. cannot perform 'makeComponentReference'"
@@ -38,7 +56,7 @@ export function makeComponentReference(r: Figma.ComponentNode) {
   }
 
   if (r.type == "COMPONENT") {
-    return <IReflectNodeReference>{
+    return <ComponentReference>{
       name: r.name,
       type: r.type,
       origin: r.type,
@@ -67,14 +85,21 @@ export function makeComponentReference(r: Figma.ComponentNode) {
   }
 }
 
-const should_hold_infinite_children = (r: IReflectNodeReference): boolean => {
-  if (r.origin ?? r.type == "COMPONENT") {
-    return true;
-  }
-};
+interface InfiniteParentReference extends MinimalNoDependencyNodeReference {
+  id;
+  name;
+  type;
+  origin;
+  parent: InfiniteParentReference;
+  mainComponent;
+  variantProperties;
+  children: SingleDepthChildReference[] | InfiniteChildrenReference[];
+}
 
-const make_infinite_parent_reference = (r: IReflectNodeReference) => {
-  return {
+const make_infinite_parent_reference = (
+  r: IReflectNodeReference
+): InfiniteParentReference => {
+  return <InfiniteParentReference>{
     name: r.name,
     type: r.type,
     // FIXME: somehow parent origin is undefined. (handling this with temporary ?? operator)
@@ -82,7 +107,9 @@ const make_infinite_parent_reference = (r: IReflectNodeReference) => {
     // reflect conversion must be fixed before resolving this issue.
     origin: r.origin ?? r.type,
     id: r.id,
-    parent: r.parent && make_infinite_parent_reference(r.parent),
+    parent:
+      r.parent &&
+      make_infinite_parent_reference(r.parent as IReflectNodeReference),
     mainComponent:
       r.mainComponent && _safely_makeComponentReference(r.mainComponent),
     variantProperties: r.variantProperties,
@@ -101,15 +128,17 @@ const make_infinite_parent_reference = (r: IReflectNodeReference) => {
 
 const make_infinite_children_reference = (
   children: ReadonlyArray<Figma.SceneNode>
-): Array<IReflectNodeReference> => {
+): Array<InfiniteChildrenReference> => {
   return children?.map((c) => {
-    return <IReflectNodeReference>{
+    return <InfiniteChildrenReference>{
       id: c.id,
       name: c.name,
       origin: c.type,
       type: c.type,
       parent: {
         id: c.parent.id,
+        name: c.parent.name,
+        origin: c.parent.type,
       },
       children:
         "children" in c
@@ -117,4 +146,10 @@ const make_infinite_children_reference = (
           : undefined,
     };
   });
+};
+
+const should_hold_infinite_children = (r: IReflectNodeReference): boolean => {
+  if (r.origin ?? r.type == "COMPONENT") {
+    return true;
+  }
 };

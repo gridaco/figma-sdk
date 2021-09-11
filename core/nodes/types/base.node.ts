@@ -21,14 +21,21 @@ import {
 } from "../../utils/retrieve-image-fills";
 import { IReflectLayoutMixin } from "./mixins/layout.mixin";
 import { IReflectBlendMixin } from "./mixins/blend.mixin";
-import { IReflectNodeReference, makeReference } from "./reflect-node-reference";
+import {
+  IReflectNodeBasicReference,
+  IReflectNodeBaseReference,
+  makeReference,
+} from "./reflect-node-reference";
 import { types } from "@reflect-ui/uiutils";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
 type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 
 export class ReflectBaseNode
-  implements IReflectNodeReference, IReflectLayoutMixin, IReflectBlendMixin {
+  implements
+    IReflectNodeBaseReference,
+    IReflectLayoutMixin,
+    IReflectBlendMixin {
   readonly $schema: string = "reflect-ui.com";
   readonly type: ReflectSceneNodeType;
   origin: ReflectSceneNodeType;
@@ -85,7 +92,7 @@ export class ReflectBaseNode
   readonly id: string;
   readonly absoluteTransform: Transform;
   parent: ReflectSceneNode | null;
-  mainComponent?: IReflectNodeReference | null;
+  mainComponent?: IReflectNodeBasicReference | null;
   variantProperties?: { [property: string]: string } | null;
 
   // region children related
@@ -287,7 +294,7 @@ export class ReflectBaseNode
   /**
    * retrieves interface, json exportable node reference data. (containing essensial data only) Mostly used for debugging, logging purpose.
    */
-  copyAsSnippet(): IReflectNodeReference {
+  copyAsSnippet(): IReflectNodeBasicReference {
     return makeReference(this);
   }
 
