@@ -21,7 +21,7 @@ export function getRelativeIndexPath(
       break;
     }
     paths.push(target.parent.children.findIndex((c) => c.id === target.id));
-    target = target.parent;
+    target = target.parent as IReflectNodeReference;
   }
 
   return paths.reverse().join("/");
@@ -39,10 +39,10 @@ export function findWithRelativeIndexPath(
   let i = 0;
   for (const at of indexPath) {
     if (i === indexPath.length - 1) {
-      return children[at];
+      return children[at] as IReflectNodeReference;
     }
     try {
-      children = children[at].children;
+      children = children[at].children as IReflectNodeReference[];
     } catch (_) {
       console.error(_, root.children, indexPath);
       throw `givven data is incorrect. we couldn't find target layer from "${
