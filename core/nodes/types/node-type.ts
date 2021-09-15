@@ -15,9 +15,17 @@ export enum ReflectSceneNodeType {
   rectangle = "RECTANGLE",
   line = "LINE",
   vector = "VECTOR",
-  image = "IMAGE",
+  image = "__IMAGE", // this does not exists in figma
   unknown = "UNKNOWN",
 }
+
+/**
+ * type alias for representing component, instance or variant-set
+ */
+export type ReflectSceneComponentLikeType =
+  | ReflectSceneNodeType.component
+  | ReflectSceneNodeType.instance
+  | ReflectSceneNodeType.variant_set;
 
 /**
  * ReflectSceneNodeType + Primitives e.g. star

@@ -12,8 +12,6 @@ export * as nodes from "./nodes";
 // platform
 export * as _platform from "./platform";
 
-export * as vanilla from "./vanilla";
-
 export * as repo_assets from "./assets-repository";
 
 // utils

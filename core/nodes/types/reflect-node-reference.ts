@@ -1,8 +1,23 @@
-import type { ReflectBaseNode } from ".";
-import { Figma } from "@design-sdk/figma";
 import type { ReflectSceneNodeType } from "./node-type";
+export {
+  makeComponentReference,
+  makeReference,
+} from "./make-reflect-node-reference";
+import type { NodeType } from "@design-sdk/figma";
 
-export interface IReflectNodeReference {
+export type IReflectNodeReference =
+  | IReflectNodeRootLikeReference
+  | IReflectNodeBasicReference;
+
+export type IReflectNodeChildrenReference =
+  | IReflectNodeReference
+  | InfiniteChildrenReference;
+
+export type IReflectParentNodeReference =
+  | IReflectNodeReference
+  | ParentWithSingleDepthChildrenReference;
+
+export interface IReflectNodeBasicReference {
   readonly type: ReflectSceneNodeType;
   /**
    * origin type
@@ -10,88 +25,50 @@ export interface IReflectNodeReference {
   origin: ReflectSceneNodeType;
   name: string;
   id: string;
-  parentReference?: IReflectNodeReference;
-  children?: Array<IReflectNodeReference>;
+  parent?: IReflectParentNodeReference;
+  children?: Array<IReflectNodeChildrenReference>;
   mainComponent?: IReflectNodeReference;
+  variantProperties?: { [property: string]: string } | null;
+}
 
+export interface IReflectNodeBaseReference extends IReflectNodeBasicReference {
   readonly isInstance: boolean;
   readonly isMasterComponent: boolean;
   readonly isRoot: boolean;
 }
 
-export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
-  if (!r) {
-    throw 'canno perform "makeReference". input node to make reference was empty';
-  }
-  // figma node
-  if ("$schema" in r) {
-    return <IReflectNodeReference>{
-      name: r.name,
-      type: r.type,
-      origin: r.origin,
-      id: r.id,
-      parentReference: {
-        name: r.parent.name,
-        type: r.parent.type,
-        // FIXME somehow parent origin is undefined. (handling this with temporary ?? operator)
-        // this is caused because initially converting the node, we use figma's raw nod as a parent.
-        // reflect conversion must be fixed before resolving this issue.
-        origin: r.parent.origin ?? r.parent.type,
-        id: r.parent.id,
-        children: r.parent.children.map((c) => ({
-          name: c.name,
-          type: c.type,
-          origin: c.origin,
-          id: c.id,
-        })),
-      },
-      children: r.hasChildren
-        ? r.children.map((c) => makeReference(c))
-        : undefined,
-      mainComponent: r.mainComponent,
-    };
-  }
+export type IReflectNodeRootLikeReference = IReflectNodeRootShapeReference;
+export interface IReflectNodeRootShapeReference
+  extends IReflectNodeBasicReference {
+  fills: any[];
 }
 
-export function makeComponentReference(r: Figma.ComponentNode) {
-  if (!r) {
-    console.warn(
-      "the givven input was empty. cannot perform 'makeComponentReference'"
-    );
-    return;
-  }
-  if (r.type == "COMPONENT") {
-    return <IReflectNodeReference>{
-      name: r.name,
-      type: r.type,
-      origin: r.type,
-      id: r.id,
-      parentReference: r.parent && {
-        name: r.parent.name,
-        type: r.parent.type,
-        origin: r.parent.type,
-        id: r.parent.id,
-        children: r.parent.children.map(
-          (c) =>
-            c && {
-              name: c.name,
-              type: c.type,
-              origin: c.type,
-              id: c.id,
-            }
-        ),
-      },
-      children:
-        "children" in r
-          ? r.children.map((c) => {
-              return {
-                id: c.id,
-                name: c.name,
-                origin: c.type,
-                type: c.type,
-              };
-            })
-          : undefined,
-    };
-  }
+export interface MinimalNoDependencyNodeReference {
+  id: string;
+  name: string;
+  origin: NodeType;
+}
+export interface InfiniteChildrenReference
+  extends MinimalNoDependencyNodeReference {
+  id: string;
+  name: string;
+  type;
+  parent: MinimalNoDependencyNodeReference;
+  children?: ReadonlyArray<InfiniteChildrenReference>;
+}
+
+export interface SingleDepthChildReference
+  extends MinimalNoDependencyNodeReference {
+  id;
+  name: string;
+  type;
+  origin;
+}
+
+/**
+ * parent reference that contains only 1 depth of its children.
+ */
+export interface ParentWithSingleDepthChildrenReference
+  extends MinimalNoDependencyNodeReference {
+  children: SingleDepthChildReference[];
 }

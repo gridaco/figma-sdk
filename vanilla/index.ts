@@ -2,7 +2,7 @@ import {
   TransportLayer,
   VanillaSceneTransport,
   StorableLayerType,
-  StorableSceneType,
+  legacy_scene,
 } from "@base-sdk/base";
 
 import {
@@ -12,7 +12,7 @@ import {
   ReflectTextNode,
 } from "@design-sdk/core/nodes";
 import { converters, TextManifest, ImageManifest } from "@reflect-ui/core";
-import { ImageRepository } from "../assets-repository";
+import { ImageRepository } from "@design-sdk/core/assets-repository";
 import { makeCGRect } from "./make";
 
 const vanillaImageRepo = new ImageRepository("vanilla-image-repository");
@@ -47,7 +47,7 @@ export function makeVanilla(node: ReflectFrameNode): VanillaSceneTransport {
       tags: [],
       nodeId: node.id,
       cachedPreview: "bridged://temp-asset/current-vanilla-scene",
-      sceneType: StorableSceneType.screen,
+      sceneType: legacy_scene.StorableSceneType.screen,
       width: node.width,
       height: node.height,
       layers: vanillaElements,
