@@ -87,141 +87,153 @@ export function intoReflectNodes(
         }
       }
 
-      if (node.type === "RECTANGLE" || node.type === "ELLIPSE") {
-        let altNode;
-        if (node.type === "RECTANGLE") {
-          altNode = new ReflectRectangleNode({
-            id: node.id,
-            name: node.name,
-            origin: node.type,
-            parent: altParent,
-            originParentId: node.parent?.id,
-            absoluteTransform: node.absoluteTransform,
-            childrenCount: 0,
-          });
-          convertConstraint(altNode, node);
+      switch (node.type) {
+        case "RECTANGLE":
+        case "ELLIPSE": {
+          let altNode;
+          if (node.type === "RECTANGLE") {
+            altNode = new ReflectRectangleNode({
+              id: node.id,
+              name: node.name,
+              origin: node.type,
+              parent: altParent,
+              originParentId: node.parent?.id,
+              absoluteTransform: node.absoluteTransform,
+              childrenCount: 0,
+            });
+            convertConstraint(altNode, node);
+            convertCorner(altNode, node);
+          } else if (node.type === "ELLIPSE") {
+            altNode = new ReflectEllipseNode({
+              id: node.id,
+              name: node.name,
+              origin: node.type,
+              parent: altParent,
+              originParentId: node.parent?.id,
+              absoluteTransform: node.absoluteTransform,
+              childrenCount: 0,
+            });
+          }
+
+          if (altParent) {
+            altNode.parent = altParent;
+          }
+
+          convertDefaultShape(altNode, node);
           convertCorner(altNode, node);
-        } else if (node.type === "ELLIPSE") {
-          altNode = new ReflectEllipseNode({
+
+          return altNode;
+        }
+        case "LINE": {
+          const altNode = new ReflectLineNode({
             id: node.id,
             name: node.name,
-            origin: node.type,
             parent: altParent,
+            origin: node.type,
             originParentId: node.parent?.id,
             absoluteTransform: node.absoluteTransform,
             childrenCount: 0,
           });
+
+          convertDefaultShape(altNode, node);
+          convertBlend(altNode, node);
+          convertConstraint(altNode, node);
+          // TODO: finalize line support. there are some missing conversions.
+
+          return altNode;
         }
-
-        if (altParent) {
-          altNode.parent = altParent;
+        case "FRAME":
+        case "INSTANCE":
+        case "COMPONENT": {
+          const altNode = convertFrameNodeToAlt(node, altParent);
+          if (node.type == "INSTANCE" || node.type == "COMPONENT") {
+            // component & instance has variant mixin. we'll map it here.
+            altNode.variantProperties = node.variantProperties;
+            // only for "instance"
+            if (node.type == "INSTANCE") {
+              blendMainComponent(altNode, node);
+            }
+          }
+          return altNode;
         }
+        case "GROUP": {
+          /// FIXME: DISABLING GROUP CONVERSION - this should be handled by the design to code side.
+          // if (node.children.length === 1 && node.visible !== false) {
+          //   // if Group is visible and has only one child, Group should disappear.
+          //   // there will be a single value anyway.
+          //   console.warn(
+          //     `the givven node ${node.name} was type of GROUP, but it has single children, converting it to single node`
+          //   );
+          //   return intoReflectNodes(node.children, altParent)[0];
+          // }
 
-        convertDefaultShape(altNode, node);
-        convertCorner(altNode, node);
+          const altNode = new ReflectGroupNode({
+            id: node.id,
+            name: node.name,
+            parent: altParent,
+            origin: node.type,
+            originParentId: node.parent?.id,
+            absoluteTransform: node.absoluteTransform,
+            childrenCount: node.children.length,
+          });
 
-        return altNode;
-      } else if (node.type === "LINE") {
-        const altNode = new ReflectLineNode({
-          id: node.id,
-          name: node.name,
-          parent: altParent,
-          origin: node.type,
-          originParentId: node.parent?.id,
-          absoluteTransform: node.absoluteTransform,
-          childrenCount: 0,
-        });
+          convertLayout(altNode, node);
+          convertBlend(altNode, node);
 
-        convertDefaultShape(altNode, node);
-        convertBlend(altNode, node);
-        convertConstraint(altNode, node);
-        // TODO finalize line support. there are some missing conversions.
-
-        return altNode;
-      } else if (
-        node.type === "FRAME" ||
-        node.type === "INSTANCE" ||
-        node.type === "COMPONENT"
-      ) {
-        const altNode = convertFrameNodeToAlt(node, altParent);
-        if (node.type == "INSTANCE") {
-          blendMainComponent(altNode, node);
+          altNode.children = intoReflectNodes(node.children, altNode);
+          // try to find big rect and regardless of that result, also try to convert to autolayout.
+          // There is a big chance this will be returned as a Frame
+          // also, Group will always have at least 2 children.
+          return convertNodesOnRectangle(altNode);
         }
-        return altNode;
-      } else if (node.type === "GROUP") {
-        if (node.children.length === 1 && node.visible !== false) {
-          // if Group is visible and has only one child, Group should disappear.
-          // there will be a single value anyway.
-          console.warn(
-            `the givven node ${node.name} was type of GROUP, but it has single children, converting it to single node`
+        case "TEXT": {
+          const altNode = new ReflectTextNode({
+            id: node.id,
+            name: node.name,
+            parent: altParent,
+            origin: node.type,
+            originParentId: node.parent?.id,
+            absoluteTransform: node.absoluteTransform,
+            childrenCount: 0,
+          });
+
+          convertDefaultShape(altNode, node);
+          convertIntoReflectText(altNode, node);
+          convertConstraint(altNode, node);
+
+          return altNode;
+        }
+        case "COMPONENT_SET": {
+          // TODO: handle this case
+          break;
+        }
+        case "STAR":
+        case "POLYGON":
+        case "VECTOR": {
+          // TODO: export as a svg and display it directly.
+          console.log(
+            `converting vector node "${node.name}" to reflect rectangle node.`
           );
-          return intoReflectNodes(node.children, altParent)[0];
+          const altNode = new ReflectRectangleNode({
+            id: node.id,
+            name: node.name,
+            parent: altParent,
+            originParentId: node.parent?.id,
+            origin: node.type,
+            absoluteTransform: node.absoluteTransform,
+            childrenCount: 0,
+          });
+
+          convertConstraint(altNode, node);
+          convertDefaultShape(altNode, node);
+
+          // TODO Vector support is still missing. Meanwhile, add placeholder.
+          altNode.radius = 16;
+          altNode.opacity = 0.5;
+
+          return altNode;
         }
-
-        const altNode = new ReflectGroupNode({
-          id: node.id,
-          name: node.name,
-          parent: altParent,
-          origin: node.type,
-          originParentId: node.parent?.id,
-          absoluteTransform: node.absoluteTransform,
-          childrenCount: node.children.length,
-        });
-
-        convertLayout(altNode, node);
-        convertBlend(altNode, node);
-
-        altNode.children = intoReflectNodes(node.children, altNode);
-        // try to find big rect and regardless of that result, also try to convert to autolayout.
-        // There is a big chance this will be returned as a Frame
-        // also, Group will always have at least 2 children.
-        return convertNodesOnRectangle(altNode);
-      } else if (node.type === "TEXT") {
-        const altNode = new ReflectTextNode({
-          id: node.id,
-          name: node.name,
-          parent: altParent,
-          origin: node.type,
-          originParentId: node.parent?.id,
-          absoluteTransform: node.absoluteTransform,
-          childrenCount: 0,
-        });
-
-        convertDefaultShape(altNode, node);
-        convertIntoReflectText(altNode, node);
-        convertConstraint(altNode, node);
-
-        return altNode;
       }
-      // else if (node.type == "COMPONENT_SET") {
-      // todo handle this case
-      // }
-      else if (node.type === "POLYGON" || node.type === "STAR") {
-        // todo export as a svg and display it directly.
-      } else if (node.type === "VECTOR") {
-        console.log(
-          `converting vector node "${node.name}" to reflect rectangle node.`
-        );
-        const altNode = new ReflectRectangleNode({
-          id: node.id,
-          name: node.name,
-          parent: altParent,
-          originParentId: node.parent?.id,
-          origin: node.type,
-          absoluteTransform: node.absoluteTransform,
-          childrenCount: 0,
-        });
-
-        convertConstraint(altNode, node);
-        convertDefaultShape(altNode, node);
-
-        // TODO Vector support is still missing. Meanwhile, add placeholder.
-        altNode.radius = 16;
-        altNode.opacity = 0.5;
-
-        return altNode;
-      }
-
       return null;
     }
   );

@@ -77,6 +77,7 @@ export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
     clone: _FILL_INTERFACE_METHODS,
     insertCharacters: _FILL_INTERFACE_METHODS,
     deleteCharacters: _FILL_INTERFACE_METHODS,
+    getRangeAllFontNames: _FILL_INTERFACE_METHODS,
     getRangeFontSize: _FILL_INTERFACE_METHODS,
     setRangeFontSize: _FILL_INTERFACE_METHODS,
     getRangeFontName: _FILL_INTERFACE_METHODS,

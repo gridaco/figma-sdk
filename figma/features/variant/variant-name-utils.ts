@@ -10,6 +10,7 @@ import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 import { Figma } from "../..";
 import {
   FigmaBoolean,
+  FigmaNumber,
   FigmaUnique,
   FigmaVariantPropertyCompatType,
   VariantProperty,
@@ -40,7 +41,7 @@ export function getVariantNamesSetFromReference_Figma(
   if (from.origin == ReflectSceneNodeType.component) {
     // if component & parent is variant set
     if (from.parent.origin == ReflectSceneNodeType.variant_set) {
-      masterVariantSet = from.parent;
+      masterVariantSet = from.parent as IReflectNodeReference;
     } else {
       throw "the givven component is not variant compat component";
     }
@@ -214,9 +215,18 @@ export function extractTypeFromVariantNames_Figma(
         value: k, // TODO: inspect me is this the right value?
       });
     } else if (_len >= 2) {
-      if (array.isAllEqual(v) && v[0] == FigmaBoolean) {
-        // return boolean
-        fixedPropertyTypeMap.set(k, FigmaBoolean);
+      if (array.isAllEqual(v)) {
+        switch (
+          v[0] // since it is all equal, we can use first value.
+        ) {
+          case FigmaBoolean:
+            // return boolean
+            fixedPropertyTypeMap.set(k, FigmaBoolean);
+            break;
+          case FigmaNumber:
+            fixedPropertyTypeMap.set(k, FigmaNumber);
+            break;
+        }
       } else {
         // if not all equal or not boolean (string, string) will be treated as (enum)
         // fallback to enum
@@ -239,8 +249,9 @@ export function extractTypeFromVariantNames_Figma(
   // set default value map if possible
   let defaultPropertyValuesMap: Map<string, string> | undefined;
   if (defaultName) {
-    defaultPropertyValuesMap =
-      extractPropertiesFromVariantName_Figma(defaultName);
+    defaultPropertyValuesMap = extractPropertiesFromVariantName_Figma(
+      defaultName
+    );
   }
   //
 
@@ -262,8 +273,9 @@ export function extractTypeFromVariantNames_Figma(
 }
 
 export function extractDataByKey(name: string, key: string) {
-  const _props_of_this_single_name =
-    extractPropertiesFromVariantName_Figma(name);
+  const _props_of_this_single_name = extractPropertiesFromVariantName_Figma(
+    name
+  );
   return _props_of_this_single_name.get(key);
 }
 
@@ -271,14 +283,26 @@ const FIGMA_BOOLEAN_REPRESENTERS = ["on", "off", "true", "false", "yes", "no"];
 function inferTypeFromVariantValue_Figma(
   value: string
 ): FigmaVariantPropertyCompatType {
-  if (FIGMA_BOOLEAN_REPRESENTERS.includes(value)) {
-    return FigmaBoolean;
-  } else {
-    return <FigmaUnique>{
-      type: "unique",
-      value: value,
-    };
+  /// !note. figma ignores casing of the variant value. e.g. TrUe & FaLsE also are considered as boolean type on figma.
+  const _flat_value = value.toLowerCase();
+  if (value === undefined) {
+    throw "value is undefined. cannot infer type.";
   }
+
+  // /^[+-]?\d+(\.\d+)?$/ we can use regex also.
+  if (!Number.isNaN(Number(value))) {
+    // e.g. - if "0" -> may be figma number
+    return FigmaNumber;
+  }
+  if (FIGMA_BOOLEAN_REPRESENTERS.includes(_flat_value)) {
+    return FigmaBoolean;
+  }
+
+  // else
+  return <FigmaUnique>{
+    type: "unique",
+    value: value,
+  };
 }
 
 /**

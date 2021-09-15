@@ -582,6 +582,25 @@ export type OverlayBackgroundInteraction = "NONE" | "CLOSE_ON_CLICK_OUTSIDE";
 
 export type PublishStatus = "UNPUBLISHED" | "CURRENT" | "CHANGED";
 
+export interface ConnectorEndpointPosition {
+  position: { x: number; y: number };
+}
+
+export interface ConnectorEndpointPositionAndEndpointNodeId {
+  position: { x: number; y: number };
+  endpointNodeId: string;
+}
+
+export interface ConnectorEndpointEndpointNodeIdAndMagnet {
+  endpointNodeId: string;
+  magnet: "NONE" | "AUTO" | "TOP" | "LEFT" | "BOTTOM" | "RIGHT";
+}
+
+export type ConnectorEndpoint =
+  | ConnectorEndpointPosition
+  | ConnectorEndpointEndpointNodeIdAndMagnet
+  | ConnectorEndpointPositionAndEndpointNodeId;
+
 ////////////////////////////////////////////////////////////////////////////////
 // Mixins
 
@@ -676,17 +695,21 @@ export type StrokeCap =
 export type StrokeJoin = "MITER" | "BEVEL" | "ROUND";
 export type HandleMirroring = "NONE" | "ANGLE" | "ANGLE_AND_LENGTH";
 
-export interface GeometryMixin {
-  fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
+interface MinimalStrokesMixin {
   strokes: ReadonlyArray<Paint>;
-  strokeWeight: number;
-  strokeMiterLimit: number;
-  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
-  strokeCap: StrokeCap | PluginAPI["mixed"];
-  strokeJoin: StrokeJoin | PluginAPI["mixed"];
-  dashPattern: ReadonlyArray<number>;
-  fillStyleId: string | PluginAPI["mixed"];
   strokeStyleId: string;
+  strokeWeight: number;
+  strokeJoin: StrokeJoin | PluginAPI["mixed"];
+  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
+  dashPattern: ReadonlyArray<number>;
+}
+export interface MinimalFillsMixin {
+  fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
+  fillStyleId: string | PluginAPI["mixed"];
+}
+export interface GeometryMixin extends MinimalStrokesMixin, MinimalFillsMixin {
+  strokeCap: StrokeCap | PluginAPI["mixed"];
+  strokeMiterLimit: number;
   outlineStroke(): VectorNode | null;
 }
 
@@ -777,10 +800,98 @@ export interface DefaultFrameMixin
     FramePrototypingMixin,
     ReactionMixin {}
 
+export interface OpaqueNodeMixin extends BaseNodeMixin {
+  readonly absoluteTransform: Transform;
+  relativeTransform: Transform;
+  x: number;
+  y: number;
+  readonly width: number;
+  readonly height: number;
+}
+
+interface MinimalBlendMixin {
+  readonly opacity?: number;
+  readonly blendMode?: BlendMode;
+}
+
+export interface VariantMixin {
+  readonly variantProperties: { [property: string]: string } | null;
+}
+
+export interface TextSublayerNode {
+  readonly hasMissingFont: boolean;
+
+  paragraphIndent: number;
+  paragraphSpacing: number;
+
+  fontSize: number | PluginAPI["mixed"];
+  fontName: FontName | PluginAPI["mixed"];
+  textCase: TextCase | PluginAPI["mixed"];
+  textDecoration: TextDecoration | PluginAPI["mixed"];
+  letterSpacing: LetterSpacing | PluginAPI["mixed"];
+  lineHeight: LineHeight | PluginAPI["mixed"];
+  hyperlink: HyperlinkTarget | null | PluginAPI["mixed"];
+
+  characters: string;
+  insertCharacters(
+    start: number,
+    characters: string,
+    useStyle?: "BEFORE" | "AFTER"
+  ): void;
+  deleteCharacters(start: number, end: number): void;
+
+  getRangeFontSize(start: number, end: number): number | PluginAPI["mixed"];
+  setRangeFontSize(start: number, end: number, value: number): void;
+  getRangeFontName(start: number, end: number): FontName | PluginAPI["mixed"];
+  setRangeFontName(start: number, end: number, value: FontName): void;
+  getRangeAllFontNames(start: number, end: number): FontName[];
+  getRangeTextCase(start: number, end: number): TextCase | PluginAPI["mixed"];
+  setRangeTextCase(start: number, end: number, value: TextCase): void;
+  getRangeTextDecoration(
+    start: number,
+    end: number
+  ): TextDecoration | PluginAPI["mixed"];
+  setRangeTextDecoration(
+    start: number,
+    end: number,
+    value: TextDecoration
+  ): void;
+  getRangeLetterSpacing(
+    start: number,
+    end: number
+  ): LetterSpacing | PluginAPI["mixed"];
+  setRangeLetterSpacing(start: number, end: number, value: LetterSpacing): void;
+  getRangeLineHeight(
+    start: number,
+    end: number
+  ): LineHeight | PluginAPI["mixed"];
+  setRangeLineHeight(start: number, end: number, value: LineHeight): void;
+  getRangeHyperlink(
+    start: number,
+    end: number
+  ): HyperlinkTarget | null | PluginAPI["mixed"];
+  setRangeHyperlink(
+    start: number,
+    end: number,
+    value: HyperlinkTarget | null
+  ): void;
+  getRangeFills(start: number, end: number): Paint[] | PluginAPI["mixed"];
+  setRangeFills(start: number, end: number, value: Paint[]): void;
+  getRangeTextStyleId(start: number, end: number): string | PluginAPI["mixed"];
+  setRangeTextStyleId(start: number, end: number, value: string): void;
+  getRangeFillStyleId(start: number, end: number): string | PluginAPI["mixed"];
+  setRangeFillStyleId(start: number, end: number, value: string): void;
+  getRangeListOptions(
+    start: number,
+    end: number
+  ): TextListOptions | PluginAPI["mixed"];
+  setRangeListOptions(start: number, end: number, value: TextListOptions): void;
+  getRangeIndentation(start: number, end: number): number | PluginAPI["mixed"];
+  setRangeIndentation(start: number, end: number, value: number): void;
+}
 ////////////////////////////////////////////////////////////////////////////////
 // Nodes
-
-export interface DocumentNode extends BaseNodeMixin {
+interface DocumentNode extends BaseNodeMixin {
   readonly type: "DOCUMENT";
 
   readonly children: ReadonlyArray<PageNode>;
@@ -814,6 +925,7 @@ export interface PageNode extends BaseNodeMixin, ChildrenMixin, ExportMixin {
   guides: ReadonlyArray<Guide>;
   selection: ReadonlyArray<SceneNode>;
   selectedTextRange: { node: TextNode; start: number; end: number } | null;
+  flowStartingPoints: ReadonlyArray<{ nodeId: string; name: string }>;
 
   backgrounds: ReadonlyArray<Paint>;
 
@@ -905,10 +1017,13 @@ export interface VectorNode
   handleMirroring: HandleMirroring | PluginAPI["mixed"];
 }
 
-export interface TextNode extends DefaultShapeMixin, ConstraintMixin {
+export interface TextNode
+  extends DefaultShapeMixin,
+    ConstraintMixin,
+    TextSublayerNode {
   readonly type: "TEXT";
   clone(): TextNode;
-  readonly hasMissingFont: boolean;
+
   textAlignHorizontal: "LEFT" | "CENTER" | "RIGHT" | "JUSTIFIED";
   textAlignVertical: "TOP" | "CENTER" | "BOTTOM";
   textAutoResize: "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT";
@@ -917,88 +1032,30 @@ export interface TextNode extends DefaultShapeMixin, ConstraintMixin {
   autoRename: boolean;
 
   textStyleId: string | PluginAPI["mixed"];
-  fontSize: number | PluginAPI["mixed"];
-  fontName: FontName | PluginAPI["mixed"];
-  textCase: TextCase | PluginAPI["mixed"];
-  textDecoration: TextDecoration | PluginAPI["mixed"];
-  letterSpacing: LetterSpacing | PluginAPI["mixed"];
-  lineHeight: LineHeight | PluginAPI["mixed"];
-  hyperlink: HyperlinkTarget | null | PluginAPI["mixed"];
-
-  characters: string;
-  insertCharacters(
-    start: number,
-    characters: string,
-    useStyle?: "BEFORE" | "AFTER"
-  ): void;
-  deleteCharacters(start: number, end: number): void;
-
-  getRangeFontSize(start: number, end: number): number | PluginAPI["mixed"];
-  setRangeFontSize(start: number, end: number, value: number): void;
-  getRangeFontName(start: number, end: number): FontName | PluginAPI["mixed"];
-  setRangeFontName(start: number, end: number, value: FontName): void;
-  getRangeTextCase(start: number, end: number): TextCase | PluginAPI["mixed"];
-  setRangeTextCase(start: number, end: number, value: TextCase): void;
-  getRangeTextDecoration(
-    start: number,
-    end: number
-  ): TextDecoration | PluginAPI["mixed"];
-  setRangeTextDecoration(
-    start: number,
-    end: number,
-    value: TextDecoration
-  ): void;
-  getRangeLetterSpacing(
-    start: number,
-    end: number
-  ): LetterSpacing | PluginAPI["mixed"];
-  setRangeLetterSpacing(start: number, end: number, value: LetterSpacing): void;
-  getRangeLineHeight(
-    start: number,
-    end: number
-  ): LineHeight | PluginAPI["mixed"];
-  setRangeLineHeight(start: number, end: number, value: LineHeight): void;
-  getRangeHyperlink(
-    start: number,
-    end: number
-  ): HyperlinkTarget | null | PluginAPI["mixed"];
-  setRangeHyperlink(
-    start: number,
-    end: number,
-    value: HyperlinkTarget | null
-  ): void;
-  getRangeFills(start: number, end: number): Paint[] | PluginAPI["mixed"];
-  setRangeFills(start: number, end: number, value: Paint[]): void;
-  getRangeTextStyleId(start: number, end: number): string | PluginAPI["mixed"];
-  setRangeTextStyleId(start: number, end: number, value: string): void;
-  getRangeFillStyleId(start: number, end: number): string | PluginAPI["mixed"];
-  setRangeFillStyleId(start: number, end: number, value: string): void;
-  getRangeListOptions(
-    start: number,
-    end: number
-  ): TextListOptions | PluginAPI["mixed"];
-  setRangeListOptions(start: number, end: number, value: TextListOptions): void;
-  getRangeIndentation(start: number, end: number): number | PluginAPI["mixed"];
-  setRangeIndentation(start: number, end: number, value: number): void;
 }
 
 export interface ComponentSetNode extends BaseFrameMixin, PublishableMixin {
   readonly type: "COMPONENT_SET";
   clone(): ComponentSetNode;
   readonly defaultVariant: ComponentNode;
+  readonly variantGroupProperties: { [property: string]: { values: string[] } };
 }
 
-export interface ComponentNode extends DefaultFrameMixin, PublishableMixin {
+export interface ComponentNode
+  extends DefaultFrameMixin,
+    PublishableMixin,
+    VariantMixin {
   readonly type: "COMPONENT";
   clone(): ComponentNode;
   createInstance(): InstanceNode;
 }
 
-export interface InstanceNode extends DefaultFrameMixin {
+export interface InstanceNode extends DefaultFrameMixin, VariantMixin {
   readonly type: "INSTANCE";
   clone(): InstanceNode;
   mainComponent: ComponentNode | null;
   swapComponent(componentNode: ComponentNode): void;
+  setProperties(properties: { [property: string]: string }): void;
   detachInstance(): FrameNode;
   scaleFactor: number;
 }
@@ -1012,6 +1069,70 @@ export interface BooleanOperationNode
   booleanOperation: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
 
   expanded: boolean;
+}
+
+export interface StickyNode
+  extends OpaqueNodeMixin,
+    SceneNodeMixin,
+    MinimalFillsMixin,
+    MinimalBlendMixin,
+    ExportMixin {
+  readonly type: "STICKY";
+  readonly text: TextSublayerNode;
+  authorVisible: boolean;
+}
+
+export interface StampNode
+  extends OpaqueNodeMixin,
+    SceneNodeMixin,
+    MinimalFillsMixin,
+    MinimalBlendMixin,
+    ExportMixin {
+  readonly type: "STAMP";
+}
+
+export interface ShapeWithTextNode
+  extends OpaqueNodeMixin,
+    SceneNodeMixin,
+    MinimalFillsMixin,
+    MinimalBlendMixin,
+    MinimalStrokesMixin,
+    ExportMixin {
+  readonly type: "SHAPE_WITH_TEXT";
+  shapeType:
+    | "SQUARE"
+    | "ELLIPSE"
+    | "ROUNDED_RECTANGLE"
+    | "DIAMOND"
+    | "TRIANGLE_UP"
+    | "TRIANGLE_DOWN"
+    | "PARALLELOGRAM_RIGHT"
+    | "PARALLELOGRAM_LEFT";
+  readonly text: TextSublayerNode;
+  readonly cornerRadius?: number;
+
+  resize(width: number, height: number): void;
+  rescale(scale: number): void;
+}
+
+export interface LayerSublayerNode {
+  fills: Paint[] | PluginAPI["mixed"];
+}
+
+export interface ConnectorNode
+  extends OpaqueNodeMixin,
+    SceneNodeMixin,
+    MinimalFillsMixin,
+    MinimalBlendMixin,
+    MinimalStrokesMixin,
+    ExportMixin {
+  readonly type: "CONNECTOR";
+  readonly text: TextSublayerNode;
+  readonly textBackground: LayerSublayerNode;
+  readonly cornerRadius?: number;
+  connectorLineType: "ELBOWED" | "STRAIGHT";
+  connectorStart: ConnectorEndpoint;
+  connectorEnd: ConnectorEndpoint;
 }
 
 export type BaseNode = DocumentNode | PageNode | SceneNode;
@@ -1030,25 +1151,13 @@ export type SceneNode =
   | EllipseNode
   | PolygonNode
   | RectangleNode
-  | TextNode;
+  | TextNode
+  | StickyNode
+  | ConnectorNode
+  | ShapeWithTextNode
+  | StampNode;
 
-export type NodeType =
-  | "DOCUMENT"
-  | "PAGE"
-  | "SLICE"
-  | "FRAME"
-  | "GROUP"
-  | "COMPONENT_SET"
-  | "COMPONENT"
-  | "INSTANCE"
-  | "BOOLEAN_OPERATION"
-  | "VECTOR"
-  | "STAR"
-  | "LINE"
-  | "ELLIPSE"
-  | "POLYGON"
-  | "RECTANGLE"
-  | "TEXT";
+export type NodeType = BaseNode["type"];
 
 ////////////////////////////////////////////////////////////////////////////////
 // Styles

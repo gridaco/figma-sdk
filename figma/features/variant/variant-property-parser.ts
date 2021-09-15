@@ -1,22 +1,12 @@
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
-import type {
-  ComponentNode,
-  ComponentSetNode,
-  InstanceNode,
-} from "@design-sdk/figma-types";
 import { analyzeNode } from "../../node-analysis";
 import {
   getVariantNamesSetFromReference_Figma,
   extractTypeFromVariantNames_Figma,
   extractDataByKey,
 } from "./variant-name-utils";
-import {
-  FigmaBoolean,
-  FigmaUnique,
-  FigmaVariantPropertyCompatType,
-  VariantProperty,
-} from "./variant-property-type";
+import { VariantProperty } from "./variant-property-type";
 
 type VariantLikeNode = ReflectSceneNode | IReflectNodeReference;
 export class VariantPropertyParser {
@@ -43,9 +33,11 @@ export class VariantPropertyParser {
       if (_ == "variant-set") {
         return new VariantPropertyParser(node);
       } else if (_ == "master-variant-compoent") {
-        return new VariantPropertyParser(node.parent);
+        return new VariantPropertyParser(node.parent as IReflectNodeReference);
       } else if (_ == "variant-instance") {
-        return new VariantPropertyParser(node.mainComponent.parent);
+        return new VariantPropertyParser(
+          node.mainComponent.parent as IReflectNodeReference
+        );
       }
     } else {
       throw "invalid input";
