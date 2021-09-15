@@ -66,6 +66,7 @@ export async function fetchTarget(
 
   const nodesRes = await client.fileNodes(file, {
     ids: [node],
+    geometry: "paths",
   });
   const nodes = nodesRes.data.nodes;
 
@@ -89,6 +90,7 @@ export async function fetchDemo(
 
   const nodesRes = await client.fileNodes(_fid, {
     ids: [_nid],
+    geometry: "paths",
   });
 
   const nodes = nodesRes.data.nodes;
