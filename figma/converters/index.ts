@@ -10,3 +10,4 @@ export * from "./tetx-decoration.convert";
 export * from "./text-align.converter";
 export * from "./text-style.convert";
 export * from "./layout-grow.convert";
+export * from "./layout-align.convert";

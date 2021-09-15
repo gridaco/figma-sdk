@@ -4,7 +4,7 @@ import {
   CrossAxisAlignment,
   EdgeInsets,
   MainAxisAlignment,
-} from "@reflect-ui/core/lib";
+} from "@reflect-ui/core";
 import {
   IReflectGeometryMixin,
   IReflectCornerMixin,
@@ -22,7 +22,9 @@ import {
   StrokeCap,
   Effect,
   Transform,
-} from "@design-sdk/figma";
+  FimgaLayoutAlign,
+  FigmaLayoutGrow,
+} from "@design-sdk/figma-types";
 
 import { ReflectSceneNodeType } from "./node-type";
 import type { ReflectSceneNode } from "./node-type-alias";
@@ -58,7 +60,7 @@ export class ReflectFrameNode
   constraints: Constraints;
 
   // frame mixin
-  layoutGrow: "FIXED" | "STRETCH";
+  layoutGrow: FigmaLayoutGrow;
   mainAxisAlignment: MainAxisAlignment;
   crossAxisAlignment: CrossAxisAlignment;
   layoutMode?: Axis | undefined;
@@ -112,7 +114,7 @@ export class ReflectFrameNode
   rotation: number; // In degrees
   width: number;
   height: number;
-  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+  layoutAlign: FimgaLayoutAlign;
 
   get isAutoLayout(): boolean {
     return checkIfAutoLayout(this);

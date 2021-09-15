@@ -108,13 +108,12 @@ export function convertToAutoLayout(
     }
 
     if (frame.crossAxisAlignment == undefined) {
-      frame.crossAxisAlignment =
-        convertCounterAxisAlignItemsToCrossAxisAlignment(
-          mostFrequent(
-            counterDirection,
-            _priorityOrders
-          ) as FigmaCrossAxisAligment
-        );
+      frame.crossAxisAlignment = convertCounterAxisAlignItemsToCrossAxisAlignment(
+        mostFrequent(
+          counterDirection,
+          _priorityOrders
+        ) as FigmaCrossAxisAligment
+      );
     }
 
     // TODO inspect this. is this required?
@@ -346,7 +345,7 @@ function layoutAlignInChild(
     node.layoutAlign = sameHeight ? "STRETCH" : "INHERIT";
   }
   // with custom AutoLayout, this is never going to be 1.
-  node.layoutGrow = "FIXED";
+  node.layoutGrow = 0;
 }
 
 function primaryAxisDirection(

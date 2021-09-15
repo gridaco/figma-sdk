@@ -1,14 +1,12 @@
-export function convertLayoutGrowToReflect(
-  layoutGrow: number
-): "FIXED" | "STRETCH" {
+export function convertLayoutGrowToReflect(layoutGrow: number): number {
   if (layoutGrow === undefined) {
-    return "FIXED";
+    return undefined;
   }
 
   if (layoutGrow === 0) {
-    return "FIXED";
+    return 0;
   } else if (layoutGrow === 1) {
-    return "STRETCH";
+    return 1;
   } else {
     console.error(
       "not handled figma api is updated. layout grow value not supported : ",

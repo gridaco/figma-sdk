@@ -3,8 +3,8 @@ import {
   CrossAxisAlignment,
   EdgeInsets,
   MainAxisAlignment,
-} from "@reflect-ui/core/lib";
-import { BoxShadowManifest } from "@reflect-ui/core/lib/box-shadow";
+  BoxShadowManifest,
+} from "@reflect-ui/core";
 import type { ReflectSceneNode } from "./node-type-alias";
 import { ReflectSceneNodeType } from "./node-type";
 import { utils } from "../..";
@@ -28,6 +28,7 @@ import {
 } from "./reflect-node-reference";
 import { types } from "@reflect-ui/uiutils";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
+import { FigmaLayoutGrow, FimgaLayoutAlign } from "@design-sdk/figma-types";
 type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 
@@ -163,8 +164,8 @@ export class ReflectBaseNode
   rotation: number; // In degrees
   width: number;
   height: number;
-  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
-  layoutGrow: "FIXED" | "STRETCH";
+  layoutAlign: FimgaLayoutAlign;
+  layoutGrow: FigmaLayoutGrow;
   fills?: ReadonlyArray<Figma.Paint>;
 
   /**

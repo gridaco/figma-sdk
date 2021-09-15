@@ -5,12 +5,13 @@ import { IReflectDefaultShapeMixin } from "../interfaces/default-shape-mixin";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
 
 // FIXME - migrate this
-import { Paint, Effect, StrokeCap, StrokeJoin } from "@design-sdk/figma";
+import { Paint, Effect, StrokeCap, StrokeJoin } from "@design-sdk/figma-types";
+import { FigmaLayoutGrow } from "@design-sdk/figma-types";
 
 export class ReflectDefaultShapeMixin
   extends ReflectConstraintMixin
   implements IReflectDefaultShapeMixin {
-  layoutGrow: "FIXED" | "STRETCH";
+  layoutGrow: FigmaLayoutGrow;
   opacity: number;
   blendMode: "PASS_THROUGH" | BlendMode;
   isMask: boolean;
