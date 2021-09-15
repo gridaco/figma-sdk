@@ -1,4 +1,4 @@
-import { BorderRadiusManifest } from "@reflect-ui/core/lib/ui/border-radius";
+import { BorderRadiusManifest } from "@reflect-ui/core";
 import {
   Axis,
   CrossAxisAlignment,
