@@ -14,11 +14,12 @@ import { blendBaseNode } from "../blenders/general.blend";
  * @param remText
  * @returns
  */
-export function mapFigmaRemoteTextToFigma(remText: Text): TextNode {
+export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
   const mapping = new MappingTextNode();
   blendBaseNode({
     target: mapping,
     source: remText,
+    parent,
   });
 
   return {
