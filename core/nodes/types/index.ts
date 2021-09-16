@@ -10,6 +10,7 @@ export * from "./mixins";
 export * from "./node-type";
 export * from "./node-type-alias";
 export * from "./text.node";
+export * from "./vector.node";
 export * from "./mixed";
 
 export // mixed,

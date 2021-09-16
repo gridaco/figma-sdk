@@ -1,4 +1,4 @@
-import type { ReflectSceneNode } from "@design-sdk/core/nodes";
+import { ReflectSceneNode, ReflectVectorNode } from "@design-sdk/core/nodes";
 
 import {
   ReflectFrameNode,
@@ -50,6 +50,7 @@ import {
   FrameNode,
   InstanceNode,
   ComponentNode,
+  HandleMirroring,
 } from "@design-sdk/figma-types";
 import { convertBlendModeToReflect } from "../converters/blend-mode.convert";
 import { EdgeInsets } from "@reflect-ui/core";
@@ -208,8 +209,7 @@ export function intoReflectNodes(
           break;
         }
         case "STAR":
-        case "POLYGON":
-        case "VECTOR": {
+        case "POLYGON": {
           // TODO: export as a svg and display it directly.
           console.log(
             `converting vector node "${node.name}" to reflect rectangle node.`
@@ -230,6 +230,26 @@ export function intoReflectNodes(
           // TODO Vector support is still missing. Meanwhile, add placeholder.
           altNode.radius = 16;
           altNode.opacity = 0.5;
+
+          return altNode;
+        }
+        case "VECTOR": {
+          const altNode = new ReflectVectorNode({
+            id: node.id,
+            name: node.name,
+            parent: altParent,
+            originParentId: node.parent?.id,
+            origin: node.type,
+            absoluteTransform: node.absoluteTransform,
+            childrenCount: 0,
+          });
+
+          convertConstraint(altNode, node);
+          convertDefaultShape(altNode, node);
+
+          altNode.vectorNetwork = node.vectorNetwork;
+          altNode.vectorPaths = node.vectorPaths;
+          altNode.handleMirroring = node.handleMirroring as HandleMirroring;
 
           return altNode;
         }
