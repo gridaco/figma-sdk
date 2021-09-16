@@ -5,6 +5,7 @@ import { mapFigmaRemoteFrameToFigma } from "./frame.mapper";
 import { mapFigmaRemoteGroupToFigma } from "./group.mapper";
 import { mapFigmaRemoteRectangleToFigma } from "./rectangle.mapper";
 import { mapFigmaRemoteTextToFigma } from "./text.mapper";
+import { mapFigmaRemoteVectorToFigma } from "./vector.mapper";
 export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
   let preConvertedChildren: SceneNode[];
   if ("children" in remNode) {
@@ -25,6 +26,10 @@ export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
 
     case "ELLIPSE":
       nonchildreninstance = mapFigmaRemoteEllipseToFigma(remNode, parent);
+      break;
+
+    case "VECTOR":
+      nonchildreninstance = mapFigmaRemoteVectorToFigma(remNode, parent);
       break;
 
     case "INSTANCE":
