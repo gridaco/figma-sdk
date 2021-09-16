@@ -6,12 +6,14 @@ import type { ReflectGroupNode } from "./group.node";
 import type { ReflectLineNode } from "./line.node";
 import type { ReflectRectangleNode } from "./rectangle.node";
 import type { ReflectTextNode } from "./text.node";
+import type { ReflectVectorNode } from ".";
 
 type ReflectSceneNode =
   | ReflectFrameNode
   | ReflectGroupNode
   | ReflectRectangleNode
   | ReflectEllipseNode
+  | ReflectVectorNode
   | ReflectTextNode
   | ReflectLineNode
   | ReflectConstraintMixin

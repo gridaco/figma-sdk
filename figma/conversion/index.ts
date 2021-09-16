@@ -244,8 +244,10 @@ export function intoReflectNodes(
             childrenCount: 0,
           });
 
-          convertConstraint(altNode, node);
           convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node);
+          convertBlend(altNode, node);
+          convertConstraint(altNode, node);
 
           altNode.vectorNetwork = node.vectorNetwork;
           altNode.vectorPaths = node.vectorPaths;

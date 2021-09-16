@@ -375,9 +375,9 @@ export class ReflectBaseNode
     try {
       return utils.retrievePrimaryColor(this.fills as Figma.Paint[]);
     } catch (_) {
-      console.error(
-        `error while fetching primarycolor from ${this.toString()}`
-      );
+      // console.error(
+      //   `error while fetching primarycolor from ${this.toString()}`
+      // );
     }
   }
 
