@@ -5,7 +5,7 @@ import {
   TextStyleManifest,
 } from "@reflect-ui/core";
 import { ReflectSceneNodeType } from "./node-type";
-import { converters } from "../../";
+import { converters } from "@design-sdk/core";
 import { ReflectDefaultShapeMixin } from "./mixins";
 
 // region FIXME - migrate this
@@ -18,7 +18,7 @@ import {
   LineHeight,
 } from "@design-sdk/figma";
 import { extractTextStyleFromTextNode } from "@design-sdk/figma-node-conversion";
-import { convertFontStyleNameToFontWeightReflect } from "../../converters";
+import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
 // endregion
 
 export class ReflectTextNode extends ReflectDefaultShapeMixin {

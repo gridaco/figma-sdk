@@ -7,9 +7,9 @@ import {
 } from "@reflect-ui/core";
 import type { ReflectSceneNode } from "./node-type-alias";
 import { ReflectSceneNodeType } from "./node-type";
-import { utils } from "../..";
+import { utils } from "@design-sdk/core";
 import { array } from "@reflect-ui/uiutils";
-import { checkIfRoot } from "../../utils/check-if-root";
+import { checkIfRoot } from "@design-sdk/core/utils/check-if-root";
 
 // FIXME - need migration
 import { figma, Figma } from "@design-sdk/figma";
@@ -18,7 +18,7 @@ import { swapVariant } from "@design-sdk/figma/features/variant";
 import {
   retrieveImageFills,
   retrievePrimaryImageFill,
-} from "../../utils/retrieve-image-fills";
+} from "@design-sdk/core/utils/retrieve-image-fills";
 import { IReflectLayoutMixin } from "./mixins/layout.mixin";
 import { IReflectBlendMixin } from "./mixins/blend.mixin";
 import {

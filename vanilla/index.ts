@@ -10,7 +10,7 @@ import {
   ReflectSceneNode,
   ReflectSceneNodeType,
   ReflectTextNode,
-} from "@design-sdk/core/nodes";
+} from "@design-sdk/core";
 import { converters, TextManifest, ImageManifest } from "@reflect-ui/core";
 import { ImageRepository } from "@design-sdk/core/assets-repository";
 import { makeCGRect } from "./make";

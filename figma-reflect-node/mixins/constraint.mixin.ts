@@ -3,7 +3,7 @@ import {
   LCRS,
   getNodeActualLCRS,
   getReletiveLCRS,
-} from "../../../features/constraints/lcrs";
+} from "@design-sdk/core/features/constraints/lcrs";
 import type { ReflectSceneNode } from "../node-type-alias";
 
 // FIXME - migrate this to reflect core cg

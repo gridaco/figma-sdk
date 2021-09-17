@@ -7,7 +7,8 @@ export { keyAnnotations, constraints } from "./features";
 // endregion
 
 // node
-export * as nodes from "./nodes";
+export * from "@design-sdk/figma-node";
+export * as nodes from "@design-sdk/figma-node";
 
 // platform
 export * as _platform from "./platform";

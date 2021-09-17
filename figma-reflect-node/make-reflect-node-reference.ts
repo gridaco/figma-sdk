@@ -1,4 +1,4 @@
-import type { ReflectBaseNode } from "..";
+import type { ReflectBaseNode } from "./base.node";
 import { Figma } from "@design-sdk/figma";
 import type {
   InfiniteChildrenReference,
@@ -26,7 +26,7 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
         "children" in r ? r.children.map((c) => makeReference(c)) : undefined,
       mainComponent: r.mainComponent,
       variantProperties: r.variantProperties,
-      fills: r.fills
+      fills: r.fills,
     };
   }
 }

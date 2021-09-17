@@ -1,4 +1,4 @@
-import { ReflectConstraintMixin } from "../mixins/constraint.mixin";
+import { ReflectConstraintMixin } from "./constraint.mixin";
 
 import { BorderRadiusManifest } from "@reflect-ui/core";
 import { IReflectDefaultShapeMixin } from "../interfaces/default-shape-mixin";

@@ -30,7 +30,7 @@ import { ReflectSceneNodeType } from "./node-type";
 import type { ReflectSceneNode } from "./node-type-alias";
 import { ReflectChildrenMixin } from "./mixins/children.mixin";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
-import { checkIfAutoLayout } from "../../utils/check-if-auto-layout";
+import { checkIfAutoLayout } from "@design-sdk/core/utils/check-if-auto-layout";
 
 //#region frame
 interface IReflectFrameMixin {

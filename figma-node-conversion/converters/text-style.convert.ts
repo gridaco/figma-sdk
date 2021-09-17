@@ -10,7 +10,7 @@ import {
   LetterSpacing,
   LineHeight,
 } from "@design-sdk/figma-types";
-import { ReflectTextNode } from "@design-sdk/core/nodes";
+import { ReflectTextNode } from "@design-sdk/core";
 
 export function convertTextStyleToReflect(
   origin: TextStyle,

@@ -1,5 +1,6 @@
-import { ReflectSceneNode, ReflectVectorNode } from "@design-sdk/core/nodes";
 import {
+  ReflectSceneNode,
+  ReflectVectorNode,
   ReflectFrameNode,
   ReflectGroupNode,
   ReflectRectangleNode,
@@ -14,10 +15,9 @@ import {
   IReflectLayoutMixin,
   ReflectConstraintMixin,
   mixed,
-} from "@design-sdk/core/nodes";
+  makeComponentReference,
+} from "@design-sdk/core";
 import { utils } from "@design-sdk/core";
-
-import { makeComponentReference } from "@design-sdk/core/nodes/types/reflect-node-reference";
 import { array } from "@reflect-ui/uiutils";
 import { shouldIgnore } from "@design-sdk/key-annotations";
 

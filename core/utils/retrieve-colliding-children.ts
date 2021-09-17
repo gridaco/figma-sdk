@@ -1,4 +1,4 @@
-import type { ReflectSceneNode } from "../nodes";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 
 /**
  * Iterate over each Rectangle and check if it has any child on top.

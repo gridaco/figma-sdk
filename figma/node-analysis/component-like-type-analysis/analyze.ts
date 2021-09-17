@@ -1,5 +1,5 @@
-import { ReflectSceneNodeType, ReflectSceneNode } from "@design-sdk/core/nodes";
-import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
+import { ReflectSceneNodeType } from "@design-sdk/core";
+import type { IReflectNodeReference } from "@design-sdk/core";
 import { SchemaDefinitionLike } from "./type";
 
 export function analyzeNode(node: IReflectNodeReference): SchemaDefinitionLike {

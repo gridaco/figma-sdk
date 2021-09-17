@@ -1,10 +1,10 @@
 import type {
   IChildrenMixin,
   IReflectChildrenMixin,
-} from "../nodes/types/mixins/children.mixin";
-import type { ReflectSceneNode } from "../nodes/types/node-type-alias";
-import type { IReflectNodeReference } from "../nodes/lignt";
-import { ReflectSceneNodeType } from "../nodes/types/node-type";
+  ReflectSceneNode,
+  IReflectNodeReference,
+} from "@design-sdk/figma-node";
+import { ReflectSceneNodeType } from "@design-sdk/figma-node";
 
 type MaybeChildrenMixin<T = any> = IChildrenMixin<T> | object;
 
