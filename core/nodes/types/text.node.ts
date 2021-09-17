@@ -17,7 +17,7 @@ import {
   LetterSpacing,
   LineHeight,
 } from "@design-sdk/figma";
-import { extractTextStyleFromTextNode } from "@design-sdk/figma/converters";
+import { extractTextStyleFromTextNode } from "@design-sdk/figma-node-conversion";
 import { convertFontStyleNameToFontWeightReflect } from "../../converters";
 // endregion
 

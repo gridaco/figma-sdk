@@ -8,7 +8,7 @@ import {
   convertLayoutModeToAxis,
   convertPrimaryAxisAlignItemsToMainAxisAlignment,
   convertCounterAxisAlignItemsToCrossAxisAlignment,
-} from "@design-sdk/figma/converters";
+} from "../converters";
 import { Axis, EdgeInsets, EdgeInsetsManifest } from "@reflect-ui/core/lib";
 import {
   ReflectFrameNode,

@@ -1,5 +1,5 @@
 import { BaseFrameMixin } from "@design-sdk/figma";
-import { convertLayoutModeToAxis } from "@design-sdk/figma/converters";
+import { convertLayoutModeToAxis } from "@design-sdk/figma-node-conversion";
 import { Axis } from "@reflect-ui/core";
 import { ReflectFrameNode } from "../nodes";
 

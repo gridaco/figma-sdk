@@ -1,6 +1,5 @@
 export * from "@design-sdk/core";
-export * as convert from "./conversion";
-export * as converters from "./converters";
+export * from "@design-sdk/figma-node-conversion";
 export * as remote from "@design-sdk/figma-remote";
 export * as api from "@design-sdk/figma-remote-api";
 //
