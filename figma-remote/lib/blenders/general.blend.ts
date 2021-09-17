@@ -60,9 +60,10 @@ export function blendBaseNode(p: MappingBlendInput) {
     target.strokeJoin = undefined;
   }
 
-  // TODO
+  // TODO:
   target.reactions = undefined;
   target.rotation = 0; // calculate with transform
+  // TODO: use  `source.relativeTransform`
   target.absoluteTransform = [
     [1, 0, 0],
     [0, 1, 0],

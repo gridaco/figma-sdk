@@ -152,13 +152,23 @@ export class ReflectBaseNode
   x: number;
   y: number;
   get absoluteX(): number {
-    // x point on affine space
-    return this.absoluteTransform[0][2];
+    try {
+      // x point on affine space
+      return this.absoluteTransform[0][2];
+    } catch (_) {
+      // TODO: prevent this in a higher level. absoulte transform must be a valid value while initilaizing
+      return this.x;
+    }
   }
 
   get absoluteY(): number {
-    // y point on affine space
-    return this.absoluteTransform[1][2];
+    try {
+      // y point on affine space
+      return this.absoluteTransform[1][2];
+    } catch (_) {
+      // TODO: prevent this in a higher level. absoulte transform must be a valid value while initilaizing
+      return this.y;
+    }
   }
 
   rotation: number; // In degrees
