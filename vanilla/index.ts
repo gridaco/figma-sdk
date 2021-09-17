@@ -15,7 +15,10 @@ import { converters, TextManifest, ImageManifest } from "@reflect-ui/core";
 import { ImageRepository } from "@design-sdk/core/assets-repository";
 import { makeCGRect } from "./make";
 
-const vanillaImageRepo = new ImageRepository("vanilla-image-repository");
+const vanillaImageRepo = new ImageRepository(
+  "vanilla-image-repository",
+  "grida://vanilla-image-repository/reserved/"
+);
 /**
  * makes vanilla output, which contains only text data, and all others as image.
  * @param node
