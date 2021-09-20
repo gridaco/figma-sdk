@@ -24,13 +24,15 @@ export interface ImageAsset {
   url: string;
 }
 
-export class TemporaryImageAsset extends TemporaryAsset<Uint8Array> {
+export class TemporaryImageAsset<
+  P extends string = string
+> extends TemporaryAsset<Uint8Array> {
   data?: Uint8Array;
-  url: string;
+  url: P;
   constructor(
     readonly key: string,
     readonly hash: string,
-    readonly prefix: string,
+    readonly prefix: P,
     args?: {
       data?: Uint8Array;
     }
@@ -39,8 +41,8 @@ export class TemporaryImageAsset extends TemporaryAsset<Uint8Array> {
     this.url = this.makeUrl(key);
   }
 
-  makeUrl(key: string): string {
-    return build_temp_static_remote_asset_uri_to_be_replaced_later__dangerous(
+  makeUrl(key: string): P {
+    return build_temp_static_remote_asset_uri_to_be_replaced_later__dangerous<P>(
       this.prefix,
       key
     );

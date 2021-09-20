@@ -3,13 +3,14 @@ import { IImageRepository } from "@base-sdk/base";
 import { build_temp_static_remote_asset_uri_to_be_replaced_later__dangerous } from "./temporary-image-asset-url-reservation";
 import assert from "assert";
 
-export class ImageRepository implements IImageRepository<TemporaryImageAsset> {
+export class ImageRepository<P extends string = string>
+  implements IImageRepository<TemporaryImageAsset> {
   images: Map<string, TemporaryImageAsset> = new Map<
     string,
     TemporaryImageAsset
   >();
 
-  constructor(readonly buildId: string, readonly prefix: string) {
+  constructor(readonly buildId: string, readonly prefix: P) {
     assert(prefix?.length > 0, "prefix must be a non-empty string");
   }
 
@@ -17,11 +18,11 @@ export class ImageRepository implements IImageRepository<TemporaryImageAsset> {
     return this.images.has(key);
   }
 
-  addImage(props: {
+  addImage<P extends string = string>(props: {
     key: string;
     hash?: string;
     data?: Uint8Array;
-  }): TemporaryImageAsset {
+  }): TemporaryImageAsset<P> {
     if (this.exists(props.key)) {
       console.warn(
         "image you are tring to register to current build repository is already registered.",
@@ -30,16 +31,16 @@ export class ImageRepository implements IImageRepository<TemporaryImageAsset> {
       return this.images[props.key];
     } else {
       // register image to repository images
-      const newImage = new TemporaryImageAsset(
+      const newImage = new TemporaryImageAsset<P>(
         props.key,
         props.hash,
-        this.prefix
+        (this.prefix as string) as P
       );
       this.images[props.key] = newImage;
-      console.info(
-        `registered image of key ${props.key} to image repository`,
-        this.images
-      );
+      // console.info(
+      //   `registered image of key ${props.key} to image repository`,
+      //   this.images
+      // );
       return newImage;
     }
   }
