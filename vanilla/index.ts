@@ -82,8 +82,8 @@ function fetchElements(
         width: node.width,
         height: node.height,
         data: <TextManifest>{
-          text: node.characters,
-          textAlign: node.textAlignHorizontal,
+          text: node.text,
+          textAlign: node.textAlign,
           textAlignVertical: node.textAlignVertical,
           // TODO
           style: node.textStyle,

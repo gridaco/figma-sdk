@@ -376,7 +376,7 @@ function convertCorner(
 }
 
 function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
-  altNode.textAlignHorizontal = convertTextAlignHorizontalToReflect(
+  altNode.textAlign = convertTextAlignHorizontalToReflect(
     node.textAlignHorizontal
   );
   altNode.textAlignVertical = convertTextAlignVerticalToReflect(
@@ -393,7 +393,7 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
   altNode.textStyleId = figmaToReflectProperty(node.textStyleId);
   altNode.letterSpacing = figmaToReflectProperty(node.letterSpacing);
   altNode.textAutoResize = node.textAutoResize;
-  altNode.characters = node.characters;
+  altNode.text = node.characters;
   altNode.lineHeight = figmaToReflectProperty(node.lineHeight);
 }
 
