@@ -1,6 +1,5 @@
+import type { FigmaTextDecoration } from "@design-sdk/figma-types";
 import { TextDecoration } from "@reflect-ui/core";
-
-export type FigmaTextDecoration = "NONE" | "UNDERLINE" | "STRIKETHROUGH";
 
 export function convertTextDecorationToReflect(
   origin: FigmaTextDecoration

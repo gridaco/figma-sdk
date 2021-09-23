@@ -7,7 +7,7 @@ import {
 import type { ReflectSceneNode } from "../node-type-alias";
 
 // FIXME - migrate this to reflect core cg
-import { Constraints } from "@design-sdk/figma";
+import { Constraints } from "@design-sdk/figma-types";
 
 export class ReflectConstraintMixin extends ReflectBaseNode {
   constraints: Constraints;

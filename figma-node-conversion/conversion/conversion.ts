@@ -29,6 +29,7 @@ import {
   convertCounterAxisAlignItemsToCrossAxisAlignment,
   convertFigmaCornerRadiusToBorderRadius,
   convertLayoutGrowToReflect,
+  convertTextDecorationToReflect,
 } from "../converters";
 import {
   figma,
@@ -48,6 +49,7 @@ import {
   InstanceNode,
   ComponentNode,
   HandleMirroring,
+  FigmaTextDecoration,
 } from "@design-sdk/figma-types";
 import { convertBlendModeToReflect } from "../converters/blend-mode.convert";
 import { EdgeInsets } from "@reflect-ui/core";
@@ -388,8 +390,9 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
   altNode.fontName = figmaToReflectProperty(node.fontName);
   altNode.textCase = figmaToReflectProperty(node.textCase);
 
-  // TODO = > convertTextDecorationToReflect(this)
-  altNode.textDecoration = figmaToReflectProperty(node.textDecoration);
+  altNode.textDecoration = convertTextDecorationToReflect(
+    figmaToReflectProperty<FigmaTextDecoration>(node.textDecoration)
+  );
   altNode.textStyleId = figmaToReflectProperty(node.textStyleId);
   altNode.letterSpacing = figmaToReflectProperty(node.letterSpacing);
   altNode.textAutoResize = node.textAutoResize;

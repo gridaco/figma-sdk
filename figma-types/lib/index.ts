@@ -7,6 +7,7 @@ export * from "./layout-grow";
 export * from "./primary-axis-align-items";
 export * from "./text-alignment";
 export * from "./text-auto-resize";
+export * from "./text-decoration";
 
 // figma actions
 export * from "./figma-node-action-navigation";

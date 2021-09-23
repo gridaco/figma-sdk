@@ -2,6 +2,7 @@ import {
   FontWeight,
   TextAlign,
   TextAlignVertical,
+  TextDecoration,
   TextManifest,
   TextStyleManifest,
 } from "@reflect-ui/core";
@@ -14,10 +15,9 @@ import { TextAutoResize } from "@design-sdk/figma-types";
 import {
   FontName,
   TextCase,
-  TextDecoration,
   LetterSpacing,
   LineHeight,
-} from "@design-sdk/figma";
+} from "@design-sdk/figma-types";
 import { extractTextStyleFromTextNode } from "@design-sdk/figma-node-conversion";
 import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
 import { TextOverflow } from "@reflect-ui/core/lib/text-overflow";
@@ -49,9 +49,8 @@ export class ReflectTextNode
   fontName: FontName | undefined;
   textStyleId: string | undefined;
   textCase: TextCase | undefined;
+  textDecoration?: TextDecoration;
 
-  // FIXME: - this conversion is not working
-  textDecoration: TextDecoration | undefined;
   // FIXME: - this conversion is not working
   letterSpacing: LetterSpacing | undefined;
   // FIXME: - this conversion is not working
