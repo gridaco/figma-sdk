@@ -21,6 +21,8 @@ export function layoutAlignToReflectMainAxisSize(
        * - If the current node is an auto layout frame (e.g. an auto layout frame inside a parent auto layout frame) if you set layoutAlign to “STRETCH” you should set the corresponding axis – either primaryAxisSizingMode or counterAxisSizingMode – to be“FIXED”. This is because an auto-layout frame cannot simultaneously stretch to fill its parent and shrink to hug its children.
        */
       return MainAxisSize.max;
+    case undefined:
+      return;
   }
 
   // error region
