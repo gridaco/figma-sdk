@@ -10,14 +10,6 @@ export function layoutAlignToReflectMainAxisSize(
   layoutAlign: FimgaLayoutAlign
 ): MainAxisSize {
   switch (layoutAlign) {
-    case "CENTER":
-    case "MAX":
-    case "MIN":
-      /**
-       * ⚠️ Previously, layoutAlign also determined counter axis alignment of auto-layout frame children. Counter axis alignment is now set on the auto-layout frame itself through counterAxisAlignItems. Note that this means all layers in an auto-layout frame must now have the same counter axis alignment. This means "MIN", "CENTER", and "MAX" are now deprecated values of layoutAlign.
-       */
-      return;
-      throw "deprecated";
     case "INHERIT":
       /**
        * Setting "INHERIT" does not "stretch" the node.
@@ -30,4 +22,12 @@ export function layoutAlignToReflectMainAxisSize(
        */
       return MainAxisSize.max;
   }
+
+  // error region
+  // since MAX | MIN values are deprecated, it still can be living in a older version file (not reported.)
+  console.error("=".repeat(80));
+  console.error(
+    `"${layoutAlign}" is not hanlded for converting to reflect. report this error @ https://github.com/gridaco/design-sdk/issues/new`
+  );
+  console.error("=".repeat(80));
 }

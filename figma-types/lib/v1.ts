@@ -664,7 +664,8 @@ export interface LayoutMixin {
   readonly height: number;
   constrainProportions: boolean;
 
-  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT"; // applicable only inside auto-layout frames
+  // "MIN" | "CENTER" | "MAX" are deprecated
+  layoutAlign: "STRETCH" | "INHERIT"; // applicable only inside auto-layout frames
   layoutGrow: number;
 
   resize(width: number, height: number): void;

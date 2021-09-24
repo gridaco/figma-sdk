@@ -5,7 +5,13 @@ import { IReflectDefaultShapeMixin } from "../interfaces/default-shape-mixin";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
 
 // FIXME - migrate this
-import { Paint, Effect, StrokeCap, StrokeJoin } from "@design-sdk/figma-types";
+import {
+  Paint,
+  Effect,
+  StrokeCap,
+  StrokeJoin,
+  FimgaLayoutAlign,
+} from "@design-sdk/figma-types";
 import { FigmaLayoutGrow } from "@design-sdk/figma-types";
 
 export class ReflectDefaultShapeMixin
@@ -39,5 +45,5 @@ export class ReflectDefaultShapeMixin
   rotation: number;
   width: number;
   height: number;
-  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+  layoutAlign: FimgaLayoutAlign;
 }

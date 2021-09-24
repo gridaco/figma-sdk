@@ -3,7 +3,7 @@
 //// since we are converting interface to interface, we cannot use functionalities of mixin blending.
 //// to make the blending code simpler, we are making this abstract mapping instance for temporary mapping usage
 ////
-import { Figma } from "@design-sdk/figma-types";
+import { Figma, FimgaLayoutAlign } from "@design-sdk/figma-types";
 
 export type MappingNode =
   | MappingRectangleNode
@@ -75,7 +75,7 @@ export class MappingRectangleNode implements Figma.RectangleNode {
   width: number;
   height: number;
   constrainProportions: boolean;
-  layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  layoutAlign: FimgaLayoutAlign;
   layoutGrow: number;
   resize(width: number, height: number): void {
     throw new Error("Method not implemented.");
@@ -159,7 +159,7 @@ export class MappingEllipseNode implements Figma.EllipseNode {
   width: number;
   height: number;
   constrainProportions: boolean;
-  layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  layoutAlign: FimgaLayoutAlign;
   layoutGrow: number;
   resize(width: number, height: number): void {
     throw new Error("Method not implemented.");
@@ -241,7 +241,7 @@ export class MappingVectorNode implements Figma.VectorNode {
   width: number;
   height: number;
   constrainProportions: boolean;
-  layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  layoutAlign: FimgaLayoutAlign;
   layoutGrow: number;
   resize(width: number, height: number): void {
     throw new Error("Method not implemented.");
@@ -443,7 +443,7 @@ export class MappingTextNode implements Figma.TextNode {
   width: number;
   height: number;
   constrainProportions: boolean;
-  layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  layoutAlign: FimgaLayoutAlign;
   layoutGrow: number;
   resize(width: number, height: number): void {
     throw new Error("Method not implemented.");
@@ -600,7 +600,7 @@ export class MappingFrameNode implements Figma.FrameNode {
   width: number;
   height: number;
   constrainProportions: boolean;
-  layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  layoutAlign: FimgaLayoutAlign;
   layoutGrow: number;
   resize(width: number, height: number): void {
     throw new Error("Method not implemented.");
@@ -693,7 +693,7 @@ export class MappingGroupNode implements Figma.GroupNode {
   width: number;
   height: number;
   constrainProportions: boolean;
-  layoutAlign: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  layoutAlign: FimgaLayoutAlign;
   layoutGrow: number;
   resize(width: number, height: number): void {
     throw new Error("Method not implemented.");

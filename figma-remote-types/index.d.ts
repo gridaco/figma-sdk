@@ -207,8 +207,10 @@ export interface FrameBase extends Global {
    * In horizontal auto-layout frames, "MIN" and "MAX" correspond to
    * "TOP" and "BOTTOM". * In vertical auto-layout frames, "MIN" and
    * "MAX" correspond to "LEFT" and "RIGHT".
+   *
+   * > **"CENTER" | "MIN" | "MAX" are deprecated**
    */
-  readonly layoutAlign?: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  readonly layoutAlign?: "STRETCH" | "INHERIT";
   /**
    * Node ID of node to transition to in prototyping
    * @default null
@@ -472,7 +474,8 @@ export interface VectorBase extends Global {
    */
   readonly styles?: StylesObject;
 
-  readonly layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+  // "MIN" | "CENTER" | "MAX" are deprecated.
+  readonly layoutAlign: "STRETCH" | "INHERIT";
 
   /**
    * This property is applicable only for direct children of auto-layout frames, ignored otherwise. Determines whether a layer should stretch along the parent’s primary axis. A 0 corresponds to a fixed size and 1 corresponds to stretch
