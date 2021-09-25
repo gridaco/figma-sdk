@@ -24,6 +24,8 @@ import {
   Transform,
   FimgaLayoutAlign,
   FigmaLayoutGrow,
+  FigmaPrimaryAxisSizingMode,
+  FigmaCounterAxisSizingMode,
 } from "@design-sdk/figma-types";
 
 import { ReflectSceneNodeType } from "./node-type";
@@ -64,8 +66,8 @@ export class ReflectFrameNode
   mainAxisAlignment: MainAxisAlignment;
   crossAxisAlignment: CrossAxisAlignment;
   layoutMode?: Axis | undefined;
-  primaryAxisSizingMode: "FIXED" | "AUTO";
-  counterAxisSizingMode: "FIXED" | "AUTO";
+  primaryAxisSizingMode: FigmaPrimaryAxisSizingMode;
+  counterAxisSizingMode: FigmaCounterAxisSizingMode;
   itemSpacing: number;
   padding: EdgeInsets;
   layoutGrids: ReadonlyArray<LayoutGrid>;
