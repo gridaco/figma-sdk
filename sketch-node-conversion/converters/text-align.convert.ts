@@ -1,4 +1,4 @@
-import { TextHorizontalAlignment } from "../types/v3";
+import { TextHorizontalAlignment } from "@design-sdk/sketch-types";
 import { TextAlign } from "@reflect-ui/core";
 export function convertSketchTextAligntmentToReflectTextAlignment(
   sketch: TextHorizontalAlignment
