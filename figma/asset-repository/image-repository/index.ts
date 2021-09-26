@@ -21,4 +21,8 @@ export class ImageRepositories extends BaseImageRepositories {
     const image = figma.getImageByHash(hash);
     return image.getBytesAsync();
   }
+
+  fetchAll(...id: string[]): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
 }

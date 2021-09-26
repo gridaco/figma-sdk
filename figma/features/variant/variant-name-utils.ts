@@ -3,8 +3,8 @@
 ///
 
 import { array } from "@reflect-ui/uiutils";
-import { ReflectSceneNodeType } from "@design-sdk/core";
-import type { IReflectNodeReference } from "@design-sdk/core";
+import { ReflectSceneNodeType } from "@design-sdk/figma-node";
+import type { IReflectNodeReference } from "@design-sdk/figma-node";
 
 import { Figma } from "../..";
 import {
