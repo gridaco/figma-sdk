@@ -61,6 +61,8 @@ export abstract class BaseImageRepositories<T = Uint8Array> {
    */
   abstract fetchDataById(id: string): T | Promise<T>;
 
+  abstract fetchAll(...id: string[]): Promise<any>;
+
   isImageHashRegistered(hash: string): boolean {
     return this.imageHashMap.has(hash);
   }

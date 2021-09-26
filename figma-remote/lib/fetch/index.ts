@@ -70,12 +70,12 @@ export async function fetchTarget(
   });
   const nodes = nodesRes.data.nodes;
 
-  const demoEntryNode = nodes[node];
+  const node_doc = nodes[node];
 
   return {
     file: file,
     node: node,
-    remote: demoEntryNode.document,
+    remote: node_doc.document,
   };
 }
 
