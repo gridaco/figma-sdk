@@ -30,6 +30,7 @@ import {
   convertFigmaCornerRadiusToBorderRadius,
   convertLayoutGrowToReflect,
   convertTextDecorationToReflect,
+  figma_lineheight_to_reflect_ling_height,
 } from "../converters";
 import {
   figma,
@@ -397,7 +398,9 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
   altNode.letterSpacing = figmaToReflectProperty(node.letterSpacing);
   altNode.textAutoResize = node.textAutoResize;
   altNode.text = node.characters;
-  altNode.lineHeight = figmaToReflectProperty(node.lineHeight);
+  altNode.lineHeight = figma_lineheight_to_reflect_ling_height(
+    figmaToReflectProperty(node.lineHeight)
+  );
 }
 
 // drops the useless figma's mixed symbol
