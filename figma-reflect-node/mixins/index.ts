@@ -3,3 +3,4 @@ export * from "./corner.mixin";
 export * from "./default-shape.mixin";
 export * from "./geometry.mixin";
 export * from "./layout.mixin";
+export * from "./constraint.mixin";

@@ -716,6 +716,12 @@ export class MappingBooleanOperationNode implements Figma.BooleanOperationNode {
   clone(): Figma.BooleanOperationNode {
     throw new Error("Method not implemented.");
   }
+
+  // --------------------------------------------------
+  // this is missing in plugin typings, but explicitly required.
+  constraints: Figma.Constraints;
+  // --------------------------------------------------
+
   booleanOperation: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
   expanded: boolean;
   id: string;

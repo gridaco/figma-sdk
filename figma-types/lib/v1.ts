@@ -1064,6 +1064,10 @@ export interface InstanceNode extends DefaultFrameMixin, VariantMixin {
 export interface BooleanOperationNode
   extends DefaultShapeMixin,
     ChildrenMixin,
+    // CUSTOM OVERRIDE
+    // ---- this is not from official plugin typings, but exists. ---
+    ConstraintMixin,
+    // --------------------------------------------------------------
     CornerMixin {
   readonly type: "BOOLEAN_OPERATION";
   clone(): BooleanOperationNode;

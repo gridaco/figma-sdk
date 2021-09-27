@@ -274,7 +274,11 @@ export function intoReflectNodes(
 
           convertDefaultShape(altNode, node);
           convertBlend(altNode, node);
-          convertConstraint(altNode, node);
+          convertConstraint(
+            altNode,
+            // FIXME: this is a figma plugin typings error. bool op node do have constraint property, but node defined by official plugin typings.
+            node as any
+          );
 
           // boolean opreation properties -----
           altNode.shapeCornerRadius = figmaToReflectProperty(node.cornerRadius);

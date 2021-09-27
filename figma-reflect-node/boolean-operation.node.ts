@@ -1,12 +1,20 @@
-import { FigmaBooleanOpeartionType } from "@design-sdk/figma-types";
-import { IReflectCornerMixin, ReflectDefaultShapeMixin } from "./mixins";
+import {
+  Constraints,
+  FigmaBooleanOpeartionType,
+} from "@design-sdk/figma-types";
+import {
+  IReflectCornerMixin,
+  ReflectDefaultShapeMixin,
+  IReflectConstraintMixin,
+} from "./mixins";
 import { ReflectSceneNodeType } from "./node-type";
 import type { ReflectSceneNode } from "./node-type-alias";
 
 export class ReflectBooleanOperationNode
   extends ReflectDefaultShapeMixin
-  implements IReflectCornerMixin {
+  implements IReflectCornerMixin, IReflectConstraintMixin {
   readonly type = ReflectSceneNodeType.boolean_operation;
+  constraints: Constraints;
 
   // --------------- BOOL OP -----------------
   booleanOperation: FigmaBooleanOpeartionType;
