@@ -9,7 +9,7 @@ import {
   ReflectBaseNode,
   ReflectTextNode,
   IReflectBlendMixin,
-  IReflectCornerMixin,
+  IReflectRectangleCornerMixin,
   ReflectDefaultShapeMixin,
   IReflectGeometryMixin,
   IReflectLayoutMixin,
@@ -252,7 +252,6 @@ export function intoReflectNodes(
           });
 
           convertDefaultShape(altNode, node);
-          convertDefaultShape(altNode, node);
           convertBlend(altNode, node);
           convertConstraint(altNode, node);
 
@@ -273,8 +272,12 @@ export function intoReflectNodes(
             childrenCount: node.children.length,
           });
 
+          convertDefaultShape(altNode, node);
+          convertBlend(altNode, node);
+          convertConstraint(altNode, node);
+
           // boolean opreation properties -----
-          altNode.cornerRadius = figmaToReflectProperty(node.cornerRadius);
+          altNode.shapeCornerRadius = figmaToReflectProperty(node.cornerRadius);
           altNode.cornerSmoothing = node.cornerSmoothing;
           altNode.booleanOperation = node.booleanOperation;
           // ----------------------------------
@@ -388,7 +391,7 @@ function convertDefaultShape(
 }
 
 function convertCorner(
-  altNode: IReflectCornerMixin,
+  altNode: IReflectRectangleCornerMixin,
   node: CornerMixin | RectangleCornerMixin
 ) {
   altNode.cornerRadius = convertFigmaCornerRadiusToBorderRadius({

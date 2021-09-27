@@ -1,6 +1,11 @@
 import { BorderRadiusManifest } from "@reflect-ui/core";
 
+export interface IReflectRectangleCornerMixin {
+  cornerRadius: BorderRadiusManifest;
+  cornerSmoothing: number;
+}
+
 export interface IReflectCornerMixin {
   cornerSmoothing: number;
-  cornerRadius: BorderRadiusManifest;
+  shapeCornerRadius: number;
 }

@@ -12,6 +12,8 @@ import { FigmaLayoutGrow, FimgaLayoutAlign } from "@design-sdk/figma-types";
 export class ReflectGroupNode
   extends ReflectChildrenMixin
   implements ReflectChildrenMixin, IReflectBlendMixin, IReflectLayoutMixin {
+  type = ReflectSceneNodeType.group;
+
   opacity: number;
   blendMode: "PASS_THROUGH" | BlendMode;
   isMask: boolean;
@@ -27,8 +29,6 @@ export class ReflectGroupNode
   height: number;
   layoutAlign: FimgaLayoutAlign;
   layoutGrow: FigmaLayoutGrow;
-
-  type = ReflectSceneNodeType.group;
 
   children: Array<ReflectSceneNode>;
 }
