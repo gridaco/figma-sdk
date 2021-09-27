@@ -39,6 +39,11 @@ export interface FileNodesParams {
   readonly version?: string;
 
   /**
+   * Positive integer representing how deep into the document tree to traverse. For example, setting this to 1 returns only Pages, setting it to 2 returns Pages and all top level objects on each page. Not setting this parameter returns all nodes
+   */
+  readonly depth?: number;
+
+  /**
    * Set to "paths" to export vector data
    */
   readonly geometry?: string;
