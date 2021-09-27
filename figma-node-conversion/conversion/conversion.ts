@@ -16,6 +16,7 @@ import {
   ReflectConstraintMixin,
   mixed,
   makeComponentReference,
+  ReflectBooleanOperationNode,
 } from "@design-sdk/core";
 import { utils } from "@design-sdk/core";
 import { array } from "@reflect-ui/uiutils";
@@ -259,6 +260,30 @@ export function intoReflectNodes(
           altNode.vectorPaths = node.vectorPaths;
           altNode.handleMirroring = node.handleMirroring as HandleMirroring;
 
+          return altNode;
+        }
+        case "BOOLEAN_OPERATION": {
+          const altNode = new ReflectBooleanOperationNode({
+            id: node.id,
+            name: node.name,
+            parent: altParent,
+            originParentId: node.parent?.id,
+            origin: node.type,
+            absoluteTransform: node.absoluteTransform,
+            childrenCount: node.children.length,
+          });
+
+          // boolean opreation properties -----
+          altNode.cornerRadius = figmaToReflectProperty(node.cornerRadius);
+          altNode.cornerSmoothing = node.cornerSmoothing;
+          altNode.booleanOperation = node.booleanOperation;
+          // ----------------------------------
+
+          altNode.children = intoReflectNodes(
+            node.children,
+            // FIXME: do not use force type. - it won't impact the logic since boolean operation node is simply a group-like.
+            (altNode as any) as ReflectGroupNode
+          );
           return altNode;
         }
       }

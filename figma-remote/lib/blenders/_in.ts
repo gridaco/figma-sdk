@@ -6,6 +6,7 @@ import {
   Star,
   Line,
   Ellipse,
+  BooleanGroup,
   Text,
   RegularPolygon,
   Rectangle,
@@ -26,6 +27,7 @@ export type MappableNode =
   | RegularPolygon
   | Rectangle
   | Text
+  | BooleanGroup
   | Component
   | Instance;
 

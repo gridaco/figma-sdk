@@ -15,7 +15,7 @@ export class ReflectBooleanOperationNode extends ReflectBaseNode {
    */
   expanded: boolean;
 
-  readonly children: Array<ReflectSceneNode> = [];
+  children: Array<ReflectSceneNode> = [];
   cornerRadius: number;
   cornerSmoothing: number;
 }

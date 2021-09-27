@@ -3,6 +3,7 @@ import { Node } from "@design-sdk/figma-remote-types";
 import { mapFigmaRemoteEllipseToFigma } from "./ellipse.mapper";
 import { mapFigmaRemoteFrameToFigma } from "./frame.mapper";
 import { mapFigmaRemoteGroupToFigma } from "./group.mapper";
+import { mapFigmaRemoteBooleanOperationToFigma } from "./boolean-operation.mapper";
 import { mapFigmaRemoteRectangleToFigma } from "./rectangle.mapper";
 import { mapFigmaRemoteTextToFigma } from "./text.mapper";
 import { mapFigmaRemoteVectorToFigma } from "./vector.mapper";
@@ -43,8 +44,17 @@ export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
       nonchildreninstance = mapFigmaRemoteGroupToFigma(remNode, parent);
       break;
 
+    case "BOOLEAN_OPERATION":
+      nonchildreninstance = mapFigmaRemoteBooleanOperationToFigma(
+        remNode,
+        parent
+      );
+      break;
+
     default:
-      console.warn(`type "${remNode.type}" not handled`);
+      console.warn(
+        `unhandled not while converting remote node to figma typed node. type "${remNode.type}" not handled`
+      );
       nonchildreninstance = (remNode as any) as SceneNode;
       break;
   }
