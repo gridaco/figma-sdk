@@ -105,8 +105,6 @@ export function intoReflectNodes(
               absoluteTransform: node.absoluteTransform,
               childrenCount: 0,
             });
-            convertConstraint(altNode, node);
-            convertCorner(altNode, node);
           } else if (node.type === "ELLIPSE") {
             altNode = new ReflectEllipseNode({
               id: node.id,
@@ -123,6 +121,7 @@ export function intoReflectNodes(
             altNode.parent = altParent;
           }
 
+          convertConstraint(altNode, node);
           convertDefaultShape(altNode, node);
           convertCorner(altNode, node);
 
