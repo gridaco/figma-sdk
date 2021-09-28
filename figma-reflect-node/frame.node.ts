@@ -55,7 +55,7 @@ export class ReflectFrameNode
     IReflectRectangleCornerMixin,
     IReflectBlendMixin,
     IReflectLayoutMixin {
-  type = ReflectSceneNodeType.frame;
+  type: ReflectSceneNodeType.frame = ReflectSceneNodeType.frame;
 
   absoluteTransform: Transform;
 

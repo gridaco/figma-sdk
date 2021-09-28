@@ -8,10 +8,12 @@ export function retrievePrimaryColor(fills: ReadonlyArray<Paint>): RGBAF {
   const solid = retrieveFill<SolidPaint>(fills, {
     onlySolid: true,
   });
-  return {
-    r: solid.color.r,
-    g: solid.color.g,
-    b: solid.color.b,
-    a: solid.opacity,
-  };
+  if (solid) {
+    return {
+      r: solid.color.r,
+      g: solid.color.g,
+      b: solid.color.b,
+      a: solid.opacity,
+    };
+  }
 }
