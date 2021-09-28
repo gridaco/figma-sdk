@@ -3,3 +3,4 @@
 ////
 export * from "./general.blend";
 export * from "./corner.blend";
+export * from "./vector.blend";

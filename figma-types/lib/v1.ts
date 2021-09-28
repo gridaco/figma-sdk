@@ -995,6 +995,9 @@ export interface PolygonNode
   readonly type: "POLYGON";
   clone(): PolygonNode;
   pointCount: number;
+
+  // OVERRIDE - for remote data
+  vectorPaths: VectorPaths;
 }
 
 export interface StarNode
@@ -1005,6 +1008,9 @@ export interface StarNode
   clone(): StarNode;
   pointCount: number;
   innerRadius: number;
+
+  // OVERRIDE - for remote data
+  vectorPaths: VectorPaths;
 }
 
 export interface VectorNode

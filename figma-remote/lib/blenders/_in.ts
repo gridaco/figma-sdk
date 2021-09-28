@@ -29,6 +29,7 @@ export type MappableNode =
   | Text
   | BooleanGroup
   | Component
+  | RegularPolygon
   | Instance;
 
 export type MappingBlendInput<T = MappingNode, S = MappableNode> = {

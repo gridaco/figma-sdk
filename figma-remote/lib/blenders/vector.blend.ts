@@ -1,9 +1,22 @@
-import { Vector } from "@design-sdk/figma-remote-types";
-import { MappingVectorNode } from "../mapper/mapping-instance";
+import { VectorBase } from "@design-sdk/figma-remote-types";
+import {
+  MappingEllipseNode,
+  MappingLineNode,
+  MappingPolygonNode,
+  MAppingStarNode,
+  MappingVectorNode,
+} from "../mapper/mapping-instance";
 import { MappingBlendInput } from "./_in";
 
 export function blendVectorNode(
-  p: MappingBlendInput<MappingVectorNode, Vector>
+  p: MappingBlendInput<
+    | MappingVectorNode
+    | MappingPolygonNode
+    | MAppingStarNode
+    | MappingLineNode
+    | MappingEllipseNode,
+    VectorBase
+  >
 ) {
   const { target, source } = p;
   target.vectorPaths = source.fillGeometry
@@ -16,9 +29,4 @@ export function blendVectorNode(
         windingRule: g.windingRule,
       };
     });
-
-  // this is only available via plugin api
-  // learn more at https://www.figma.com/plugin-docs/api/VectorNetwork/
-  target.vectorNetwork = undefined;
-  target.handleMirroring = "NONE";
 }

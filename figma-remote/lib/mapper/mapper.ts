@@ -7,6 +7,9 @@ import { mapFigmaRemoteBooleanOperationToFigma } from "./boolean-operation.mappe
 import { mapFigmaRemoteRectangleToFigma } from "./rectangle.mapper";
 import { mapFigmaRemoteTextToFigma } from "./text.mapper";
 import { mapFigmaRemoteVectorToFigma } from "./vector.mapper";
+import { mapFigmaRemotePolygonToFigma } from "./polygon.mapper";
+import { mapFigmaRemoteStarToFigma } from "./star.mapper";
+import { mapFigmaRemoteLineToFigma } from "./line.mapper";
 export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
   let preConvertedChildren: SceneNode[];
   if ("children" in remNode) {
@@ -50,6 +53,21 @@ export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
         parent
       );
       break;
+
+    case "REGULAR_POLYGON": {
+      nonchildreninstance = mapFigmaRemotePolygonToFigma(remNode, parent);
+      break;
+    }
+
+    case "STAR": {
+      nonchildreninstance = mapFigmaRemoteStarToFigma(remNode, parent);
+      break;
+    }
+
+    case "LINE": {
+      nonchildreninstance = mapFigmaRemoteLineToFigma(remNode, parent);
+      break;
+    }
 
     default:
       console.warn(
