@@ -215,30 +215,7 @@ export function intoReflectNodes(
           break;
         }
         case "STAR":
-        case "POLYGON": {
-          // TODO: export as a svg and display it directly.
-          console.log(
-            `converting vector node "${node.name}" to reflect rectangle node.`
-          );
-          const altNode = new ReflectRectangleNode({
-            id: node.id,
-            name: node.name,
-            parent: altParent,
-            originParentId: node.parent?.id,
-            origin: node.type,
-            absoluteTransform: node.absoluteTransform,
-            childrenCount: 0,
-          });
-
-          convertConstraint(altNode, node);
-          convertDefaultShape(altNode, node);
-
-          // TODO Vector support is still missing. Meanwhile, add placeholder.
-          altNode.radius = 16;
-          altNode.opacity = 0.5;
-
-          return altNode;
-        }
+        case "POLYGON":
         case "VECTOR": {
           const altNode = new ReflectVectorNode({
             id: node.id,
@@ -254,9 +231,11 @@ export function intoReflectNodes(
           convertBlend(altNode, node);
           convertConstraint(altNode, node);
 
+          // @ts-ignore
           altNode.vectorNetwork = node.vectorNetwork;
           altNode.vectorPaths = node.vectorPaths;
-          altNode.handleMirroring = node.handleMirroring as HandleMirroring;
+          // let's not assign this value until we find out what this exactly does.
+          // altNode.handleMirroring = node.handleMirroring as HandleMirroring;
 
           return altNode;
         }
