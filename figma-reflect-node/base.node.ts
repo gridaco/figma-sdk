@@ -177,6 +177,7 @@ export class ReflectBaseNode
   layoutAlign: FimgaLayoutAlign;
   layoutGrow: FigmaLayoutGrow;
   fills?: ReadonlyArray<Figma.Paint>;
+  strokes?: ReadonlyArray<Figma.Paint>;
 
   /**
    * layoutMode is only available for frame node
