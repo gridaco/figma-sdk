@@ -337,8 +337,12 @@ export class ReflectBaseNode
   }
 
   get primaryImage(): Figma.Image {
-    if (Array.isArray(this.fills)) {
-      return retrievePrimaryImageFill(this.fills);
+    try {
+      if (Array.isArray(this.fills)) {
+        return retrievePrimaryImageFill(this.fills);
+      }
+    } catch (_) {
+      return;
     }
   }
 
