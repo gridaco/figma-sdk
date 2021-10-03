@@ -77,6 +77,11 @@ export class ReflectTextNode
   }
 
   get fontWeight(): FontWeight {
-    return convertFontStyleNameToFontWeightReflect(this.fontName.style);
+    try {
+      return convertFontStyleNameToFontWeightReflect(this.fontName.style);
+    } catch (_) {
+      // fallback.
+      return FontWeight.normal;
+    }
   }
 }
