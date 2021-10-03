@@ -59,7 +59,10 @@ export abstract class BaseImageRepositories<T = Uint8Array> {
    * platform specific methods
    * @param id image node's id
    */
-  abstract fetchDataById(id: string): T | Promise<T>;
+  abstract fetchDataById(
+    id: string,
+    config?: { type: "original" }
+  ): T | Promise<T>;
 
   abstract fetchAll(...id: string[]): Promise<any>;
 

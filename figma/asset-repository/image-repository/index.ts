@@ -2,11 +2,22 @@ import { BaseImageRepositories } from "@design-sdk/core/assets-repository/image-
 import { figma } from "../../";
 
 export class ImageRepositories extends BaseImageRepositories {
-  async fetchDataById(id: string): Promise<Uint8Array> {
+  async fetchDataById(
+    id: string,
+    config?: {
+      type: "original";
+    }
+  ): Promise<Uint8Array> {
     const node = figma.getNodeById(id);
     if (node.type == "DOCUMENT") {
       return;
     } else {
+      if (config?.type == "original") {
+        return await node.exportAsync({
+          format: "PNG",
+          // no constraints
+        });
+      }
       return await node.exportAsync({
         format: "PNG",
         constraint: {
