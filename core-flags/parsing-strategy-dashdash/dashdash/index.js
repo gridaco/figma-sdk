@@ -83,13 +83,18 @@ function textwrap(s, width) {
  * Transform an option name to a "key" that is used as the field
  * on the `opts` object returned from `<parser>.parse()`.
  *
- * Transformations:
- * - '-' -> '_': This allow one to use hyphen in option names (common)
- *   but not have to do silly things like `opt["dry-run"]` to access the
- *   parsed results.
  */
 function optionKeyFromName(name) {
-  return name.replace(/-/g, "_");
+  return name;
+
+  // overrided, disabled.
+  /**
+   * Transformations:
+   * - '-' -> '_': This allow one to use hyphen in option names (common)
+   *   but not have to do silly things like `opt["dry-run"]` to access the
+   *   parsed results.
+   */
+  // return name.replace(/-/g, "_");
 }
 
 // ---- Option types

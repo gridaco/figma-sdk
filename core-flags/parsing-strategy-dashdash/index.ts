@@ -31,11 +31,11 @@ export function parse(
 
 function accept_all(
   flags: `--${string}`[]
-): { name: string; type: "string" }[] {
+): { name: string; type: "string" | "bool" }[] {
   return flags.map((f) => {
     return {
       name: f.match(/--([A-Za-z0-9\-\_]+)/g)[0].split("--")[1],
-      type: "string",
+      type: f.includes("=") ? "string" : "bool",
     };
   });
 }
