@@ -1,4 +1,5 @@
 import {
+  DimensionLength,
   FontWeight,
   TextAlign,
   TextAlignVertical,
@@ -53,8 +54,7 @@ export class ReflectTextNode
 
   // FIXME: - this conversion is not working
   letterSpacing: LetterSpacing | undefined;
-  // FIXME: - this conversion is not working
-  lineHeight: LineHeight | undefined;
+  lineHeight: DimensionLength;
 
   get hasTextStyle(): boolean {
     if (this.textStyleId !== "") {
@@ -77,6 +77,11 @@ export class ReflectTextNode
   }
 
   get fontWeight(): FontWeight {
-    return convertFontStyleNameToFontWeightReflect(this.fontName.style);
+    try {
+      return convertFontStyleNameToFontWeightReflect(this.fontName.style);
+    } catch (_) {
+      // fallback.
+      return FontWeight.normal;
+    }
   }
 }

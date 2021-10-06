@@ -39,6 +39,7 @@ export function mapFigmaRemoteFrameToFigma(
     primaryAxisAlignItems: remFrame.primaryAxisAlignItems ?? "MIN",
     counterAxisAlignItems: remFrame.counterAxisAlignItems ?? "MIN",
     itemSpacing: remFrame.itemSpacing ?? 0,
+    clipsContent: remFrame.clipsContent ?? false,
     paddingLeft: remFrame.paddingLeft ?? 0,
     paddingRight: remFrame.paddingRight ?? 0,
     paddingTop: remFrame.paddingTop ?? 0,

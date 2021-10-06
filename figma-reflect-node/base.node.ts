@@ -177,6 +177,7 @@ export class ReflectBaseNode
   layoutAlign: FimgaLayoutAlign;
   layoutGrow: FigmaLayoutGrow;
   fills?: ReadonlyArray<Figma.Paint>;
+  strokes?: ReadonlyArray<Figma.Paint>;
 
   /**
    * layoutMode is only available for frame node
@@ -336,8 +337,12 @@ export class ReflectBaseNode
   }
 
   get primaryImage(): Figma.Image {
-    if (Array.isArray(this.fills)) {
-      return retrievePrimaryImageFill(this.fills);
+    try {
+      if (Array.isArray(this.fills)) {
+        return retrievePrimaryImageFill(this.fills);
+      }
+    } catch (_) {
+      return;
     }
   }
 

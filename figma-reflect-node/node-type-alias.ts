@@ -7,6 +7,7 @@ import type { ReflectLineNode } from "./line.node";
 import type { ReflectRectangleNode } from "./rectangle.node";
 import type { ReflectTextNode } from "./text.node";
 import type { ReflectVectorNode } from ".";
+import type { ReflectBooleanOperationNode } from "./boolean-operation.node";
 
 type ReflectSceneNode =
   | ReflectFrameNode
@@ -17,6 +18,7 @@ type ReflectSceneNode =
   | ReflectTextNode
   | ReflectLineNode
   | ReflectConstraintMixin
+  | ReflectBooleanOperationNode
   | ReflectChildrenMixin;
 // TODO
 // | StarNode

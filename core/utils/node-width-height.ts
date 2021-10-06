@@ -147,7 +147,12 @@ function getNodeSizeWithStrokes(node: ReflectSceneNode): Array<number> {
   // tailwind doesn't support OUTSIDE or CENTER, only INSIDE.
   // Therefore, to give the same feeling, the height and width will be slighly increased.
   // node.strokes.lenght is necessary because [strokeWeight] can exist even without strokes.
-  if ("strokes" in node && node.strokes && node.strokes.length) {
+  if (
+    "strokes" in node &&
+    "strokeAlign" in node &&
+    node.strokes &&
+    node.strokes.length
+  ) {
     if (node.strokeAlign === "OUTSIDE") {
       nodeHeight += node.strokeWeight * 2;
       nodeWidth += node.strokeWeight * 2;

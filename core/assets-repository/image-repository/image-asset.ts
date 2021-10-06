@@ -48,12 +48,12 @@ export class TemporaryImageAsset<
     );
   }
 
-  async fetchData(): Promise<Uint8Array> {
+  async fetchData(config?: { type: "original" }): Promise<Uint8Array> {
     if (this.data) {
       // if data exists, return it.
       return this.data;
     }
     // return await ImageRepositories.fetchDataByHash(this.hash)
-    return await MainImageRepository.instance.fetchDataById(this.key);
+    return await MainImageRepository.instance.fetchDataById(this.key, config);
   }
 }

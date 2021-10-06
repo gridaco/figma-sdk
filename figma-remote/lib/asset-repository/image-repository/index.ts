@@ -13,18 +13,32 @@ export class RemoteImageRepositories extends BaseImageRepositories<RemoteImage> 
     super();
   }
 
+  private __fetching: Promise<any>;
   async fetchDataById(id: string): Promise<RemoteImage> {
     if (this.__node_export_image_map[id]) {
       return this.__node_export_image_map[id];
     }
 
-    const res = await fetchNodeAsImage(this.fileId, this.credentials, id);
+    if (!this.__fetching) {
+      this.__fetching = fetchNodeAsImage(this.fileId, this.credentials, id);
+    }
+    const res = await this.__fetching;
     // update maps with newly retrieved data.
     this.__node_export_image_map = {
       ...this.__node_export_image_map,
       ...res,
     };
     return res[id];
+  }
+
+  async fetchAll(...id: string[]) {
+    this.__fetching = fetchNodeAsImage(this.fileId, this.credentials, ...id);
+    const res = await this.__fetching;
+    this.__node_export_image_map = {
+      ...this.__node_export_image_map,
+      ...res,
+    };
+    return this.__node_export_image_map;
   }
 
   async _fetchDataByHash(hash: string): Promise<RemoteImage> {

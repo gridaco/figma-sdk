@@ -1,5 +1,4 @@
-import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
-
+import type { IReflectNodeReference } from "@design-sdk/figma-node";
 /**
  * relative path of current node. (not main component)
  * e.g. 0/1

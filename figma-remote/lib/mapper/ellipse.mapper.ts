@@ -14,7 +14,7 @@ export function mapFigmaRemoteEllipseToFigma(
     parent,
   });
 
-  return <EllipseNode>{
+  return <EllipseNode & { vectorPaths }>{
     ...mapping,
     type: "ELLIPSE",
   };

@@ -28,10 +28,10 @@ export function convertFontStyleNameToFontWeightReflect(fontStyle: string) {
   switch (_one_of_the_substring_is_matching_possible_style_name.length) {
     case 0: {
       // non was matched
-      console.info(
-        'no standard font style found with givven style name. using "regular" style instead. the givven style name was',
-        fontStyle
-      );
+      // console.info(
+      //   'no standard font style found with givven style name. using "regular" style instead. the givven style name was',
+      //   fontStyle
+      // );
       style = _DEFAULT_FALLBACK_STYLE;
       break;
     }
