@@ -7,11 +7,12 @@
         "test": "jest --config=jest.config.js"
     },
     "dependencies": {
-        "assert-plus": "1.0.0"
+        "assert": "2.0.0"
     },
     "devDependencies": {
         "@types/jest": "^27.0.2",
         "@types/node": "^16.10.3",
+        "@types/assert": "^1.5.6",
         "jest": "^27.2.4",
         "ts-jest": "^27.0.5",
         "typescript": "^4.4.3"

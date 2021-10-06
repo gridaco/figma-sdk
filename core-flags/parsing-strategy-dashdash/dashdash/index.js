@@ -4,7 +4,7 @@
  */
 // vim: set ts=4 sts=4 sw=4 et:
 
-var assert = require("assert-plus");
+var assert = require("assert");
 var format = require("util").format;
 // var fs = require("fs");
 // var path = require("path");
@@ -48,7 +48,7 @@ function makeIndent(arg, deflen, name) {
   } else if (typeof arg === "string") {
     return arg;
   } else {
-    assert.fail('invalid "' + name + '": not a string or number: ' + arg);
+    throw 'invalid "' + name + '": not a string or number: ' + arg;
   }
 }
 
@@ -104,12 +104,12 @@ function parseBool(option, optstr, arg) {
 }
 
 function parseString(option, optstr, arg) {
-  assert.string(arg, "arg");
+  // assert.string(arg, "arg");
   return arg;
 }
 
 function parseNumber(option, optstr, arg) {
-  assert.string(arg, "arg");
+  // assert.string(arg, "arg");
   var num = Number(arg);
   if (isNaN(num)) {
     throw new Error(format('arg for "%s" is not a number: "%s"', optstr, arg));
@@ -118,7 +118,7 @@ function parseNumber(option, optstr, arg) {
 }
 
 function parseInteger(option, optstr, arg) {
-  assert.string(arg, "arg");
+  // assert.string(arg, "arg");
   var num = Number(arg);
   if (!/^[0-9-]+$/.test(arg) || isNaN(num)) {
     throw new Error(
@@ -129,7 +129,7 @@ function parseInteger(option, optstr, arg) {
 }
 
 function parsePositiveInteger(option, optstr, arg) {
-  assert.string(arg, "arg");
+  // assert.string(arg, "arg");
   var num = Number(arg);
   if (!/^[0-9]+$/.test(arg) || isNaN(num) || num === 0) {
     throw new Error(
@@ -150,7 +150,7 @@ function parsePositiveInteger(option, optstr, arg) {
  *      2014-03-28
  */
 function parseDate(option, optstr, arg) {
-  assert.string(arg, "arg");
+  // assert.string(arg, "arg");
   var date;
   if (/^\d+$/.test(arg)) {
     // epoch seconds
@@ -257,9 +257,9 @@ var optionTypes = {
  *        option parsers should.
  */
 function Parser(config) {
-  assert.object(config, "config");
-  assert.arrayOfObject(config.options, "config.options");
-  assert.optionalBool(config.interspersed, "config.interspersed");
+  // assert.object(config, "config");
+  // assert.arrayOfObject(config.options, "config.options");
+  // assert.optionalBool(config.interspersed, "config.interspersed");
   var self = this;
 
   // Allow interspersed arguments (true by default).
@@ -278,36 +278,36 @@ function Parser(config) {
   for (var i = 0; i < this.options.length; i++) {
     var o = this.options[i];
     if (o.group !== undefined && o.group !== null) {
-      assert.optionalString(o.group, format("config.options.%d.group", i));
+      // assert.optionalString(o.group, format("config.options.%d.group", i));
       continue;
     }
-    assert.ok(
-      optionTypes[o.type],
-      format('invalid config.options.%d.type: "%s" in %j', i, o.type, o)
-    );
-    assert.optionalString(o.name, format("config.options.%d.name", i));
-    assert.optionalArrayOfString(o.names, format("config.options.%d.names", i));
-    assert.ok(
-      (o.name || o.names) && !(o.name && o.names),
-      format('exactly one of "name" or "names" required: %j', o)
-    );
-    assert.optionalString(o.help, format("config.options.%d.help", i));
+    // assert.ok(
+    //   optionTypes[o.type],
+    //   format('invalid config.options.%d.type: "%s" in %j', i, o.type, o)
+    // );
+    // assert.optionalString(o.name, format("config.options.%d.name", i));
+    // assert.optionalArrayOfString(o.names, format("config.options.%d.names", i));
+    // assert.ok(
+    //   (o.name || o.names) && !(o.name && o.names),
+    //   format('exactly one of "name" or "names" required: %j', o)
+    // );
+    // assert.optionalString(o.help, format("config.options.%d.help", i));
     var env = o.env || [];
     if (typeof env === "string") {
       env = [env];
     }
-    assert.optionalArrayOfString(env, format("config.options.%d.env", i));
-    assert.optionalString(
-      o.helpGroup,
-      format("config.options.%d.helpGroup", i)
-    );
-    assert.optionalBool(o.helpWrap, format("config.options.%d.helpWrap", i));
-    assert.optionalBool(o.hidden, format("config.options.%d.hidden", i));
+    // assert.optionalArrayOfString(env, format("config.options.%d.env", i));
+    // assert.optionalString(
+    //   o.helpGroup,
+    //   format("config.options.%d.helpGroup", i)
+    // );
+    // assert.optionalBool(o.helpWrap, format("config.options.%d.helpWrap", i));
+    // assert.optionalBool(o.hidden, format("config.options.%d.hidden", i));
 
     if (o.name) {
       o.names = [o.name];
     } else {
-      assert.string(o.names[0], format("config.options.%d.names is empty", i));
+      // assert.string(o.names[0], format("config.options.%d.names is empty", i));
     }
     o.key = optionKeyFromName(o.names[0]);
     o.names.forEach(function onName(n) {
@@ -365,11 +365,11 @@ Parser.prototype.parse = function parse(inputs) {
     inputs = { argv: arguments[0], slice: arguments[1] };
   }
 
-  assert.optionalObject(inputs, "inputs");
+  // assert.optionalObject(inputs, "inputs");
   if (!inputs) {
     inputs = {};
   }
-  assert.optionalArrayOfString(inputs.argv, "inputs.argv");
+  // assert.optionalArrayOfString(inputs.argv, "inputs.argv");
   //assert.optionalNumber(slice, 'slice');
   var argv = inputs.argv || process.argv;
   var slice = inputs.slice !== undefined ? inputs.slice : 2;
@@ -596,7 +596,7 @@ Parser.prototype.parse = function parse(inputs) {
  */
 Parser.prototype.help = function help(config) {
   config = config || {};
-  assert.object(config, "config");
+  // assert.object(config, "config");
 
   var indent = makeIndent(config.indent, 4, "config.indent");
   var headingIndent = makeIndent(
@@ -605,16 +605,16 @@ Parser.prototype.help = function help(config) {
     "config.headingIndent"
   );
 
-  assert.optionalString(config.nameSort, "config.nameSort");
+  // assert.optionalString(config.nameSort, "config.nameSort");
   var nameSort = config.nameSort || "length";
-  assert.ok(~["length", "none"].indexOf(nameSort), 'invalid "config.nameSort"');
-  assert.optionalNumber(config.maxCol, "config.maxCol");
-  assert.optionalNumber(config.maxHelpCol, "config.maxHelpCol");
-  assert.optionalNumber(config.minHelpCol, "config.minHelpCol");
-  assert.optionalNumber(config.helpCol, "config.helpCol");
-  assert.optionalBool(config.includeEnv, "config.includeEnv");
-  assert.optionalBool(config.includeDefault, "config.includeDefault");
-  assert.optionalBool(config.helpWrap, "config.helpWrap");
+  // assert.ok(~["length", "none"].indexOf(nameSort), 'invalid "config.nameSort"');
+  // assert.optionalNumber(config.maxCol, "config.maxCol");
+  // assert.optionalNumber(config.maxHelpCol, "config.maxHelpCol");
+  // assert.optionalNumber(config.minHelpCol, "config.minHelpCol");
+  // assert.optionalNumber(config.helpCol, "config.helpCol");
+  // assert.optionalBool(config.includeEnv, "config.includeEnv");
+  // assert.optionalBool(config.includeDefault, "config.includeDefault");
+  // assert.optionalBool(config.helpWrap, "config.helpWrap");
   var maxCol = config.maxCol || 80;
   var minHelpCol = config.minHelpCol || 20;
   var maxHelpCol = config.maxHelpCol || 40;
@@ -783,10 +783,10 @@ Parser.prototype.help = function help(config) {
  *      `complete_fruit` and `complete_veggie` in this example.
  */
 Parser.prototype.bashCompletion = function bashCompletion(args) {
-  assert.object(args, "args");
-  assert.string(args.name, "args.name");
-  assert.optionalString(args.specExtra, "args.specExtra");
-  assert.optionalArrayOfString(args.argtypes, "args.argtypes");
+  // assert.object(args, "args");
+  // assert.string(args.name, "args.name");
+  // assert.optionalString(args.specExtra, "args.specExtra");
+  // assert.optionalArrayOfString(args.argtypes, "args.argtypes");
 
   return bashCompletionFromOptions({
     name: args.name,
@@ -835,11 +835,11 @@ Parser.prototype.bashCompletion = function bashCompletion(args) {
  *      `complete_fruit` and `complete_veggie` in this example.
  */
 function bashCompletionSpecFromOptions(args) {
-  assert.object(args, "args");
-  assert.object(args.options, "args.options");
-  assert.optionalString(args.context, "args.context");
-  assert.optionalBool(args.includeHidden, "args.includeHidden");
-  assert.optionalArrayOfString(args.argtypes, "args.argtypes");
+  // assert.object(args, "args");
+  // assert.object(args.options, "args.options");
+  // assert.optionalString(args.context, "args.context");
+  // assert.optionalBool(args.includeHidden, "args.includeHidden");
+  // assert.optionalArrayOfString(args.argtypes, "args.argtypes");
 
   var context = args.context || "";
   var includeHidden =
@@ -923,11 +923,11 @@ function bashCompletionSpecFromOptions(args) {
  *      `complete_fruit` and `complete_veggie` in this example.
  */
 function bashCompletionFromOptions(args) {
-  assert.object(args, "args");
-  assert.object(args.options, "args.options");
-  assert.string(args.name, "args.name");
-  assert.optionalString(args.specExtra, "args.specExtra");
-  assert.optionalArrayOfString(args.argtypes, "args.argtypes");
+  // assert.object(args, "args");
+  // assert.object(args.options, "args.options");
+  // assert.string(args.name, "args.name");
+  // assert.optionalString(args.specExtra, "args.specExtra");
+  // assert.optionalArrayOfString(args.argtypes, "args.argtypes");
 
   // Gather template data.
   var data = {
@@ -961,9 +961,9 @@ function createParser(config) {
  *      argv, env, slice.
  */
 function parse(config_) {
-  assert.object(config_, "config");
-  assert.optionalArrayOfString(config_.argv, "config.argv");
-  assert.optionalObject(config_.env, "config.env");
+  // assert.object(config_, "config");
+  // assert.optionalArrayOfString(config_.argv, "config.argv");
+  // assert.optionalObject(config_.env, "config.env");
 
   var config = shallowCopy(config_);
   var argv = config.argv;
@@ -996,15 +996,15 @@ function parse(config_) {
  *        default is specified in the option type usage.
  */
 function addOptionType(optionType) {
-  assert.object(optionType, "optionType");
-  assert.string(optionType.name, "optionType.name");
-  assert.bool(optionType.takesArg, "optionType.takesArg");
+  // assert.object(optionType, "optionType");
+  // assert.string(optionType.name, "optionType.name");
+  // assert.bool(optionType.takesArg, "optionType.takesArg");
   if (optionType.takesArg) {
     assert.string(optionType.helpArg, "optionType.helpArg");
   }
-  assert.func(optionType.parseArg, "optionType.parseArg");
-  assert.optionalBool(optionType.array, "optionType.array");
-  assert.optionalBool(optionType.arrayFlatten, "optionType.arrayFlatten");
+  // assert.func(optionType.parseArg, "optionType.parseArg");
+  // assert.optionalBool(optionType.array, "optionType.array");
+  // assert.optionalBool(optionType.arrayFlatten, "optionType.arrayFlatten");
 
   optionTypes[optionType.name] = {
     takesArg: optionType.takesArg,
@@ -1017,7 +1017,7 @@ function addOptionType(optionType) {
 }
 
 function getOptionType(name) {
-  assert.string(name, "name");
+  // assert.string(name, "name");
   return optionTypes[name];
 }
 
@@ -1031,7 +1031,7 @@ function getOptionType(name) {
  *      '[ --file=FILE ]'
  */
 function synopsisFromOpt(o) {
-  assert.object(o, "o");
+  // assert.object(o, "o");
 
   if (Object.prototype.hasOwnProperty.call(o, "group")) {
     return null;
