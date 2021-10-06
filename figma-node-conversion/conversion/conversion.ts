@@ -20,7 +20,7 @@ import {
 } from "@design-sdk/core";
 import { utils } from "@design-sdk/core";
 import { array } from "@reflect-ui/uiutils";
-import { shouldIgnore } from "@design-sdk/key-annotations";
+import { shouldIgnore } from "@design-sdk/flags";
 
 import {
   convertTextAlignHorizontalToReflect,
