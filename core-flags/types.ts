@@ -1,4 +1,4 @@
-import { SpecialKeys } from "./keys";
+import { SpecialKeys } from "./@special/keys";
 
 export interface SpecialKeyResult {
   type?: SpecialKeyType;

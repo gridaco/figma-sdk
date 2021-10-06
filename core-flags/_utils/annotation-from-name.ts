@@ -1,4 +1,4 @@
-import { SpecialKeys, SPECIAL_KEY_PREFIX_TOKEN } from "../keys";
+import { SpecialKeys, SPECIAL_KEY_PREFIX_TOKEN } from "../@special/keys";
 import { SpecialKeyType } from "../types";
 
 export function specialKeyTypeFrom(name: string): SpecialKeyType {

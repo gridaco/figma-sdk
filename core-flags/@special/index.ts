@@ -1,5 +1,7 @@
-import { SpecialKeys, SPECIAL_KEY_PREFIX_TOKEN } from "../keys";
+import { SpecialKeys, SPECIAL_KEY_PREFIX_TOKEN } from "./keys";
 import { specialKeyAnalysis } from "../_utils/special-key-analysis";
+
+export * from "./keys";
 
 export function shouldIgnore(name: string): boolean {
   const result = specialKeyAnalysis(name);
@@ -7,4 +9,8 @@ export function shouldIgnore(name: string): boolean {
     return true;
   }
   return false;
+}
+
+export function parse() {
+  ///
 }

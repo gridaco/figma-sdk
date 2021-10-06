@@ -1,4 +1,4 @@
-import { SpecialKeys, SPECIAL_KEY_PREFIX_TOKEN } from "../keys";
+import { SpecialKeys, SPECIAL_KEY_PREFIX_TOKEN } from "../@special/keys";
 import { specialKeyTypeFrom } from "./annotation-from-name";
 
 /**
