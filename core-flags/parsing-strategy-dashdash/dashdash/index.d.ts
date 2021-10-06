@@ -63,7 +63,7 @@ export interface Results {
 }
 
 export interface Arg {
-  name: string;
+  key: string;
   value: any;
   from: string;
 }
