@@ -1,2 +1,2 @@
 export * as constraints from "./constraints";
-export * as keyAnnotations from "@design-sdk/key-annotations";
+export * as flags from "@design-sdk/flags";
