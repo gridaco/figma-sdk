@@ -6,6 +6,9 @@
         "prepack": "yarn test && yarn tsc",
         "test": "jest --config=jest.config.js"
     },
+    "dependencies": {
+        "assert-plus": "1.0.0"
+    },
     "devDependencies": {
         "@types/jest": "^27.0.2",
         "@types/node": "^16.10.3",

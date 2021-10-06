@@ -6,8 +6,8 @@
 
 var assert = require("assert-plus");
 var format = require("util").format;
-var fs = require("fs");
-var path = require("path");
+// var fs = require("fs");
+// var path = require("path");
 
 // ---- internal support stuff
 
@@ -798,10 +798,10 @@ Parser.prototype.bashCompletion = function bashCompletion(args) {
 
 // ---- Bash completion
 
-const BASH_COMPLETION_TEMPLATE_PATH = path.join(
-  __dirname,
-  "../etc/dashdash.bash_completion.in"
-);
+// const BASH_COMPLETION_TEMPLATE_PATH = path.join(
+//   __dirname,
+//   "../etc/dashdash.bash_completion.in"
+// );
 
 /**
  * Return the Bash completion "spec" (the string value for the "{{spec}}"
@@ -943,7 +943,7 @@ function bashCompletionFromOptions(args) {
   }
 
   // Render template.
-  var template = fs.readFileSync(BASH_COMPLETION_TEMPLATE_PATH, "utf8");
+  var template = null; // fs.readFileSync(BASH_COMPLETION_TEMPLATE_PATH, "utf8");
   return renderTemplate(template, data);
 }
 
@@ -1061,7 +1061,7 @@ module.exports = {
   synopsisFromOpt: synopsisFromOpt,
 
   // Bash completion-related exports
-  BASH_COMPLETION_TEMPLATE_PATH: BASH_COMPLETION_TEMPLATE_PATH,
+  // BASH_COMPLETION_TEMPLATE_PATH: BASH_COMPLETION_TEMPLATE_PATH,
   bashCompletionFromOptions: bashCompletionFromOptions,
   bashCompletionSpecFromOptions: bashCompletionSpecFromOptions,
 
