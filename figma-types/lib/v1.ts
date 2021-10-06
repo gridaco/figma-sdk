@@ -995,6 +995,9 @@ export interface PolygonNode
   readonly type: "POLYGON";
   clone(): PolygonNode;
   pointCount: number;
+
+  // OVERRIDE - for remote data
+  vectorPaths: VectorPaths;
 }
 
 export interface StarNode
@@ -1005,6 +1008,9 @@ export interface StarNode
   clone(): StarNode;
   pointCount: number;
   innerRadius: number;
+
+  // OVERRIDE - for remote data
+  vectorPaths: VectorPaths;
 }
 
 export interface VectorNode
@@ -1064,6 +1070,10 @@ export interface InstanceNode extends DefaultFrameMixin, VariantMixin {
 export interface BooleanOperationNode
   extends DefaultShapeMixin,
     ChildrenMixin,
+    // CUSTOM OVERRIDE
+    // ---- this is not from official plugin typings, but exists. ---
+    ConstraintMixin,
+    // --------------------------------------------------------------
     CornerMixin {
   readonly type: "BOOLEAN_OPERATION";
   clone(): BooleanOperationNode;

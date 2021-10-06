@@ -9,13 +9,14 @@ import {
   ReflectBaseNode,
   ReflectTextNode,
   IReflectBlendMixin,
-  IReflectCornerMixin,
+  IReflectRectangleCornerMixin,
   ReflectDefaultShapeMixin,
   IReflectGeometryMixin,
   IReflectLayoutMixin,
   ReflectConstraintMixin,
   mixed,
   makeComponentReference,
+  ReflectBooleanOperationNode,
 } from "@design-sdk/core";
 import { utils } from "@design-sdk/core";
 import { array } from "@reflect-ui/uiutils";
@@ -30,6 +31,7 @@ import {
   convertFigmaCornerRadiusToBorderRadius,
   convertLayoutGrowToReflect,
   convertTextDecorationToReflect,
+  figma_lineheight_to_reflect_ling_height,
 } from "../converters";
 import {
   figma,
@@ -103,8 +105,6 @@ export function intoReflectNodes(
               absoluteTransform: node.absoluteTransform,
               childrenCount: 0,
             });
-            convertConstraint(altNode, node);
-            convertCorner(altNode, node);
           } else if (node.type === "ELLIPSE") {
             altNode = new ReflectEllipseNode({
               id: node.id,
@@ -121,6 +121,7 @@ export function intoReflectNodes(
             altNode.parent = altParent;
           }
 
+          convertConstraint(altNode, node);
           convertDefaultShape(altNode, node);
           convertCorner(altNode, node);
 
@@ -214,30 +215,7 @@ export function intoReflectNodes(
           break;
         }
         case "STAR":
-        case "POLYGON": {
-          // TODO: export as a svg and display it directly.
-          console.log(
-            `converting vector node "${node.name}" to reflect rectangle node.`
-          );
-          const altNode = new ReflectRectangleNode({
-            id: node.id,
-            name: node.name,
-            parent: altParent,
-            originParentId: node.parent?.id,
-            origin: node.type,
-            absoluteTransform: node.absoluteTransform,
-            childrenCount: 0,
-          });
-
-          convertConstraint(altNode, node);
-          convertDefaultShape(altNode, node);
-
-          // TODO Vector support is still missing. Meanwhile, add placeholder.
-          altNode.radius = 16;
-          altNode.opacity = 0.5;
-
-          return altNode;
-        }
+        case "POLYGON":
         case "VECTOR": {
           const altNode = new ReflectVectorNode({
             id: node.id,
@@ -250,14 +228,47 @@ export function intoReflectNodes(
           });
 
           convertDefaultShape(altNode, node);
-          convertDefaultShape(altNode, node);
           convertBlend(altNode, node);
           convertConstraint(altNode, node);
 
+          // @ts-ignore
           altNode.vectorNetwork = node.vectorNetwork;
           altNode.vectorPaths = node.vectorPaths;
-          altNode.handleMirroring = node.handleMirroring as HandleMirroring;
+          // let's not assign this value until we find out what this exactly does.
+          // altNode.handleMirroring = node.handleMirroring as HandleMirroring;
 
+          return altNode;
+        }
+        case "BOOLEAN_OPERATION": {
+          const altNode = new ReflectBooleanOperationNode({
+            id: node.id,
+            name: node.name,
+            parent: altParent,
+            originParentId: node.parent?.id,
+            origin: node.type,
+            absoluteTransform: node.absoluteTransform,
+            childrenCount: node.children.length,
+          });
+
+          convertDefaultShape(altNode, node);
+          convertBlend(altNode, node);
+          convertConstraint(
+            altNode,
+            // FIXME: this is a figma plugin typings error. bool op node do have constraint property, but node defined by official plugin typings.
+            node as any
+          );
+
+          // boolean opreation properties -----
+          altNode.shapeCornerRadius = figmaToReflectProperty(node.cornerRadius);
+          altNode.cornerSmoothing = node.cornerSmoothing;
+          altNode.booleanOperation = node.booleanOperation;
+          // ----------------------------------
+
+          altNode.children = intoReflectNodes(
+            node.children,
+            // FIXME: do not use force type. - it won't impact the logic since boolean operation node is simply a group-like.
+            (altNode as any) as ReflectGroupNode
+          );
           return altNode;
         }
       }
@@ -362,7 +373,7 @@ function convertDefaultShape(
 }
 
 function convertCorner(
-  altNode: IReflectCornerMixin,
+  altNode: IReflectRectangleCornerMixin,
   node: CornerMixin | RectangleCornerMixin
 ) {
   altNode.cornerRadius = convertFigmaCornerRadiusToBorderRadius({
@@ -397,7 +408,9 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
   altNode.letterSpacing = figmaToReflectProperty(node.letterSpacing);
   altNode.textAutoResize = node.textAutoResize;
   altNode.text = node.characters;
-  altNode.lineHeight = figmaToReflectProperty(node.lineHeight);
+  altNode.lineHeight = figma_lineheight_to_reflect_ling_height(
+    figmaToReflectProperty(node.lineHeight)
+  );
 }
 
 // drops the useless figma's mixed symbol

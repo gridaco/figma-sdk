@@ -6,6 +6,7 @@ import {
   Star,
   Line,
   Ellipse,
+  BooleanGroup,
   Text,
   RegularPolygon,
   Rectangle,
@@ -26,7 +27,9 @@ export type MappableNode =
   | RegularPolygon
   | Rectangle
   | Text
+  | BooleanGroup
   | Component
+  | RegularPolygon
   | Instance;
 
 export type MappingBlendInput<T = MappingNode, S = MappableNode> = {

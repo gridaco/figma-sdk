@@ -45,13 +45,15 @@ export class ImageRepository<P extends string = string>
     }
   }
 
-  async makeTransportable(): Promise<TransportableImageRepository> {
+  async makeTransportable(config?: {
+    type: "original";
+  }): Promise<TransportableImageRepository> {
     const imageAssets: Array<ImageAsset> = [];
     const jobs: Array<Promise<Uint8Array>> = [];
     const keys = Object.keys(this.images);
     for (const key of keys) {
       const asset: TemporaryImageAsset = this.images[key];
-      const job = asset.fetchData();
+      const job = asset.fetchData(config);
       jobs.push(job);
     }
 

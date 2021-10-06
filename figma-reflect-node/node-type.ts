@@ -15,6 +15,9 @@ export enum ReflectSceneNodeType {
   rectangle = "RECTANGLE",
   line = "LINE",
   vector = "VECTOR",
+  star = "STAR",
+  poligon = "POLIGON",
+  boolean_operation = "BOOLEAN_OPERATION",
   image = "__IMAGE", // this does not exists in figma
   unknown = "UNKNOWN",
 }
@@ -44,6 +47,7 @@ export enum ReflectNodeType {
   line = "LINE",
   vector = "VECTOR",
   image = "IMAGE",
+  boolean_operation = "BOOLEAN_OPERATION",
   unknown = "UNKNOWN",
   ////////////////////////
   ////////////////////////

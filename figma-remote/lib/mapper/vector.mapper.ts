@@ -22,6 +22,11 @@ export function mapFigmaRemoteVectorToFigma(
     parent,
   });
 
+  // this is only available via plugin api
+  // learn more at https://www.figma.com/plugin-docs/api/VectorNetwork/
+  mapping.vectorNetwork = undefined;
+  mapping.handleMirroring = "NONE";
+
   return <VectorNode>{
     ...mapping,
     type: "VECTOR",

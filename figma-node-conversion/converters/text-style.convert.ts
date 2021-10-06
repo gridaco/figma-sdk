@@ -2,7 +2,7 @@ import { FontWeight, TextStyleManifest } from "@reflect-ui/core";
 import { convertFontStyleToReflect } from "./font-style.convert";
 import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
-import { convertLineHeightToReflect } from "./line-height.convert";
+import { figma_lineheight_to_reflect_ling_height } from "./line-height.convert";
 import { convertTextDecorationToReflect } from "./tetx-decoration.convert";
 import {
   TextStyle,
@@ -27,7 +27,7 @@ export function convertTextStyleToReflect(
     decorationStyle: undefined,
     decorationThickness: undefined,
     letterSpacing: convertLetterSpacingToReflect(origin.letterSpacing, node),
-    lineHeight: convertLineHeightToReflect(origin.lineHeight),
+    lineHeight: figma_lineheight_to_reflect_ling_height(origin.lineHeight),
     color: undefined, // non-figma property (figma does not contain color to text style)
   };
 }
@@ -64,7 +64,7 @@ export function extractTextStyleFromTextNode(
     letterSpacing: convertLetterSpacingToReflect(
       origin.letterSpacing as LetterSpacing
     ),
-    lineHeight: convertLineHeightToReflect(origin.lineHeight as LineHeight),
+    lineHeight: origin.lineHeight,
     color: origin.primaryColor,
   };
 }

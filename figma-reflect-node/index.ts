@@ -1,6 +1,7 @@
 export * from "./base.node";
 export * from "./mixins/children.mixin";
 export * from "./mixins/constraint.mixin";
+export * from "./boolean-operation.node";
 export * from "./ellipse.node";
 export * from "./frame.node";
 export * from "./group.node";

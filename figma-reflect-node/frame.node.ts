@@ -7,7 +7,7 @@ import {
 } from "@reflect-ui/core";
 import {
   IReflectGeometryMixin,
-  IReflectCornerMixin,
+  IReflectRectangleCornerMixin,
   IReflectBlendMixin,
   IReflectLayoutMixin,
 } from "./mixins";
@@ -52,10 +52,10 @@ export class ReflectFrameNode
   implements
     IReflectFrameMixin,
     IReflectGeometryMixin,
-    IReflectCornerMixin,
+    IReflectRectangleCornerMixin,
     IReflectBlendMixin,
     IReflectLayoutMixin {
-  type = ReflectSceneNodeType.frame;
+  type: ReflectSceneNodeType.frame = ReflectSceneNodeType.frame;
 
   absoluteTransform: Transform;
 
