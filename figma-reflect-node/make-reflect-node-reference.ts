@@ -26,6 +26,8 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
         "children" in r ? r.children.map((c) => makeReference(c)) : undefined,
       mainComponent: r.mainComponent,
       variantProperties: r.variantProperties,
+      width: r.width,
+      height: r.height,
       fills: r.fills,
     };
   }
