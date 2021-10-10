@@ -63,6 +63,8 @@ export function makeComponentReference(
       type: r.type,
       origin: r.type,
       id: r.id,
+      width: r.width,
+      height: r.height,
       parent: r.parent && {
         name: r.parent.name,
         type: r.parent.type,
