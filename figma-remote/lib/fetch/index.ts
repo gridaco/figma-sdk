@@ -4,6 +4,9 @@ import * as api from "@design-sdk/figma-remote-api";
 import * as Figma from "@design-sdk/figma-types";
 import { default_set } from "./figma-default-set";
 import { convert, nodes } from "@design-sdk/figma";
+import { NotfoundError, UnauthorizedError } from "./errors";
+
+export * from "./errors";
 
 export interface AuthenticationCredential {
   /** access token returned from OAuth authentication */
@@ -64,19 +67,31 @@ export async function fetchTarget(
     ...auth,
   });
 
-  const nodesRes = await client.fileNodes(file, {
-    ids: [node],
-    geometry: "paths",
-  });
-  const nodes = nodesRes.data.nodes;
+  try {
+    const nodesRes = await client.fileNodes(file, {
+      ids: [node],
+      geometry: "paths",
+    });
 
-  const node_doc = nodes[node];
+    const nodes = nodesRes.data.nodes;
 
-  return {
-    file: file,
-    node: node,
-    remote: node_doc.document,
-  };
+    const node_doc = nodes[node];
+
+    return {
+      file: file,
+      node: node,
+      remote: node_doc.document,
+    };
+  } catch (e) {
+    switch (e.status) {
+      case 404:
+        throw new NotfoundError(`Node ${node} not found in file ${file}`);
+      case 403:
+        throw new UnauthorizedError(e);
+      default:
+        throw e;
+    }
+  }
 }
 
 export async function fetchDemo(
