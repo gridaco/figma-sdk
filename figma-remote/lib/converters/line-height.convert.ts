@@ -1,42 +1,29 @@
 import { LineHeight } from "@design-sdk/figma-types";
-export function figmaRemoteLineHeightToFigma(params: {
-  px?: number;
-  unit: string;
-  percent?: number;
-  percentFontSize?: number;
-}): LineHeight {
-  if (params.unit == "PIXELS") {
-    return {
-      unit: "PIXELS",
-      value: params.px,
-    };
-  }
-  // Todo - conversion logic is incomplete.
-  else if (params.unit.includes("%")) {
-    if (params.unit == "FONT_SIZE_%") {
+import { TypeStyle } from "@design-sdk/figma-remote-types";
+
+export function figmaRemoteLineHeightToFigma(params: TypeStyle): LineHeight {
+  switch (params.lineHeightUnit) {
+    case "PIXELS":
+      return {
+        unit: "PIXELS",
+        value: params.lineHeightPx,
+      };
+    case "FONT_SIZE_%":
       return {
         unit: "PERCENT",
-        value: params.percent,
-        // TODO - we haven't used 'percentFontSize' - is this not required?
+        value: params.lineHeightPercent,
       };
-    } else if (params.unit == "INTRINSIC_%") {
-      return {
-        unit: "PERCENT",
-        value: params.percent,
-        // TODO - we haven't used 'percentFontSize' - is this not required?
-      };
-    } else {
-      _warnNotHandled(params);
+    case "INTRINSIC_%":
       return {
         unit: "AUTO",
       };
-    }
-  } else {
-    _warnNotHandled(params);
-    // safely return fallback
-    return {
-      unit: "AUTO",
-    };
+
+    default:
+      _warnNotHandled(params);
+      // safely return fallback
+      return {
+        unit: "AUTO",
+      };
   }
 }
 
