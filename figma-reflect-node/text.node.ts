@@ -53,7 +53,7 @@ export class ReflectTextNode
   textDecoration?: TextDecoration;
 
   // FIXME: - this conversion is not working
-  letterSpacing: LetterSpacing | undefined;
+  letterSpacing: DimensionLength;
   lineHeight: DimensionLength;
 
   get hasTextStyle(): boolean {

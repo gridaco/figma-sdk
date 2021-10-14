@@ -32,6 +32,7 @@ import {
   convertLayoutGrowToReflect,
   convertTextDecorationToReflect,
   figma_lineheight_to_reflect_ling_height,
+  convertLetterSpacingToReflect,
 } from "../converters";
 import {
   figma,
@@ -389,6 +390,7 @@ function convertCorner(
 }
 
 function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
+  console.error("node", node.letterSpacing);
   altNode.textAlign = convertTextAlignHorizontalToReflect(
     node.textAlignHorizontal
   );
@@ -405,7 +407,9 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
     figmaToReflectProperty<FigmaTextDecoration>(node.textDecoration)
   );
   altNode.textStyleId = figmaToReflectProperty(node.textStyleId);
-  altNode.letterSpacing = figmaToReflectProperty(node.letterSpacing);
+  altNode.letterSpacing = convertLetterSpacingToReflect(
+    figmaToReflectProperty(node.letterSpacing)
+  );
   altNode.textAutoResize = node.textAutoResize;
   altNode.text = node.characters;
   altNode.lineHeight = figma_lineheight_to_reflect_ling_height(
@@ -417,6 +421,8 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
 function figmaToReflectProperty<T>(
   origin: T | PluginAPI["mixed"]
 ): T | undefined {
+  console.log(origin === figma?.mixed);
+  console.log(origin as T);
   if (origin === figma?.mixed) {
     return undefined;
   }
