@@ -390,7 +390,6 @@ function convertCorner(
 }
 
 function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
-  console.error("node", node.letterSpacing);
   altNode.textAlign = convertTextAlignHorizontalToReflect(
     node.textAlignHorizontal
   );
@@ -421,8 +420,6 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
 function figmaToReflectProperty<T>(
   origin: T | PluginAPI["mixed"]
 ): T | undefined {
-  console.log(origin === figma?.mixed);
-  console.log(origin as T);
   if (origin === figma?.mixed) {
     return undefined;
   }
