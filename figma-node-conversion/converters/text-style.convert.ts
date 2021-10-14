@@ -1,4 +1,8 @@
-import { FontWeight, TextStyleManifest } from "@reflect-ui/core";
+import {
+  DimensionLetterSpacing,
+  FontWeight,
+  TextStyleManifest,
+} from "@reflect-ui/core";
 import { convertFontStyleToReflect } from "./font-style.convert";
 import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
@@ -61,9 +65,7 @@ export function extractTextStyleFromTextNode(
     decoration: origin.textDecoration,
     decorationStyle: undefined,
     decorationThickness: undefined,
-    letterSpacing: convertLetterSpacingToReflect(
-      origin.letterSpacing as LetterSpacing
-    ),
+    letterSpacing: origin.letterSpacing as DimensionLetterSpacing,
     lineHeight: origin.lineHeight,
     color: origin.primaryColor,
   };

@@ -1,5 +1,6 @@
 import {
   DimensionLength,
+  DimensionLetterSpacing,
   FontWeight,
   TextAlign,
   TextAlignVertical,
@@ -53,7 +54,7 @@ export class ReflectTextNode
   textDecoration?: TextDecoration;
 
   // FIXME: - this conversion is not working
-  letterSpacing: DimensionLength;
+  letterSpacing: DimensionLetterSpacing;
   lineHeight: DimensionLength;
 
   get hasTextStyle(): boolean {
