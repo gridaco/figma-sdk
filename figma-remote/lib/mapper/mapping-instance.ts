@@ -713,6 +713,9 @@ export class MappingInstanceNode implements Figma.InstanceNode {
   clone(): Figma.InstanceNode {
     throw new Error("Method not implemented.");
   }
+  // CUSTOM OVERRIDE --
+  mainComponentId: string;
+  // ------------------
   mainComponent: Figma.ComponentNode;
   swapComponent(componentNode: Figma.ComponentNode): void {
     throw new Error("Method not implemented.");
