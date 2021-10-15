@@ -607,6 +607,9 @@ export type ConnectorEndpoint =
 export interface BaseNodeMixin {
   readonly id: string;
   readonly parent: (BaseNode & ChildrenMixin) | null;
+  // CUSTOM OVERRIDES ------------
+  readonly parentId: string | null;
+  // ------------------------------
   name: string; // Note: setting this also sets `autoRename` to false on TextNodes
   readonly removed: boolean;
   toString(): string;

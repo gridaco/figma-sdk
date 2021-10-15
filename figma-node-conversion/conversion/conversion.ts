@@ -120,6 +120,7 @@ export function intoReflectNodes(
 
           if (altParent) {
             altNode.parent = altParent;
+            altNode.parentId = altParent.id;
           }
 
           convertConstraint(altNode, node);

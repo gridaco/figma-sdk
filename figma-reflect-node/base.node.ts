@@ -41,7 +41,8 @@ export class ReflectBaseNode
   readonly type: ReflectSceneNodeType;
   origin: ReflectSceneNodeType;
   originRaw: string;
-  originParentId: string;
+  originParentId: string | null;
+  parentId: string | null;
   hierachyIndex: number = 0;
 
   constructor(props: {
@@ -57,6 +58,7 @@ export class ReflectBaseNode
     this.originParentId = props.originParentId;
     this.name = props.name;
     this.parent = props.parent;
+    this.parentId = props.parent?.id;
     this.origin = utils.originFigmaTypeToReflectType(props.origin);
     this.originRaw = props.origin;
     this.absoluteTransform = props.absoluteTransform;

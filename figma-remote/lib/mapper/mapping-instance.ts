@@ -28,6 +28,7 @@ export class MappingRectangleNode implements Figma.RectangleNode {
     throw new Error("Method not implemented.");
   }
   id: string;
+  parentId: string;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -113,6 +114,7 @@ export class MappingEllipseNode implements Figma.EllipseNode {
   }
   arcData: Figma.ArcData;
   id: string;
+  parentId: string;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -193,6 +195,7 @@ export class MappingLineNode implements Figma.LineNode {
     throw new Error("Method not implemented.");
   }
   id: string;
+  parentId: string;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -273,6 +276,7 @@ export class MappingVectorNode implements Figma.VectorNode {
   vectorPaths: Figma.VectorPaths;
   handleMirroring: Figma.PluginAPI["mixed"] | Figma.HandleMirroring;
   id: string;
+  parentId: string;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -475,6 +479,7 @@ export class MappingTextNode implements Figma.TextNode {
     throw new Error("Method not implemented.");
   }
   id: string;
+  parentId: string;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -602,6 +607,7 @@ export class MappingFrameNode implements Figma.FrameNode {
   clipsContent: boolean;
   guides: readonly Figma.Guide[];
   id: string;
+  parentId: string | null;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -742,6 +748,7 @@ export class MappingInstanceNode implements Figma.InstanceNode {
   clipsContent: boolean;
   guides: readonly Figma.Guide[];
   id: string;
+  parentId: string | null;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -872,6 +879,7 @@ export class MappingComponentNode implements Figma.ComponentNode {
   clipsContent: boolean;
   guides: readonly Figma.Guide[];
   id: string;
+  parentId: string | null;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -993,6 +1001,7 @@ export class MappingGroupNode implements Figma.GroupNode {
   }
   id: string;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
+  parentId: string | null;
   name: string;
   removed: boolean;
   toString(): string {
@@ -1087,6 +1096,7 @@ export class MappingBooleanOperationNode implements Figma.BooleanOperationNode {
   booleanOperation: "UNION" | "INTERSECT" | "SUBTRACT" | "EXCLUDE";
   expanded: boolean;
   id: string;
+  parentId: string | null;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -1188,6 +1198,7 @@ export class MappingPolygonNode implements Figma.PolygonNode {
   }
   pointCount: number;
   id: string;
+  parentId: string | null;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;
@@ -1270,6 +1281,7 @@ export class MAppingStarNode implements Figma.StarNode {
   pointCount: number;
   innerRadius: number;
   id: string;
+  parentId: string | null;
   parent: Figma.BaseNode & Figma.ChildrenMixin;
   name: string;
   removed: boolean;

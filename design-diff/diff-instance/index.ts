@@ -1,6 +1,10 @@
 import { mapGrandchildren } from "@design-sdk/core/utils";
 import { Figma } from "@design-sdk/figma-types";
 import { text } from "..";
+import {
+  findWithRelativeIndexPath,
+  getRelativeIndexPath,
+} from "@design-sdk/figma-xpath";
 
 export function compare_instance_with_master({
   instance,
@@ -9,22 +13,22 @@ export function compare_instance_with_master({
   instance: Figma.InstanceNode;
   master: Figma.ComponentNode;
 }) {
-  if (instance.mainComponent.id !== master.id) {
+  if (instance.mainComponentId !== master.id) {
     throw new Error(
       `Instance id ${instance.mainComponent.id} does not match master id ${master.id}`
     );
   }
 
-  const masterGrandchildren = mapGrandchildren<
-    Figma.SceneNode,
-    Figma.SceneNode
-  >(master);
   const grandchildren = mapGrandchildren<Figma.SceneNode, Figma.SceneNode>(
     instance
   );
 
   grandchildren.forEach((ic) => {
-    const eq = masterGrandchildren.find((mc) => mc.id === ic.id);
+    const relpath = getRelativeIndexPath(instance, ic);
+    const eq = findWithRelativeIndexPath<Figma.SceneNode>(
+      { ...master, origin: master.type as any } as any,
+      relpath
+    );
     switch (eq.type) {
       case "BOOLEAN_OPERATION":
       case "ELLIPSE":

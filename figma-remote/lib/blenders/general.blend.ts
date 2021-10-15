@@ -7,6 +7,7 @@ import { Transform } from "@design-sdk/figma-remote-types";
 export function blendBaseNode(p: MappingBlendInput) {
   const { target, source } = p;
   target.id = source.id;
+  target.parentId = p.parent?.id ?? null;
   target.name = source.name;
   target.visible = source.visible ?? true;
   target.opacity = source.opacity ?? 1;
