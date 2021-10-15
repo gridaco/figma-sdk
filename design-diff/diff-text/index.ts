@@ -3,11 +3,15 @@
 ///
 
 import { Figma } from "@design-sdk/figma-types";
+import { fills } from "../diff-fills";
 import { text_data } from "../diff-text-data";
 
 export interface TextDiff {
-  fills: Figma.TextNode["fills"];
+  type: "text-node";
+  ids: string[];
+  fills: Diff<Figma.TextNode["fills"]>;
   characters: Diff<Figma.TextNode["characters"]>;
+  diff: boolean;
 }
 
 interface Diff<O> {
@@ -16,9 +20,11 @@ interface Diff<O> {
 }
 
 export function text(a: Figma.TextNode, b: Figma.TextNode): TextDiff {
+  let _fills;
   if (Array.isArray(a.fills) && Array.isArray(b.fills)) {
-    equals(a.fills, b.fills);
+    _fills = fills(a.fills, b.fills);
   }
+
   a.fontName === b.fontName;
   a.fontSize === b.fontSize;
   a.letterSpacing === b.letterSpacing;
@@ -27,37 +33,15 @@ export function text(a: Figma.TextNode, b: Figma.TextNode): TextDiff {
   a.textDecoration === b.textDecoration;
   a.textStyleId === b.textStyleId;
 
+  const _caracters = text_data(a.characters, b.characters);
   return {
-    fills: a.fills !== b.fills && b.fills,
+    type: "text-node",
+    ids: [a.id, b.id],
+    fills: _fills,
     characters: {
       values: [a.characters, b.characters],
-      diff: text_data(a.characters, b.characters),
+      diff: _caracters,
     },
+    diff: _fills.diff || _caracters,
   };
-}
-
-/**
- * if nested or non neseted array is equal.
- * @param a
- * @param b
- * @returns
- */
-function equals(a: readonly any[], b: readonly any[]) {
-  // if the other array is a falsy value, return
-  if (!b) return false;
-
-  // compare lengths - can save a lot of time
-  if (a.length != b.length) return false;
-
-  for (var i = 0, l = a.length; i < l; i++) {
-    // Check if we have nested arrays
-    if (a[i] instanceof Array && b[i] instanceof Array) {
-      // recurse into the nested arrays
-      if (!equals(a[i], b[i])) return false;
-    } else if (a[i] != b[i]) {
-      // Warning - two different object instances will never be equal: {x:20} != {x:20}
-      return false;
-    }
-  }
-  return true;
 }

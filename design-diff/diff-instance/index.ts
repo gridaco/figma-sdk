@@ -1,10 +1,17 @@
 import { Figma } from "@design-sdk/figma-types";
-import { text } from "..";
+import { text, TextDiff } from "..";
 import {
   findWithRelativeIndexPath,
   getRelativeIndexPath,
 } from "@design-sdk/figma-xpath";
 import assert from "assert";
+
+export interface InstanceDiff {
+  type: "instance-to-master";
+  diff: boolean;
+  ids: string[];
+  values: (TextDiff | InstanceDiff)[];
+}
 
 export function compare_instance_with_master({
   instance,
@@ -14,7 +21,7 @@ export function compare_instance_with_master({
   instance: Figma.InstanceNode;
   master: Figma.ComponentNode;
   components: Figma.ComponentNode[];
-}) {
+}): InstanceDiff {
   assert(instance);
   assert(master);
   if (instance.mainComponentId !== master.id) {
@@ -23,7 +30,7 @@ export function compare_instance_with_master({
     );
   }
 
-  return instance.children.map((ic) => {
+  const diffs = instance.children.map((ic) => {
     const relpath = getRelativeIndexPath(instance, ic);
     const eq = findWithRelativeIndexPath<Figma.SceneNode>(
       { ...master, origin: master?.type as any } as any,
@@ -31,10 +38,6 @@ export function compare_instance_with_master({
     );
     // console.log("relpathed", relpath, eq);
     switch (eq.type) {
-      case "BOOLEAN_OPERATION":
-      case "ELLIPSE":
-      case "FRAME":
-      case "GROUP":
       case "INSTANCE":
         return compare_instance_with_master({
           instance: ic as Figma.InstanceNode,
@@ -44,9 +47,15 @@ export function compare_instance_with_master({
           components: components,
         });
         break;
+      case "BOOLEAN_OPERATION":
+      case "ELLIPSE":
+      case "FRAME":
+      case "GROUP":
+        break;
       case "LINE":
       case "POLYGON":
       case "RECTANGLE":
+        break;
       case "TEXT":
         return text(eq as Figma.TextNode, ic as Figma.TextNode);
       case "SLICE":
@@ -65,4 +74,10 @@ export function compare_instance_with_master({
         );
     }
   });
+  return {
+    ids: [master.id, instance.id],
+    type: "instance-to-master",
+    values: diffs,
+    diff: diffs.some((_) => _.diff),
+  };
 }
