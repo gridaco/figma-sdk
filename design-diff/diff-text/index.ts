@@ -5,19 +5,18 @@
 import { Figma } from "@design-sdk/figma-types";
 import { text_data } from "../diff-text-data";
 
-interface TextDiff {
+export interface TextDiff {
   fills: Figma.TextNode["fills"];
   characters: Diff<Figma.TextNode["characters"]>;
 }
 
 interface Diff<O> {
-  a: O;
-  b: O;
   diff: boolean;
+  values: O[];
 }
 
 export function text(a: Figma.TextNode, b: Figma.TextNode): TextDiff {
-  if (a.fills !== Figma.figma.mixed && b.fills !== Figma.figma.mixed) {
+  if (Array.isArray(a.fills) && Array.isArray(b.fills)) {
     equals(a.fills, b.fills);
   }
   a.fontName === b.fontName;
@@ -31,8 +30,7 @@ export function text(a: Figma.TextNode, b: Figma.TextNode): TextDiff {
   return {
     fills: a.fills !== b.fills && b.fills,
     characters: {
-      a: a.characters,
-      b: b.characters,
+      values: [a.characters, b.characters],
       diff: text_data(a.characters, b.characters),
     },
   };

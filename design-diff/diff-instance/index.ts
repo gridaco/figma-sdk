@@ -1,34 +1,35 @@
-import { mapGrandchildren } from "@design-sdk/core/utils";
 import { Figma } from "@design-sdk/figma-types";
 import { text } from "..";
 import {
   findWithRelativeIndexPath,
   getRelativeIndexPath,
 } from "@design-sdk/figma-xpath";
+import assert from "assert";
 
 export function compare_instance_with_master({
   instance,
   master,
+  components,
 }: {
   instance: Figma.InstanceNode;
   master: Figma.ComponentNode;
+  components: Figma.ComponentNode[];
 }) {
+  assert(instance);
+  assert(master);
   if (instance.mainComponentId !== master.id) {
     throw new Error(
       `Instance id ${instance.mainComponent.id} does not match master id ${master.id}`
     );
   }
 
-  const grandchildren = mapGrandchildren<Figma.SceneNode, Figma.SceneNode>(
-    instance
-  );
-
-  grandchildren.forEach((ic) => {
+  return instance.children.map((ic) => {
     const relpath = getRelativeIndexPath(instance, ic);
     const eq = findWithRelativeIndexPath<Figma.SceneNode>(
-      { ...master, origin: master.type as any } as any,
+      { ...master, origin: master?.type as any } as any,
       relpath
     );
+    // console.log("relpathed", relpath, eq);
     switch (eq.type) {
       case "BOOLEAN_OPERATION":
       case "ELLIPSE":
@@ -37,8 +38,12 @@ export function compare_instance_with_master({
       case "INSTANCE":
         return compare_instance_with_master({
           instance: ic as Figma.InstanceNode,
-          master: (ic as Figma.InstanceNode).mainComponent,
+          master: components.find(
+            (_) => _.id === (ic as Figma.InstanceNode).mainComponentId
+          ),
+          components: components,
         });
+        break;
       case "LINE":
       case "POLYGON":
       case "RECTANGLE":
