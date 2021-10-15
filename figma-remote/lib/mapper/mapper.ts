@@ -2,6 +2,8 @@ import { SceneNode } from "@design-sdk/figma-types";
 import { Node } from "@design-sdk/figma-remote-types";
 import { mapFigmaRemoteEllipseToFigma } from "./ellipse.mapper";
 import { mapFigmaRemoteFrameToFigma } from "./frame.mapper";
+import { mapFigmaRemoteInstanceToFigma } from "./instance.mapper";
+import { mapFigmaRemoteComponentToFigma } from "./component.mapper";
 import { mapFigmaRemoteGroupToFigma } from "./group.mapper";
 import { mapFigmaRemoteBooleanOperationToFigma } from "./boolean-operation.mapper";
 import { mapFigmaRemoteRectangleToFigma } from "./rectangle.mapper";
@@ -37,7 +39,15 @@ export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
       break;
 
     case "INSTANCE":
+      //@ts-ignore
+      nonchildreninstance = mapFigmaRemoteInstanceToFigma(remNode, parent);
+      break;
+
     case "COMPONENT":
+      //@ts-ignore
+      nonchildreninstance = mapFigmaRemoteComponentToFigma(remNode, parent);
+      break;
+
     case "FRAME":
       //@ts-ignore
       nonchildreninstance = mapFigmaRemoteFrameToFigma(remNode, parent);
