@@ -94,6 +94,7 @@ export class ReflectBaseNode
   readonly absoluteTransform: Transform;
   parent: ReflectSceneNode | null;
   mainComponent?: IReflectNodeBasicReference | null;
+  mainComponentId?: string;
   variantProperties?: { [property: string]: string } | null;
 
   // region children related

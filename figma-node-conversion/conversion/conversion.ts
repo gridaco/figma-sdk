@@ -282,6 +282,7 @@ export function intoReflectNodes(
 
 function blendMainComponent(altNode: ReflectBaseNode, node: InstanceNode) {
   altNode.mainComponent = makeComponentReference(node.mainComponent);
+  altNode.mainComponentId = node.mainComponent.id;
 }
 
 function convertLayout(altNode: IReflectLayoutMixin, node: LayoutMixin) {
