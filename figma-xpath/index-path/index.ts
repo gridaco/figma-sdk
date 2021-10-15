@@ -9,6 +9,7 @@ import type { IReflectNodeReference } from "@design-sdk/figma-node";
 interface PathNode {
   readonly id: string;
   readonly name: string;
+  readonly parentId?: string | null;
   readonly parent?: PathNode;
   readonly children?: ReadonlyArray<PathNode>;
 }
@@ -24,17 +25,35 @@ interface PathNode {
  *   - layer
  * ```
  */
-export function getRelativeIndexPath<
-  T extends PathNode = IReflectNodeReference
->(root: PathNode, target: PathNode): string {
+export function getRelativeIndexPath(
+  entryRoot: PathNode,
+  target: PathNode
+): string {
   const paths = [];
+
+  const _childrens = childrens(entryRoot);
+  const _parents = parents(entryRoot, 1);
+
+  if (target.id === entryRoot.id) {
+    return "";
+  }
   while (target) {
-    if (target.id === root.id) {
+    const children_in_same_depth = _childrens.filter(
+      (c) => c.parentId === target.parentId
+    );
+
+    const index = children_in_same_depth.findIndex((_) => _.id === target.id);
+    if (index !== -1) {
+      paths.push(index);
+    } else {
       break;
     }
-    console.log("target", target);
-    paths.push(target.parent.children.findIndex((c) => c.id === target.id));
-    target = target.parent;
+
+    const parent_of_target = _parents.find((_) => _.id === target.parentId);
+    if (!parent_of_target) {
+      break;
+    }
+    target = parent_of_target;
   }
 
   return paths.reverse().join("/");
@@ -62,5 +81,24 @@ export function findWithRelativeIndexPath<
       }" with givven path ${indexPath.join("/")}`;
     }
     i++;
+  }
+}
+
+/**
+ * extract only container node from node tree.
+ */
+function parents(node: PathNode, minlength = 0): PathNode[] {
+  if (node.children && node.children.length >= minlength) {
+    return [node, ...node.children.flatMap(parents)];
+  } else {
+    return [];
+  }
+}
+
+function childrens(node: PathNode): PathNode[] {
+  if (node.children) {
+    return [...node.children, ...node.children.flatMap(childrens)];
+  } else {
+    return [];
   }
 }
