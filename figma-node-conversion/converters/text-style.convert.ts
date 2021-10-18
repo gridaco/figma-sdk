@@ -1,8 +1,4 @@
-import {
-  DimensionLetterSpacing,
-  FontWeight,
-  TextStyleManifest,
-} from "@reflect-ui/core";
+import { FontWeight, TextStyleManifest } from "@reflect-ui/core";
 import { convertFontStyleToReflect } from "./font-style.convert";
 import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
@@ -30,7 +26,9 @@ export function convertTextStyleToReflect(
     decoration: convertTextDecorationToReflect(origin.textDecoration),
     decorationStyle: undefined,
     decorationThickness: undefined,
-    letterSpacing: convertLetterSpacingToReflect(origin.letterSpacing, node),
+    letterSpacing: convertLetterSpacingToReflect(
+      origin.letterSpacing as LetterSpacing
+    ),
     lineHeight: figma_lineheight_to_reflect_ling_height(origin.lineHeight),
     color: undefined, // non-figma property (figma does not contain color to text style)
   };
@@ -65,7 +63,9 @@ export function extractTextStyleFromTextNode(
     decoration: origin.textDecoration,
     decorationStyle: undefined,
     decorationThickness: undefined,
-    letterSpacing: origin.letterSpacing as DimensionLetterSpacing,
+    letterSpacing: convertLetterSpacingToReflect(
+      origin.letterSpacing as LetterSpacing
+    ),
     lineHeight: origin.lineHeight,
     color: origin.primaryColor,
   };
