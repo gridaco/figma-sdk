@@ -416,7 +416,7 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
     figmaToReflectProperty(node.letterSpacing)
   );
   altNode.textAutoResize = node.textAutoResize;
-  altNode.text = node.characters;
+  altNode.data = node.characters;
   altNode.lineHeight = figma_lineheight_to_reflect_ling_height(
     figmaToReflectProperty(node.lineHeight)
   );

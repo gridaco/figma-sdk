@@ -32,7 +32,7 @@ export class ReflectTextNode
   /**
    * text content; text characters
    */
-  text: string;
+  data: string;
 
   // omitted - style: TextStyleManifest; (FIXME: make text style as unified property)
   overflow: TextOverflow;
