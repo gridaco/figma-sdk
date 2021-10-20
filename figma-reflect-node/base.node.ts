@@ -263,7 +263,7 @@ export class ReflectBaseNode
 
   get isVariant(): boolean {
     return (
-      this.parent.type == ReflectSceneNodeType.variant_set &&
+      this.parent.origin == ReflectSceneNodeType.variant_set &&
       this.isMasterComponent
     );
   }
