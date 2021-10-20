@@ -29,6 +29,7 @@ import {
 import { types } from "@reflect-ui/uiutils";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
 import { FigmaLayoutGrow, FimgaLayoutAlign } from "@design-sdk/figma-types";
+import { TextShadowManifest } from "@reflect-ui/core/lib/text-shadow";
 type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 
@@ -209,12 +210,14 @@ export class ReflectBaseNode
   radius: number;
   //
 
-  get shadows(): ReadonlyArray<BoxShadowManifest> {
+  get shadows():
+    | ReadonlyArray<BoxShadowManifest>
+    | ReadonlyArray<TextShadowManifest> {
     return this.effects
       .map((s) => {
         if (!s.visible) return;
         if (s.type === "DROP_SHADOW" || s.type === "INNER_SHADOW") {
-          return <BoxShadowManifest>{
+          return {
             spreadRadius: s.spread,
             blurRadius: s.radius,
             color: s.color,
