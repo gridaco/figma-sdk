@@ -1,3 +1,4 @@
+import { TextShadowManifest } from "./../../reflect-core/packages/reflect-core/lib/text-shadow/text-shadow.manifest";
 import {
   DimensionLength,
   FontWeight,
@@ -54,6 +55,8 @@ export class ReflectTextNode
 
   letterSpacing: LetterSpacing;
   lineHeight: DimensionLength;
+
+  textShadow: TextShadowManifest[];
 
   get hasTextStyle(): boolean {
     if (this.textStyleId !== "") {
