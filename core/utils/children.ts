@@ -24,6 +24,7 @@ export function mapGrandchildren<
   options?: {
     includeThis?: boolean;
     depthLimit?: number;
+    ignoreGroup?: boolean;
   },
   /**
    * filter won't be applied to root. rather `includeThis` is set to true or not.
@@ -61,15 +62,21 @@ export function mapGrandchildren<
             child as IReflectChildrenMixin,
             _current_depth + 1,
             {
-              depthLimit: options?.depthLimit,
+              ...options,
+              includeThis: false,
             }
           );
           add(...(grandchildren as any));
         }
 
-        // frame can be also a child, but not group. group only holds children, so we do not push group nodes
-        if (!((child as any).type == ReflectSceneNodeType.group)) {
+        // handle with `options.ignoreGroup`
+        if (options?.ignoreGroup === false) {
           add(child as any);
+        } else {
+          // frame can be also a child, but not group. group only holds children, so we do not push group nodes
+          if (!((child as any).type == ReflectSceneNodeType.group)) {
+            add(child as any);
+          }
         }
       }
     }
