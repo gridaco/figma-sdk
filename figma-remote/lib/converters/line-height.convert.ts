@@ -11,7 +11,7 @@ export function figmaRemoteLineHeightToFigma(params: TypeStyle): LineHeight {
     case "FONT_SIZE_%":
       return {
         unit: "PERCENT",
-        value: params.lineHeightPercent,
+        value: params.lineHeightPercentFontSize,
       };
     case "INTRINSIC_%":
       return {
