@@ -1,4 +1,5 @@
 import { Client } from "@design-sdk/figma-remote-api";
+import { SIGNATURE_STORE_KEY, GLOBAL_NAMESPACE_KEY } from "../k";
 
 async function withRootPluginData({
   accessToken,
@@ -19,9 +20,12 @@ async function withRootPluginData({
     plugin_data: pluginId ? [pluginId] : "shared", // automatic fallback to "shared", namespace defaults to "global"
   });
 
-  const signature = pluginId
-    ? res.data.document.pluginData[pluginId]["signature"]
-    : res.data.document.sharedPluginData["global"]["signature"];
+  const signature =
+    res.data.document.pluginData?.[pluginId]?.[SIGNATURE_STORE_KEY] ??
+    // fallback
+    res.data.document.sharedPluginData?.[GLOBAL_NAMESPACE_KEY]?.[
+      SIGNATURE_STORE_KEY
+    ];
 
   return signature;
 }

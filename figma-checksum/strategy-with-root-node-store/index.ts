@@ -1,12 +1,47 @@
+import { SIGNATURE_STORE_KEY } from "../k";
+import { nanoid } from "nanoid/non-secure";
+import { FigmaChecksumBase } from "../base";
+import { checkSignature } from "../service";
+import { getAccessToken } from "@design-sdk/figma-auth-store";
+
+export class FigmaRootNodeStoreVerification extends FigmaChecksumBase {
+  get remoteMethod() {
+    return async () => {
+      return await checkSignature.withRootPluginData({
+        accessToken: getAccessToken(),
+        filekey: this.fileKeyUserProvided,
+      });
+    };
+  }
+
+  async prewarm() {
+    await Promise.resolve();
+
+    if (!exists()) {
+      set();
+    }
+  }
+
+  clear() {
+    update(""); // `""` is `null` equivalent on figma pluginData
+  }
+}
+
 function get(): string {
-  return figma.root.getPluginData("filekey");
+  return figma.root.getPluginData(SIGNATURE_STORE_KEY);
 }
 
-function set(filekey: string) {
-  figma.root.setPluginData("filekey", filekey);
+function exists(): boolean {
+  // will return false when get() is `""`
+  return Boolean(get());
 }
 
-export const filekeyOnRoot = {
-  get,
-  set,
-};
+function update(signature: string) {
+  figma.root.setPluginData(SIGNATURE_STORE_KEY, signature);
+}
+
+function set(): string {
+  const _ = nanoid();
+  update(_);
+  return _;
+}

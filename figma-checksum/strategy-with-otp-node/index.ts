@@ -2,10 +2,15 @@
 /// A light-weight physical-visual-design-store with temporal node creation & deletion after verification.
 ///
 
-import { nanoid } from "nanoid/non-secure"; /* we don't need secure id since it will only generate a otp-like hash per user-session */
+import { FigmaChecksumBase } from "../base";
 
-export class FigmaOTPNodeVerification {
-  readonly signature: string;
+export class FigmaOTPNodeVerification extends FigmaChecksumBase {
+  get remoteMethod() {
+    return () => {
+      throw new Error("Method not implemented.");
+    };
+  }
+
   private _page: string;
   public get page() {
     return this._page;
@@ -16,11 +21,11 @@ export class FigmaOTPNodeVerification {
     return this._node;
   }
 
-  constructor() {
-    this.signature = nanoid();
+  async prewarm(): Promise<void> {
+    return await this.createVerificationNode();
   }
 
-  async createVerificationNode() {
+  private async createVerificationNode() {
     if (this._page && this._node) {
       throw new Error("Node already exists");
     }
