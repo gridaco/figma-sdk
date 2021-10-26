@@ -6,6 +6,11 @@ import axios, { AxiosInstance, AxiosPromise } from "axios";
 
 export interface FileParams {
   /**
+   * A specific version ID to get. Omitting this will get the current version of the file
+   */
+  readonly version?: string;
+
+  /**
    * A list of nodes that you care about in the document.
    * If specified, only a subset of the document will be returned corresponding to the nodes listed, their children, and everything between the root node and the listed nodes
    */
@@ -15,18 +20,31 @@ export interface FileParams {
    * Positive integer representing how deep into the document tree to traverse.
    * For example, setting this to 1 returns only Pages, setting it to 2 returns Pages and all top level objects on each page.
    * Not setting this parameter returns all nodes
+   *
+   * if using typescript, for number bigger than typed number, use `n as any` - e.g. `100 as any`
+   *
+   * @allowed `>= 1` (`0` will throw an error)
    */
-  readonly depth?: number;
-
-  /**
-   * A specific version ID to get. Omitting this will get the current version of the file
-   */
-  readonly version?: string;
+  readonly depth?: 1 | 2 | 3 | 4 | 5 | 6 | 8 | 9 | 10; // any number greater than 0 is acceptable
 
   /**
    * Set to "paths" to export vector data
    */
   readonly geometry?: "paths";
+
+  /**
+   * A comma separated list of plugin IDs and/or the string "shared".
+   * Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties.
+   */
+  readonly plugin_data?: ReadonlyArray<string> | "shared";
+
+  /**
+   * Returns branch metadata for the requested file.
+   * If the file is a branch, the main file's key will be included in the returned response.
+   * If the file has branches, their metadata will be included in the returned response.
+   * @default false
+   */
+  readonly branch_data?: boolean;
 }
 
 export interface FileNodesParams {
@@ -47,6 +65,12 @@ export interface FileNodesParams {
    * Set to "paths" to export vector data
    */
   readonly geometry?: string;
+
+  /**
+   * A comma separated list of plugin IDs and/or the string "shared".
+   * Any data present in the document written by those plugins will be included in the result in the `pluginData` and `sharedPluginData` properties.
+   */
+  readonly plugin_data?: ReadonlyArray<string> | "shared";
 }
 
 export type exportFormatOptions = "jpg" | "png" | "svg" | "pdf";
