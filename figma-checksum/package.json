@@ -1,0 +1,8 @@
+{
+    "name": "@design-sdk/figma-checksum",
+    "version": "0.0.0",
+    "dependencies": {},
+    "devDependencies": {
+        "@figma/plugin-typings": "1.37.0"
+    }
+}
