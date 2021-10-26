@@ -1,0 +1,7 @@
+{
+    "name": "@design-services/figma-file-checksum",
+    "description": "figma file key validator",
+    "version": "0.0.0",
+    "private": "false",
+    "scripts": {}
+}
