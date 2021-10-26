@@ -1,5 +1,0 @@
-interface VerificationPayload {}
-
-function verify() {
-  //
-}
