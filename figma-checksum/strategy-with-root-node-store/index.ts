@@ -2,13 +2,12 @@ import { SIGNATURE_STORE_KEY } from "../k";
 import { nanoid } from "nanoid/non-secure";
 import { FigmaChecksumBase } from "../base";
 import { checkSignature } from "../service";
-import { getAccessToken } from "@design-sdk/figma-auth-store";
 
 export class FigmaRootNodeStoreVerification extends FigmaChecksumBase {
   get remoteMethod() {
     return async () => {
       return await checkSignature.withRootPluginData({
-        accessToken: getAccessToken(),
+        accessToken: this.accessToken,
         filekey: this.fileKeyUserProvided,
       });
     };
