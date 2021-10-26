@@ -4,5 +4,18 @@
     "authors": "Grida.co",
     "version": "0.0.0",
     "main": "dist/index.js",
-    "dependencies": {}
+    "scripts": {
+        "prepack": "tsc"
+    },
+    "dependencies": {
+        "@design-sdk/figma-auth-store": "^0.0.2",
+        "@design-sdk/figma-oauth": "0.0.3"
+    },
+    "peerDependencies": {
+        "react": "^17.0.2"
+    },
+    "devDependencies": {
+        "react": "^17.0.2",
+        "typescript": "^4.3.5"
+    }
 }
