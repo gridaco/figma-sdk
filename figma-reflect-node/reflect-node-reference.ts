@@ -25,6 +25,8 @@ export interface IReflectNodeBasicReference {
   origin: ReflectSceneNodeType;
   name: string;
   id: string;
+  width: number;
+  height: number;
   parent?: IReflectParentNodeReference;
   children?: Array<IReflectNodeChildrenReference>;
   mainComponent?: IReflectNodeReference;

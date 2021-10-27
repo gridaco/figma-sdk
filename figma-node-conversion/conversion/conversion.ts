@@ -32,6 +32,7 @@ import {
   convertLayoutGrowToReflect,
   convertTextDecorationToReflect,
   figma_lineheight_to_reflect_ling_height,
+  convertLetterSpacingToReflect,
 } from "../converters";
 import {
   figma,
@@ -119,6 +120,7 @@ export function intoReflectNodes(
 
           if (altParent) {
             altNode.parent = altParent;
+            altNode.parentId = altParent.id;
           }
 
           convertConstraint(altNode, node);
@@ -281,6 +283,11 @@ export function intoReflectNodes(
 
 function blendMainComponent(altNode: ReflectBaseNode, node: InstanceNode) {
   altNode.mainComponent = makeComponentReference(node.mainComponent);
+  altNode.mainComponentId =
+    // for plugin version
+    node.mainComponent?.id ??
+    // for remote api version
+    node.mainComponentId;
 }
 
 function convertLayout(altNode: IReflectLayoutMixin, node: LayoutMixin) {
@@ -405,9 +412,11 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
     figmaToReflectProperty<FigmaTextDecoration>(node.textDecoration)
   );
   altNode.textStyleId = figmaToReflectProperty(node.textStyleId);
-  altNode.letterSpacing = figmaToReflectProperty(node.letterSpacing);
+  altNode.letterSpacing = convertLetterSpacingToReflect(
+    figmaToReflectProperty(node.letterSpacing)
+  );
   altNode.textAutoResize = node.textAutoResize;
-  altNode.text = node.characters;
+  altNode.data = node.characters;
   altNode.lineHeight = figma_lineheight_to_reflect_ling_height(
     figmaToReflectProperty(node.lineHeight)
   );

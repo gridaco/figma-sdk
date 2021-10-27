@@ -607,6 +607,9 @@ export type ConnectorEndpoint =
 export interface BaseNodeMixin {
   readonly id: string;
   readonly parent: (BaseNode & ChildrenMixin) | null;
+  // CUSTOM OVERRIDES ------------
+  readonly parentId: string | null;
+  // ------------------------------
   name: string; // Note: setting this also sets `autoRename` to false on TextNodes
   readonly removed: boolean;
   toString(): string;
@@ -1065,6 +1068,12 @@ export interface InstanceNode extends DefaultFrameMixin, VariantMixin {
   setProperties(properties: { [property: string]: string }): void;
   detachInstance(): FrameNode;
   scaleFactor: number;
+
+  // CUSTOM OVERRIDE
+  // ---- this is not from official plugin typings, but exists. ---
+  // this is for to match the remote api's interface.
+  mainComponentId: string;
+  // --------------------------------------------------------------
 }
 
 export interface BooleanOperationNode

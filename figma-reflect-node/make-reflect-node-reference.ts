@@ -26,6 +26,8 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
         "children" in r ? r.children.map((c) => makeReference(c)) : undefined,
       mainComponent: r.mainComponent,
       variantProperties: r.variantProperties,
+      width: r.width,
+      height: r.height,
       fills: r.fills,
     };
   }
@@ -61,6 +63,8 @@ export function makeComponentReference(
       type: r.type,
       origin: r.type,
       id: r.id,
+      width: r.width,
+      height: r.height,
       parent: r.parent && {
         name: r.parent.name,
         type: r.parent.type,

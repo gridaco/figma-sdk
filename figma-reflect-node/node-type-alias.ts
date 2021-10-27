@@ -1,5 +1,3 @@
-import type { ReflectChildrenMixin } from "./mixins/children.mixin";
-import type { ReflectConstraintMixin } from "./mixins/constraint.mixin";
 import type { ReflectEllipseNode } from "./ellipse.node";
 import type { ReflectFrameNode } from "./frame.node";
 import type { ReflectGroupNode } from "./group.node";
@@ -17,12 +15,9 @@ type ReflectSceneNode =
   | ReflectVectorNode
   | ReflectTextNode
   | ReflectLineNode
-  | ReflectConstraintMixin
-  | ReflectBooleanOperationNode
-  | ReflectChildrenMixin;
+  | ReflectBooleanOperationNode;
 // TODO
 // | StarNode
-// | LineNode
 // | PolygonNode;
 
 export type { ReflectSceneNode };

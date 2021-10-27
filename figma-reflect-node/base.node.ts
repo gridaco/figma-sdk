@@ -29,6 +29,7 @@ import {
 import { types } from "@reflect-ui/uiutils";
 import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
 import { FigmaLayoutGrow, FimgaLayoutAlign } from "@design-sdk/figma-types";
+import { TextShadowManifest } from "@reflect-ui/core/lib/text-shadow";
 type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 
@@ -41,7 +42,8 @@ export class ReflectBaseNode
   readonly type: ReflectSceneNodeType;
   origin: ReflectSceneNodeType;
   originRaw: string;
-  originParentId: string;
+  originParentId: string | null;
+  parentId: string | null;
   hierachyIndex: number = 0;
 
   constructor(props: {
@@ -57,6 +59,7 @@ export class ReflectBaseNode
     this.originParentId = props.originParentId;
     this.name = props.name;
     this.parent = props.parent;
+    this.parentId = props.parent?.id;
     this.origin = utils.originFigmaTypeToReflectType(props.origin);
     this.originRaw = props.origin;
     this.absoluteTransform = props.absoluteTransform;
@@ -94,6 +97,7 @@ export class ReflectBaseNode
   readonly absoluteTransform: Transform;
   parent: ReflectSceneNode | null;
   mainComponent?: IReflectNodeBasicReference | null;
+  mainComponentId?: string;
   variantProperties?: { [property: string]: string } | null;
 
   // region children related
@@ -206,12 +210,14 @@ export class ReflectBaseNode
   radius: number;
   //
 
-  get shadows(): ReadonlyArray<BoxShadowManifest> {
+  get shadows():
+    | ReadonlyArray<BoxShadowManifest>
+    | ReadonlyArray<TextShadowManifest> {
     return this.effects
       .map((s) => {
         if (!s.visible) return;
         if (s.type === "DROP_SHADOW" || s.type === "INNER_SHADOW") {
-          return <BoxShadowManifest>{
+          return {
             spreadRadius: s.spread,
             blurRadius: s.radius,
             color: s.color,
@@ -257,7 +263,7 @@ export class ReflectBaseNode
 
   get isVariant(): boolean {
     return (
-      this.parent.type == ReflectSceneNodeType.variant_set &&
+      this.parent.origin == ReflectSceneNodeType.variant_set &&
       this.isMasterComponent
     );
   }

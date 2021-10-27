@@ -26,7 +26,9 @@ export function convertTextStyleToReflect(
     decoration: convertTextDecorationToReflect(origin.textDecoration),
     decorationStyle: undefined,
     decorationThickness: undefined,
-    letterSpacing: convertLetterSpacingToReflect(origin.letterSpacing, node),
+    letterSpacing: convertLetterSpacingToReflect(
+      origin.letterSpacing as LetterSpacing
+    ),
     lineHeight: figma_lineheight_to_reflect_ling_height(origin.lineHeight),
     color: undefined, // non-figma property (figma does not contain color to text style)
   };
@@ -66,5 +68,6 @@ export function extractTextStyleFromTextNode(
     ),
     lineHeight: origin.lineHeight,
     color: origin.primaryColor,
+    textShadow: origin.textShadow,
   };
 }

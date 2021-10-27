@@ -7,7 +7,7 @@ import { ReflectDefaultShapeMixin } from "./mixins";
 import { ReflectSceneNodeType } from "./node-type";
 
 export class ReflectVectorNode extends ReflectDefaultShapeMixin {
-  type = ReflectSceneNodeType.vector;
+  readonly type: ReflectSceneNodeType.vector = ReflectSceneNodeType.vector;
   /**
    * Exposes a simple, but incomplete representation of vectors as path. See VectorPaths
    */
