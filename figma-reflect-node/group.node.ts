@@ -12,7 +12,7 @@ import { FigmaLayoutGrow, FimgaLayoutAlign } from "@design-sdk/figma-types";
 export class ReflectGroupNode
   extends ReflectChildrenMixin
   implements ReflectChildrenMixin, IReflectBlendMixin, IReflectLayoutMixin {
-  type = ReflectSceneNodeType.group;
+  readonly type: ReflectSceneNodeType.group = ReflectSceneNodeType.group;
 
   opacity: number;
   blendMode: "PASS_THROUGH" | BlendMode;

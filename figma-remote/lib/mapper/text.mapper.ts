@@ -46,12 +46,7 @@ export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
       value: remText.style.letterSpacing,
       unit: "PIXELS", // I'm not sure if it's safe to case it to this. haven't tested yet
     },
-    lineHeight: figmaRemoteLineHeightToFigma({
-      px: remText.style.lineHeightPx,
-      unit: remText.style.lineHeightUnit,
-      percent: remText.style.lineHeightPercent,
-      percentFontSize: remText.style.lineHeightPercentFontSize,
-    }),
+    lineHeight: figmaRemoteLineHeightToFigma(remText.style),
     characters: remText.characters,
 
     // static override

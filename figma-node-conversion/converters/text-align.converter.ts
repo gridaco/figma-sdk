@@ -16,6 +16,10 @@ export function convertTextAlignHorizontalToReflect(
       return TextAlign.left;
     case "RIGHT":
       return TextAlign.right;
+    case undefined:
+      return TextAlign.left;
+    default:
+      return TextAlign.left;
   }
   throw `cannot convert figma text horizontal align value "${origin}" to reflect "TextAlign"`;
 }
@@ -30,6 +34,10 @@ export function convertTextAlignVerticalToReflect(
       return TextAlignVertical.start;
     case "BOTTOM":
       return TextAlignVertical.bottom;
+    case undefined:
+      return TextAlignVertical.start;
+    default:
+      return TextAlignVertical.start;
   }
   throw `cannot convert figma text vertical align value "${origin}" to reflect "TextAlignVertical"`;
 }

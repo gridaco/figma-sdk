@@ -8,8 +8,8 @@
     },
     "dependencies": {
         "@base-sdk/base": "0.1.0-5",
-        "@design-sdk/key-annotations": "0.0.0",
-        "@reflect-ui/core": "0.0.2-rc.7",
+        "@reflect-ui/core": "0.0.2-rc.7-local",
+        "@design-sdk/flags": "0.0.0",
         "@reflect-ui/namings": "0.0.3"
     },
     "devDependencies": {

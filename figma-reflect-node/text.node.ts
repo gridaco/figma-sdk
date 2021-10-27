@@ -1,3 +1,4 @@
+import { TextShadowManifest } from "./../../reflect-core/packages/reflect-core/lib/text-shadow/text-shadow.manifest";
 import {
   DimensionLength,
   FontWeight,
@@ -27,12 +28,12 @@ import { TextOverflow } from "@reflect-ui/core/lib/text-overflow";
 export class ReflectTextNode
   extends ReflectDefaultShapeMixin
   implements Omit<TextManifest, "style"> {
-  type = ReflectSceneNodeType.text;
+  readonly type: ReflectSceneNodeType.text = ReflectSceneNodeType.text;
 
   /**
    * text content; text characters
    */
-  text: string;
+  data: string;
 
   // omitted - style: TextStyleManifest; (FIXME: make text style as unified property)
   overflow: TextOverflow;
@@ -52,9 +53,10 @@ export class ReflectTextNode
   textCase: TextCase | undefined;
   textDecoration?: TextDecoration;
 
-  // FIXME: - this conversion is not working
-  letterSpacing: LetterSpacing | undefined;
+  letterSpacing: LetterSpacing;
   lineHeight: DimensionLength;
+
+  textShadow: TextShadowManifest[];
 
   get hasTextStyle(): boolean {
     if (this.textStyleId !== "") {

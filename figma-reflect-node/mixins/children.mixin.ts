@@ -28,14 +28,14 @@ function filterConstraintableChildren(node: ReflectChildrenMixin) {
   const constraintables: Array<ReflectConstraintMixin> = [];
   for (const childNode of node.children) {
     if (
-      childNode.type == "INSTANCE" ||
-      childNode.type == "COMPONENT" ||
-      childNode.type == "FRAME" ||
-      childNode.type == "RECTANGLE" ||
-      childNode.type == "GROUP" ||
-      childNode.type == "LINE" ||
-      childNode.type == "ELLIPSE" ||
-      childNode.type == "TEXT"
+      childNode.origin == "INSTANCE" ||
+      childNode.origin == "COMPONENT" ||
+      childNode.origin == "FRAME" ||
+      childNode.origin == "RECTANGLE" ||
+      childNode.origin == "GROUP" ||
+      childNode.origin == "LINE" ||
+      childNode.origin == "ELLIPSE" ||
+      childNode.origin == "TEXT"
     ) {
       constraintables.push(childNode as ReflectConstraintMixin);
     }

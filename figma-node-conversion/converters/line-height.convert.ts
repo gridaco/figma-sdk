@@ -2,7 +2,7 @@ import { LineHeight } from "@design-sdk/figma-types";
 export function figma_lineheight_to_reflect_ling_height(
   origin: LineHeight
 ): number | `${number}%` {
-  switch (origin.unit) {
+  switch (origin?.unit) {
     case "PIXELS":
       return origin.value;
     case "AUTO":
@@ -10,6 +10,8 @@ export function figma_lineheight_to_reflect_ling_height(
       return undefined;
     case "PERCENT":
       return `${origin.value}%`;
+    case undefined:
+      return;
     default:
       throw new Error(`Unknown line height unit: ${origin["unit"]}`);
   }
