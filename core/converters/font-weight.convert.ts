@@ -25,18 +25,24 @@ export function convertFontStyleNameToFontWeightReflect(fontStyle: string) {
   );
 
   let style = _DEFAULT_FALLBACK_STYLE; // falback style. the default text style
-  switch (_one_of_the_substring_is_matching_possible_style_name.length) {
+
+  const _length = _one_of_the_substring_is_matching_possible_style_name.length;
+
+  switch (_length) {
     case 0: {
       // non was matched
-      console.info(
-        'no standard font style found with givven style name. using "regular" style instead. the givven style name was',
-        fontStyle
-      );
+      // console.info(
+      //   'no standard font style found with givven style name. using "regular" style instead. the givven style name was',
+      //   fontStyle
+      // );
       style = _DEFAULT_FALLBACK_STYLE;
       break;
     }
-    case 1: {
-      style = _one_of_the_substring_is_matching_possible_style_name[0][0];
+
+    case 1:
+    case 2: {
+      style =
+        _one_of_the_substring_is_matching_possible_style_name[_length - 1][0];
       break;
     }
 
@@ -62,6 +68,7 @@ export function convertFontWeightToReflect(weight: string): FontWeight {
     case "thin":
       return FontWeight.w100;
     case "extra light":
+    case "extra-light":
       return FontWeight.w200;
     case "light":
       return FontWeight.w300;
@@ -70,12 +77,14 @@ export function convertFontWeightToReflect(weight: string): FontWeight {
     case "medium":
       return FontWeight.w500;
     case "semi bold":
-      return FontWeight.w600;
+    case "semi-bold":
     case "semibold":
       return FontWeight.w600;
+
     case "bold":
       return FontWeight.w700;
     case "extra bold":
+    case "extra-bold":
       return FontWeight.w800;
     case "heavy":
       return FontWeight.w800;
@@ -107,11 +116,12 @@ function makeAllPossibleStyleIndicatorTokenCases(token: string): string[] {
   const _default = token;
   const _1 = _split.join(); // extralight
   const _2 = _split.join(" "); //extra light
+  const _3 = _split.map((s) => capitalize(s)).join(""); // ExtraLight
   const _4 = _split.map((s) => capitalize(s)).join(" "); // Extra Light
   const _5 = _split.join("-"); //extra-light
   const _7 = _split.map((s) => capitalize(s)).join("-"); // Extra-Light
 
-  return [_default, _1, _2, _4, _5, _7];
+  return [_default, _1, _2, _3, _4, _5, _7];
 }
 
 /**

@@ -3,10 +3,11 @@ import { convertFigmaRemoteFillsToFigma } from "../converters/fills.convert";
 import { convertFigmaRemoteLayoutConstraintsToFigmaConstraints } from "../converters/layout-constraints.convert";
 import { convertFigmaRemoteStrokesToFigma } from "../converters/strokes.convert";
 import { MappingBlendInput } from "./_in";
-
+import { Transform } from "@design-sdk/figma-remote-types";
 export function blendBaseNode(p: MappingBlendInput) {
   const { target, source } = p;
   target.id = source.id;
+  target.parentId = p.parent?.id ?? null;
   target.name = source.name;
   target.visible = source.visible ?? true;
   target.opacity = source.opacity ?? 1;
@@ -60,9 +61,10 @@ export function blendBaseNode(p: MappingBlendInput) {
     target.strokeJoin = undefined;
   }
 
-  // TODO
+  // TODO:
   target.reactions = undefined;
-  target.rotation = 0; // calculate with transform
+  target.rotation = angleFromTransform(source.relativeTransform); // calculate with transform: ;
+  // TODO: use  `source.relativeTransform`
   target.absoluteTransform = [
     [1, 0, 0],
     [0, 1, 0],
@@ -85,4 +87,16 @@ function xy_as_relative(
     x: child.x - parent.x,
     y: child.y - parent.y,
   };
+}
+
+function angleFromTransform(transform: Readonly<Transform>): number {
+  try {
+    const [a, b, c] = transform[0];
+    const [d, e, f] = transform[1];
+    var angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+    return angle < 0 ? angle + 360 : angle;
+  } catch (e) {
+    console.error(e);
+    return 0;
+  }
 }

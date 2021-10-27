@@ -2,9 +2,16 @@ import { SceneNode } from "@design-sdk/figma-types";
 import { Node } from "@design-sdk/figma-remote-types";
 import { mapFigmaRemoteEllipseToFigma } from "./ellipse.mapper";
 import { mapFigmaRemoteFrameToFigma } from "./frame.mapper";
+import { mapFigmaRemoteInstanceToFigma } from "./instance.mapper";
+import { mapFigmaRemoteComponentToFigma } from "./component.mapper";
 import { mapFigmaRemoteGroupToFigma } from "./group.mapper";
+import { mapFigmaRemoteBooleanOperationToFigma } from "./boolean-operation.mapper";
 import { mapFigmaRemoteRectangleToFigma } from "./rectangle.mapper";
 import { mapFigmaRemoteTextToFigma } from "./text.mapper";
+import { mapFigmaRemoteVectorToFigma } from "./vector.mapper";
+import { mapFigmaRemotePolygonToFigma } from "./polygon.mapper";
+import { mapFigmaRemoteStarToFigma } from "./star.mapper";
+import { mapFigmaRemoteLineToFigma } from "./line.mapper";
 export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
   let preConvertedChildren: SceneNode[];
   if ("children" in remNode) {
@@ -27,8 +34,20 @@ export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
       nonchildreninstance = mapFigmaRemoteEllipseToFigma(remNode, parent);
       break;
 
+    case "VECTOR":
+      nonchildreninstance = mapFigmaRemoteVectorToFigma(remNode, parent);
+      break;
+
     case "INSTANCE":
+      //@ts-ignore
+      nonchildreninstance = mapFigmaRemoteInstanceToFigma(remNode, parent);
+      break;
+
     case "COMPONENT":
+      //@ts-ignore
+      nonchildreninstance = mapFigmaRemoteComponentToFigma(remNode, parent);
+      break;
+
     case "FRAME":
       //@ts-ignore
       nonchildreninstance = mapFigmaRemoteFrameToFigma(remNode, parent);
@@ -38,8 +57,32 @@ export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
       nonchildreninstance = mapFigmaRemoteGroupToFigma(remNode, parent);
       break;
 
+    case "BOOLEAN_OPERATION":
+      nonchildreninstance = mapFigmaRemoteBooleanOperationToFigma(
+        remNode,
+        parent
+      );
+      break;
+
+    case "REGULAR_POLYGON": {
+      nonchildreninstance = mapFigmaRemotePolygonToFigma(remNode, parent);
+      break;
+    }
+
+    case "STAR": {
+      nonchildreninstance = mapFigmaRemoteStarToFigma(remNode, parent);
+      break;
+    }
+
+    case "LINE": {
+      nonchildreninstance = mapFigmaRemoteLineToFigma(remNode, parent);
+      break;
+    }
+
     default:
-      console.warn(`type "${remNode.type}" not handled`);
+      console.warn(
+        `unhandled not while converting remote node to figma typed node. type "${remNode.type}" not handled`
+      );
       nonchildreninstance = (remNode as any) as SceneNode;
       break;
   }

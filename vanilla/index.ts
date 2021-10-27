@@ -10,12 +10,15 @@ import {
   ReflectSceneNode,
   ReflectSceneNodeType,
   ReflectTextNode,
-} from "@design-sdk/core/nodes";
+} from "@design-sdk/core";
 import { converters, TextManifest, ImageManifest } from "@reflect-ui/core";
 import { ImageRepository } from "@design-sdk/core/assets-repository";
 import { makeCGRect } from "./make";
 
-const vanillaImageRepo = new ImageRepository("vanilla-image-repository");
+const vanillaImageRepo = new ImageRepository(
+  "vanilla-image-repository",
+  "grida://vanilla-image-repository/reserved/"
+);
 /**
  * makes vanilla output, which contains only text data, and all others as image.
  * @param node
@@ -79,8 +82,8 @@ function fetchElements(
         width: node.width,
         height: node.height,
         data: <TextManifest>{
-          text: node.characters,
-          textAlign: node.textAlignHorizontal,
+          data: node.data,
+          textAlign: node.textAlign,
           textAlignVertical: node.textAlignVertical,
           // TODO
           style: node.textStyle,

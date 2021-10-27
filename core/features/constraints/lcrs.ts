@@ -1,5 +1,9 @@
-import type { ReflectGroupNode, ReflectSceneNode } from "../../nodes";
-import { ReflectSceneNodeType } from "../../nodes/types/node-type";
+import type {
+  ReflectConstraintMixin,
+  ReflectGroupNode,
+  ReflectSceneNode,
+} from "@design-sdk/figma-node";
+import { ReflectSceneNodeType } from "@design-sdk/figma-node";
 
 /**
  * @deprecated
@@ -12,7 +16,7 @@ type ConstraintType = "MIN" | "MAX" | "CENTER" | "STRETCH" | "SCALE";
  */
 export type LCRS = "Left" | "Center" | "Right" | "Stretch" | "Scale" | "Mixed";
 
-export function getNodeActualLCRS(node: ReflectSceneNode): LCRS {
+export function getNodeActualLCRS(node: ReflectConstraintMixin): LCRS {
   if (node.type == ReflectSceneNodeType.group) {
     return getGroupLCRS(node as ReflectGroupNode);
   } else {
@@ -54,7 +58,7 @@ export function getGroupLCRS(node: ReflectGroupNode): LCRS {
  * @param reletiveTo the parent node of target node in generatl.
  */
 export function getReletiveLCRS(
-  target: ReflectSceneNode,
+  target: ReflectConstraintMixin,
   reletiveTo: ReflectSceneNode
 ): LCRS {
   // FIXME rel does not work with group as expected.

@@ -3,6 +3,7 @@ import { isVariantMatchingName } from "./variant-name-utils";
 
 /**
  * uses swapIntance internally. this is a wrapper function for swapInstance that takes variant instance node and target swapping variant's name as input
+ * @deprecated - use figma's official API instead
  * @param from
  * @param name
  */

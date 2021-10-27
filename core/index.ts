@@ -3,11 +3,12 @@ export * as converters from "./converters";
 
 // region features
 export * as features from "./features";
-export { keyAnnotations, constraints } from "./features";
+export { flags, constraints } from "./features";
 // endregion
 
 // node
-export * as nodes from "./nodes";
+export * from "@design-sdk/figma-node";
+export * as nodes from "@design-sdk/figma-node";
 
 // platform
 export * as _platform from "./platform";

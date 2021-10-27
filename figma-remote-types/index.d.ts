@@ -7,6 +7,20 @@ export interface Global {
   readonly visible?: boolean;
   /** the type of the node, refer to table below for details */
   readonly type: NodeType;
+
+  /**
+   * Data written by plugins that is visible only to the plugin that wrote it.
+   * Requires the `pluginData` to include the ID of the plugin.
+   */
+  readonly pluginData?: { [pluginid: string]: { [key: string]: string } };
+
+  /**
+   * Data written by plugins that is visible to all plugins.
+   * Requires the `pluginData` parameter to include the string "shared".
+   */
+  readonly sharedPluginData?: {
+    [namespace: string]: { [key: string]: string };
+  };
 }
 
 /**
@@ -92,7 +106,7 @@ export type NodeType =
   | "FRAME"
   | "GROUP"
   | "VECTOR"
-  | "BOOLEAN"
+  | "BOOLEAN_OPERATION"
   | "STAR"
   | "LINE"
   | "ELLIPSE"
@@ -207,8 +221,10 @@ export interface FrameBase extends Global {
    * In horizontal auto-layout frames, "MIN" and "MAX" correspond to
    * "TOP" and "BOTTOM". * In vertical auto-layout frames, "MIN" and
    * "MAX" correspond to "LEFT" and "RIGHT".
+   *
+   * > **"CENTER" | "MIN" | "MAX" are deprecated**
    */
-  readonly layoutAlign?: "CENTER" | "MIN" | "MAX" | "STRETCH" | "INHERIT";
+  readonly layoutAlign?: "STRETCH" | "INHERIT";
   /**
    * Node ID of node to transition to in prototyping
    * @default null
@@ -472,7 +488,8 @@ export interface VectorBase extends Global {
    */
   readonly styles?: StylesObject;
 
-  readonly layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT";
+  // "MIN" | "CENTER" | "MAX" are deprecated.
+  readonly layoutAlign: "STRETCH" | "INHERIT";
 
   /**
    * This property is applicable only for direct children of auto-layout frames, ignored otherwise. Determines whether a layer should stretch along the parent’s primary axis. A 0 corresponds to a fixed size and 1 corresponds to stretch
@@ -487,7 +504,7 @@ export interface Vector extends VectorBase {
 
 /** A group that has a boolean operation applied to it */
 export interface BooleanGroup extends VectorBase {
-  readonly type: "BOOLEAN";
+  readonly type: "BOOLEAN_OPERATION";
   /**
    * A string enum with value of "UNION", "INTERSECT", "SUBTRACT", or "EXCLUDE"
    * indicating the type of boolean operation applied

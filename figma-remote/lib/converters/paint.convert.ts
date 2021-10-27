@@ -31,8 +31,7 @@ export function figmaRemotePaintToFigma(remPaint: RemPaint): Paint {
     case "GRADIENT_RADIAL":
       return <GradientPaint>{
         type: remPaint.type,
-
-        // STATIC OVERRIDE - FIXME
+        // FIXME: STATIC OVERRIDE
         gradientTransform: [
           [1, 0, 0],
           [0, 1, 0],

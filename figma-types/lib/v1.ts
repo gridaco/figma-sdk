@@ -607,6 +607,9 @@ export type ConnectorEndpoint =
 export interface BaseNodeMixin {
   readonly id: string;
   readonly parent: (BaseNode & ChildrenMixin) | null;
+  // CUSTOM OVERRIDES ------------
+  readonly parentId: string | null;
+  // ------------------------------
   name: string; // Note: setting this also sets `autoRename` to false on TextNodes
   readonly removed: boolean;
   toString(): string;
@@ -664,7 +667,8 @@ export interface LayoutMixin {
   readonly height: number;
   constrainProportions: boolean;
 
-  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH" | "INHERIT"; // applicable only inside auto-layout frames
+  // "MIN" | "CENTER" | "MAX" are deprecated
+  layoutAlign: "STRETCH" | "INHERIT"; // applicable only inside auto-layout frames
   layoutGrow: number;
 
   resize(width: number, height: number): void;
@@ -994,6 +998,9 @@ export interface PolygonNode
   readonly type: "POLYGON";
   clone(): PolygonNode;
   pointCount: number;
+
+  // OVERRIDE - for remote data
+  vectorPaths: VectorPaths;
 }
 
 export interface StarNode
@@ -1004,6 +1011,9 @@ export interface StarNode
   clone(): StarNode;
   pointCount: number;
   innerRadius: number;
+
+  // OVERRIDE - for remote data
+  vectorPaths: VectorPaths;
 }
 
 export interface VectorNode
@@ -1058,11 +1068,21 @@ export interface InstanceNode extends DefaultFrameMixin, VariantMixin {
   setProperties(properties: { [property: string]: string }): void;
   detachInstance(): FrameNode;
   scaleFactor: number;
+
+  // CUSTOM OVERRIDE
+  // ---- this is not from official plugin typings, but exists. ---
+  // this is for to match the remote api's interface.
+  mainComponentId: string;
+  // --------------------------------------------------------------
 }
 
 export interface BooleanOperationNode
   extends DefaultShapeMixin,
     ChildrenMixin,
+    // CUSTOM OVERRIDE
+    // ---- this is not from official plugin typings, but exists. ---
+    ConstraintMixin,
+    // --------------------------------------------------------------
     CornerMixin {
   readonly type: "BOOLEAN_OPERATION";
   clone(): BooleanOperationNode;
