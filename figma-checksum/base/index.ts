@@ -7,10 +7,10 @@ export abstract class FigmaChecksumBase {
   readonly fileKeyUserProvided: string;
   abstract readonly remoteMethod: () => Promise<string>;
 
-  constructor({ filekey }: { filekey: string }) {
+  constructor({ filekey, signature }: { filekey: string; signature?: string }) {
     assert(filekey);
 
-    this.signature = nanoid();
+    this.signature = signature ?? nanoid();
     this.fileKeyUserProvided = filekey;
   }
 
