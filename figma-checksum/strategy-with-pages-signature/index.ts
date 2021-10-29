@@ -1,4 +1,4 @@
-import "@figma/plugin-typings";
+import { figma } from "@design-sdk/figma";
 
 const IDENTITY_KEY = "figma-file-checksum-identity";
 

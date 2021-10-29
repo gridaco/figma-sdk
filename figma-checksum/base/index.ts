@@ -5,7 +5,7 @@ import { getAccessToken } from "@design-sdk/figma-auth-store";
 export abstract class FigmaChecksumBase {
   readonly signature: string;
   readonly fileKeyUserProvided: string;
-  abstract readonly remoteMethod: () => Promise<string>;
+  abstract remoteMethod(): Promise<string>;
 
   constructor({ filekey, signature }: { filekey: string; signature?: string }) {
     assert(filekey);
@@ -23,7 +23,8 @@ export abstract class FigmaChecksumBase {
   }
 
   async verify(): Promise<boolean> {
-    return this.signature == (await this.getSignatureRemotely());
+    const resultfromRemote = await this.getSignatureRemotely();
+    return this.signature == resultfromRemote;
   }
 
   private __accessToken: string;
