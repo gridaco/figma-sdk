@@ -68,6 +68,5 @@ export function extractTextStyleFromTextNode(
     ),
     lineHeight: origin.lineHeight,
     color: origin.primaryColor,
-    textShadow: origin.textShadow,
   };
 }
