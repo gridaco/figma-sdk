@@ -210,9 +210,7 @@ export class ReflectBaseNode
   radius: number;
   //
 
-  get shadows():
-    | ReadonlyArray<BoxShadowManifest>
-    | ReadonlyArray<TextShadowManifest> {
+  get shadows(): ReadonlyArray<BoxShadowManifest> {
     return this.effects
       .map((s) => {
         if (!s.visible) return;

@@ -1,4 +1,3 @@
-import { TextShadowManifest } from "./../../reflect-core/packages/reflect-core/lib/text-shadow/text-shadow.manifest";
 import {
   DimensionLength,
   FontWeight,
@@ -22,7 +21,7 @@ import {
 } from "@design-sdk/figma-types";
 import { extractTextStyleFromTextNode } from "@design-sdk/figma-node-conversion";
 import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
-import { TextOverflow } from "@reflect-ui/core/lib/text-overflow";
+import { TextOverflow } from "@reflect-ui/core";
 // endregion
 
 export class ReflectTextNode
@@ -55,8 +54,6 @@ export class ReflectTextNode
 
   letterSpacing: LetterSpacing;
   lineHeight: DimensionLength;
-
-  textShadow: TextShadowManifest[];
 
   get hasTextStyle(): boolean {
     if (this.textStyleId !== "") {
