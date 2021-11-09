@@ -8,6 +8,14 @@ export function figmaRemoteLineHeightToFigma(params: TypeStyle): LineHeight {
         unit: "PIXELS",
         value: params.lineHeightPx,
       };
+
+    /**
+     * README: https://www.figma.com/developers/api
+     * issue: https://github.com/gridaco/designto-code/issues/27 - `line-height percentage calculation error`
+     * Change the previously used `lineHeightPercent` to `lineHeightPercentFontSize` according to the description of the api document below.
+     * "Line height as a percentage of normal line height.
+     * This is deprecated; in a future version of the API only lineHeightPx and lineHeightPercentFontSize will be returned."
+     */
     case "FONT_SIZE_%":
       return {
         unit: "PERCENT",
