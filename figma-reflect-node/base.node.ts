@@ -228,20 +228,14 @@ export class ReflectBaseNode
       })
       .filter((e) => e !== undefined);
   }
+
   /**
-   * Previously, only the shadow at index 0 was shown, but we changed it to a getter that shows all shadows.
-   * return value reversed.
+   * visible, and the top shadow set by designer
    */
-  get primaryShadow(): BoxShadowManifest[] | undefined {
+  get primaryShadow(): BoxShadowManifest | undefined {
     try {
       if (this.shadows && this.shadows.length > 0) {
-        const shadows = this.shadows.map((s) => {
-          return s;
-        });
-        /**The boxShadow has a lower level (front) shadow layer on top.
-         * ref: https://drafts.csswg.org/css-backgrounds/#box-shadow
-         */
-        return shadows.reverse();
+        return this.shadows[0];
       } else {
         return undefined;
       }
