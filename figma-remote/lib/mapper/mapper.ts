@@ -87,7 +87,7 @@ export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
       break;
   }
 
-  if ("children" in nonchildreninstance && preConvertedChildren) {
+  if (preConvertedChildren) {
     // @ts-ignore - ignoring readonly
     nonchildreninstance.children = preConvertedChildren;
   }
