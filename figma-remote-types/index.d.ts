@@ -140,14 +140,14 @@ export type Node =
 export interface Document extends Global {
   readonly type: "DOCUMENT";
   /** An array of canvases attached to the document */
-  readonly children: ReadonlyArray<Node>;
+  readonly children: ReadonlyArray<Exclude<Node, Document>>;
 }
 
 /** Represents a single page */
 export interface Canvas extends Global {
   readonly type: "CANVAS";
   /** An array of top level layers on the canvas */
-  readonly children: ReadonlyArray<Node>;
+  readonly children: ReadonlyArray<Exclude<Exclude<Node, Document>, Canvas>>;
   /** Background color of the canvas */
   readonly backgroundColor: Color;
   /** Node ID that corresponds to the start frame for prototypes */
