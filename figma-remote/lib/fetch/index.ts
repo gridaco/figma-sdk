@@ -71,8 +71,9 @@ export async function completePartialPack(
   if (partial.remote) {
     d = partial.remote;
   } else {
-    d = await (await fetchTarget(partial.file, [partial.node], auth, config))
-      .nodes[partial.node];
+    d = await (
+      await fetchTarget(partial.file, [partial.node], auth, config)
+    ).nodes[partial.node];
   }
   const _mapped = mapper.mapFigmaRemoteToFigma(d as any);
   const _converted = convert.intoReflectNode(_mapped);
@@ -154,6 +155,28 @@ export async function fetchTarget(
         throw e;
     }
   }
+}
+
+export async function* fetchFile({
+  file,
+  auth,
+}: {
+  file: string;
+  auth: AuthenticationCredential;
+}) {
+  const client = api.Client(auth);
+  const pagesreq = client.file(file, {
+    geometry: "paths",
+    depth: 1,
+  });
+
+  const wholereq = client.file(file, {
+    geometry: "paths",
+  });
+
+  yield (await pagesreq).data;
+  yield (await wholereq).data;
+  return;
 }
 
 export async function fetchImagesOfFile(
