@@ -197,11 +197,20 @@ export async function fetchImagesOfFile(
   return {};
 }
 
+/**
+ *
+ * if only one image is requested, it will extend a object, you can access with `res.__default`.
+ *
+ * @param file
+ * @param auth
+ * @param nodes
+ * @returns
+ */
 export async function fetchNodeAsImage(
   file: string,
   auth: AuthenticationCredential,
   ...nodes: string[]
-): Promise<{ [key: string]: string }> {
+): Promise<{ [key: string]: string } | { __default: string }> {
   const client = api.Client({
     ...auth,
   });
@@ -212,6 +221,11 @@ export async function fetchNodeAsImage(
 
   if (res.data && !res.data.err) {
     const images_maps = res.data.images;
+
+    if (nodes.length == 1) {
+      return { ...images_maps, __default: images_maps[nodes[0]] };
+    }
+
     return images_maps;
   }
 
