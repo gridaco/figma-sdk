@@ -27,10 +27,10 @@ export enum FigmaUrlType {
 }
 
 export enum FigmaFileOrNodeIdType {
-  nodeid,
-  maybe_nodeid,
-  fileid,
-  maybe_fileid,
+  nodeid = "nodeid",
+  maybe_nodeid = "maybe_nodeid",
+  fileid = "fileid",
+  maybe_fileid = "maybe_fileid",
 }
 
 export type FigmaInputAnalysisResult = FigmaUrlType | FigmaFileOrNodeIdType;
