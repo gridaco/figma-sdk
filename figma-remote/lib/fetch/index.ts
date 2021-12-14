@@ -157,17 +157,16 @@ export async function fetchTarget(
   }
 }
 
+export type FetchFileGeneratorReturnType = types.FileResponse & {
+  __response_type: "pages" | "roots" | "whole";
+};
 export async function* fetchFile({
   file,
   auth,
 }: {
   file: string;
   auth: AuthenticationCredential;
-}): AsyncGenerator<
-  types.FileResponse & {
-    __response_type: "pages" | "roots" | "whole";
-  }
-> {
+}): AsyncGenerator<FetchFileGeneratorReturnType> {
   const client = api.Client(auth);
   const pagesreq = client.file(file, {
     geometry: "paths",
