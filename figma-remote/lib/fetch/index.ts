@@ -163,19 +163,29 @@ export async function* fetchFile({
 }: {
   file: string;
   auth: AuthenticationCredential;
-}) {
+}): AsyncGenerator<
+  types.FileResponse & {
+    __response_type: "pages" | "roots" | "whole";
+  }
+> {
   const client = api.Client(auth);
   const pagesreq = client.file(file, {
     geometry: "paths",
     depth: 1,
   });
 
+  const rootsreq = client.file(file, {
+    geometry: "paths",
+    depth: 2,
+  });
+
   const wholereq = client.file(file, {
     geometry: "paths",
   });
 
-  yield (await pagesreq).data;
-  yield (await wholereq).data;
+  yield { ...(await pagesreq).data, __response_type: "pages" };
+  yield { ...(await rootsreq).data, __response_type: "roots" };
+  yield { ...(await wholereq).data, __response_type: "whole" };
   return;
 }
 
@@ -214,6 +224,8 @@ export async function fetchNodeAsImage(
   const client = api.Client({
     ...auth,
   });
+
+  nodes = nodes.filter((n) => !!n);
 
   const res = await client.fileImages(file, {
     ids: nodes,
