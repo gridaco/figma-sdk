@@ -15,6 +15,21 @@ export abstract class BaseImageRepositories<T = Uint8Array> {
     throw new Error(`Image repository with buildId ${buildId} not found`);
   }
 
+  /**
+   * merges all images map under repositories this contains.
+   * @returns
+   */
+  mergeAll(): { [key: string]: any } {
+    let images = {};
+    for (const k of Object.keys(this.repositories)) {
+      images = {
+        ...images,
+        ...(this.repositories[k].images ?? {}),
+      };
+    }
+    return images;
+  }
+
   clear() {
     this.repositories = new Map<string, ImageRepository>();
     this.imageHashMap = new Map<string, T>();
