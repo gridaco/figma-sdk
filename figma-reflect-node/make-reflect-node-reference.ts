@@ -35,7 +35,7 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
 
 function _safely_makeComponentReference(r: IReflectNodeReference) {
   if (r.origin === "COMPONENT" || r.type == "COMPONENT") {
-    return makeComponentReference((r as any) as Figma.ComponentNode);
+    return makeComponentReference(r as any as Figma.ComponentNode);
   }
 }
 
@@ -51,9 +51,9 @@ export function makeComponentReference(
   r: Figma.ComponentNode
 ): ComponentReference {
   if (!r) {
-    console.warn(
-      "the givven input was empty. cannot perform 'makeComponentReference'"
-    );
+    // console.warn(
+    //   "the givven input was empty. cannot perform 'makeComponentReference'"
+    // );
     return;
   }
 
@@ -119,7 +119,7 @@ const make_infinite_parent_reference = (
     variantProperties: r.variantProperties,
     children: should_hold_infinite_children(r)
       ? make_infinite_children_reference(
-          (r.children as any) as ReadonlyArray<Figma.SceneNode>
+          r.children as any as ReadonlyArray<Figma.SceneNode>
         )
       : r.children.map((c) => ({
           name: c.name,
