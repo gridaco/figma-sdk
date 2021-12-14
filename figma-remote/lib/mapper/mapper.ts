@@ -79,11 +79,17 @@ export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
       break;
     }
 
+    case "COMPONENT_SET": {
+      // FIXME: temporary fallback to frame.
+      nonchildreninstance = mapFigmaRemoteFrameToFigma(remNode as any, parent);
+      break;
+    }
+
     default:
       console.warn(
         `unhandled not while converting remote node to figma typed node. type "${remNode.type}" not handled`
       );
-      nonchildreninstance = (remNode as any) as SceneNode;
+      nonchildreninstance = remNode as any as SceneNode;
       break;
   }
 

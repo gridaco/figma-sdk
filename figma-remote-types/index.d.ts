@@ -115,6 +115,7 @@ export type NodeType =
   | "TEXT"
   | "SLICE"
   | "COMPONENT"
+  | "COMPONENT_SET"
   | "INSTANCE";
 
 export type Node =
@@ -132,6 +133,7 @@ export type Node =
   | Text
   | Slice
   | Component
+  | ComponentSet
   | Instance;
 
 /** Node Properties */
@@ -376,6 +378,11 @@ export interface Frame extends FrameBase {
 /** A logical grouping of nodes */
 export interface Group extends FrameBase {
   readonly type: "GROUP";
+}
+
+/** FIXME: not fully implemented */
+export interface ComponentSet extends FrameBase {
+  readonly type: "COMPONENT_SET";
 }
 
 export interface VectorBase extends Global {
