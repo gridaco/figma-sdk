@@ -19,7 +19,7 @@ export abstract class BaseImageRepositories<T = Uint8Array> {
    * merges all images map under repositories this contains.
    * @returns
    */
-  mergeAll(): { [key: string]: any } {
+  mergeAll(): { [key: string]: T } {
     let images = {};
     for (const k of Object.keys(this.repositories)) {
       images = {
@@ -28,6 +28,21 @@ export abstract class BaseImageRepositories<T = Uint8Array> {
       };
     }
     return images;
+  }
+
+  /**
+   * finds ImageAsset under repositories by image key
+   * @param key
+   */
+  find(key: string) {
+    for (const k of Object.keys(this.repositories)) {
+      const repository = this.repositories[k];
+      const image = repository.images[key];
+      if (image) {
+        return image;
+      }
+    }
+    return null;
   }
 
   clear() {
