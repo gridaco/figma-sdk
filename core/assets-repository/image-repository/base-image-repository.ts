@@ -30,6 +30,16 @@ export abstract class BaseImageRepositories<T = Uint8Array> {
     return images;
   }
 
+  get empty(): boolean {
+    if (this.repositories.size === 0) {
+      return true;
+    }
+    if (Object.keys(this.mergeAll()).length === 0) {
+      return true;
+    }
+    return false;
+  }
+
   /**
    * finds ImageAsset under repositories by image key
    * @param key
