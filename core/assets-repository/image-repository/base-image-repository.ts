@@ -31,10 +31,10 @@ export abstract class BaseImageRepositories<T = Uint8Array> {
   }
 
   get empty(): boolean {
-    if (this.repositories.size === 0) {
-      return true;
-    }
-    if (Object.keys(this.mergeAll()).length === 0) {
+    if (
+      Object.keys(this.repositories).length === 0 ||
+      Object.keys(this.mergeAll()).length === 0
+    ) {
       return true;
     }
     return false;
