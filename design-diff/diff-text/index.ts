@@ -40,13 +40,18 @@ export function text(a: Figma.TextNode, b: Figma.TextNode): TextDiff {
   a.textDecoration === b.textDecoration;
   a.textStyleId === b.textStyleId;
 
-  const _caracters = text_data(a.characters, b.characters);
+  // TODO: this is for preventing 'characters' being undefined when text node is already converted into ReflectTextNode.
+  // this may break the logic when the property name is changed.
+  const a_text_data = a.characters ?? a["data"];
+  const b_text_data = b.characters ?? b["data"];
+
+  const _caracters = text_data(a_text_data, b_text_data);
   return {
     type: "text-node",
     ids: [a.id, b.id],
     fills: _fills,
     characters: {
-      values: [a.characters, b.characters],
+      values: [a_text_data, b_text_data],
       diff: _caracters,
     },
     diff: _fills.diff || _caracters,
