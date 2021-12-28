@@ -9,6 +9,25 @@ export { fetchDemo } from "./demo";
 export * from "./errors";
 export * from "./types";
 
+type FigmaApiResponse<T> = T & {
+  status: /**
+   * successful response
+   */
+  | "success"
+    /**
+     * the token is expired or invalid
+     */
+    | "invalid-token"
+    /**
+     * no permission to access the resource
+     */
+    | "unauthorized"
+    /**
+     * requested resource is not found
+     */
+    | "not-found";
+};
+
 export interface FimgaRemoteFetchConfig {
   /**
    * specify if to fetch with explicit out-of-target-scope components.
@@ -30,7 +49,7 @@ export async function fetchTargetAsReflect({
   node: string;
   auth: AuthenticationCredential;
   config?: FimgaRemoteFetchConfig;
-}): Promise<FigmaRemoteImportPack> {
+}): Promise<FigmaApiResponse<FigmaRemoteImportPack>> {
   const partial = await await fetchTarget(file, [node], auth, config);
 
   const components = [];
@@ -66,7 +85,7 @@ export async function completePartialPack(
   partial: FigmaRemoteImportPack,
   auth?: AuthenticationCredential,
   config?: FimgaRemoteFetchConfig
-): Promise<FigmaRemoteImportPack> {
+): Promise<FigmaApiResponse<FigmaRemoteImportPack>> {
   let d: types.Node;
   if (partial.remote) {
     d = partial.remote;
@@ -82,6 +101,7 @@ export async function completePartialPack(
     remote: d,
     figma: _mapped,
     reflect: _converted,
+    status: "success",
   };
 }
 
@@ -90,12 +110,14 @@ export async function fetchTarget(
   ids: string[] | string,
   auth: AuthenticationCredential,
   config?: FimgaRemoteFetchConfig
-): Promise<{
-  file: string;
-  ids: string[];
-  nodes: { [key: string]: types.Node };
-  components: { [key: string]: types.Node };
-}> {
+): Promise<
+  FigmaApiResponse<{
+    file: string;
+    ids: string[];
+    nodes: { [key: string]: types.Node };
+    components: { [key: string]: types.Node };
+  }>
+> {
   ids = Array.isArray(ids) ? ids : [ids];
   const client = api.Client({
     ...auth,
@@ -144,6 +166,7 @@ export async function fetchTarget(
         return acc;
       }, {}),
       components: component_nodes,
+      status: "success",
     };
   } catch (e) {
     switch (e.status) {
@@ -166,7 +189,7 @@ export async function* fetchFile({
 }: {
   file: string;
   auth: AuthenticationCredential;
-}): AsyncGenerator<FetchFileGeneratorReturnType> {
+}): AsyncGenerator<FigmaApiResponse<FetchFileGeneratorReturnType>> {
   const client = api.Client(auth);
   const pagesreq = client.file(file, {
     geometry: "paths",
@@ -182,16 +205,28 @@ export async function* fetchFile({
     geometry: "paths",
   });
 
-  yield { ...(await pagesreq).data, __response_type: "pages" };
-  yield { ...(await rootsreq).data, __response_type: "roots" };
-  yield { ...(await wholereq).data, __response_type: "whole" };
+  yield {
+    ...(await pagesreq).data,
+    __response_type: "pages",
+    status: "success",
+  };
+  yield {
+    ...(await rootsreq).data,
+    __response_type: "roots",
+    status: "success",
+  };
+  yield {
+    ...(await wholereq).data,
+    __response_type: "whole",
+    status: "success",
+  };
   return;
 }
 
 export async function fetchImagesOfFile(
   file: string,
   auth: AuthenticationCredential
-): Promise<{ [key: string]: string }> {
+): Promise<FigmaApiResponse<{ [key: string]: string }>> {
   const client = api.Client({
     ...auth,
   });
@@ -199,11 +234,13 @@ export async function fetchImagesOfFile(
   const res = await client.fileImageFills(file);
   if (!res.data.error && res.data.status == 200) {
     const images_maps = res.data.meta.images;
-    return images_maps;
+    return { ...images_maps, status: "success" };
   }
 
   // if failed, return empty map.
-  return {};
+  return {
+    status: "unauthorized",
+  };
 }
 
 /**
@@ -219,7 +256,9 @@ export async function fetchNodeAsImage(
   file: string,
   auth: AuthenticationCredential,
   ...nodes: string[]
-): Promise<{ [key: string]: string } | { __default: string }> {
+): Promise<
+  FigmaApiResponse<{ [key: string]: string } | { __default: string }>
+> {
   const client = api.Client({
     ...auth,
   });
@@ -234,13 +273,19 @@ export async function fetchNodeAsImage(
     const images_maps = res.data.images;
 
     if (nodes.length == 1) {
-      return { ...images_maps, __default: images_maps[nodes[0]] };
+      return {
+        ...images_maps,
+        __default: images_maps[nodes[0]],
+        status: "success",
+      };
     }
 
-    return images_maps;
+    return { ...images_maps, status: "success" };
   }
 
   // if failed, return empty map.
-  return {};
+  return {
+    status: "unauthorized",
+  };
   //
 }
