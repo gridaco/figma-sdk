@@ -6,12 +6,16 @@ import {
 } from "@design-sdk/figma-xpath";
 import assert from "assert";
 
-export interface InstanceDiff {
+type DiffValueLike = TextDiff | InstanceDiff_1on1;
+export interface InstanceDiff_1on1 {
   type: "instance-to-master";
   diff: boolean;
-  ids: string[];
-  values: (TextDiff | InstanceDiff)[];
+  ids: [string, string];
+  values: DiffValueLike[];
 }
+
+const _assert_err_msg = (missing: string) =>
+  `comparing instance with master requires both instance and master to be defined. \`${missing}\` is missing`;
 
 export function compare_instance_with_master({
   instance,
@@ -21,9 +25,10 @@ export function compare_instance_with_master({
   instance: Figma.InstanceNode;
   master: Figma.ComponentNode;
   components: Figma.ComponentNode[];
-}): InstanceDiff {
-  assert(instance);
-  assert(master);
+}): InstanceDiff_1on1 {
+  assert(instance, _assert_err_msg("instance"));
+  assert(master, _assert_err_msg("master"));
+
   if (instance.mainComponentId !== master.id) {
     throw new Error(
       `Instance id ${instance.mainComponent.id} does not match master id ${master.id}`

@@ -8,15 +8,22 @@ import { text_data } from "../diff-text-data";
 
 export interface TextDiff {
   type: "text-node";
-  ids: string[];
+  ids: [string, string];
   fills: Diff<Figma.TextNode["fills"]>;
   characters: Diff<Figma.TextNode["characters"]>;
+  /**
+   * rather this TextDiff contains a diffing property
+   */
   diff: boolean;
 }
 
 interface Diff<O> {
   diff: boolean;
-  values: O[];
+  /**
+   * - `[0]` - origin value
+   * - `[1]` - new value (with diff)
+   */
+  values: [O, O];
 }
 
 export function text(a: Figma.TextNode, b: Figma.TextNode): TextDiff {
