@@ -1,5 +1,7 @@
 import { parse as __parse, Option } from "./dashdash";
 
+export type { Option };
+
 type FlagLike = `--${string}` | `--${string}=${string}`;
 
 export function parse(
