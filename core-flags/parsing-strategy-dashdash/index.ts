@@ -1,6 +1,6 @@
-import { parse as __parse, Option } from "./dashdash";
+import { parse as __parse, Option, Results } from "./dashdash";
 
-export type { Option };
+export type { Option, Results };
 
 type FlagLike = `--${string}` | `--${string}=${string}`;
 
