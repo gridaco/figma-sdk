@@ -65,9 +65,10 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.reactions = undefined;
   target.rotation = angleFromTransform(source.relativeTransform); // calculate with transform: ;
   // TODO: use  `source.relativeTransform`
+  // absolute x, y is supported, but the rotation is not.
   target.absoluteTransform = [
-    [1, 0, 0],
-    [0, 1, 0],
+    [1, 0, source.absoluteBoundingBox.x ?? 0],
+    [0, 1, source.absoluteBoundingBox.y ?? 0],
   ]; // calculate with transform
 }
 
