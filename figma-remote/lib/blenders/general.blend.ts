@@ -35,10 +35,11 @@ export function blendBaseNode(p: MappingBlendInput) {
   ];
 
   // for some reason, xywh is not available for some node types by figma rem api.
+  const is_root = p?.parent === undefined;
   const xy = xy_as_relative(
     p?.parent?.absoluteBoundingBox,
     source.absoluteBoundingBox,
-    p?.parent === undefined
+    is_root
   );
   target.x = xy.x; // this is converted to relative position.
   target.y = xy.y; // this is converted to relative position.
@@ -65,10 +66,9 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.reactions = undefined;
   target.rotation = angleFromTransform(source.relativeTransform); // calculate with transform: ;
   // TODO: use  `source.relativeTransform`
-  // absolute x, y is supported, but the rotation is not.
   target.absoluteTransform = [
-    [1, 0, source.absoluteBoundingBox.x ?? 0],
-    [0, 1, source.absoluteBoundingBox.y ?? 0],
+    [1, 0, is_root ? xy.x : 0],
+    [0, 1, is_root ? xy.y : 0],
   ]; // calculate with transform
 }
 
@@ -79,8 +79,8 @@ function xy_as_relative(
 ) {
   if (isRoot) {
     return {
-      x: 0,
-      y: 0,
+      x: child.x,
+      y: child.y,
     };
   }
 
