@@ -45,7 +45,6 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.y = xy.y; // this is converted to relative position.
   target.width = source.absoluteBoundingBox.width;
   target.height = source.absoluteBoundingBox.height;
-  console.log("abs bbox", source.absoluteBoundingBox);
 
   // static override
   target.effectStyleId = undefined;
