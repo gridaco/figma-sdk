@@ -45,6 +45,7 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.y = xy.y; // this is converted to relative position.
   target.width = source.absoluteBoundingBox.width;
   target.height = source.absoluteBoundingBox.height;
+  console.log("abs bbox", source.absoluteBoundingBox);
 
   // static override
   target.effectStyleId = undefined;
@@ -62,13 +63,13 @@ export function blendBaseNode(p: MappingBlendInput) {
     target.strokeJoin = undefined;
   }
 
-  // TODO:
+  // TODO: add reaction
   target.reactions = undefined;
   target.rotation = angleFromTransform(source.relativeTransform); // calculate with transform: ;
-  // TODO: use  `source.relativeTransform`
   target.absoluteTransform = [
-    [1, 0, is_root ? xy.x : 0],
-    [0, 1, is_root ? xy.y : 0],
+    // TODO: support rotation
+    [1, 0, source.absoluteBoundingBox.x],
+    [0, 1, source.absoluteBoundingBox.y],
   ]; // calculate with transform
 }
 
