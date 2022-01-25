@@ -263,7 +263,7 @@ export async function fetchNodeAsImage(
     ...auth,
   });
 
-  nodes = nodes.filter((n) => !!n);
+  nodes = [...new Set(nodes)].filter((n) => !!n);
 
   // ids are added to url, which if the url is longer than 2048 chars, it will fail.
   // the prefix is https://api.figma.com/v1/images/xxxxxxxxxxxxxxxxxxxxxx?ids= - which the length is 60 chars.
