@@ -4,7 +4,7 @@ import * as api from "@design-sdk/figma-remote-api";
 import { convert } from "@design-sdk/figma";
 import { NotfoundError, UnauthorizedError } from "./errors";
 import type { AuthenticationCredential, FigmaRemoteImportPack } from "./types";
-
+import type { AxiosPromise } from "axios";
 export { fetchDemo } from "./demo";
 export * from "./errors";
 export * from "./types";
@@ -265,22 +265,40 @@ export async function fetchNodeAsImage(
 
   nodes = nodes.filter((n) => !!n);
 
-  const res = await client.fileImages(file, {
-    ids: nodes,
-  });
-
-  if (res.data && !res.data.err) {
-    const images_maps = res.data.images;
-
-    if (nodes.length == 1) {
-      return {
-        ...images_maps,
-        __default: images_maps[nodes[0]],
-        status: "success",
-      };
+  // ids are added to url, which if the url is longer than 2048 chars, it will fail.
+  // the prefix is https://api.figma.com/v1/images/xxxxxxxxxxxxxxxxxxxxxx?ids= - which the length is 60 chars.
+  if (nodes.join(",").length >= 1988) {
+    const reqs = [];
+    // split nodes with 100 items per request. with for loop
+    for (let i = 0; i < nodes.length; i += 100) {
+      reqs.push(
+        client.fileImages(file, {
+          ids: nodes.slice(i, i + 100),
+        })
+      );
     }
 
-    return { ...images_maps, status: "success" };
+    const res = await Promise.all<AxiosPromise<types.FileImageResponse>>(reqs);
+    const images = res.reduce((p, c) => ({ ...p, ...c.data.images }), {});
+    return { ...images, status: "success" };
+  } else {
+    const res = await client.fileImages(file, {
+      ids: nodes,
+    });
+
+    if (res.data && !res.data.err) {
+      const images_maps = res.data.images;
+
+      if (nodes.length == 1) {
+        return {
+          ...images_maps,
+          __default: images_maps[nodes[0]],
+          status: "success",
+        };
+      }
+
+      return { ...images_maps, status: "success" };
+    }
   }
 
   // if failed, return empty map.
