@@ -65,7 +65,6 @@ export function compare_instance_with_master({
       }
     })
     .filter(Boolean);
-  console.log("diffs", diffs);
   return {
     ids: [master.id, instance.id],
     type: "instance-to-master",
