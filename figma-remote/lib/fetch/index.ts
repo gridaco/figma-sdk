@@ -279,7 +279,13 @@ export async function fetchNodeAsImage(
     }
 
     const res = await Promise.all<AxiosPromise<types.FileImageResponse>>(reqs);
-    const images = res.reduce((p, c) => ({ ...p, ...c.data.images }), {});
+    const images = res.reduce(
+      (p, c) => ({
+        ...p,
+        ...((c as any).data as types.FileImageResponse).images,
+      }),
+      {}
+    );
     return { ...images, status: "success" };
   } else {
     const res = await client.fileImages(file, {
