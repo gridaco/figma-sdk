@@ -41,9 +41,11 @@ async function hostImages(
 
 async function hostImage(key: string, data: Uint8Array): Promise<string> {
   const fileName = `${key}.png`;
-  const fileBlob = new Blob([data], {
-    type: "image/png",
-  });
+  const fileBlob =
+    // @ts-ignore
+    new Blob([data], {
+      type: "image/png",
+    });
   // const uploaded = await upload(fileName, fileBlob)
 
   const uploaded = await upload({
