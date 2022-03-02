@@ -77,7 +77,20 @@ export function figmaRemotePaintToFigma(remPaint: RemPaint): Paint {
 
 /**
  *
- * converts the handles data (3 items of Vector2 - x, y) to transform data ([[f, f, f], [f, f, f]])
+ * converts the handles data (3 items of Vector2 - x, y) to affine transform data ([[f, f, f], [f, f, f]])
+ *
+ * for example, if the handles data is: [{x: 0.5, y: 0}, {x: 0.5, y: 1}, ??], it means the gradient direction is top to bottom, which the affine transform data is: [[0, 1, 0], [-1, 0, 1]]
+ * The identity transform is [[1, 0, 0], [0, 1, 0]].
+ *
+ * - The x axis (t[0][0], t[1][0])
+ * - The y axis (t[0][1], t[1][1])
+ * - The translation offset (t[0][2], t[1][2])
+ *
+ * and a rotation matrix will typically look like:
+ * ```
+ * [[cos(angle), sin(angle), 0],
+ * [-sin(angle), cos(angle), 0]]
+ * ```
  *
  * > description from figma api docs (not plugin, the remote api.):
  *
@@ -94,17 +107,23 @@ export function figmaRemotePaintToFigma(remPaint: RemPaint): Paint {
  * @returns
  */
 function _map_gradient_transform(handles: ReadonlyArray<Vector2>): Transform {
-  // TODO: We're note sure if this is the correct transformation of the data.
+  // TODO: We're note sure if this is the correct transformation of the data. (linear works exept, tx, ty)
+  // Only supports linear-gradient perfectly. (radial, angular, diamond required additional data to be handled - the [2] of the handles, which indicates the width of the gradient)
 
   const _x = handles[0].x;
   const _y = handles[0].y;
   const _x2 = handles[1].x;
   const _y2 = handles[1].y;
-  const _x3 = handles[2].x;
-  const _y3 = handles[2].y;
 
-  return [
-    [_x, _y, _x2 - _x],
-    [_y2 - _y, _x3 - _x2, _y3 - _y2],
+  const angle = Math.atan2(_y2 - _y, _x2 - _x);
+
+  // make the affine transform data
+  const _affine_transform: Transform = [
+    // _x, _y assignment does not match the figma plugin ver, but it's enough to represent the angle.
+    // the angle value is accurate.
+    [Math.cos(angle), Math.sin(angle), _x],
+    [-Math.sin(angle), Math.cos(angle), _y],
   ];
+
+  return _affine_transform;
 }
