@@ -1,9 +1,13 @@
-import { Paint as RemPaint } from "@design-sdk/figma-remote-types";
-import {
+import type {
+  Paint as RemPaint,
+  Vector2,
+} from "@design-sdk/figma-remote-types";
+import type {
   Paint,
   SolidPaint,
   GradientPaint,
   ImagePaint,
+  Transform,
 } from "@design-sdk/figma-types";
 
 /**
@@ -31,11 +35,9 @@ export function figmaRemotePaintToFigma(remPaint: RemPaint): Paint {
     case "GRADIENT_RADIAL":
       return <GradientPaint>{
         type: remPaint.type,
-        // FIXME: STATIC OVERRIDE
-        gradientTransform: [
-          [1, 0, 0],
-          [0, 1, 0],
-        ], // remPaint.gradientHandlePositions, TODO
+        gradientTransform: _map_gradient_transform(
+          remPaint.gradientHandlePositions
+        ),
         gradientStops: remPaint.gradientStops,
         visible: _visible,
         opacity: _opacity,
@@ -71,4 +73,38 @@ export function figmaRemotePaintToFigma(remPaint: RemPaint): Paint {
       throw `cannot handle input ${JSON.stringify(remPaint, null, 2)}`;
       break;
   }
+}
+
+/**
+ *
+ * converts the handles data (3 items of Vector2 - x, y) to transform data ([[f, f, f], [f, f, f]])
+ *
+ * > description from figma api docs (not plugin, the remote api.):
+ *
+ * handles:
+ * This field contains three vectors, each of which are a position in
+ * normalized object space (normalized object space is if the top left
+ * corner of the bounding box of the object is (0, 0) and the bottom
+ * right is (1,1)). The first position corresponds to the start of the
+ * gradient (value 0 for the purposes of calculating gradient stops),
+ * the second position is the end of the gradient (value 1), and the
+ * third handle position determines the width of the gradient (only
+ * relevant for non-linear gradients).
+ * @param handles = GradientPaint#gradientHandlePositions
+ * @returns
+ */
+function _map_gradient_transform(handles: ReadonlyArray<Vector2>): Transform {
+  // TODO: We're note sure if this is the correct transformation of the data.
+
+  const _x = handles[0].x;
+  const _y = handles[0].y;
+  const _x2 = handles[1].x;
+  const _y2 = handles[1].y;
+  const _x3 = handles[2].x;
+  const _y3 = handles[2].y;
+
+  return [
+    [_x, _y, _x2 - _x],
+    [_y2 - _y, _x3 - _x2, _y3 - _y2],
+  ];
 }
