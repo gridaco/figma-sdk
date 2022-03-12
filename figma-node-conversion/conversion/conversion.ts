@@ -269,7 +269,7 @@ export function intoReflectNodes(
           altNode.children = intoReflectNodes(
             node.children,
             // FIXME: do not use force type. - it won't impact the logic since boolean operation node is simply a group-like.
-            (altNode as any) as ReflectGroupNode
+            altNode as any as ReflectGroupNode
           );
           return altNode;
         }
@@ -396,6 +396,7 @@ function convertCorner(
 }
 
 function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
+  altNode.autoRename = node.autoRename;
   altNode.textAlign = convertTextAlignHorizontalToReflect(
     node.textAlignHorizontal
   );

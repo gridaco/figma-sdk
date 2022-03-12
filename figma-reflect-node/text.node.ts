@@ -26,8 +26,11 @@ import { TextOverflow } from "@reflect-ui/core";
 
 export class ReflectTextNode
   extends ReflectDefaultShapeMixin
-  implements Omit<TextManifest, "style"> {
+  implements Omit<TextManifest, "style">
+{
   readonly type: ReflectSceneNodeType.text = ReflectSceneNodeType.text;
+
+  autoRename: boolean;
 
   /**
    * text content; text characters
