@@ -5,12 +5,13 @@ import type { IReflectDefaultShapeMixin } from "../interfaces/default-shape-mixi
 import type { BlendMode } from "@reflect-ui/core/lib/cg/filters";
 
 // FIXME - migrate this
-import {
+import type {
   Paint,
   Effect,
   StrokeCap,
   StrokeJoin,
   FimgaLayoutAlign,
+  VectorPaths,
 } from "@design-sdk/figma-types";
 import { FigmaLayoutGrow } from "@design-sdk/figma-types";
 
@@ -35,6 +36,7 @@ export class ReflectDefaultShapeMixin
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   strokeCap: StrokeCap | undefined;
   strokeJoin: StrokeJoin | undefined;
+  strokeGeometry: VectorPaths;
   dashPattern: ReadonlyArray<number>;
   fillStyleId: string | undefined;
   strokeStyleId: string;

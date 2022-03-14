@@ -26,6 +26,7 @@ import {
   FigmaLayoutGrow,
   FigmaPrimaryAxisSizingMode,
   FigmaCounterAxisSizingMode,
+  VectorPaths,
 } from "@design-sdk/figma-types";
 
 import { ReflectSceneNodeType } from "./node-type";
@@ -54,7 +55,8 @@ export class ReflectFrameNode
     IReflectGeometryMixin,
     IReflectRectangleCornerMixin,
     IReflectBlendMixin,
-    IReflectLayoutMixin {
+    IReflectLayoutMixin
+{
   readonly type: ReflectSceneNodeType.frame = ReflectSceneNodeType.frame;
 
   absoluteTransform: Transform;
@@ -87,6 +89,7 @@ export class ReflectFrameNode
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   strokeCap: StrokeCap | undefined;
   strokeJoin: StrokeJoin | undefined;
+  strokeGeometry: VectorPaths;
   dashPattern: ReadonlyArray<number>;
   fillStyleId: string | undefined;
   strokeStyleId: string;

@@ -1,4 +1,4 @@
-import { VectorBase } from "@design-sdk/figma-remote-types";
+import type { Path, VectorBase } from "@design-sdk/figma-remote-types";
 import { convertFigmaRemoteStrokeCapToFigmaStrokeCap } from "../converters/stroke-cap.convert";
 import {
   MappingEllipseNode,
@@ -28,17 +28,18 @@ export function blendVectorNode(
   );
   target.strokeJoin = source.strokeJoin;
   target.strokeMiterLimit = source.strokeMiterAngle;
+  target.strokeGeometry = convertToVectorPaths(source.strokeGeometry);
+  source.strokeGeometry;
   target.dashPattern = source.strokeDashes;
   // ------------------------------------------------------------------------------------
 
-  target.vectorPaths = source.fillGeometry
-    // we do not add stroke geometry to vector paths for now.
-    // TODO: how to handle "strokeGeometry"?
-    // .concat(source.strokeGeometry)
-    .map((g) => {
-      return {
-        data: g.path,
-        windingRule: g.windingRule,
-      };
-    });
+  target.vectorPaths = convertToVectorPaths(source.fillGeometry);
 }
+
+const convertToVectorPaths = (d: ReadonlyArray<Path>) =>
+  d.map((g) => {
+    return {
+      data: g.path,
+      windingRule: g.windingRule,
+    };
+  });

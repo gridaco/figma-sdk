@@ -69,6 +69,7 @@ export class MappingRectangleNode implements Figma.RectangleNode {
   strokeCap: Figma.PluginAPI["mixed"] | Figma.StrokeCap;
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fillStyleId: string | Figma.PluginAPI["mixed"];
   strokeStyleId: string;
   outlineStroke(): Figma.VectorNode {
@@ -155,6 +156,7 @@ export class MappingEllipseNode implements Figma.EllipseNode {
   strokeCap: Figma.PluginAPI["mixed"] | Figma.StrokeCap;
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fillStyleId: string | Figma.PluginAPI["mixed"];
   strokeStyleId: string;
   outlineStroke(): Figma.VectorNode {
@@ -239,6 +241,7 @@ export class MappingLineNode implements Figma.LineNode {
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
   fillStyleId: string | Figma.PluginAPI["mixed"];
   absoluteTransform: Figma.Transform;
@@ -320,6 +323,7 @@ export class MappingVectorNode implements Figma.VectorNode {
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
   fillStyleId: string | Figma.PluginAPI["mixed"];
   absoluteTransform: Figma.Transform;
@@ -520,6 +524,7 @@ export class MappingTextNode implements Figma.TextNode {
   strokeCap: Figma.PluginAPI["mixed"] | Figma.StrokeCap;
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fillStyleId: string | Figma.PluginAPI["mixed"];
   strokeStyleId: string;
   outlineStroke(): Figma.VectorNode {
@@ -666,6 +671,7 @@ export class MappingFrameNode implements Figma.FrameNode {
   strokeCap: Figma.PluginAPI["mixed"] | Figma.StrokeCap;
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fillStyleId: string | Figma.PluginAPI["mixed"];
   strokeStyleId: string;
   outlineStroke(): Figma.VectorNode {
@@ -810,6 +816,7 @@ export class MappingInstanceNode implements Figma.InstanceNode {
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fills: readonly Figma.Paint[] | Figma.PluginAPI["mixed"];
   fillStyleId: string | Figma.PluginAPI["mixed"];
   cornerRadius: number | Figma.PluginAPI["mixed"];
@@ -941,6 +948,7 @@ export class MappingComponentNode implements Figma.ComponentNode {
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
   fillStyleId: string | Figma.PluginAPI["mixed"];
   cornerRadius: number | Figma.PluginAPI["mixed"];
@@ -1140,6 +1148,7 @@ export class MappingBooleanOperationNode implements Figma.BooleanOperationNode {
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fills: readonly Figma.Paint[] | Figma.PluginAPI["mixed"];
   fillStyleId: string | Figma.PluginAPI["mixed"];
   absoluteTransform: Figma.Transform;
@@ -1242,6 +1251,7 @@ export class MappingPolygonNode implements Figma.PolygonNode {
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
   fillStyleId: string | Figma.PluginAPI["mixed"];
   absoluteTransform: Figma.Transform;
@@ -1325,6 +1335,7 @@ export class MAppingStarNode implements Figma.StarNode {
   strokeJoin: Figma.PluginAPI["mixed"] | Figma.StrokeJoin;
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   dashPattern: readonly number[];
+  strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
   fillStyleId: string | Figma.PluginAPI["mixed"];
   absoluteTransform: Figma.Transform;

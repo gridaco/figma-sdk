@@ -706,6 +706,7 @@ interface MinimalStrokesMixin {
   strokeJoin: StrokeJoin | PluginAPI["mixed"];
   strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
   dashPattern: ReadonlyArray<number>;
+  strokeGeometry: VectorPaths;
 }
 export interface MinimalFillsMixin {
   fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
