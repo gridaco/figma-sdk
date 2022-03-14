@@ -477,6 +477,35 @@ export interface VectorBase extends Global {
   readonly strokeWeight: number;
 
   /**
+   * A string enum with value of `"NONE"`, `"ROUND"`, `"SQUARE"`, `"LINE_ARROW"`, or `"TRIANGLE_ARROW"`, describing the end caps of vector paths.
+   * @default "NONE"
+   */
+  readonly strokeCap:
+    | "NONE"
+    | "ROUND"
+    | "SQUARE"
+    | "LINE_ARROW"
+    | "TRIANGLE_ARROW";
+
+  /**
+   * A string enum with value of "MITER", "BEVEL", or "ROUND", describing how corners in vector paths are rendered.
+   * @default "MITER"
+   */
+  readonly strokeJoin: "MITER" | "BEVEL" | "ROUND";
+
+  /**
+   * An array of floating point numbers describing the pattern of dash length and gap lengths that the vector path follows. For example a value of [1, 2] indicates that the path has a dash of length 1 followed by a gap of length 2, repeated.
+   * @default []
+   */
+  readonly strokeDashes: ReadonlyArray<number>;
+
+  /**
+   * Only valid if strokeJoin is "MITER". The corner angle, in degrees, below which strokeJoin will be set to "BEVEL" to avoid super sharp corners. By default this is 28.96 degrees.
+   * @default 28.96
+   */
+  readonly strokeMiterAngle: number;
+
+  /**
    * Only specified if parameter geometry=paths is used. An array of paths
    * representing the object stroke
    */
