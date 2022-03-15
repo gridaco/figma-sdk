@@ -4,8 +4,13 @@ import { convertFigmaRemoteLayoutConstraintsToFigmaConstraints } from "../conver
 import { convertFigmaRemoteStrokesToFigma } from "../converters/strokes.convert";
 import { MappingBlendInput } from "./_in";
 import { Transform } from "@design-sdk/figma-remote-types";
+
+type Transform2DMatrix = [[number, number, number], [number, number, number]];
+
 export function blendBaseNode(p: MappingBlendInput) {
   const { target, source } = p;
+  const is_root = p?.parent === undefined;
+
   target.id = source.id;
   target.parentId = p.parent?.id ?? null;
   target.name = source.name;
@@ -29,24 +34,13 @@ export function blendBaseNode(p: MappingBlendInput) {
 
   target.effects = convertFigmaRemoteEffectsToFigma(...source.effects);
 
-  target.relativeTransform = source.relativeTransform as [
-    [number, number, number],
-    [number, number, number]
-  ];
+  target.relativeTransform = source.relativeTransform as Transform2DMatrix;
+  target.x = source.relativeTransform[0][2];
+  target.y = source.relativeTransform[1][2];
+  target.width = source.size.x;
+  target.height = source.size.y;
 
-  // for some reason, xywh is not available for some node types by figma rem api.
-  const is_root = p?.parent === undefined;
-  const xy = xy_as_relative(
-    p?.parent?.absoluteBoundingBox,
-    source.absoluteBoundingBox,
-    is_root
-  );
-  target.x = xy.x; // this is converted to relative position.
-  target.y = xy.y; // this is converted to relative position.
-  target.width = source.absoluteBoundingBox.width;
-  target.height = source.absoluteBoundingBox.height;
-
-  // static override
+  // static override --------------------
   target.effectStyleId = undefined;
   target.removed = false;
   target.locked = false;
@@ -61,9 +55,11 @@ export function blendBaseNode(p: MappingBlendInput) {
     target.dashPattern = undefined;
     target.strokeJoin = undefined;
   }
+  // -------------------------------------
 
   // TODO: add reaction
   target.reactions = undefined;
+
   target.rotation = angleFromTransform(source.relativeTransform); // calculate with transform: ;
   target.absoluteTransform = [
     // TODO: support rotation
@@ -72,6 +68,9 @@ export function blendBaseNode(p: MappingBlendInput) {
   ]; // calculate with transform
 }
 
+/**
+ * @deprecated
+ */
 function xy_as_relative(
   parent: { x: number; y: number },
   child: { x: number; y: number },
