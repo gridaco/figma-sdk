@@ -563,6 +563,14 @@ export interface Line extends VectorBase {
 /** An ellipse */
 export interface Ellipse extends VectorBase {
   readonly type: "ELLIPSE";
+  /**
+   * Start and end angles of the ellipse measured clockwise from the x axis, plus the inner radius for donuts
+   */
+  readonly arcData: {
+    startingAngle: number;
+    endingAngle: number;
+    innerRadius: number;
+  };
 }
 
 /** A regular n-sided polygon */

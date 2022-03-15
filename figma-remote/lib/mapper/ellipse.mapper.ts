@@ -1,18 +1,31 @@
 import { Ellipse } from "@design-sdk/figma-remote-types";
 import { EllipseNode } from "@design-sdk/figma-types";
 import { MappingEllipseNode } from "./mapping-instance";
-import { blendBaseNode } from "../blenders";
+import { blendBaseNode, blendVectorNode } from "../blenders";
 
 export function mapFigmaRemoteEllipseToFigma(
-  remRect: Ellipse,
+  remEllipse: Ellipse,
   parent?
 ): EllipseNode {
   const mapping = new MappingEllipseNode();
   blendBaseNode({
     target: mapping,
-    source: remRect,
+    source: remEllipse,
     parent,
   });
+
+  blendVectorNode({
+    target: mapping,
+    source: remEllipse,
+    parent,
+  });
+
+  // ellipse specific
+  mapping.arcData = remEllipse.arcData ?? {
+    startingAngle: 0,
+    endingAngle: 0,
+    innerRadius: 0,
+  };
 
   return <EllipseNode & { vectorPaths }>{
     ...mapping,

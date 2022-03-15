@@ -96,26 +96,33 @@ export function intoReflectNodes(
         case "RECTANGLE":
         case "ELLIPSE": {
           let altNode;
-          if (node.type === "RECTANGLE") {
-            altNode = new ReflectRectangleNode({
-              id: node.id,
-              name: node.name,
-              origin: node.type,
-              parent: altParent,
-              originParentId: node.parent?.id,
-              absoluteTransform: node.absoluteTransform,
-              childrenCount: 0,
-            });
-          } else if (node.type === "ELLIPSE") {
-            altNode = new ReflectEllipseNode({
-              id: node.id,
-              name: node.name,
-              origin: node.type,
-              parent: altParent,
-              originParentId: node.parent?.id,
-              absoluteTransform: node.absoluteTransform,
-              childrenCount: 0,
-            });
+          switch (node.type) {
+            case "RECTANGLE": {
+              altNode = new ReflectRectangleNode({
+                id: node.id,
+                name: node.name,
+                origin: node.type,
+                parent: altParent,
+                originParentId: node.parent?.id,
+                absoluteTransform: node.absoluteTransform,
+                childrenCount: 0,
+              });
+              break;
+            }
+            case "ELLIPSE": {
+              altNode = new ReflectEllipseNode({
+                id: node.id,
+                name: node.name,
+                origin: node.type,
+                parent: altParent,
+                originParentId: node.parent?.id,
+                absoluteTransform: node.absoluteTransform,
+                childrenCount: 0,
+              });
+              // ellipse specific fileds (move this to safer place)
+              altNode.arcData = node.arcData;
+              break;
+            }
           }
 
           if (altParent) {
