@@ -4,9 +4,10 @@ import { ImageAsset, TransportableImageRepository } from "../image-repository";
 export class ImageHostingRepository {
   static imageRepostory: TransportableImageRepository;
   static setRepository(repo: TransportableImageRepository) {
-    console.info(
-      `registered image repo of buildid ${repo.buildId} to image hosting repo`
-    );
+    process.env.NODE_ENV === "development" &&
+      console.info(
+        `registered image repo of buildid ${repo.buildId} to image hosting repo`
+      );
     this.imageRepostory = repo;
   }
 
