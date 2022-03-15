@@ -1,27 +1,23 @@
-import {
+import type {
   DimensionLength,
-  FontWeight,
   TextAlign,
   TextAlignVertical,
   TextDecoration,
   TextManifest,
   TextStyleManifest,
+  TextOverflow,
+  TextTransform,
 } from "@reflect-ui/core";
+import { FontWeight } from "@reflect-ui/core";
 import { ReflectSceneNodeType } from "./node-type";
 import { ReflectDefaultShapeMixin } from "./mixins";
 
 // region FIXME - migrate this
 import { getTextStyleById } from "@design-sdk/figma";
 import { TextAutoResize } from "@design-sdk/figma-types";
-import {
-  FontName,
-  TextCase,
-  LetterSpacing,
-  LineHeight,
-} from "@design-sdk/figma-types";
+import { FontName, LetterSpacing } from "@design-sdk/figma-types";
 import { extractTextStyleFromTextNode } from "@design-sdk/figma-node-conversion";
 import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
-import { TextOverflow } from "@reflect-ui/core";
 // endregion
 
 export class ReflectTextNode
@@ -52,7 +48,7 @@ export class ReflectTextNode
   fontSize: number | undefined;
   fontName: FontName | undefined;
   textStyleId: string | undefined;
-  textCase: TextCase | undefined;
+  textCase: TextTransform | undefined;
   textDecoration?: TextDecoration;
 
   letterSpacing: LetterSpacing;

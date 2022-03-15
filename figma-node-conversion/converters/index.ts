@@ -9,5 +9,6 @@ export * from "./main-axis-alignment.convert";
 export * from "./tetx-decoration.convert";
 export * from "./text-align.converter";
 export * from "./text-style.convert";
+export * from "./text-case";
 export * from "./layout-grow.convert";
 export * from "./layout-align.convert";

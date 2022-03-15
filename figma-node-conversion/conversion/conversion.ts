@@ -31,6 +31,7 @@ import {
   convertFigmaCornerRadiusToBorderRadius,
   convertLayoutGrowToReflect,
   convertTextDecorationToReflect,
+  convertTextCaseToReflectTextTransform,
   figma_lineheight_to_reflect_ling_height,
   convertLetterSpacingToReflect,
 } from "../converters";
@@ -414,7 +415,9 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
   altNode.paragraphSpacing = node.paragraphSpacing;
   altNode.fontSize = figmaToReflectProperty(node.fontSize);
   altNode.fontName = figmaToReflectProperty(node.fontName);
-  altNode.textCase = figmaToReflectProperty(node.textCase);
+  altNode.textCase = convertTextCaseToReflectTextTransform(
+    figmaToReflectProperty(node.textCase)
+  );
 
   altNode.textDecoration = convertTextDecorationToReflect(
     figmaToReflectProperty<FigmaTextDecoration>(node.textDecoration)
