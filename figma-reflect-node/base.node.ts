@@ -34,10 +34,8 @@ type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 
 export class ReflectBaseNode
-  implements
-    IReflectNodeBaseReference,
-    IReflectLayoutMixin,
-    IReflectBlendMixin {
+  implements IReflectNodeBaseReference, IReflectLayoutMixin, IReflectBlendMixin
+{
   readonly $schema: string = "reflect-ui.com";
   readonly type: ReflectSceneNodeType;
   origin: ReflectSceneNodeType;
@@ -283,7 +281,7 @@ export class ReflectBaseNode
 
   swapVariant(name: string): Figma.InstanceNode {
     if (this.hasVariant) {
-      return swapVariant((this as any) as Figma.InstanceNode, name);
+      return swapVariant(this as any as Figma.InstanceNode, name);
     }
 
     // invalid request. this is not a variant compat node
@@ -376,6 +374,10 @@ export class ReflectBaseNode
   }
 
   get primaryFill(): Figma.Paint {
+    return utils.retrieveFill(this.fills);
+  }
+
+  get mostUsedFill(): Figma.Paint {
     if (this.hasChildren) {
       const availableNodes = this.getGrandchildren({
         includeThis: true,
@@ -387,7 +389,7 @@ export class ReflectBaseNode
       const fills = [].concat.apply([], fillsMap);
       return utils.retrieveFill(fills);
     }
-    return utils.retrieveFill(this.fills);
+    return this.primaryFill;
   }
 
   get primaryColor(): RGBAF {
