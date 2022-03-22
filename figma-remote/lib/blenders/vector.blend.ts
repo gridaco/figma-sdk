@@ -33,7 +33,10 @@ export function blendVectorNode(
   target.dashPattern = source.strokeDashes;
   // ------------------------------------------------------------------------------------
 
+  // TODO: vectorPaths in typings, is actually only available for VectorNode, so in future, add a if condition to check if the target type is MappingVectorNode.
   target.vectorPaths = convertToVectorPaths(source.fillGeometry);
+
+  target.fillGeometry = convertToVectorPaths(source.fillGeometry);
 }
 
 const convertToVectorPaths = (d: ReadonlyArray<Path>) =>

@@ -62,6 +62,7 @@ export class MappingRectangleNode implements Figma.RectangleNode {
   effects: readonly Figma.Effect[];
   effectStyleId: string;
   fills: readonly Figma.Paint[] | Figma.PluginAPI["mixed"];
+  fillGeometry: Figma.VectorPaths;
   strokes: readonly Figma.Paint[];
   strokeWeight: number;
   strokeMiterLimit: number;
@@ -108,7 +109,7 @@ export class MappingRectangleNode implements Figma.RectangleNode {
 }
 
 export class MappingEllipseNode implements Figma.EllipseNode {
-  vectorPaths; /** OVERRIDE */
+  vectorPaths; /** OVERRIDE */ // TODO: remove me
   type: "ELLIPSE";
   clone(): Figma.EllipseNode {
     throw new Error("Method not implemented.");
@@ -158,6 +159,7 @@ export class MappingEllipseNode implements Figma.EllipseNode {
   dashPattern: readonly number[];
   strokeGeometry: Figma.VectorPaths;
   fillStyleId: string | Figma.PluginAPI["mixed"];
+  fillGeometry: Figma.VectorPaths;
   strokeStyleId: string;
   outlineStroke(): Figma.VectorNode {
     throw new Error("Method not implemented.");
@@ -243,6 +245,7 @@ export class MappingLineNode implements Figma.LineNode {
   dashPattern: readonly number[];
   strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
+  fillGeometry: Figma.VectorPaths;
   fillStyleId: string | Figma.PluginAPI["mixed"];
   absoluteTransform: Figma.Transform;
   relativeTransform: Figma.Transform;
@@ -326,6 +329,7 @@ export class MappingVectorNode implements Figma.VectorNode {
   strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
   fillStyleId: string | Figma.PluginAPI["mixed"];
+  fillGeometry: Figma.VectorPaths;
   absoluteTransform: Figma.Transform;
   relativeTransform: Figma.Transform;
   x: number;
@@ -517,6 +521,7 @@ export class MappingTextNode implements Figma.TextNode {
   effects: readonly Figma.Effect[];
   effectStyleId: string;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
+  fillGeometry: Figma.VectorPaths;
   strokes: readonly Figma.Paint[];
   strokeWeight: number;
   strokeMiterLimit: number;
@@ -664,6 +669,7 @@ export class MappingFrameNode implements Figma.FrameNode {
   backgrounds: readonly Figma.Paint[];
   backgroundStyleId: string;
   fills: readonly Figma.Paint[] | Figma.PluginAPI["mixed"];
+  fillGeometry: Figma.VectorPaths;
   strokes: readonly Figma.Paint[];
   strokeWeight: number;
   strokeMiterLimit: number;
@@ -819,6 +825,7 @@ export class MappingInstanceNode implements Figma.InstanceNode {
   strokeGeometry: Figma.VectorPaths;
   fills: readonly Figma.Paint[] | Figma.PluginAPI["mixed"];
   fillStyleId: string | Figma.PluginAPI["mixed"];
+  fillGeometry: Figma.VectorPaths;
   cornerRadius: number | Figma.PluginAPI["mixed"];
   cornerSmoothing: number;
   topLeftRadius: number;
@@ -951,6 +958,7 @@ export class MappingComponentNode implements Figma.ComponentNode {
   strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
   fillStyleId: string | Figma.PluginAPI["mixed"];
+  fillGeometry: Figma.VectorPaths;
   cornerRadius: number | Figma.PluginAPI["mixed"];
   cornerSmoothing: number;
   topLeftRadius: number;
@@ -1151,6 +1159,7 @@ export class MappingBooleanOperationNode implements Figma.BooleanOperationNode {
   strokeGeometry: Figma.VectorPaths;
   fills: readonly Figma.Paint[] | Figma.PluginAPI["mixed"];
   fillStyleId: string | Figma.PluginAPI["mixed"];
+  fillGeometry: Figma.VectorPaths;
   absoluteTransform: Figma.Transform;
   relativeTransform: Figma.Transform;
   x: number;
@@ -1254,6 +1263,7 @@ export class MappingPolygonNode implements Figma.PolygonNode {
   strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
   fillStyleId: string | Figma.PluginAPI["mixed"];
+  fillGeometry: Figma.VectorPaths;
   absoluteTransform: Figma.Transform;
   relativeTransform: Figma.Transform;
   x: number;
@@ -1338,6 +1348,7 @@ export class MAppingStarNode implements Figma.StarNode {
   strokeGeometry: Figma.VectorPaths;
   fills: Figma.PluginAPI["mixed"] | readonly Figma.Paint[];
   fillStyleId: string | Figma.PluginAPI["mixed"];
+  fillGeometry: Figma.VectorPaths;
   absoluteTransform: Figma.Transform;
   relativeTransform: Figma.Transform;
   x: number;

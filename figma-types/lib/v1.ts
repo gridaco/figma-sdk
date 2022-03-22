@@ -1,6 +1,7 @@
 /**
  * from figma plugin typings 1.19.2
  * https://github.com/figma/plugin-typings/blob/master/index.d.ts
+ * https://github.com/figma/plugin-typings/blob/master/plugin-api.d.ts
  * https://github.com/figma/plugin-typings/commit/e355d78a743797360c819dda783b73b5614485f7
  */
 //@ts-ignore
@@ -711,6 +712,7 @@ interface MinimalStrokesMixin {
 export interface MinimalFillsMixin {
   fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
   fillStyleId: string | PluginAPI["mixed"];
+  fillGeometry: VectorPaths;
 }
 export interface GeometryMixin extends MinimalStrokesMixin, MinimalFillsMixin {
   strokeCap: StrokeCap | PluginAPI["mixed"];

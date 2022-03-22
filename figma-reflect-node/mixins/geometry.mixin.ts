@@ -7,6 +7,7 @@ import type {
 
 export interface IReflectGeometryMixin {
   fills: ReadonlyArray<Paint> | undefined;
+  // TODO: add fillGeometry
   strokes: ReadonlyArray<Paint>;
   strokeWeight: number;
   strokeMiterLimit: number;
