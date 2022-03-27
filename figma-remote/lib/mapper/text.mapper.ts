@@ -1,5 +1,5 @@
-import { Text } from "@design-sdk/figma-remote-types";
-import { TextNode } from "@design-sdk/figma-types";
+import type { Text, Hyperlink } from "@design-sdk/figma-remote-types";
+import type { TextNode, HyperlinkTarget } from "@design-sdk/figma-types";
 import {
   _FILL_INTERFACE_METHODS,
   __FIND_PARENT_REFERENCE,
@@ -28,7 +28,7 @@ export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
     type: "TEXT",
 
     // pure text
-    hyperlink: undefined, // TODO: implement hyperlink mapping
+    hyperlink: mapHyperlink(remText.style.hyperlink),
     textAlignHorizontal: remText.style.textAlignHorizontal,
     textAlignVertical: remText.style.textAlignVertical,
     textAutoResize: mapTextAutoResize(remText.style.textAutoResize),
@@ -112,5 +112,24 @@ function mapTextAutoResize(
     case undefined:
     default:
       return "NONE";
+  }
+}
+
+function mapHyperlink(link?: Hyperlink): HyperlinkTarget {
+  if (!link) {
+    return;
+  }
+
+  switch (link.type) {
+    case "URL":
+      return {
+        type: "URL",
+        value: link.url,
+      };
+    case "NODE":
+      return {
+        type: "NODE",
+        value: link.nodeID,
+      };
   }
 }
