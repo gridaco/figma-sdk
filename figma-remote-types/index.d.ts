@@ -887,6 +887,10 @@ export interface TypeStyle {
   readonly letterSpacing: number;
   /** Paints applied to characters */
   readonly fills?: ReadonlyArray<Paint>;
+  /**
+   * Link to a URL or frame
+   */
+  readonly hyperlink?: Hyperlink;
   /** Line height in px */
   readonly lineHeightPx: number;
   /** Line height as a percentage of normal line height */
@@ -903,6 +907,25 @@ export interface TypeStyle {
    * Dimensions along which text will auto resize, default is that the text does not auto-resize.
    */
   readonly textAutoResize: "HEIGHT" | "WIDTH_AND_HEIGHT";
+}
+
+export interface Hyperlink {
+  /**
+   * Type of hyperlink
+   * - URL
+   * - NODE
+   */
+  type: "URL" | "NODE";
+
+  /**
+   * URL being linked to, if URL type
+   */
+  readonly url?: string;
+
+  /**
+   * ID of frame hyperlink points to, if NODE type
+   */
+  readonly nodeID?: string;
 }
 
 /**
