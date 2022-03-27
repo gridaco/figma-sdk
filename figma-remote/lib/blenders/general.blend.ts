@@ -46,7 +46,6 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.locked = false;
   target.parent = undefined;
   target.constrainProportions = undefined;
-  target.layoutGrow = undefined;
   if (target.type !== "GROUP") {
     target.strokeStyleId = undefined;
     target.fillStyleId = undefined;

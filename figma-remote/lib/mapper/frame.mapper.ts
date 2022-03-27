@@ -32,8 +32,6 @@ export function mapFigmaRemoteFrameToFigma(
     ...mapping,
     type: "FRAME",
 
-    layoutAlign: remFrame.layoutAlign,
-    layoutGrow: remFrame.layoutGrow,
     layoutMode: remFrame.layoutMode ?? "NONE",
     primaryAxisSizingMode: remFrame.primaryAxisSizingMode ?? "AUTO",
     counterAxisSizingMode: remFrame.counterAxisSizingMode ?? "AUTO",
