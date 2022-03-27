@@ -13,11 +13,15 @@ import { mapFigmaRemotePolygonToFigma } from "./polygon.mapper";
 import { mapFigmaRemoteStarToFigma } from "./star.mapper";
 import { mapFigmaRemoteLineToFigma } from "./line.mapper";
 export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
+  // const mapped = mapper(remNode, parent);
+  // console.log("converting remote response to figma standard:", remNode, mapped);
+  return mapper(remNode, parent);
+}
+
+function mapper(remNode: Node, parent?): SceneNode {
   let preConvertedChildren: SceneNode[];
   if ("children" in remNode) {
-    preConvertedChildren = remNode.children.map((c) =>
-      mapFigmaRemoteToFigma(c, remNode)
-    );
+    preConvertedChildren = remNode.children.map((c) => mapper(c, remNode));
   }
 
   let nonchildreninstance: SceneNode;
