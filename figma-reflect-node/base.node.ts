@@ -62,6 +62,7 @@ export class ReflectBaseNode
     this.originRaw = props.origin;
     this.absoluteTransform = props.absoluteTransform;
     this.childrenCount = props.childrenCount;
+    this.isRoot = checkIfRoot(this as any);
 
     if (!this.originParentId) {
       this.hierachyIndex = 0;
@@ -75,6 +76,8 @@ export class ReflectBaseNode
       this.hierachyIndex = parentHierachyIndex + hierachyOnParent + 1;
     }
   }
+
+  readonly isRoot: boolean;
 
   getHierachyIndexOnParent(): number {
     if (this.originParentNode) {
@@ -294,11 +297,6 @@ export class ReflectBaseNode
 
   get isMasterComponent(): boolean {
     return this.type == "COMPONENT";
-  }
-
-  get isRoot(): boolean {
-    // DANGEROUS
-    return checkIfRoot(this as any);
   }
 
   toString(): string {
