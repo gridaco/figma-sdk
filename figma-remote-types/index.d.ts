@@ -59,6 +59,17 @@ export type TextType = "TEXT";
 
 export type PaintType = PaintTypeSolid | PaintTypeGraident | PaintTypeImage;
 
+export type FlowStartingPoint = {
+  /**
+   * Unique identifier specifying the frame
+   */
+  nodeId: string;
+  /**
+   * Name of flow
+   */
+  name: string;
+};
+
 /**
  * how the layer blends with layers below
  */
@@ -152,8 +163,15 @@ export interface Canvas extends Global {
   readonly children: ReadonlyArray<Exclude<Exclude<Node, Document>, Canvas>>;
   /** Background color of the canvas */
   readonly backgroundColor: Color;
-  /** Node ID that corresponds to the start frame for prototypes */
+  /** @deprecated [DEPRECATED] Node ID that corresponds to the start frame for prototypes */
   readonly prototypeStartNodeID: string | null;
+
+  /**
+   * A array of flow starting points sorted by its position in the prototype settings panel.
+   * @default []
+   */
+  readonly flowStartingPoints: FlowStartingPoint[];
+
   /** An array of export settings representing images to export from the canvas */
   readonly exportSettings?: ReadonlyArray<ExportSetting>;
 }
