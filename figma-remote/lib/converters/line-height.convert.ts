@@ -26,6 +26,9 @@ export function figmaRemoteLineHeightToFigma(params: TypeStyle): LineHeight {
         unit: "AUTO",
       };
 
+    case undefined:
+      return undefined;
+
     default:
       _warnNotHandled(params);
       // safely return fallback
