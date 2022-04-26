@@ -11,7 +11,7 @@ export function mapFigmaRemoteFrameToFigma(
   remFrame: Frame,
   parent?
 ): Figma.FrameNode {
-  const mapping = new MappingFrameNode();
+  const mapping: MappingFrameNode = {} as any;
   blendBaseNode({
     target: mapping,
     source: remFrame,

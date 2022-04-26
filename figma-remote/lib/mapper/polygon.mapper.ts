@@ -7,7 +7,8 @@ export function mapFigmaRemotePolygonToFigma(
   remPol: RegularPolygon,
   parent?
 ): Figma.PolygonNode {
-  const mapping = new MappingPolygonNode();
+  const mapping: MappingPolygonNode = {} as any;
+
   blendBaseNode({
     target: mapping,
     source: remPol,

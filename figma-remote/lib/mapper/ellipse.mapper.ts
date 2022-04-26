@@ -7,7 +7,8 @@ export function mapFigmaRemoteEllipseToFigma(
   remEllipse: Ellipse,
   parent?
 ): EllipseNode {
-  const mapping = new MappingEllipseNode();
+  const mapping: MappingEllipseNode = {} as any;
+
   blendBaseNode({
     target: mapping,
     source: remEllipse,

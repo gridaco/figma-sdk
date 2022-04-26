@@ -9,11 +9,9 @@ export function mapFigmaRemoteInstanceToFigma(
   remInstance: Instance,
   parent?
 ): Figma.InstanceNode {
-  const mapping = new MappingInstanceNode();
-  const frame = mapFigmaRemoteFrameToFigma(
-    (remInstance as any) as Frame,
-    parent
-  );
+  const mapping: MappingInstanceNode = {} as any;
+
+  const frame = mapFigmaRemoteFrameToFigma(remInstance as any as Frame, parent);
 
   return <Figma.InstanceNode>{
     ...mapping,

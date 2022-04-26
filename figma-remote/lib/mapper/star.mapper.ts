@@ -6,7 +6,7 @@ export function mapFigmaRemoteStarToFigma(
   remRect: Star,
   parent?
 ): Figma.StarNode {
-  const mapping = new MAppingStarNode();
+  const mapping: MAppingStarNode = {} as any;
   blendBaseNode({
     target: mapping,
     source: remRect,

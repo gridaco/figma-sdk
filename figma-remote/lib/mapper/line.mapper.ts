@@ -7,7 +7,7 @@ export function mapFigmaRemoteLineToFigma(
   remLine: Line,
   parent?
 ): Figma.LineNode {
-  const mapping = new MappingLineNode();
+  const mapping: MappingLineNode = {} as any;
   blendBaseNode({
     target: mapping,
     source: remLine,

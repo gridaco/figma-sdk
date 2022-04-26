@@ -7,7 +7,7 @@ export function mapFigmaRemoteBooleanOperationToFigma(
   remBool: BooleanGroup,
   parent?
 ): Figma.BooleanOperationNode {
-  const mapping = new MappingBooleanOperationNode();
+  const mapping: MappingBooleanOperationNode = {} as any;
   blendBaseNode({
     target: mapping,
     source: remBool,

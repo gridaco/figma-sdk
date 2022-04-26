@@ -8,9 +8,9 @@ export function mapFigmaRemoteComponentToFigma(
   remComponent: Component,
   parent?
 ): Figma.ComponentNode {
-  const mapping = new MappingComponentNode();
+  const mapping: MappingComponentNode = {} as any;
   const frame = mapFigmaRemoteFrameToFigma(
-    (remComponent as any) as Frame,
+    remComponent as any as Frame,
     parent
   );
 

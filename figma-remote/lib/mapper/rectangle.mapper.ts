@@ -10,7 +10,8 @@ export function mapFigmaRemoteRectangleToFigma(
   remRect: Rectangle,
   parent?
 ): Figma.RectangleNode {
-  const mapping = new MappingRectangleNode();
+  const mapping: MappingRectangleNode = {} as any;
+
   blendBaseNode({
     target: mapping,
     source: remRect,
