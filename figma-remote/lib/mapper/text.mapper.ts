@@ -147,7 +147,7 @@ function mapOverrideTypeStyle({
       value: style.letterSpacing,
       unit: "PIXELS", // I'm not sure if it's safe to case it to this. haven't tested yet
     },
-    fills: convertFigmaRemoteFillsToFigma(...style.fills),
+    fills: style.fills && convertFigmaRemoteFillsToFigma(...style.fills),
     textStyleId: null, // static (not available on remote api)
     fillStyleId: null, // static (not available on remote api)
   };
