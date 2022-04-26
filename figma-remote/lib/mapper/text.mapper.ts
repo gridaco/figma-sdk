@@ -1,13 +1,24 @@
-import type { Text, Hyperlink } from "@design-sdk/figma-remote-types";
-import type { TextNode, HyperlinkTarget } from "@design-sdk/figma-types";
+import type {
+  Text,
+  Hyperlink,
+  TypeStyle,
+} from "@design-sdk/figma-remote-types";
+import type {
+  TextNode,
+  HyperlinkTarget,
+  StyledTextSegment,
+} from "@design-sdk/figma-types";
 import {
   _FILL_INTERFACE_METHODS,
   __FIND_PARENT_REFERENCE,
   __TO_STRING__CALL,
 } from "./_utils";
-import { figmaRemoteLineHeightToFigma } from "../converters/line-height.convert";
+import {
+  figmaRemoteLineHeightToFigma,
+  convertFigmaRemoteFillsToFigma,
+} from "../converters";
 import { MappingTextNode } from "./mapping-instance";
-import { blendBaseNode } from "../blenders/general.blend";
+import { blendBaseNode } from "../blenders";
 
 /**
  * @todo not fully implemented
@@ -15,12 +26,16 @@ import { blendBaseNode } from "../blenders/general.blend";
  * @returns
  */
 export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
-  const mapping = new MappingTextNode();
+  const mapping: MappingTextNode = {} as any;
+
   blendBaseNode({
     target: mapping,
     source: remText,
     parent,
   });
+
+  const { characters, style, styleOverrideTable, characterStyleOverrides } =
+    remText;
 
   return {
     ...mapping,
@@ -32,22 +47,32 @@ export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
     textAlignHorizontal: remText.style.textAlignHorizontal,
     textAlignVertical: remText.style.textAlignVertical,
     textAutoResize: mapTextAutoResize(remText.style.textAutoResize),
-    paragraphIndent: remText.style.paragraphIndent,
-    paragraphSpacing: remText.style.paragraphSpacing,
-    fontSize: remText.style.fontSize,
-    fontName: {
-      family: remText.style.fontFamily,
-      style: remText.style.fontPostScriptName,
-    },
-    textCase: remText.style.textCase,
-    textDecoration: remText.style.textDecoration,
 
+    characters: characters,
+
+    fontSize: style.fontSize,
+    fontName: {
+      family: style.fontFamily,
+      style: style.fontPostScriptName,
+    },
+    textDecoration: style.textDecoration,
+    textCase: style.textCase,
     letterSpacing: {
-      value: remText.style.letterSpacing,
+      value: style.letterSpacing,
       unit: "PIXELS", // I'm not sure if it's safe to case it to this. haven't tested yet
     },
-    lineHeight: figmaRemoteLineHeightToFigma(remText.style),
-    characters: remText.characters,
+    lineHeight: figmaRemoteLineHeightToFigma(style),
+    paragraphIndent: style.paragraphIndent,
+    paragraphSpacing: style.paragraphSpacing,
+
+    characterStyleOverrides: characterStyleOverrides as Array<number>,
+    styleOverrideTable: mapOverrideStyleMap({
+      table: styleOverrideTable,
+    }),
+    styledTextSegments: mapStyledTextSegments({
+      characters: characters,
+      maps: characterStyleOverrides,
+    }),
 
     // static override
     hasMissingFont: false,
@@ -91,13 +116,40 @@ export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
     setRangeTextStyleId: _FILL_INTERFACE_METHODS,
     getRangeFillStyleId: _FILL_INTERFACE_METHODS,
     setRangeFillStyleId: _FILL_INTERFACE_METHODS,
-
     getRangeHyperlink: _FILL_INTERFACE_METHODS,
     setRangeHyperlink: _FILL_INTERFACE_METHODS,
     setRangeIndentation: _FILL_INTERFACE_METHODS,
     getRangeIndentation: _FILL_INTERFACE_METHODS,
     getRangeListOptions: _FILL_INTERFACE_METHODS,
     setRangeListOptions: _FILL_INTERFACE_METHODS,
+    getStyledTextSegments: _FILL_INTERFACE_METHODS,
+  };
+}
+
+function mapOverrideTypeStyle({
+  style,
+}: {
+  style: TypeStyle;
+}): Omit<
+  StyledTextSegment,
+  "characters" | "start" | "end" | "listOptions" | "indentation" | "hyperlink"
+> {
+  return {
+    fontSize: style.fontSize,
+    fontName: {
+      family: style.fontFamily,
+      style: style.fontPostScriptName,
+    },
+    textDecoration: style.textDecoration,
+    textCase: style.textCase,
+    lineHeight: figmaRemoteLineHeightToFigma(style),
+    letterSpacing: {
+      value: style.letterSpacing,
+      unit: "PIXELS", // I'm not sure if it's safe to case it to this. haven't tested yet
+    },
+    fills: convertFigmaRemoteFillsToFigma(...style.fills),
+    textStyleId: null, // static (not available on remote api)
+    fillStyleId: null, // static (not available on remote api)
   };
 }
 
@@ -132,4 +184,27 @@ function mapHyperlink(link?: Hyperlink): HyperlinkTarget {
         value: link.nodeID,
       };
   }
+}
+
+function mapStyledTextSegments({}: {
+  characters: string;
+  maps: readonly number[];
+}): ReadonlyArray<StyledTextSegment> {
+  // TODO:
+  return [];
+}
+
+function mapOverrideStyleMap({
+  table,
+}: {
+  table: Text["styleOverrideTable"];
+}): TextNode["styleOverrideTable"] {
+  return Object.keys(table).reduce((o, k) => {
+    return {
+      ...o,
+      [k]: mapOverrideTypeStyle({
+        style: table[k],
+      }),
+    };
+  }, {});
 }
