@@ -623,6 +623,20 @@ export interface Text extends VectorBase {
   readonly characterStyleOverrides: ReadonlyArray<number>;
   /** Map from ID to TypeStyle for looking up style overrides */
   readonly styleOverrideTable: { readonly [index: number]: TypeStyle };
+
+  /**
+   * An array with the same number of elements as lines in the text node, where lines are delimited by newline or paragraph separator characters. Each element in the array corresponds to the list type of a specific line. List types are represented as string enums with one of these possible values:
+   *
+   * - ORDERED: Text is an ordered list (numbered)
+   * - UNORDERED: Text is an unordered list (bulleted)
+   * - NONE: Text is plain text and not part of any list
+   */
+  readonly lineTypes: ("ORDERED" | "UNORDERED" | "NONE")[];
+
+  /**
+   * An array with the same number of elements as lines in the text node, where lines are delimited by newline or paragraph separator characters. Each element in the array corresponds to the indentation level of a specific line.
+   */
+  readonly lineIndentations: number[];
 }
 
 /** A rectangular region of the canvas that can be exported */
