@@ -56,8 +56,8 @@ export function blendBaseNode(p: MappingBlendInput) {
   }
   // -------------------------------------
 
-  // TODO: add reaction
-  target.reactions = undefined;
+  // reaction are not supported via remote api - https://github.com/gridaco/designto-code/issues/157
+  // target.reactions;
 
   target.rotation = angleFromTransform(source.relativeTransform); // calculate with transform: ;
   target.absoluteTransform = [

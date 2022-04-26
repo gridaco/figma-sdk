@@ -1,9 +1,15 @@
+import type {
+  BaseNodeMixin,
+  Figma,
+  FimgaLayoutAlign,
+  LayoutMixin,
+} from "@design-sdk/figma-types";
+
 ////
 //// Mapping instance is a class that follows the target interfaces.
 //// since we are converting interface to interface, we cannot use functionalities of mixin blending.
 //// to make the blending code simpler, we are making this abstract mapping instance for temporary mapping usage
 ////
-import { Figma, FimgaLayoutAlign } from "@design-sdk/figma-types";
 
 export type MappingNode =
   | MappingRectangleNode
@@ -38,13 +44,30 @@ type OmitChildrenMixinMethods =
   | "findAll"
   | "findOne";
 
+type MutableOverrideOfBaseNodeMixin<T extends BaseNodeMixin> = T &
+  Omit<T, "id" | "parent" | "parentId" | "removed"> & {
+    id: BaseNodeMixin["id"];
+    parent: BaseNodeMixin["parent"];
+    parentId: BaseNodeMixin["parentId"];
+    removed: BaseNodeMixin["removed"];
+  };
+
+type MutableOverrideOfLayoutMixin<T extends LayoutMixin> = T &
+  Omit<LayoutMixin, "absoluteTransform" | "width" | "height"> & {
+    absoluteTransform: LayoutMixin["absoluteTransform"];
+    width: LayoutMixin["width"];
+    height: LayoutMixin["height"];
+  };
+
 /**
  * RectangleNode Mapping
  */
 export class MappingRectangleNode
   implements
     Omit<
-      Figma.RectangleNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.RectangleNode>
+      >,
       | "clone"
       | OmitLayoutMixinMethods
       | OmitBaseNodeMixinMethods
@@ -101,7 +124,9 @@ export class MappingRectangleNode
 export class MappingEllipseNode
   implements
     Omit<
-      Figma.EllipseNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.EllipseNode>
+      >,
       | "clone"
       | OmitLayoutMixinMethods
       | OmitBaseNodeMixinMethods
@@ -156,7 +181,9 @@ export class MappingEllipseNode
 export class MappingLineNode
   implements
     Omit<
-      Figma.LineNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.LineNode>
+      >,
       | "clone"
       | OmitLayoutMixinMethods
       | OmitBaseNodeMixinMethods
@@ -208,7 +235,9 @@ export class MappingLineNode
 export class MappingVectorNode
   implements
     Omit<
-      Figma.VectorNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.VectorNode>
+      >,
       | "clone"
       | OmitLayoutMixinMethods
       | OmitBaseNodeMixinMethods
@@ -292,7 +321,7 @@ type OmitTextSublayerMethods =
   | "getStyledTextSegments";
 
 export type MappingTextNode = Omit<
-  Figma.TextNode,
+  MutableOverrideOfBaseNodeMixin<MutableOverrideOfLayoutMixin<Figma.TextNode>>,
   | "clone"
   | OmitBaseNodeMixinMethods
   | OmitLayoutMixinMethods
@@ -304,7 +333,9 @@ export type MappingTextNode = Omit<
 export class MappingFrameNode
   implements
     Omit<
-      Figma.FrameNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.FrameNode>
+      >,
       | "clone"
       | OmitBaseNodeMixinMethods
       | OmitLayoutMixinMethods
@@ -390,7 +421,9 @@ type OmitInsanceNodeMethods =
 export class MappingInstanceNode
   implements
     Omit<
-      Figma.InstanceNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.InstanceNode>
+      >,
       | "clone"
       | OmitBaseNodeMixinMethods
       | OmitLayoutMixinMethods
@@ -482,7 +515,9 @@ type OmitPublishableMixinMethods = "getPublishStatusAsync";
 export class MappingComponentNode
   implements
     Omit<
-      Figma.ComponentNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.ComponentNode>
+      >,
       | "clone"
       | OmitBaseNodeMixinMethods
       | OmitLayoutMixinMethods
@@ -570,7 +605,9 @@ export class MappingComponentNode
 export class MappingGroupNode
   implements
     Omit<
-      Figma.GroupNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.GroupNode>
+      >,
       | "clone"
       | OmitBaseNodeMixinMethods
       | OmitChildrenMixinMethods
@@ -612,7 +649,9 @@ export class MappingGroupNode
 export class MappingBooleanOperationNode
   implements
     Omit<
-      Figma.BooleanOperationNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.BooleanOperationNode>
+      >,
       | "clone"
       | OmitBaseNodeMixinMethods
       | OmitChildrenMixinMethods
@@ -674,7 +713,9 @@ export class MappingBooleanOperationNode
 export class MappingPolygonNode
   implements
     Omit<
-      Figma.PolygonNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.PolygonNode>
+      >,
       | "clone"
       | OmitBaseNodeMixinMethods
       | OmitChildrenMixinMethods
@@ -730,7 +771,9 @@ export class MappingPolygonNode
 export class MAppingStarNode
   implements
     Omit<
-      Figma.StarNode,
+      MutableOverrideOfBaseNodeMixin<
+        MutableOverrideOfLayoutMixin<Figma.StarNode>
+      >,
       | "clone"
       | OmitBaseNodeMixinMethods
       | OmitChildrenMixinMethods
