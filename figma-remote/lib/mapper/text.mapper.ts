@@ -2,11 +2,13 @@ import type {
   Text,
   Hyperlink,
   TypeStyle,
+  Paint,
 } from "@design-sdk/figma-remote-types";
 import type {
   TextNode,
   HyperlinkTarget,
   StyledTextSegment,
+  LetterSpacing,
 } from "@design-sdk/figma-types";
 import {
   figmaRemoteLineHeightToFigma,
@@ -29,8 +31,27 @@ export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
     parent,
   });
 
-  const { characters, style, styleOverrideTable, characterStyleOverrides } =
-    remText;
+  const {
+    characters,
+    style,
+    styleOverrideTable,
+    characterStyleOverrides,
+    fills,
+  } = remText;
+
+  const table = mapOverrideStyleMap({
+    table: styleOverrideTable,
+  });
+
+  const segments = mapStyledTextSegments({
+    style: mapOverrideTypeStyle({
+      style,
+      overrideFills: fills,
+    }) as StyledTextSegment,
+    table: table,
+    characters: characters,
+    overrides: characterStyleOverrides,
+  });
 
   return <TextNode>{
     ...mapping,
@@ -52,22 +73,14 @@ export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
     },
     textDecoration: style.textDecoration,
     textCase: style.textCase,
-    letterSpacing: {
-      value: style.letterSpacing,
-      unit: "PIXELS", // I'm not sure if it's safe to case it to this. haven't tested yet
-    },
+    letterSpacing: mapLetterSpacing(style),
     lineHeight: figmaRemoteLineHeightToFigma(style),
     paragraphIndent: style.paragraphIndent,
     paragraphSpacing: style.paragraphSpacing,
 
     characterStyleOverrides: characterStyleOverrides as Array<number>,
-    styleOverrideTable: mapOverrideStyleMap({
-      table: styleOverrideTable,
-    }),
-    styledTextSegments: mapStyledTextSegments({
-      characters: characters,
-      maps: characterStyleOverrides,
-    }),
+    styleOverrideTable: table,
+    styledTextSegments: segments,
 
     // static override
     hasMissingFont: false,
@@ -78,12 +91,17 @@ export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
 
 function mapOverrideTypeStyle({
   style,
+  overrideFills,
 }: {
   style: TypeStyle;
+  overrideFills?: readonly Paint[];
 }): Omit<
   StyledTextSegment,
   "characters" | "start" | "end" | "listOptions" | "indentation" | "hyperlink"
 > {
+  const _target_fills = style.fills ?? overrideFills;
+
+  // do not provide default value since this represents a override data.
   return {
     fontSize: style.fontSize,
     fontName: {
@@ -93,13 +111,21 @@ function mapOverrideTypeStyle({
     textDecoration: style.textDecoration,
     textCase: style.textCase,
     lineHeight: figmaRemoteLineHeightToFigma(style),
-    letterSpacing: {
-      value: style.letterSpacing,
-      unit: "PIXELS", // I'm not sure if it's safe to case it to this. haven't tested yet
-    },
-    fills: style.fills && convertFigmaRemoteFillsToFigma(...style.fills),
-    textStyleId: null, // static (not available on remote api)
-    fillStyleId: null, // static (not available on remote api)
+    letterSpacing: mapLetterSpacing(style),
+    fills: _target_fills && convertFigmaRemoteFillsToFigma(..._target_fills),
+    textStyleId: undefined, // static (not available on remote api)
+    fillStyleId: undefined, // static (not available on remote api)
+  };
+}
+
+function mapLetterSpacing({
+  letterSpacing,
+}: {
+  letterSpacing: number;
+}): LetterSpacing {
+  return {
+    value: letterSpacing,
+    unit: "PIXELS", // I'm not sure if it's safe to case it to this. haven't tested yet
   };
 }
 
@@ -136,12 +162,62 @@ function mapHyperlink(link?: Hyperlink): HyperlinkTarget {
   }
 }
 
-function mapStyledTextSegments({}: {
+/**
+ * creates an array containing flattened, segmented text style data by different text styles.
+ * @param characters the full text
+ * @param style the default style - 0's style
+ * @param overrides the character style overrides referencing a style in a style override table. e.g. [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0, 0]
+ * @returns
+ */
+function mapStyledTextSegments({
+  characters,
+  overrides,
+  table,
+  style,
+}: {
+  style: StyledTextSegment;
+  table: { [k: number]: StyledTextSegment };
   characters: string;
-  maps: readonly number[];
+  overrides: readonly number[];
 }): ReadonlyArray<StyledTextSegment> {
-  // TODO:
-  return [];
+  // chunk the overrides into segments and loop through them (group the sequence with same values).
+  // e.g. [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0, 0] -> [{key: 0, start: 0, end: 3}, {key: 1, start: 4, end: 7}, {key: 2, start: 8, end: 11}, {key: 0, start: 12, end: 14}]
+
+  let result = [];
+  // after below reduce, the result will look like - [[0, 0, 0, 0], [1, 1, 1, 1], [2, 2, 2, 2], [0, 0, 0]]
+  overrides.reduce(function (r, a) {
+    if (a !== r) {
+      result.push([]);
+    }
+    result[result.length - 1].push(a);
+    return a;
+  }, undefined);
+
+  // after below reduce, the result will look like - [{key: 0, start: 0, end: 3}, {key: 1, start: 4, end: 7}, {key: 2, start: 8, end: 11}, {key: 0, start: 12, end: 14}]
+  let c = 0;
+  result = result.map((v, i) => {
+    const start = c;
+    c += v.length;
+    const end = c;
+    return {
+      key: v[0],
+      start: start,
+      end: end,
+    };
+  });
+
+  table[0] = style; // inject the default style
+
+  // map each segment to a style
+  return result.map((segment) => {
+    return {
+      key: segment.key,
+      start: segment.start,
+      end: segment.end,
+      characters: characters.slice(segment.start, segment.end),
+      ...table[segment.key],
+    } as StyledTextSegment;
+  });
 }
 
 function mapOverrideStyleMap({
