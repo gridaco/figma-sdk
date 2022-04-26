@@ -1,5 +1,6 @@
 /**
  * from figma plugin typings 1.19.2
+ * https://github.com/figma/plugin-typings/blob/master/plugin-api.d.ts
  * https://github.com/figma/plugin-typings/blob/master/index.d.ts
  * https://github.com/figma/plugin-typings/blob/master/plugin-api.d.ts
  * https://github.com/figma/plugin-typings/commit/e355d78a743797360c819dda783b73b5614485f7
@@ -489,6 +490,24 @@ export interface Font {
   fontName: FontName;
 }
 
+export interface StyledTextSegment {
+  characters: string;
+  start: number;
+  end: number;
+  fontSize: number;
+  fontName: FontName;
+  textDecoration: TextDecoration;
+  textCase: TextCase;
+  lineHeight: LineHeight;
+  letterSpacing: LetterSpacing;
+  fills: Paint[];
+  textStyleId: string;
+  fillStyleId: string;
+  listOptions: TextListOptions;
+  indentation: number;
+  hyperlink: HyperlinkTarget | null;
+}
+
 export type Reaction = { action: Action; trigger: Trigger };
 
 export type Action =
@@ -840,6 +859,36 @@ export interface TextSublayerNode {
   hyperlink: HyperlinkTarget | null | PluginAPI["mixed"];
 
   characters: string;
+
+  // -------------------------------------
+  // OVERRIDE - for remote data
+
+  /**
+   * Array with same number of elements as characters in text box, each element is a reference to the styleOverrideTable defined below and maps to the corresponding character in the characters field. Elements with value 0 have the default type style
+   *
+   * Note!
+   * - this field only exists on the rest api.
+   * - this field does not exist on native plugin api. to set this, you have to read each ranges and set this data.
+   * - this field is required to be set also on the plugin api, to support text span (multi text style).
+   * - this field may be added by the plugin api in the future by figma team by different name.
+   */
+  characterStyleOverrides: number[];
+
+  /**
+   * Map from ID to `TextStyle` for looking up style overrides
+   *
+   * Note!
+   * - this field only exists on the rest api.
+   * - this field does not exist on native plugin api. to set this, you have to read each ranges and set this data.
+   * - this field is required to be set also on the plugin api, to support text span (multi text style).
+   * - this field may be added by the plugin api in the future by figma team by different name.
+   */
+  styleOverrideTable: { [index: number]: StyledTextSegment };
+
+  styledTextSegments: ReadonlyArray<StyledTextSegment>;
+
+  // -------------------------------------
+
   insertCharacters(
     start: number,
     characters: string,
@@ -895,6 +944,21 @@ export interface TextSublayerNode {
   setRangeListOptions(start: number, end: number, value: TextListOptions): void;
   getRangeIndentation(start: number, end: number): number | PluginAPI["mixed"];
   setRangeIndentation(start: number, end: number, value: number): void;
+  getStyledTextSegments<
+    StyledTextSegmentFields extends (keyof Omit<
+      StyledTextSegment,
+      "characters" | "start" | "end"
+    >)[]
+  >(
+    fields: StyledTextSegmentFields,
+    start?: number,
+    end?: number
+  ): Array<
+    Pick<
+      StyledTextSegment,
+      StyledTextSegmentFields[number] | "characters" | "start" | "end"
+    >
+  >;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // Nodes
