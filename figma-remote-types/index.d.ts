@@ -911,6 +911,14 @@ export interface TypeStyle {
   readonly fontWeight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
   /** Font size in px */
   readonly fontSize: number;
+  /** Text casing applied to the node, default is the original casing */
+  readonly textCase?: "UPPER" | "LOWER" | "TITLE";
+  /** Text decoration applied to the node, default is none */
+  readonly textDecoration?: "STRIKETHROUGH" | "UNDERLINE";
+  /**
+   * Dimensions along which text will auto resize, default is that the text does not auto-resize.
+   */
+  readonly textAutoResize: "HEIGHT" | "WIDTH_AND_HEIGHT";
   /** Horizontal text alignment as string enum */
   readonly textAlignHorizontal: "LEFT" | "RIGHT" | "CENTER" | "JUSTIFIED";
   /** Vertical text alignment as string enum */
@@ -923,22 +931,19 @@ export interface TypeStyle {
    * Link to a URL or frame
    */
   readonly hyperlink?: Hyperlink;
+  /**
+   * A map of OpenType feature flags to 1 or 0, 1 if it is enabled and 0 if it is disabled. Note that some flags aren't reflected here. For example, SMCP (small caps) is still represented by the textCase field.
+   * @default {}
+   */
+  readonly opentypeFlags: { readonly [key: string]: number };
   /** Line height in px */
   readonly lineHeightPx: number;
   /** Line height as a percentage of normal line height */
   readonly lineHeightPercent: number;
-  /** The unit of the line height value specified by the user. */
-  readonly lineHeightUnit: "PIXELS" | "FONT_SIZE_%" | "INTRINSIC_%";
-  /** Text casing applied to the node, default is the original casing */
-  readonly textCase?: "UPPER" | "LOWER" | "TITLE";
-  /** Text decoration applied to the node, default is none */
-  readonly textDecoration?: "STRIKETHROUGH" | "UNDERLINE";
   /** Line height as a percentage of the font size. Only returned when lineHeightPercent is not 100. */
   readonly lineHeightPercentFontSize?: number;
-  /**
-   * Dimensions along which text will auto resize, default is that the text does not auto-resize.
-   */
-  readonly textAutoResize: "HEIGHT" | "WIDTH_AND_HEIGHT";
+  /** The unit of the line height value specified by the user. */
+  readonly lineHeightUnit: "PIXELS" | "FONT_SIZE_%" | "INTRINSIC_%";
 }
 
 export interface Hyperlink {
