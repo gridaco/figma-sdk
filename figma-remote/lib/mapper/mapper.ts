@@ -12,6 +12,7 @@ import { mapFigmaRemoteVectorToFigma } from "./vector.mapper";
 import { mapFigmaRemotePolygonToFigma } from "./polygon.mapper";
 import { mapFigmaRemoteStarToFigma } from "./star.mapper";
 import { mapFigmaRemoteLineToFigma } from "./line.mapper";
+
 export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
   // const mapped = mapper(remNode, parent);
   // console.log("converting remote response to figma standard:", remNode, mapped);

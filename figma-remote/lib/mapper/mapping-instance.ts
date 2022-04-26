@@ -1,7 +1,6 @@
 import type {
   BaseNodeMixin,
   Figma,
-  FimgaLayoutAlign,
   LayoutMixin,
 } from "@design-sdk/figma-types";
 
