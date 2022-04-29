@@ -62,22 +62,33 @@ import { EdgeInsets } from "@reflect-ui/core";
 // import { convert_rectangle_with_others_as_new_frame_and_as_bg } from "../../../designto-sanitized/convert-rectangle-with-others-as-new-frame-and-as-bg";
 
 /**
+ * The environment the converter will run on.
+ * Why this is required? - Figma has two api, plugin and rest api.
+ * Both api have a simillar structure, but some of the values have different meaning. e.g. The relativeTransform of Group & BooleanOperation are different in plugin and rest api.
+ * -> https://www.figma.com/plugin-docs/api/properties/nodes-relativetransform/#container-parent
+ * (This converter is based on plugin api interface, and the remote rest api has its own mapper.)
+ */
+export type ConverterEnvironment = "plugin" | "rest";
+
+/**
  * restrictied to single selection
  * @param sceneNode
  * @param altParent
  */
 export function intoReflectNode(
   sceneNode: SceneNode,
-  altParent: ReflectFrameNode | ReflectGroupNode | null = null
+  altParent: ReflectFrameNode | ReflectGroupNode | null = null,
+  mode: ConverterEnvironment
 ): ReflectSceneNode {
-  return intoReflectNodes([sceneNode], altParent)[0];
+  return intoReflectNodes([sceneNode], altParent, mode)[0];
 }
 
 export function intoReflectNodes(
   sceneNode: ReadonlyArray<SceneNode>,
-  altParent: ReflectFrameNode | ReflectGroupNode | null = null
+  altParent: ReflectFrameNode | ReflectGroupNode | null = null,
+  mode: ConverterEnvironment
 ): Array<ReflectSceneNode> {
-  // console.log("converting figma scene node to reflect node", sceneNode);
+  console.log("converting figma scene node to reflect node", sceneNode);
   const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
     (node: SceneNode) => {
       // pre-filtering
@@ -158,7 +169,7 @@ export function intoReflectNodes(
         case "FRAME":
         case "INSTANCE":
         case "COMPONENT": {
-          const altNode = convertFrameNodeToAlt(node, altParent);
+          const altNode = convertFrameNodeToAlt(node, altParent, mode);
           if (node.type == "INSTANCE" || node.type == "COMPONENT") {
             // component & instance has variant mixin. we'll map it here.
             altNode.variantProperties = node.variantProperties;
@@ -193,14 +204,14 @@ export function intoReflectNodes(
           convertLayout(altNode, node);
           convertBlend(altNode, node);
 
-          altNode.children = intoReflectNodes(node.children, altNode);
+          altNode.children = intoReflectNodes(node.children, altNode, mode);
           /// ---- disabled feature ----
           // try to find big rect and regardless of that result, also try to convert to autolayout.
           // There is a big chance this will be returned as a Frame
           // also, Group will always have at least 2 children.
           // return convert_rectangle_with_others_as_new_frame_and_as_bg(altNode);
           /// ---- disabled feature ----
-
+          console.log("group", altNode);
           return altNode;
         }
         case "TEXT": {
@@ -277,9 +288,15 @@ export function intoReflectNodes(
           altNode.children = intoReflectNodes(
             node.children,
             // FIXME: do not use force type. - it won't impact the logic since boolean operation node is simply a group-like.
-            altNode as any as ReflectGroupNode
+            altNode as any as ReflectGroupNode,
+            mode
           );
           return altNode;
+        }
+        default: {
+          console.warn(
+            `the givven node ${node.name} was type of ${node.type}, but it is not supported yet.`
+          );
         }
       }
       return null;
@@ -456,14 +473,16 @@ function figmaAccessibleMixedToReflectProperty<T>(
 
 export function convertSingleNodeToAlt(
   node: SceneNode,
-  parent: ReflectFrameNode | ReflectGroupNode | null = null
+  parent: ReflectFrameNode | ReflectGroupNode | null = null,
+  mode: ConverterEnvironment
 ): ReflectSceneNode {
-  return intoReflectNodes([node], parent)[0];
+  return intoReflectNodes([node], parent, mode)[0];
 }
 
 export function convertFrameNodeToAlt(
   node: FrameNode | InstanceNode | ComponentNode,
-  altParent: ReflectFrameNode | ReflectGroupNode | null = null
+  altParent: ReflectFrameNode | ReflectGroupNode | null = null,
+  mode: ConverterEnvironment
 ): ReflectRectangleNode | ReflectFrameNode | ReflectGroupNode {
   if (!utils.checkIfAutoLayout(node) && node.children.length === 0) {
     // todo - move this logic somewhere else. (highly Vulnerable)
@@ -487,7 +506,7 @@ export function convertFrameNodeToAlt(
   convertCorner(altNode, node);
   convertConstraint(altNode, node);
 
-  altNode.children = intoReflectNodes(node.children, altNode);
+  altNode.children = intoReflectNodes(node.children, altNode, mode);
 
   // ----- disabled feature -----
   // return convert_frame_to_autolayout_if_possible(
