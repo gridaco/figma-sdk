@@ -9,9 +9,10 @@ type Transform2DMatrix = [[number, number, number], [number, number, number]];
 
 export function blendBaseNode(p: MappingBlendInput) {
   const { target, source } = p;
-  const is_root = p?.parent === undefined;
 
+  // @ts-ignore
   target.id = source.id;
+  // @ts-ignore
   target.parentId = p.parent?.id ?? null;
   target.name = source.name;
   target.visible = source.visible ?? true;
@@ -37,14 +38,17 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.relativeTransform = source.relativeTransform as Transform2DMatrix;
   target.x = source.relativeTransform[0][2];
   target.y = source.relativeTransform[1][2];
+
+  // @ts-ignore
   target.width = source.size.x;
+  // @ts-ignore
   target.height = source.size.y;
 
   // static override --------------------
   target.effectStyleId = undefined;
-  target.removed = false;
+  // target.removed = false;
+  // target.parent = undefined;
   target.locked = false;
-  target.parent = undefined;
   target.constrainProportions = undefined;
   if (target.type !== "GROUP") {
     target.strokeStyleId = undefined;
@@ -60,6 +64,8 @@ export function blendBaseNode(p: MappingBlendInput) {
   // target.reactions;
 
   target.rotation = angleFromTransform(source.relativeTransform); // calculate with transform: ;
+
+  // @ts-ignore
   target.absoluteTransform = [
     // TODO: support rotation
     [1, 0, source.absoluteBoundingBox.x],
