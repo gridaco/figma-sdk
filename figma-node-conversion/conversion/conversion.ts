@@ -54,6 +54,9 @@ import {
   ComponentNode,
   HandleMirroring,
   FigmaTextDecoration,
+  GroupNode,
+  BooleanOperationNode,
+  PageNode,
 } from "@design-sdk/figma-types";
 import { convertBlendModeToReflect } from "../converters/blend-mode.convert";
 import { EdgeInsets } from "@reflect-ui/core";
@@ -88,7 +91,7 @@ export function intoReflectNodes(
   altParent: ReflectFrameNode | ReflectGroupNode | null = null,
   mode: ConverterEnvironment
 ): Array<ReflectSceneNode> {
-  console.log("converting figma scene node to reflect node", sceneNode);
+  // console.log("converting figma scene node to reflect node", sceneNode);
   const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
     (node: SceneNode) => {
       // pre-filtering
@@ -143,7 +146,7 @@ export function intoReflectNodes(
           }
 
           convertConstraint(altNode, node);
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertCorner(altNode, node);
 
           return altNode;
@@ -159,7 +162,7 @@ export function intoReflectNodes(
             childrenCount: 0,
           });
 
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertBlend(altNode, node);
           convertConstraint(altNode, node);
           // TODO: finalize line support. there are some missing conversions.
@@ -201,7 +204,7 @@ export function intoReflectNodes(
             childrenCount: node.children.length,
           });
 
-          convertLayout(altNode, node);
+          convertLayout(altNode, node, mode);
           convertBlend(altNode, node);
 
           altNode.children = intoReflectNodes(node.children, altNode, mode);
@@ -211,7 +214,6 @@ export function intoReflectNodes(
           // also, Group will always have at least 2 children.
           // return convert_rectangle_with_others_as_new_frame_and_as_bg(altNode);
           /// ---- disabled feature ----
-          console.log("group", altNode);
           return altNode;
         }
         case "TEXT": {
@@ -225,7 +227,7 @@ export function intoReflectNodes(
             childrenCount: 0,
           });
 
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertIntoReflectText(altNode, node);
           convertConstraint(altNode, node);
 
@@ -248,7 +250,7 @@ export function intoReflectNodes(
             childrenCount: 0,
           });
 
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertBlend(altNode, node);
           convertConstraint(altNode, node);
 
@@ -271,7 +273,7 @@ export function intoReflectNodes(
             childrenCount: node.children.length,
           });
 
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertBlend(altNode, node);
           convertConstraint(
             altNode,
@@ -315,15 +317,106 @@ function blendMainComponent(altNode: ReflectBaseNode, node: InstanceNode) {
     node.mainComponentId;
 }
 
-function convertLayout(altNode: IReflectLayoutMixin, node: LayoutMixin) {
+function convertLayout(
+  altNode: IReflectLayoutMixin,
+  node: LayoutMixin,
+  mode: ConverterEnvironment
+) {
+  // region relative transform
   altNode.x = node.x;
   altNode.y = node.y;
+  if (mode === "plugin") {
+    convertRelativeTransform(altNode, node as SceneNode, mode);
+  }
+  // endregion relative transform
+
   altNode.absoluteTransform = node.absoluteTransform;
   altNode.width = node.width;
   altNode.height = node.height;
   altNode.rotation = node.rotation;
   altNode.layoutAlign = node.layoutAlign;
   altNode.layoutGrow = convertLayoutGrowToReflect(node.layoutGrow);
+}
+
+/**
+ * A special handler for plugin version of Group and BooleanOperation nodes.
+ * Why is this required? - https://www.figma.com/plugin-docs/api/properties/nodes-relativetransform/#container-parent
+ *
+ * The relative transform of a node is shown relative to its container parent, which includes canvas nodes, frame nodes, component nodes, and instance nodes. Just like in the properties panel, it is not relative to its direct parent if the parent is a group or a boolean operation.
+ * Example 1: In the following hierarchy, the relative transform of rectangle is relative to page (which is just its position on the canvas).
+ * ```
+ * - page
+ *    - group
+ *      - rectangle
+ * ```
+ *
+ * Example 2: In the following hierarchy, the relative transform of rectangle is relative to frame.
+ * ```
+ * - page
+ *    - frame
+ *      - boolean operation
+ *        - rectangle
+ * ```
+ */
+function convertRelativeTransform(
+  rf: IReflectLayoutMixin,
+  node: SceneNode,
+  mode: "plugin" = "plugin" // this is a default value, but it is not used in the code. (this function is only used for plugin environment)
+) {
+  if (mode !== "plugin") {
+    return;
+  }
+
+  /**
+   * retrive the non group/boolean operation node (the parent which node's position is relative to)
+   */
+  const relativeParent = (node: GroupNode | BooleanOperationNode) => {
+    const parent = node.parent;
+    if (parent.type === "PAGE") {
+      return node;
+    }
+    if (parent.type === "GROUP" || parent.type === "BOOLEAN_OPERATION") {
+      return relativeParent(parent);
+    } else {
+      return node;
+    }
+  };
+
+  const diff = (node: GroupNode | BooleanOperationNode) => {
+    if (
+      node.parent.type === "GROUP" ||
+      node.parent.type === "BOOLEAN_OPERATION"
+    ) {
+      // new position relative to direct parent
+      const [nx, ny] = [node.x - node.parent["x"], node.y - node.parent["y"]];
+      // diff
+      const [dx, dy] = [node.x - nx, node.y - ny];
+      return [dx, dy];
+    } else {
+      // no diff
+      return [0, 0];
+    }
+  };
+
+  // rf.relativeTransform = node.relativeTransform; // TODO: field `relativeTransform` is not supported yet.
+
+  // the node's x, y value is relative to non-group/boolean operation parent.
+  // convert this into direct-parent relative position.
+  // const { x: px, y: py } = relativeParent(node);
+  // const { x: nx, y: ny } = node;
+
+  // const dx = nx - px;
+  // const dy = ny - py;
+  if (
+    node.parent.type === "GROUP" ||
+    node.parent.type === "BOOLEAN_OPERATION"
+  ) {
+    // TODO: direcly modifiying the field may not be a good idea, since this function can be recursive. (instead, calculate the value and return it.)
+    rf.x = node.x - node.parent["x"];
+    rf.y = node.y - node.parent["y"];
+  } else {
+    // don't alter
+  }
 }
 
 function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
@@ -392,7 +485,8 @@ function convertBlend(
 
 function convertDefaultShape(
   altNode: ReflectDefaultShapeMixin,
-  node: DefaultShapeMixin
+  node: DefaultShapeMixin,
+  mode: ConverterEnvironment
 ) {
   // opacity, visible
   convertBlend(altNode, node);
@@ -401,7 +495,7 @@ function convertDefaultShape(
   convertGeometry(altNode, node);
 
   // width, x, y
-  convertLayout(altNode, node);
+  convertLayout(altNode, node, mode);
 }
 
 function convertCorner(
@@ -488,7 +582,7 @@ export function convertFrameNodeToAlt(
     // todo - move this logic somewhere else. (highly Vulnerable)
     // if not autolayout and, if it has no children, convert frame to rectangle
     // this frame has no other functionality
-    return frameToRectangleNode(node, altParent);
+    return frameToRectangleNode(node, altParent, mode);
   }
 
   const altNode = new ReflectFrameNode({
@@ -501,7 +595,7 @@ export function convertFrameNodeToAlt(
     childrenCount: node.children.length,
   });
 
-  convertDefaultShape(altNode, node);
+  convertDefaultShape(altNode, node, mode);
   convertFrame(altNode, node);
   convertCorner(altNode, node);
   convertConstraint(altNode, node);
@@ -520,7 +614,8 @@ export function convertFrameNodeToAlt(
 // auto convert Frame to Rectangle when Frame has no Children
 function frameToRectangleNode(
   node: FrameNode | InstanceNode | ComponentNode,
-  altParent: ReflectFrameNode | ReflectGroupNode | null
+  altParent: ReflectFrameNode | ReflectGroupNode | null,
+  mode: ConverterEnvironment
 ): ReflectRectangleNode {
   const newNode = new ReflectRectangleNode({
     id: node.id,
@@ -532,7 +627,7 @@ function frameToRectangleNode(
     childrenCount: 0,
   });
 
-  convertDefaultShape(newNode, node);
+  convertDefaultShape(newNode, node, mode);
   convertCorner(newNode, node);
   convertConstraint(newNode, node);
   return newNode;
