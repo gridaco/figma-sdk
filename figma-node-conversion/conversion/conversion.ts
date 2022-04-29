@@ -89,8 +89,17 @@ export function intoReflectNode(
 export function intoReflectNodes(
   sceneNode: ReadonlyArray<SceneNode>,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null,
-  mode: ConverterEnvironment
+  mode: ConverterEnvironment,
+  maxChildren = 500
 ): Array<ReflectSceneNode> {
+  if (sceneNode.length > maxChildren) {
+    console.warn(
+      "too many children. skipping this set. (this might be a graphical resource. please bake it as an image or flatten it.",
+      sceneNode
+    );
+    return [];
+  }
+
   // console.log("converting figma scene node to reflect node", sceneNode);
   const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
     (node: SceneNode) => {
@@ -367,46 +376,45 @@ function convertRelativeTransform(
     return;
   }
 
+  const { parent } = node;
+
+  if (parent.type === "PAGE") {
+    return;
+  }
+
   /**
    * retrive the non group/boolean operation node (the parent which node's position is relative to)
    */
-  const relativeParent = (node: GroupNode | BooleanOperationNode) => {
-    const parent = node.parent;
-    if (parent.type === "PAGE") {
-      return node;
-    }
-    if (parent.type === "GROUP" || parent.type === "BOOLEAN_OPERATION") {
-      return relativeParent(parent);
-    } else {
-      return node;
-    }
-  };
+  // const relativeParent = (node: GroupNode | BooleanOperationNode) => {
+  //   const parent = node.parent;
+  //   if (parent.type === "PAGE") {
+  //     return node;
+  //   }
+  //   if (parent.type === "GROUP" || parent.type === "BOOLEAN_OPERATION") {
+  //     return relativeParent(parent);
+  //   } else {
+  //     return node;
+  //   }
+  // };
 
-  const diff = (node: GroupNode | BooleanOperationNode) => {
-    if (
-      node.parent.type === "GROUP" ||
-      node.parent.type === "BOOLEAN_OPERATION"
-    ) {
-      // new position relative to direct parent
-      const [nx, ny] = [node.x - node.parent["x"], node.y - node.parent["y"]];
-      // diff
-      const [dx, dy] = [node.x - nx, node.y - ny];
-      return [dx, dy];
-    } else {
-      // no diff
-      return [0, 0];
-    }
-  };
+  // const diff = (node: GroupNode | BooleanOperationNode) => {
+  //   if (
+  //     node.parent.type === "GROUP" ||
+  //     node.parent.type === "BOOLEAN_OPERATION"
+  //   ) {
+  //     // new position relative to direct parent
+  //     const [nx, ny] = [node.x - node.parent["x"], node.y - node.parent["y"]];
+  //     // diff
+  //     const [dx, dy] = [node.x - nx, node.y - ny];
+  //     return [dx, dy];
+  //   } else {
+  //     // no diff
+  //     return [0, 0];
+  //   }
+  // };
 
   // rf.relativeTransform = node.relativeTransform; // TODO: field `relativeTransform` is not supported yet.
 
-  // the node's x, y value is relative to non-group/boolean operation parent.
-  // convert this into direct-parent relative position.
-  // const { x: px, y: py } = relativeParent(node);
-  // const { x: nx, y: ny } = node;
-
-  // const dx = nx - px;
-  // const dy = ny - py;
   if (
     node.parent.type === "GROUP" ||
     node.parent.type === "BOOLEAN_OPERATION"
