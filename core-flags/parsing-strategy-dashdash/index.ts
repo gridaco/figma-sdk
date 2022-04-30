@@ -42,10 +42,14 @@ export function parse(
 function accept_all(
   flags: `--${string}`[]
 ): { name: string; type: "string" | "bool" }[] {
-  return flags.map((f) => {
-    return {
-      name: f.match(/--([A-Za-z0-9\-\_]+)/g)[0].split("--")[1],
-      type: f.includes("=") ? "string" : "bool",
-    };
+  const res = flags.map((f) => {
+    if (f.includes("--")) {
+      return {
+        name: f.match(/--([A-Za-z0-9\-\_]+)/g)[0].split("--")[1],
+        type: f.includes("=") ? "string" : "bool",
+      };
+    }
+    return false;
   });
+  return res.filter(Boolean) as { name: string; type: "string" | "bool" }[];
 }
