@@ -1,13 +1,21 @@
-import { Text } from "@design-sdk/figma-remote-types";
-import { TextNode } from "@design-sdk/figma-types";
+import type {
+  Text,
+  Hyperlink,
+  TypeStyle,
+  Paint,
+} from "@design-sdk/figma-remote-types";
+import type {
+  TextNode,
+  HyperlinkTarget,
+  StyledTextSegment,
+  LetterSpacing,
+} from "@design-sdk/figma-types";
 import {
-  _FILL_INTERFACE_METHODS,
-  __FIND_PARENT_REFERENCE,
-  __TO_STRING__CALL,
-} from "./_utils";
-import { figmaRemoteLineHeightToFigma } from "../converters/line-height.convert";
+  figmaRemoteLineHeightToFigma,
+  convertFigmaRemoteFillsToFigma,
+} from "../converters";
 import { MappingTextNode } from "./mapping-instance";
-import { blendBaseNode } from "../blenders/general.blend";
+import { blendBaseNode } from "../blenders";
 
 /**
  * @todo not fully implemented
@@ -15,88 +23,214 @@ import { blendBaseNode } from "../blenders/general.blend";
  * @returns
  */
 export function mapFigmaRemoteTextToFigma(remText: Text, parent?): TextNode {
-  const mapping = new MappingTextNode();
+  const mapping: MappingTextNode = {} as any;
+
   blendBaseNode({
     target: mapping,
     source: remText,
     parent,
   });
 
-  return {
+  const {
+    characters,
+    style,
+    styleOverrideTable,
+    characterStyleOverrides,
+    fills,
+  } = remText;
+
+  const table = mapOverrideStyleMap({
+    table: styleOverrideTable,
+  });
+
+  const segments = mapStyledTextSegments({
+    style: mapOverrideTypeStyle({
+      style,
+      overrideFills: fills,
+    }) as StyledTextSegment,
+    table: table,
+    characters: characters,
+    overrides: characterStyleOverrides,
+  });
+
+  return <TextNode>{
     ...mapping,
 
     type: "TEXT",
 
     // pure text
-    hyperlink: undefined, // TODO: implement hyperlink mapping
+    hyperlink: mapHyperlink(remText.style.hyperlink),
     textAlignHorizontal: remText.style.textAlignHorizontal,
     textAlignVertical: remText.style.textAlignVertical,
-    textAutoResize: remText.style.textAutoResize,
-    paragraphIndent: remText.style.paragraphIndent,
-    paragraphSpacing: remText.style.paragraphSpacing,
-    fontSize: remText.style.fontSize,
-    fontName: {
-      family: remText.style.fontFamily,
-      style: remText.style.fontPostScriptName,
-    },
-    textCase: remText.style.textCase,
-    textDecoration: remText.style.textDecoration,
+    textAutoResize: mapTextAutoResize(remText.style.textAutoResize),
 
-    letterSpacing: {
-      value: remText.style.letterSpacing,
-      unit: "PIXELS", // I'm not sure if it's safe to case it to this. haven't tested yet
+    characters: characters,
+
+    fontSize: style.fontSize,
+    fontName: {
+      family: style.fontFamily,
+      style: style.fontPostScriptName,
     },
-    lineHeight: figmaRemoteLineHeightToFigma(remText.style),
-    characters: remText.characters,
+    textDecoration: style.textDecoration,
+    textCase: style.textCase,
+    letterSpacing: mapLetterSpacing(style),
+    lineHeight: figmaRemoteLineHeightToFigma(style),
+    paragraphIndent: style.paragraphIndent,
+    paragraphSpacing: style.paragraphSpacing,
+
+    characterStyleOverrides: characterStyleOverrides as Array<number>,
+    styleOverrideTable: table,
+    styledTextSegments: segments,
 
     // static override
     hasMissingFont: false,
     textStyleId: undefined,
     autoRename: false,
-
-    //
-    toString: __TO_STRING__CALL(remText.id, remText.name),
-    remove: _FILL_INTERFACE_METHODS,
-    getPluginData: _FILL_INTERFACE_METHODS,
-    setPluginData: _FILL_INTERFACE_METHODS,
-    getSharedPluginData: _FILL_INTERFACE_METHODS,
-    setSharedPluginData: _FILL_INTERFACE_METHODS,
-    setRelaunchData: _FILL_INTERFACE_METHODS,
-    resize: _FILL_INTERFACE_METHODS,
-    rescale: _FILL_INTERFACE_METHODS,
-    resizeWithoutConstraints: _FILL_INTERFACE_METHODS,
-    exportAsync: _FILL_INTERFACE_METHODS, // TODO - support this with remote api
-    outlineStroke: _FILL_INTERFACE_METHODS,
-
-    //
-    clone: _FILL_INTERFACE_METHODS,
-    insertCharacters: _FILL_INTERFACE_METHODS,
-    deleteCharacters: _FILL_INTERFACE_METHODS,
-    getRangeAllFontNames: _FILL_INTERFACE_METHODS,
-    getRangeFontSize: _FILL_INTERFACE_METHODS,
-    setRangeFontSize: _FILL_INTERFACE_METHODS,
-    getRangeFontName: _FILL_INTERFACE_METHODS,
-    setRangeFontName: _FILL_INTERFACE_METHODS,
-    getRangeTextCase: _FILL_INTERFACE_METHODS,
-    setRangeTextCase: _FILL_INTERFACE_METHODS,
-    getRangeTextDecoration: _FILL_INTERFACE_METHODS,
-    setRangeTextDecoration: _FILL_INTERFACE_METHODS,
-    getRangeLetterSpacing: _FILL_INTERFACE_METHODS,
-    setRangeLetterSpacing: _FILL_INTERFACE_METHODS,
-    getRangeLineHeight: _FILL_INTERFACE_METHODS,
-    setRangeLineHeight: _FILL_INTERFACE_METHODS,
-    getRangeFills: _FILL_INTERFACE_METHODS,
-    setRangeFills: _FILL_INTERFACE_METHODS,
-    getRangeTextStyleId: _FILL_INTERFACE_METHODS,
-    setRangeTextStyleId: _FILL_INTERFACE_METHODS,
-    getRangeFillStyleId: _FILL_INTERFACE_METHODS,
-    setRangeFillStyleId: _FILL_INTERFACE_METHODS,
-
-    getRangeHyperlink: _FILL_INTERFACE_METHODS,
-    setRangeHyperlink: _FILL_INTERFACE_METHODS,
-    setRangeIndentation: _FILL_INTERFACE_METHODS,
-    getRangeIndentation: _FILL_INTERFACE_METHODS,
-    getRangeListOptions: _FILL_INTERFACE_METHODS,
-    setRangeListOptions: _FILL_INTERFACE_METHODS,
   };
+}
+
+function mapOverrideTypeStyle({
+  style,
+  overrideFills,
+}: {
+  style: TypeStyle;
+  overrideFills?: readonly Paint[];
+}): Omit<
+  StyledTextSegment,
+  "characters" | "start" | "end" | "listOptions" | "indentation" | "hyperlink"
+> {
+  const _target_fills = style.fills ?? overrideFills;
+
+  // do not provide default value since this represents a override data.
+  return {
+    fontSize: style.fontSize,
+    fontName: {
+      family: style.fontFamily,
+      style: style.fontPostScriptName,
+    },
+    textDecoration: style.textDecoration,
+    textCase: style.textCase,
+    lineHeight: figmaRemoteLineHeightToFigma(style),
+    letterSpacing: mapLetterSpacing(style),
+    fills: _target_fills && convertFigmaRemoteFillsToFigma(..._target_fills),
+    textStyleId: undefined, // static (not available on remote api)
+    fillStyleId: undefined, // static (not available on remote api)
+  };
+}
+
+function mapLetterSpacing({
+  letterSpacing,
+}: {
+  letterSpacing: number;
+}): LetterSpacing {
+  return {
+    value: letterSpacing,
+    unit: "PIXELS", // I'm not sure if it's safe to case it to this. haven't tested yet
+  };
+}
+
+function mapTextAutoResize(
+  tar: Text["style"]["textAutoResize"]
+): "NONE" | "WIDTH_AND_HEIGHT" | "HEIGHT" {
+  switch (tar) {
+    case "HEIGHT":
+      return "HEIGHT";
+    case "WIDTH_AND_HEIGHT":
+      return "WIDTH_AND_HEIGHT";
+    case undefined:
+    default:
+      return "NONE";
+  }
+}
+
+function mapHyperlink(link?: Hyperlink): HyperlinkTarget {
+  if (!link) {
+    return;
+  }
+
+  switch (link.type) {
+    case "URL":
+      return {
+        type: "URL",
+        value: link.url,
+      };
+    case "NODE":
+      return {
+        type: "NODE",
+        value: link.nodeID,
+      };
+  }
+}
+
+/**
+ * creates an array containing flattened, segmented text style data by different text styles.
+ * @param characters the full text
+ * @param style the default style - 0's style
+ * @param overrides the character style overrides referencing a style in a style override table. e.g. [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0, 0]
+ * @returns
+ */
+function mapStyledTextSegments({
+  characters,
+  overrides,
+  table,
+  style,
+}: {
+  style: StyledTextSegment;
+  table: { [k: number]: StyledTextSegment };
+  characters: string;
+  overrides: readonly number[];
+}): ReadonlyArray<StyledTextSegment> {
+  // chunk the overrides into segments and loop through them (group the sequence with same values).
+  // e.g. [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0, 0] -> [{key: 0, start: 0, end: 3}, {key: 1, start: 4, end: 7}, {key: 2, start: 8, end: 11}, {key: 0, start: 12, end: 14}]
+
+  let result = [];
+  // after below reduce, the result will look like - [[0, 0, 0, 0], [1, 1, 1, 1], [2, 2, 2, 2], [0, 0, 0]]
+  overrides.reduce(function (r, a) {
+    if (a !== r) {
+      result.push([]);
+    }
+    result[result.length - 1].push(a);
+    return a;
+  }, undefined);
+
+  // after below reduce, the result will look like - [{key: 0, start: 0, end: 3}, {key: 1, start: 4, end: 7}, {key: 2, start: 8, end: 11}, {key: 0, start: 12, end: 14}]
+  let c = 0;
+  result = result.map((v, i) => {
+    const start = c;
+    c += v.length;
+    const end = c;
+    return {
+      key: v[0],
+      start: start,
+      end: end,
+    };
+  });
+
+  table[0] = style; // inject the default style
+
+  // map each segment to a style
+  return result.map((segment) => {
+    return {
+      key: segment.key,
+      start: segment.start,
+      end: segment.end,
+      characters: characters.slice(segment.start, segment.end),
+      ...table[segment.key],
+    } as StyledTextSegment;
+  });
+}
+
+function mapOverrideStyleMap({
+  table,
+}: {
+  table: Text["styleOverrideTable"];
+}): TextNode["styleOverrideTable"] {
+  return Object.keys(table).reduce((o, k) => {
+    return {
+      ...o,
+      [k]: mapOverrideTypeStyle({
+        style: table[k],
+      }),
+    };
+  }, {});
 }

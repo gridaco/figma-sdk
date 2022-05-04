@@ -3,12 +3,11 @@
 ///
 
 import { FigmaChecksumBase } from "../base";
+import { figma } from "@design-sdk/figma";
 
 export class FigmaOTPNodeVerification extends FigmaChecksumBase {
-  get remoteMethod() {
-    return () => {
-      throw new Error("Method not implemented.");
-    };
+  remoteMethod(): Promise<string> {
+    throw new Error("Method not implemented.");
   }
 
   private _page: string;

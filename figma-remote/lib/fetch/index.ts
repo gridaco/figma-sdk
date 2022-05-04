@@ -4,10 +4,29 @@ import * as api from "@design-sdk/figma-remote-api";
 import { convert } from "@design-sdk/figma";
 import { NotfoundError, UnauthorizedError } from "./errors";
 import type { AuthenticationCredential, FigmaRemoteImportPack } from "./types";
-
+import type { AxiosPromise } from "axios";
 export { fetchDemo } from "./demo";
 export * from "./errors";
 export * from "./types";
+
+type FigmaApiResponse<T> = T & {
+  status: /**
+   * successful response
+   */
+  | "success"
+    /**
+     * the token is expired or invalid
+     */
+    | "invalid-token"
+    /**
+     * no permission to access the resource
+     */
+    | "unauthorized"
+    /**
+     * requested resource is not found
+     */
+    | "not-found";
+};
 
 export interface FimgaRemoteFetchConfig {
   /**
@@ -30,7 +49,7 @@ export async function fetchTargetAsReflect({
   node: string;
   auth: AuthenticationCredential;
   config?: FimgaRemoteFetchConfig;
-}): Promise<FigmaRemoteImportPack> {
+}): Promise<FigmaApiResponse<FigmaRemoteImportPack>> {
   const partial = await await fetchTarget(file, [node], auth, config);
 
   const components = [];
@@ -38,7 +57,7 @@ export async function fetchTargetAsReflect({
     Object.keys(partial.components).forEach((key) => {
       const component = partial.components[key];
       const _mapped = mapper.mapFigmaRemoteToFigma(component);
-      const _converted = convert.intoReflectNode(_mapped);
+      const _converted = convert.intoReflectNode(_mapped, null, "rest");
       components.push(<FigmaRemoteImportPack>{
         file: file,
         node: component.id,
@@ -50,7 +69,7 @@ export async function fetchTargetAsReflect({
   }
 
   const _mapped = mapper.mapFigmaRemoteToFigma(partial.nodes[node]);
-  const _converted = convert.intoReflectNode(_mapped);
+  const _converted = convert.intoReflectNode(_mapped, null, "rest");
   return {
     ...partial,
     node: node,
@@ -66,21 +85,23 @@ export async function completePartialPack(
   partial: FigmaRemoteImportPack,
   auth?: AuthenticationCredential,
   config?: FimgaRemoteFetchConfig
-): Promise<FigmaRemoteImportPack> {
+): Promise<FigmaApiResponse<FigmaRemoteImportPack>> {
   let d: types.Node;
   if (partial.remote) {
     d = partial.remote;
   } else {
-    d = await (await fetchTarget(partial.file, [partial.node], auth, config))
-      .nodes[partial.node];
+    d = await (
+      await fetchTarget(partial.file, [partial.node], auth, config)
+    ).nodes[partial.node];
   }
   const _mapped = mapper.mapFigmaRemoteToFigma(d as any);
-  const _converted = convert.intoReflectNode(_mapped);
+  const _converted = convert.intoReflectNode(_mapped, null, "rest");
   return {
     ...partial,
     remote: d,
     figma: _mapped,
     reflect: _converted,
+    status: "success",
   };
 }
 
@@ -89,12 +110,14 @@ export async function fetchTarget(
   ids: string[] | string,
   auth: AuthenticationCredential,
   config?: FimgaRemoteFetchConfig
-): Promise<{
-  file: string;
-  ids: string[];
-  nodes: { [key: string]: types.Node };
-  components: { [key: string]: types.Node };
-}> {
+): Promise<
+  FigmaApiResponse<{
+    file: string;
+    ids: string[];
+    nodes: { [key: string]: types.Node };
+    components: { [key: string]: types.Node };
+  }>
+> {
   ids = Array.isArray(ids) ? ids : [ids];
   const client = api.Client({
     ...auth,
@@ -143,6 +166,7 @@ export async function fetchTarget(
         return acc;
       }, {}),
       components: component_nodes,
+      status: "success",
     };
   } catch (e) {
     switch (e.status) {
@@ -156,10 +180,53 @@ export async function fetchTarget(
   }
 }
 
+export type FetchFileGeneratorReturnType = types.FileResponse & {
+  __response_type: "pages" | "roots" | "whole";
+};
+export async function* fetchFile({
+  file,
+  auth,
+}: {
+  file: string;
+  auth: AuthenticationCredential;
+}): AsyncGenerator<FigmaApiResponse<FetchFileGeneratorReturnType>> {
+  const client = api.Client(auth);
+  const pagesreq = client.file(file, {
+    geometry: "paths",
+    depth: 1,
+  });
+
+  const rootsreq = client.file(file, {
+    geometry: "paths",
+    depth: 2,
+  });
+
+  const wholereq = client.file(file, {
+    geometry: "paths",
+  });
+
+  yield {
+    ...(await pagesreq).data,
+    __response_type: "pages",
+    status: "success",
+  };
+  yield {
+    ...(await rootsreq).data,
+    __response_type: "roots",
+    status: "success",
+  };
+  yield {
+    ...(await wholereq).data,
+    __response_type: "whole",
+    status: "success",
+  };
+  return;
+}
+
 export async function fetchImagesOfFile(
   file: string,
   auth: AuthenticationCredential
-): Promise<{ [key: string]: string }> {
+): Promise<FigmaApiResponse<{ [key: string]: string }>> {
   const client = api.Client({
     ...auth,
   });
@@ -167,32 +234,82 @@ export async function fetchImagesOfFile(
   const res = await client.fileImageFills(file);
   if (!res.data.error && res.data.status == 200) {
     const images_maps = res.data.meta.images;
-    return images_maps;
+    return { ...images_maps, status: "success" };
   }
 
   // if failed, return empty map.
-  return {};
+  return {
+    status: "unauthorized",
+  };
 }
 
+/**
+ *
+ * if only one image is requested, it will extend a object, you can access with `res.__default`.
+ *
+ * @param file
+ * @param auth
+ * @param nodes
+ * @returns
+ */
 export async function fetchNodeAsImage(
   file: string,
   auth: AuthenticationCredential,
   ...nodes: string[]
-): Promise<{ [key: string]: string }> {
+): Promise<
+  FigmaApiResponse<{ [key: string]: string } | { __default: string }>
+> {
   const client = api.Client({
     ...auth,
   });
 
-  const res = await client.fileImages(file, {
-    ids: nodes,
-  });
+  nodes = [...new Set(nodes)].filter((n) => !!n);
 
-  if (res.data && !res.data.err) {
-    const images_maps = res.data.images;
-    return images_maps;
+  // ids are added to url, which if the url is longer than 2048 chars, it will fail.
+  // the prefix is https://api.figma.com/v1/images/xxxxxxxxxxxxxxxxxxxxxx?ids= - which the length is 60 chars.
+  if (nodes.join(",").length >= 1988) {
+    const reqs = [];
+    // split nodes with 100 items per request. with for loop
+    for (let i = 0; i < nodes.length; i += 100) {
+      reqs.push(
+        client.fileImages(file, {
+          ids: nodes.slice(i, i + 100),
+        })
+      );
+    }
+
+    const res = await Promise.all<AxiosPromise<types.FileImageResponse>>(reqs);
+    const images = res.reduce(
+      (p, c) => ({
+        ...p,
+        ...((c as any).data as types.FileImageResponse).images,
+      }),
+      {}
+    );
+    return { ...images, status: "success" };
+  } else {
+    const res = await client.fileImages(file, {
+      ids: nodes,
+    });
+
+    if (res.data && !res.data.err) {
+      const images_maps = res.data.images;
+
+      if (nodes.length == 1) {
+        return {
+          ...images_maps,
+          __default: images_maps[nodes[0]],
+          status: "success",
+        };
+      }
+
+      return { ...images_maps, status: "success" };
+    }
   }
 
   // if failed, return empty map.
-  return {};
+  return {
+    status: "unauthorized",
+  };
   //
 }

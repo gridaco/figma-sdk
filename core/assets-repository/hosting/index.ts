@@ -4,28 +4,37 @@ import { ImageAsset, TransportableImageRepository } from "../image-repository";
 export class ImageHostingRepository {
   static imageRepostory: TransportableImageRepository;
   static setRepository(repo: TransportableImageRepository) {
-    console.info(
-      `registered image repo of buildid ${repo.buildId} to image hosting repo`
-    );
+    process.env.NODE_ENV === "development" &&
+      console.info(
+        `registered image repo of buildid ${repo.buildId} to image hosting repo`
+      );
     this.imageRepostory = repo;
   }
 
   static async hostImages(): Promise<Map<string, string>> {
     return await hostImages(this.imageRepostory.images);
   }
+
+  static async hostImagesWith(
+    hoster: (key: string, data: Uint8Array) => Promise<string>
+  ): Promise<Map<string, string>> {
+    hostImages(this.imageRepostory.images, hoster);
+    return;
+  }
 }
 
 // currently returns preservedurl:hostedurl
 // TODO -> return key:hostedurl
 async function hostImages(
-  images: ReadonlyArray<ImageAsset>
+  images: ReadonlyArray<ImageAsset>,
+  hoster: (key: string, data: Uint8Array) => Promise<string> = hostImage
 ): Promise<Map<string, string>> {
   const hostedImages = new Map<string, string>();
 
   // upload all images async
   const jobs: Array<Promise<string>> = [];
   for (const asset of images) {
-    jobs.push(hostImage(asset.key, asset.data));
+    jobs.push(hoster(asset.key, asset.data));
   }
   // wait for all images to be fetched from design. and uploaded to hosting server
   const urls = await Promise.all<string>(jobs);
@@ -41,9 +50,11 @@ async function hostImages(
 
 async function hostImage(key: string, data: Uint8Array): Promise<string> {
   const fileName = `${key}.png`;
-  const fileBlob = new Blob([data], {
-    type: "image/png",
-  });
+  const fileBlob =
+    // @ts-ignore
+    new Blob([data], {
+      type: "image/png",
+    });
   // const uploaded = await upload(fileName, fileBlob)
 
   const uploaded = await upload({

@@ -13,13 +13,13 @@ export function retrieveColorsFrom(
   // collect all fill[0] and stroke[0] SOLID colors
   selectedChildren.forEach((d) => {
     if ("fills" in d) {
-      const fills = convertColor(d.fills);
+      const fills = colorFromFills(d.fills);
       if (fills) {
         colorStr.push(fills);
       }
     }
     if ("strokes" in d) {
-      const strokes = convertColor(d.strokes);
+      const strokes = colorFromFills(d.strokes);
       if (strokes) {
         colorStr.push(strokes);
       }
@@ -46,7 +46,9 @@ type contrastedColor = {
   contrastBlack: number;
 };
 
-function convertColor(fills: ReadonlyArray<Paint>): contrastedColor | null {
+export function colorFromFills(
+  fills: ReadonlyArray<Paint>
+): contrastedColor | null {
   // kind can be text, bg, border...
   // [when testing] fills can be undefined
   const fill = retrieveFill(fills);

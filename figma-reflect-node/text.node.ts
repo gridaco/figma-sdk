@@ -1,34 +1,32 @@
-import { TextShadowManifest } from "./../../reflect-core/packages/reflect-core/lib/text-shadow/text-shadow.manifest";
-import {
+import type {
   DimensionLength,
-  FontWeight,
   TextAlign,
   TextAlignVertical,
   TextDecoration,
   TextManifest,
   TextStyleManifest,
+  TextOverflow,
+  TextTransform,
 } from "@reflect-ui/core";
+import { FontWeight } from "@reflect-ui/core";
 import { ReflectSceneNodeType } from "./node-type";
 import { ReflectDefaultShapeMixin } from "./mixins";
 
 // region FIXME - migrate this
 import { getTextStyleById } from "@design-sdk/figma";
 import { TextAutoResize } from "@design-sdk/figma-types";
-import {
-  FontName,
-  TextCase,
-  LetterSpacing,
-  LineHeight,
-} from "@design-sdk/figma-types";
+import { FontName, LetterSpacing } from "@design-sdk/figma-types";
 import { extractTextStyleFromTextNode } from "@design-sdk/figma-node-conversion";
 import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
-import { TextOverflow } from "@reflect-ui/core/lib/text-overflow";
 // endregion
 
 export class ReflectTextNode
   extends ReflectDefaultShapeMixin
-  implements Omit<TextManifest, "style"> {
+  implements Omit<TextManifest, "style">
+{
   readonly type: ReflectSceneNodeType.text = ReflectSceneNodeType.text;
+
+  autoRename: boolean;
 
   /**
    * text content; text characters
@@ -50,13 +48,11 @@ export class ReflectTextNode
   fontSize: number | undefined;
   fontName: FontName | undefined;
   textStyleId: string | undefined;
-  textCase: TextCase | undefined;
+  textCase: TextTransform | undefined;
   textDecoration?: TextDecoration;
 
   letterSpacing: LetterSpacing;
   lineHeight: DimensionLength;
-
-  textShadow: TextShadowManifest[];
 
   get hasTextStyle(): boolean {
     if (this.textStyleId !== "") {

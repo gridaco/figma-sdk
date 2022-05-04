@@ -1,10 +1,8 @@
 // FIXME -- migrate this
-import { SceneNode } from "@design-sdk/figma";
+import type { SceneNode } from "@design-sdk/figma";
 
 /**
- * return if giveen node is a root node.
- * node that floats on root, e.g. A text floating on the page node is not handled as root node.
- * Only Frame node that has no parent, will be considered as root node.
+ * returns if giveen node is a root node.
  * @param node
  */
 export function checkIfRoot(node: SceneNode) {
@@ -13,7 +11,7 @@ export function checkIfRoot(node: SceneNode) {
   if (!node.parent) {
     return true;
   }
-  if (node.parent.type == "PAGE" && node.type == "FRAME") {
+  if (node.parent.type == "PAGE") {
     return true;
   }
   return false;

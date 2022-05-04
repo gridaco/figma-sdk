@@ -12,12 +12,17 @@ import { mapFigmaRemoteVectorToFigma } from "./vector.mapper";
 import { mapFigmaRemotePolygonToFigma } from "./polygon.mapper";
 import { mapFigmaRemoteStarToFigma } from "./star.mapper";
 import { mapFigmaRemoteLineToFigma } from "./line.mapper";
+
 export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
+  // const mapped = mapper(remNode, parent);
+  // console.log("converting remote response to figma standard:", remNode, mapped);
+  return mapper(remNode, parent);
+}
+
+function mapper(remNode: Node, parent?): SceneNode {
   let preConvertedChildren: SceneNode[];
   if ("children" in remNode) {
-    preConvertedChildren = remNode.children.map((c) =>
-      mapFigmaRemoteToFigma(c, remNode)
-    );
+    preConvertedChildren = remNode.children.map((c) => mapper(c, remNode));
   }
 
   let nonchildreninstance: SceneNode;
@@ -79,15 +84,21 @@ export function mapFigmaRemoteToFigma(remNode: Node, parent?): SceneNode {
       break;
     }
 
+    case "COMPONENT_SET": {
+      // FIXME: temporary fallback to frame.
+      nonchildreninstance = mapFigmaRemoteFrameToFigma(remNode as any, parent);
+      break;
+    }
+
     default:
       console.warn(
         `unhandled not while converting remote node to figma typed node. type "${remNode.type}" not handled`
       );
-      nonchildreninstance = (remNode as any) as SceneNode;
+      nonchildreninstance = remNode as any as SceneNode;
       break;
   }
 
-  if ("children" in nonchildreninstance && preConvertedChildren) {
+  if (preConvertedChildren) {
     // @ts-ignore - ignoring readonly
     nonchildreninstance.children = preConvertedChildren;
   }

@@ -31,6 +31,7 @@ import {
   convertFigmaCornerRadiusToBorderRadius,
   convertLayoutGrowToReflect,
   convertTextDecorationToReflect,
+  convertTextCaseToReflectTextTransform,
   figma_lineheight_to_reflect_ling_height,
   convertLetterSpacingToReflect,
 } from "../converters";
@@ -53,6 +54,9 @@ import {
   ComponentNode,
   HandleMirroring,
   FigmaTextDecoration,
+  GroupNode,
+  BooleanOperationNode,
+  PageNode,
 } from "@design-sdk/figma-types";
 import { convertBlendModeToReflect } from "../converters/blend-mode.convert";
 import { EdgeInsets } from "@reflect-ui/core";
@@ -61,21 +65,41 @@ import { EdgeInsets } from "@reflect-ui/core";
 // import { convert_rectangle_with_others_as_new_frame_and_as_bg } from "../../../designto-sanitized/convert-rectangle-with-others-as-new-frame-and-as-bg";
 
 /**
+ * The environment the converter will run on.
+ * Why this is required? - Figma has two api, plugin and rest api.
+ * Both api have a simillar structure, but some of the values have different meaning. e.g. The relativeTransform of Group & BooleanOperation are different in plugin and rest api.
+ * -> https://www.figma.com/plugin-docs/api/properties/nodes-relativetransform/#container-parent
+ * (This converter is based on plugin api interface, and the remote rest api has its own mapper.)
+ */
+export type ConverterEnvironment = "plugin" | "rest";
+
+/**
  * restrictied to single selection
  * @param sceneNode
  * @param altParent
  */
 export function intoReflectNode(
   sceneNode: SceneNode,
-  altParent: ReflectFrameNode | ReflectGroupNode | null = null
+  altParent: ReflectFrameNode | ReflectGroupNode | null = null,
+  mode: ConverterEnvironment
 ): ReflectSceneNode {
-  return intoReflectNodes([sceneNode], altParent)[0];
+  return intoReflectNodes([sceneNode], altParent, mode)[0];
 }
 
 export function intoReflectNodes(
   sceneNode: ReadonlyArray<SceneNode>,
-  altParent: ReflectFrameNode | ReflectGroupNode | null = null
+  altParent: ReflectFrameNode | ReflectGroupNode | null = null,
+  mode: ConverterEnvironment,
+  maxChildren = 500
 ): Array<ReflectSceneNode> {
+  if (sceneNode.length > maxChildren) {
+    console.warn(
+      "too many children. skipping this set. (this might be a graphical resource. please bake it as an image or flatten it.",
+      sceneNode
+    );
+    return [];
+  }
+
   // console.log("converting figma scene node to reflect node", sceneNode);
   const mapped: Array<ReflectSceneNode | null> = sceneNode.map(
     (node: SceneNode) => {
@@ -96,26 +120,33 @@ export function intoReflectNodes(
         case "RECTANGLE":
         case "ELLIPSE": {
           let altNode;
-          if (node.type === "RECTANGLE") {
-            altNode = new ReflectRectangleNode({
-              id: node.id,
-              name: node.name,
-              origin: node.type,
-              parent: altParent,
-              originParentId: node.parent?.id,
-              absoluteTransform: node.absoluteTransform,
-              childrenCount: 0,
-            });
-          } else if (node.type === "ELLIPSE") {
-            altNode = new ReflectEllipseNode({
-              id: node.id,
-              name: node.name,
-              origin: node.type,
-              parent: altParent,
-              originParentId: node.parent?.id,
-              absoluteTransform: node.absoluteTransform,
-              childrenCount: 0,
-            });
+          switch (node.type) {
+            case "RECTANGLE": {
+              altNode = new ReflectRectangleNode({
+                id: node.id,
+                name: node.name,
+                origin: node.type,
+                parent: altParent,
+                originParentId: node.parent?.id,
+                absoluteTransform: node.absoluteTransform,
+                childrenCount: 0,
+              });
+              break;
+            }
+            case "ELLIPSE": {
+              altNode = new ReflectEllipseNode({
+                id: node.id,
+                name: node.name,
+                origin: node.type,
+                parent: altParent,
+                originParentId: node.parent?.id,
+                absoluteTransform: node.absoluteTransform,
+                childrenCount: 0,
+              });
+              // ellipse specific fileds (move this to safer place)
+              altNode.arcData = node.arcData;
+              break;
+            }
           }
 
           if (altParent) {
@@ -124,7 +155,7 @@ export function intoReflectNodes(
           }
 
           convertConstraint(altNode, node);
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertCorner(altNode, node);
 
           return altNode;
@@ -140,7 +171,7 @@ export function intoReflectNodes(
             childrenCount: 0,
           });
 
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertBlend(altNode, node);
           convertConstraint(altNode, node);
           // TODO: finalize line support. there are some missing conversions.
@@ -150,7 +181,7 @@ export function intoReflectNodes(
         case "FRAME":
         case "INSTANCE":
         case "COMPONENT": {
-          const altNode = convertFrameNodeToAlt(node, altParent);
+          const altNode = convertFrameNodeToAlt(node, altParent, mode);
           if (node.type == "INSTANCE" || node.type == "COMPONENT") {
             // component & instance has variant mixin. we'll map it here.
             altNode.variantProperties = node.variantProperties;
@@ -182,17 +213,16 @@ export function intoReflectNodes(
             childrenCount: node.children.length,
           });
 
-          convertLayout(altNode, node);
+          convertLayout(altNode, node, mode);
           convertBlend(altNode, node);
 
-          altNode.children = intoReflectNodes(node.children, altNode);
+          altNode.children = intoReflectNodes(node.children, altNode, mode);
           /// ---- disabled feature ----
           // try to find big rect and regardless of that result, also try to convert to autolayout.
           // There is a big chance this will be returned as a Frame
           // also, Group will always have at least 2 children.
           // return convert_rectangle_with_others_as_new_frame_and_as_bg(altNode);
           /// ---- disabled feature ----
-
           return altNode;
         }
         case "TEXT": {
@@ -206,7 +236,7 @@ export function intoReflectNodes(
             childrenCount: 0,
           });
 
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertIntoReflectText(altNode, node);
           convertConstraint(altNode, node);
 
@@ -229,7 +259,7 @@ export function intoReflectNodes(
             childrenCount: 0,
           });
 
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertBlend(altNode, node);
           convertConstraint(altNode, node);
 
@@ -252,7 +282,7 @@ export function intoReflectNodes(
             childrenCount: node.children.length,
           });
 
-          convertDefaultShape(altNode, node);
+          convertDefaultShape(altNode, node, mode);
           convertBlend(altNode, node);
           convertConstraint(
             altNode,
@@ -269,9 +299,15 @@ export function intoReflectNodes(
           altNode.children = intoReflectNodes(
             node.children,
             // FIXME: do not use force type. - it won't impact the logic since boolean operation node is simply a group-like.
-            (altNode as any) as ReflectGroupNode
+            altNode as any as ReflectGroupNode,
+            mode
           );
           return altNode;
+        }
+        default: {
+          console.warn(
+            `the givven node ${node.name} was type of ${node.type}, but it is not supported yet.`
+          );
         }
       }
       return null;
@@ -290,15 +326,105 @@ function blendMainComponent(altNode: ReflectBaseNode, node: InstanceNode) {
     node.mainComponentId;
 }
 
-function convertLayout(altNode: IReflectLayoutMixin, node: LayoutMixin) {
+function convertLayout(
+  altNode: IReflectLayoutMixin,
+  node: LayoutMixin,
+  mode: ConverterEnvironment
+) {
+  // region relative transform
   altNode.x = node.x;
   altNode.y = node.y;
+  if (mode === "plugin") {
+    convertRelativeTransform(altNode, node as SceneNode, mode);
+  }
+  // endregion relative transform
+
   altNode.absoluteTransform = node.absoluteTransform;
   altNode.width = node.width;
   altNode.height = node.height;
   altNode.rotation = node.rotation;
   altNode.layoutAlign = node.layoutAlign;
   altNode.layoutGrow = convertLayoutGrowToReflect(node.layoutGrow);
+}
+
+/**
+ * A special handler for plugin version of Group and BooleanOperation nodes.
+ * Why is this required? - https://www.figma.com/plugin-docs/api/properties/nodes-relativetransform/#container-parent
+ *
+ * The relative transform of a node is shown relative to its container parent, which includes canvas nodes, frame nodes, component nodes, and instance nodes. Just like in the properties panel, it is not relative to its direct parent if the parent is a group or a boolean operation.
+ * Example 1: In the following hierarchy, the relative transform of rectangle is relative to page (which is just its position on the canvas).
+ * ```
+ * - page
+ *    - group
+ *      - rectangle
+ * ```
+ *
+ * Example 2: In the following hierarchy, the relative transform of rectangle is relative to frame.
+ * ```
+ * - page
+ *    - frame
+ *      - boolean operation
+ *        - rectangle
+ * ```
+ */
+function convertRelativeTransform(
+  rf: IReflectLayoutMixin,
+  node: SceneNode,
+  mode: "plugin" = "plugin" // this is a default value, but it is not used in the code. (this function is only used for plugin environment)
+) {
+  if (mode !== "plugin") {
+    return;
+  }
+
+  const { parent } = node;
+
+  if (parent.type === "PAGE") {
+    return;
+  }
+
+  /**
+   * retrive the non group/boolean operation node (the parent which node's position is relative to)
+   */
+  // const relativeParent = (node: GroupNode | BooleanOperationNode) => {
+  //   const parent = node.parent;
+  //   if (parent.type === "PAGE") {
+  //     return node;
+  //   }
+  //   if (parent.type === "GROUP" || parent.type === "BOOLEAN_OPERATION") {
+  //     return relativeParent(parent);
+  //   } else {
+  //     return node;
+  //   }
+  // };
+
+  // const diff = (node: GroupNode | BooleanOperationNode) => {
+  //   if (
+  //     node.parent.type === "GROUP" ||
+  //     node.parent.type === "BOOLEAN_OPERATION"
+  //   ) {
+  //     // new position relative to direct parent
+  //     const [nx, ny] = [node.x - node.parent["x"], node.y - node.parent["y"]];
+  //     // diff
+  //     const [dx, dy] = [node.x - nx, node.y - ny];
+  //     return [dx, dy];
+  //   } else {
+  //     // no diff
+  //     return [0, 0];
+  //   }
+  // };
+
+  // rf.relativeTransform = node.relativeTransform; // TODO: field `relativeTransform` is not supported yet.
+
+  if (
+    node.parent.type === "GROUP" ||
+    node.parent.type === "BOOLEAN_OPERATION"
+  ) {
+    // TODO: direcly modifiying the field may not be a good idea, since this function can be recursive. (instead, calculate the value and return it.)
+    rf.x = node.x - node.parent["x"];
+    rf.y = node.y - node.parent["y"];
+  } else {
+    // don't alter
+  }
 }
 
 function convertFrame(rfNode: ReflectFrameNode, node: DefaultFrameMixin) {
@@ -367,7 +493,8 @@ function convertBlend(
 
 function convertDefaultShape(
   altNode: ReflectDefaultShapeMixin,
-  node: DefaultShapeMixin
+  node: DefaultShapeMixin,
+  mode: ConverterEnvironment
 ) {
   // opacity, visible
   convertBlend(altNode, node);
@@ -376,7 +503,7 @@ function convertDefaultShape(
   convertGeometry(altNode, node);
 
   // width, x, y
-  convertLayout(altNode, node);
+  convertLayout(altNode, node, mode);
 }
 
 function convertCorner(
@@ -396,6 +523,7 @@ function convertCorner(
 }
 
 function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
+  altNode.autoRename = node.autoRename;
   altNode.textAlign = convertTextAlignHorizontalToReflect(
     node.textAlignHorizontal
   );
@@ -406,7 +534,9 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
   altNode.paragraphSpacing = node.paragraphSpacing;
   altNode.fontSize = figmaToReflectProperty(node.fontSize);
   altNode.fontName = figmaToReflectProperty(node.fontName);
-  altNode.textCase = figmaToReflectProperty(node.textCase);
+  altNode.textCase = convertTextCaseToReflectTextTransform(
+    figmaToReflectProperty(node.textCase)
+  );
 
   altNode.textDecoration = convertTextDecorationToReflect(
     figmaToReflectProperty<FigmaTextDecoration>(node.textDecoration)
@@ -445,20 +575,22 @@ function figmaAccessibleMixedToReflectProperty<T>(
 
 export function convertSingleNodeToAlt(
   node: SceneNode,
-  parent: ReflectFrameNode | ReflectGroupNode | null = null
+  parent: ReflectFrameNode | ReflectGroupNode | null = null,
+  mode: ConverterEnvironment
 ): ReflectSceneNode {
-  return intoReflectNodes([node], parent)[0];
+  return intoReflectNodes([node], parent, mode)[0];
 }
 
 export function convertFrameNodeToAlt(
   node: FrameNode | InstanceNode | ComponentNode,
-  altParent: ReflectFrameNode | ReflectGroupNode | null = null
+  altParent: ReflectFrameNode | ReflectGroupNode | null = null,
+  mode: ConverterEnvironment
 ): ReflectRectangleNode | ReflectFrameNode | ReflectGroupNode {
   if (!utils.checkIfAutoLayout(node) && node.children.length === 0) {
     // todo - move this logic somewhere else. (highly Vulnerable)
     // if not autolayout and, if it has no children, convert frame to rectangle
     // this frame has no other functionality
-    return frameToRectangleNode(node, altParent);
+    return frameToRectangleNode(node, altParent, mode);
   }
 
   const altNode = new ReflectFrameNode({
@@ -471,12 +603,12 @@ export function convertFrameNodeToAlt(
     childrenCount: node.children.length,
   });
 
-  convertDefaultShape(altNode, node);
+  convertDefaultShape(altNode, node, mode);
   convertFrame(altNode, node);
   convertCorner(altNode, node);
   convertConstraint(altNode, node);
 
-  altNode.children = intoReflectNodes(node.children, altNode);
+  altNode.children = intoReflectNodes(node.children, altNode, mode);
 
   // ----- disabled feature -----
   // return convert_frame_to_autolayout_if_possible(
@@ -490,7 +622,8 @@ export function convertFrameNodeToAlt(
 // auto convert Frame to Rectangle when Frame has no Children
 function frameToRectangleNode(
   node: FrameNode | InstanceNode | ComponentNode,
-  altParent: ReflectFrameNode | ReflectGroupNode | null
+  altParent: ReflectFrameNode | ReflectGroupNode | null,
+  mode: ConverterEnvironment
 ): ReflectRectangleNode {
   const newNode = new ReflectRectangleNode({
     id: node.id,
@@ -502,7 +635,7 @@ function frameToRectangleNode(
     childrenCount: 0,
   });
 
-  convertDefaultShape(newNode, node);
+  convertDefaultShape(newNode, node, mode);
   convertCorner(newNode, node);
   convertConstraint(newNode, node);
   return newNode;

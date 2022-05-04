@@ -4,9 +4,15 @@ import { convertFigmaRemoteLayoutConstraintsToFigmaConstraints } from "../conver
 import { convertFigmaRemoteStrokesToFigma } from "../converters/strokes.convert";
 import { MappingBlendInput } from "./_in";
 import { Transform } from "@design-sdk/figma-remote-types";
+
+type Transform2DMatrix = [[number, number, number], [number, number, number]];
+
 export function blendBaseNode(p: MappingBlendInput) {
   const { target, source } = p;
+
+  // @ts-ignore
   target.id = source.id;
+  // @ts-ignore
   target.parentId = p.parent?.id ?? null;
   target.name = source.name;
   target.visible = source.visible ?? true;
@@ -29,29 +35,21 @@ export function blendBaseNode(p: MappingBlendInput) {
 
   target.effects = convertFigmaRemoteEffectsToFigma(...source.effects);
 
-  target.relativeTransform = source.relativeTransform as [
-    [number, number, number],
-    [number, number, number]
-  ];
+  target.relativeTransform = source.relativeTransform as Transform2DMatrix;
+  target.x = source.relativeTransform[0][2];
+  target.y = source.relativeTransform[1][2];
 
-  // for some reason, xywh is not available for some node types by figma rem api.
-  const xy = xy_as_relative(
-    p?.parent?.absoluteBoundingBox,
-    source.absoluteBoundingBox,
-    p?.parent === undefined
-  );
-  target.x = xy.x; // this is converted to relative position.
-  target.y = xy.y; // this is converted to relative position.
-  target.width = source.absoluteBoundingBox.width;
-  target.height = source.absoluteBoundingBox.height;
+  // @ts-ignore
+  target.width = source.size.x;
+  // @ts-ignore
+  target.height = source.size.y;
 
-  // static override
+  // static override --------------------
   target.effectStyleId = undefined;
-  target.removed = false;
+  // target.removed = false;
+  // target.parent = undefined;
   target.locked = false;
-  target.parent = undefined;
   target.constrainProportions = undefined;
-  target.layoutGrow = undefined;
   if (target.type !== "GROUP") {
     target.strokeStyleId = undefined;
     target.fillStyleId = undefined;
@@ -60,17 +58,24 @@ export function blendBaseNode(p: MappingBlendInput) {
     target.dashPattern = undefined;
     target.strokeJoin = undefined;
   }
+  // -------------------------------------
 
-  // TODO:
-  target.reactions = undefined;
+  // reaction are not supported via remote api - https://github.com/gridaco/designto-code/issues/157
+  // target.reactions;
+
   target.rotation = angleFromTransform(source.relativeTransform); // calculate with transform: ;
-  // TODO: use  `source.relativeTransform`
+
+  // @ts-ignore
   target.absoluteTransform = [
-    [1, 0, 0],
-    [0, 1, 0],
+    // TODO: support rotation
+    [1, 0, source.absoluteBoundingBox.x],
+    [0, 1, source.absoluteBoundingBox.y],
   ]; // calculate with transform
 }
 
+/**
+ * @deprecated
+ */
 function xy_as_relative(
   parent: { x: number; y: number },
   child: { x: number; y: number },
@@ -78,14 +83,14 @@ function xy_as_relative(
 ) {
   if (isRoot) {
     return {
-      x: 0,
-      y: 0,
+      x: child.x,
+      y: child.y,
     };
   }
 
   return {
-    x: child.x - parent.x,
-    y: child.y - parent.y,
+    x: child?.x - parent?.x ?? 0,
+    y: child?.y - parent?.y ?? 0,
   };
 }
 

@@ -8,7 +8,7 @@ export function mapFigmaRemoteVectorToFigma(
   remRect: Vector,
   parent?
 ): VectorNode {
-  const mapping = new MappingVectorNode();
+  const mapping: MappingVectorNode = {} as any;
 
   blendBaseNode({
     target: mapping,

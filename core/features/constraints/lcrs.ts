@@ -37,7 +37,6 @@ export function getGroupLCRS(node: ReflectGroupNode): LCRS {
   let lastChildLCRS: LCRS;
   for (const c of node.children) {
     const childLCRS = getNodeActualLCRS(c);
-    console.warn(c, childLCRS);
     if (lastChildLCRS) {
       if (lastChildLCRS === childLCRS) {
         // do nothing if lcrs matches

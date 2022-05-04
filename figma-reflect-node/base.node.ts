@@ -34,10 +34,8 @@ type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 
 export class ReflectBaseNode
-  implements
-    IReflectNodeBaseReference,
-    IReflectLayoutMixin,
-    IReflectBlendMixin {
+  implements IReflectNodeBaseReference, IReflectLayoutMixin, IReflectBlendMixin
+{
   readonly $schema: string = "reflect-ui.com";
   readonly type: ReflectSceneNodeType;
   origin: ReflectSceneNodeType;
@@ -64,6 +62,7 @@ export class ReflectBaseNode
     this.originRaw = props.origin;
     this.absoluteTransform = props.absoluteTransform;
     this.childrenCount = props.childrenCount;
+    this.isRoot = checkIfRoot(this as any);
 
     if (!this.originParentId) {
       this.hierachyIndex = 0;
@@ -77,6 +76,8 @@ export class ReflectBaseNode
       this.hierachyIndex = parentHierachyIndex + hierachyOnParent + 1;
     }
   }
+
+  readonly isRoot: boolean;
 
   getHierachyIndexOnParent(): number {
     if (this.originParentNode) {
@@ -210,9 +211,7 @@ export class ReflectBaseNode
   radius: number;
   //
 
-  get shadows():
-    | ReadonlyArray<BoxShadowManifest>
-    | ReadonlyArray<TextShadowManifest> {
+  get shadows(): ReadonlyArray<BoxShadowManifest> {
     return this.effects
       .map((s) => {
         if (!s.visible) return;
@@ -285,7 +284,7 @@ export class ReflectBaseNode
 
   swapVariant(name: string): Figma.InstanceNode {
     if (this.hasVariant) {
-      return swapVariant((this as any) as Figma.InstanceNode, name);
+      return swapVariant(this as any as Figma.InstanceNode, name);
     }
 
     // invalid request. this is not a variant compat node
@@ -298,11 +297,6 @@ export class ReflectBaseNode
 
   get isMasterComponent(): boolean {
     return this.type == "COMPONENT";
-  }
-
-  get isRoot(): boolean {
-    // DANGEROUS
-    return checkIfRoot(this as any);
   }
 
   toString(): string {
@@ -378,6 +372,10 @@ export class ReflectBaseNode
   }
 
   get primaryFill(): Figma.Paint {
+    return utils.retrieveFill(this.fills);
+  }
+
+  get mostUsedFill(): Figma.Paint {
     if (this.hasChildren) {
       const availableNodes = this.getGrandchildren({
         includeThis: true,
@@ -389,7 +387,7 @@ export class ReflectBaseNode
       const fills = [].concat.apply([], fillsMap);
       return utils.retrieveFill(fills);
     }
-    return utils.retrieveFill(this.fills);
+    return this.primaryFill;
   }
 
   get primaryColor(): RGBAF {

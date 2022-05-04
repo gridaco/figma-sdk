@@ -12,6 +12,8 @@ export function convertBlendModeToReflect(
       return BlendMode.Color;
     case "COLOR_BURN":
       return BlendMode.ColorBurn;
+    case "COLOR_DODGE":
+      return BlendMode.ColorDodge;
     case "DARKEN":
       return BlendMode.Darken;
     case "DIFFERENCE":

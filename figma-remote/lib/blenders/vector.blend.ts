@@ -1,4 +1,5 @@
-import { VectorBase } from "@design-sdk/figma-remote-types";
+import type { Path, VectorBase } from "@design-sdk/figma-remote-types";
+import { convertFigmaRemoteStrokeCapToFigmaStrokeCap } from "../converters/stroke-cap.convert";
 import {
   MappingEllipseNode,
   MappingLineNode,
@@ -19,14 +20,29 @@ export function blendVectorNode(
   >
 ) {
   const { target, source } = p;
-  target.vectorPaths = source.fillGeometry
-    // we do not add stroke geometry to vector paths for now.
-    // TODO: how to handle "strokeGeometry"?
-    // .concat(source.strokeGeometry)
-    .map((g) => {
-      return {
-        data: g.path,
-        windingRule: g.windingRule,
-      };
-    });
+
+  // below properties are only present to VectorBase node from figma api. ---------------
+  // i.e. the Frame also contains the dashes info, but api won't provide one. so at this point (Mar 2022) we only support dashes to vector oriented nodes.
+  target.strokeCap = convertFigmaRemoteStrokeCapToFigmaStrokeCap(
+    source.strokeCap
+  );
+  target.strokeJoin = source.strokeJoin;
+  target.strokeMiterLimit = source.strokeMiterAngle;
+  target.strokeGeometry = convertToVectorPaths(source.strokeGeometry);
+  source.strokeGeometry;
+  target.dashPattern = source.strokeDashes;
+  // ------------------------------------------------------------------------------------
+
+  // TODO: vectorPaths in typings, is actually only available for VectorNode, so in future, add a if condition to check if the target type is MappingVectorNode.
+  target.vectorPaths = convertToVectorPaths(source.fillGeometry);
+
+  target.fillGeometry = convertToVectorPaths(source.fillGeometry);
 }
+
+const convertToVectorPaths = (d: ReadonlyArray<Path>) =>
+  d.map((g) => {
+    return {
+      data: g.path,
+      windingRule: g.windingRule,
+    };
+  });

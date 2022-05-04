@@ -9,7 +9,8 @@ export function blendCornerNode(
 ) {
   const { target, source } = p;
 
-  target.cornerRadius = source.cornerRadius;
+  target.cornerRadius = source.cornerRadius ?? 0;
+  // target.cornerSmoothing - not supported
 }
 
 export function blendRectangleCornerNode(
@@ -17,8 +18,12 @@ export function blendRectangleCornerNode(
 ) {
   const { target, source } = p;
 
-  target.topLeftRadius = source.rectangleCornerRadii?.[0];
-  target.topRightRadius = source.rectangleCornerRadii?.[1];
-  target.bottomRightRadius = source.rectangleCornerRadii?.[2];
-  target.bottomLeftRadius = source.rectangleCornerRadii?.[3];
+  target.topLeftRadius =
+    source.rectangleCornerRadii?.[0] ?? source.cornerRadius ?? 0;
+  target.topRightRadius =
+    source.rectangleCornerRadii?.[1] ?? source.cornerRadius ?? 0;
+  target.bottomRightRadius =
+    source.rectangleCornerRadii?.[2] ?? source.cornerRadius ?? 0;
+  target.bottomLeftRadius =
+    source.rectangleCornerRadii?.[3] ?? source.cornerRadius ?? 0;
 }

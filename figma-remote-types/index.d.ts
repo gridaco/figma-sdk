@@ -59,6 +59,17 @@ export type TextType = "TEXT";
 
 export type PaintType = PaintTypeSolid | PaintTypeGraident | PaintTypeImage;
 
+export type FlowStartingPoint = {
+  /**
+   * Unique identifier specifying the frame
+   */
+  nodeId: string;
+  /**
+   * Name of flow
+   */
+  name: string;
+};
+
 /**
  * how the layer blends with layers below
  */
@@ -115,6 +126,7 @@ export type NodeType =
   | "TEXT"
   | "SLICE"
   | "COMPONENT"
+  | "COMPONENT_SET"
   | "INSTANCE";
 
 export type Node =
@@ -132,6 +144,7 @@ export type Node =
   | Text
   | Slice
   | Component
+  | ComponentSet
   | Instance;
 
 /** Node Properties */
@@ -140,18 +153,25 @@ export type Node =
 export interface Document extends Global {
   readonly type: "DOCUMENT";
   /** An array of canvases attached to the document */
-  readonly children: ReadonlyArray<Node>;
+  readonly children: ReadonlyArray<Exclude<Node, Document>>;
 }
 
 /** Represents a single page */
 export interface Canvas extends Global {
   readonly type: "CANVAS";
   /** An array of top level layers on the canvas */
-  readonly children: ReadonlyArray<Node>;
+  readonly children: ReadonlyArray<Exclude<Exclude<Node, Document>, Canvas>>;
   /** Background color of the canvas */
   readonly backgroundColor: Color;
-  /** Node ID that corresponds to the start frame for prototypes */
+  /** @deprecated [DEPRECATED] Node ID that corresponds to the start frame for prototypes */
   readonly prototypeStartNodeID: string | null;
+
+  /**
+   * A array of flow starting points sorted by its position in the prototype settings panel.
+   * @default []
+   */
+  readonly flowStartingPoints: FlowStartingPoint[];
+
   /** An array of export settings representing images to export from the canvas */
   readonly exportSettings?: ReadonlyArray<ExportSetting>;
 }
@@ -378,6 +398,11 @@ export interface Group extends FrameBase {
   readonly type: "GROUP";
 }
 
+/** FIXME: not fully implemented */
+export interface ComponentSet extends FrameBase {
+  readonly type: "COMPONENT_SET";
+}
+
 export interface VectorBase extends Global {
   /**
    * An array of export settings representing images to export from node
@@ -470,6 +495,35 @@ export interface VectorBase extends Global {
   readonly strokeWeight: number;
 
   /**
+   * A string enum with value of `"NONE"`, `"ROUND"`, `"SQUARE"`, `"LINE_ARROW"`, or `"TRIANGLE_ARROW"`, describing the end caps of vector paths.
+   * @default "NONE"
+   */
+  readonly strokeCap:
+    | "NONE"
+    | "ROUND"
+    | "SQUARE"
+    | "LINE_ARROW"
+    | "TRIANGLE_ARROW";
+
+  /**
+   * A string enum with value of "MITER", "BEVEL", or "ROUND", describing how corners in vector paths are rendered.
+   * @default "MITER"
+   */
+  readonly strokeJoin: "MITER" | "BEVEL" | "ROUND";
+
+  /**
+   * An array of floating point numbers describing the pattern of dash length and gap lengths that the vector path follows. For example a value of [1, 2] indicates that the path has a dash of length 1 followed by a gap of length 2, repeated.
+   * @default []
+   */
+  readonly strokeDashes: ReadonlyArray<number>;
+
+  /**
+   * Only valid if strokeJoin is "MITER". The corner angle, in degrees, below which strokeJoin will be set to "BEVEL" to avoid super sharp corners. By default this is 28.96 degrees.
+   * @default 28.96
+   */
+  readonly strokeMiterAngle: number;
+
+  /**
    * Only specified if parameter geometry=paths is used. An array of paths
    * representing the object stroke
    */
@@ -527,6 +581,14 @@ export interface Line extends VectorBase {
 /** An ellipse */
 export interface Ellipse extends VectorBase {
   readonly type: "ELLIPSE";
+  /**
+   * Start and end angles of the ellipse measured clockwise from the x axis, plus the inner radius for donuts
+   */
+  readonly arcData: {
+    startingAngle: number;
+    endingAngle: number;
+    innerRadius: number;
+  };
 }
 
 /** A regular n-sided polygon */
@@ -561,6 +623,20 @@ export interface Text extends VectorBase {
   readonly characterStyleOverrides: ReadonlyArray<number>;
   /** Map from ID to TypeStyle for looking up style overrides */
   readonly styleOverrideTable: { readonly [index: number]: TypeStyle };
+
+  /**
+   * An array with the same number of elements as lines in the text node, where lines are delimited by newline or paragraph separator characters. Each element in the array corresponds to the list type of a specific line. List types are represented as string enums with one of these possible values:
+   *
+   * - ORDERED: Text is an ordered list (numbered)
+   * - UNORDERED: Text is an unordered list (bulleted)
+   * - NONE: Text is plain text and not part of any list
+   */
+  readonly lineTypes: ("ORDERED" | "UNORDERED" | "NONE")[];
+
+  /**
+   * An array with the same number of elements as lines in the text node, where lines are delimited by newline or paragraph separator characters. Each element in the array corresponds to the indentation level of a specific line.
+   */
+  readonly lineIndentations: number[];
 }
 
 /** A rectangular region of the canvas that can be exported */
@@ -835,6 +911,14 @@ export interface TypeStyle {
   readonly fontWeight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
   /** Font size in px */
   readonly fontSize: number;
+  /** Text casing applied to the node, default is the original casing */
+  readonly textCase?: "UPPER" | "LOWER" | "TITLE";
+  /** Text decoration applied to the node, default is none */
+  readonly textDecoration?: "STRIKETHROUGH" | "UNDERLINE";
+  /**
+   * Dimensions along which text will auto resize, default is that the text does not auto-resize.
+   */
+  readonly textAutoResize: "HEIGHT" | "WIDTH_AND_HEIGHT";
   /** Horizontal text alignment as string enum */
   readonly textAlignHorizontal: "LEFT" | "RIGHT" | "CENTER" | "JUSTIFIED";
   /** Vertical text alignment as string enum */
@@ -843,22 +927,42 @@ export interface TypeStyle {
   readonly letterSpacing: number;
   /** Paints applied to characters */
   readonly fills?: ReadonlyArray<Paint>;
+  /**
+   * Link to a URL or frame
+   */
+  readonly hyperlink?: Hyperlink;
+  /**
+   * A map of OpenType feature flags to 1 or 0, 1 if it is enabled and 0 if it is disabled. Note that some flags aren't reflected here. For example, SMCP (small caps) is still represented by the textCase field.
+   * @default {}
+   */
+  readonly opentypeFlags: { readonly [key: string]: number };
   /** Line height in px */
   readonly lineHeightPx: number;
   /** Line height as a percentage of normal line height */
   readonly lineHeightPercent: number;
-  /** The unit of the line height value specified by the user. */
-  readonly lineHeightUnit: "PIXELS" | "FONT_SIZE_%" | "INTRINSIC_%";
-  /** Text casing applied to the node, default is the original casing */
-  readonly textCase?: "UPPER" | "LOWER" | "TITLE";
-  /** Text decoration applied to the node, default is none */
-  readonly textDecoration?: "STRIKETHROUGH" | "UNDERLINE";
   /** Line height as a percentage of the font size. Only returned when lineHeightPercent is not 100. */
   readonly lineHeightPercentFontSize?: number;
+  /** The unit of the line height value specified by the user. */
+  readonly lineHeightUnit: "PIXELS" | "FONT_SIZE_%" | "INTRINSIC_%";
+}
+
+export interface Hyperlink {
   /**
-   * Dimensions along which text will auto resize, default is that the text does not auto-resize.
+   * Type of hyperlink
+   * - URL
+   * - NODE
    */
-  readonly textAutoResize: "HEIGHT" | "WIDTH_AND_HEIGHT";
+  type: "URL" | "NODE";
+
+  /**
+   * URL being linked to, if URL type
+   */
+  readonly url?: string;
+
+  /**
+   * ID of frame hyperlink points to, if NODE type
+   */
+  readonly nodeID?: string;
 }
 
 /**

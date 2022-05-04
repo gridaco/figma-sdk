@@ -18,11 +18,11 @@ export function convertFontStyleNameToFontWeightReflect(fontStyle: string) {
   if (!fontStyle) {
     return convertFontWeightToReflect(_DEFAULT_FALLBACK_STYLE);
   }
-  const _one_of_the_substring_is_matching_possible_style_name = POSSIBLE_STYLE_INDICATOR_TOKEN_CASES.filter(
-    (cases) => {
+
+  const _one_of_the_substring_is_matching_possible_style_name =
+    POSSIBLE_STYLE_INDICATOR_TOKEN_CASES.filter((cases) => {
       return cases.filter((c) => fontStyle.includes(c)).length >= 1;
-    }
-  );
+    });
 
   let style = _DEFAULT_FALLBACK_STYLE; // falback style. the default text style
 
@@ -41,8 +41,7 @@ export function convertFontStyleNameToFontWeightReflect(fontStyle: string) {
 
     case 1:
     case 2: {
-      style =
-        _one_of_the_substring_is_matching_possible_style_name[_length - 1][0];
+      style = _one_of_the_substring_is_matching_possible_style_name[0][0];
       break;
     }
 
@@ -126,23 +125,25 @@ function makeAllPossibleStyleIndicatorTokenCases(token: string): string[] {
 
 /**
  * in lower case
+ * the order matters. this is used for finding possible matches, which the more detailed version (e.g. semi-bold) should match first tahn the short one (e.g. bold)
  */
 const GENERAL_FONT_WEIGHT_INDICATOR_TOKNES = [
-  "thin",
-  "light",
-  "extra-light",
-  "regular",
-  "medium",
-  "semi-bold",
-  "bold",
-  "extra-bold",
-  "heavy",
-  "black",
+  "extra-light", // 0
+  "light", // 1
+  "thin", // 0
+  "regular", // 0
+  "medium", // 0
+  "semi-bold", // 0
+  "extra-bold", // 0
+  "bold", // 1
+  "heavy", // 0
+  "black", // 0
 ];
 
-const POSSIBLE_STYLE_INDICATOR_TOKEN_CASES: string[][] = GENERAL_FONT_WEIGHT_INDICATOR_TOKNES.map(
-  (token) => makeAllPossibleStyleIndicatorTokenCases(token)
-);
+const POSSIBLE_STYLE_INDICATOR_TOKEN_CASES: string[][] =
+  GENERAL_FONT_WEIGHT_INDICATOR_TOKNES.map((token) =>
+    makeAllPossibleStyleIndicatorTokenCases(token)
+  );
 
 /**
  * ['l', 'i', 'g', 'h', 't'] to Light

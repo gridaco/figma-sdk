@@ -26,10 +26,20 @@ export function layoutAlignToReflectMainAxisSize(
   }
 
   // error region
+  // @deprecated, but some design still may contain these values
   // since MAX | MIN values are deprecated, it still can be living in a older version file (not reported.)
-  console.error("=".repeat(80));
-  console.error(
-    `"${layoutAlign}" is not hanlded for converting to reflect. report this error @ https://github.com/gridaco/design-sdk/issues/new`
-  );
-  console.error("=".repeat(80));
+  if (process.env.NODE_ENV !== "production") {
+    console.error("=".repeat(80));
+    console.error(
+      `"${layoutAlign}" is not hanlded for converting to reflect. report this error @ https://github.com/gridaco/design-sdk/issues/new`
+    );
+    console.error("=".repeat(80));
+  }
+  switch (layoutAlign) {
+    case "MIN":
+      return MainAxisSize.min;
+    case "MAX":
+      return MainAxisSize.max;
+  }
+  //
 }

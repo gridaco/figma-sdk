@@ -15,4 +15,8 @@ export class MainImageRepository {
     }
     return this._main;
   }
+
+  static get isReady(): boolean {
+    return !!this._main;
+  }
 }

@@ -7,7 +7,7 @@ export function mapFigmaRemoteGroupToFigma(
   remGroup: Group,
   parent?
 ): Figma.GroupNode {
-  const mapping = new MappingGroupNode();
+  const mapping: MappingGroupNode = {} as any;
   blendBaseNode({
     target: mapping,
     source: remGroup,

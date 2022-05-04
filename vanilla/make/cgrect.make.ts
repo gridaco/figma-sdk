@@ -7,8 +7,6 @@ export function makeCGRect(
   const fill = node.primaryColor;
   const borderRadius = node.cornerRadius;
   const shadow = node.primaryShadow;
-  console.log("shadow", shadow);
-  // TODO shadow support
   // TODO border support
   // TODO gradient support
 
@@ -16,7 +14,7 @@ export function makeCGRect(
     borderRadius: borderRadius,
     width: node.width,
     height: node.height,
-    shadow: node.primaryShadow,
+    shadow: shadow,
     fill: fill,
     opacity: node.opacity,
   };

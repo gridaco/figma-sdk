@@ -42,13 +42,10 @@ export function extractTextStyleFromTextNode(
     origin.fontName?.style
   );
   if (!origin.fontName) {
-    console.warn(
-      "this might be a bug (or by multiple textstyle). no fontName was found in text node. the text node was",
-      origin
-    );
-    console.info(
-      'since no fontName was provided, falling back to "Roboto Regular"'
-    );
+    // TODO: add warning system.
+    // console.warn("this might be a bug (or by multiple textstyle). no fontName was found in text node. the text node was", origin);
+    // console.info('since no fontName was provided, falling back to "Roboto Regular"');
+
     _fontFamily = "Roboto";
     _fontWeight = FontWeight.normal;
   }
@@ -68,6 +65,5 @@ export function extractTextStyleFromTextNode(
     ),
     lineHeight: origin.lineHeight,
     color: origin.primaryColor,
-    textShadow: origin.textShadow,
   };
 }

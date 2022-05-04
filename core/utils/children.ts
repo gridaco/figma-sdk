@@ -31,6 +31,8 @@ export function mapGrandchildren<
    */
   filter?: (node: ITEMS) => boolean
 ): Array<O> {
+  if (!node) return [];
+
   const _current_depth = depth ?? 0;
 
   // depth limit check

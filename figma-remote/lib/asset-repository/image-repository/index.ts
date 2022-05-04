@@ -6,11 +6,27 @@ type RemoteImage = string;
 export class RemoteImageRepositories extends BaseImageRepositories<RemoteImage> {
   private __node_export_image_map: { [key: string]: RemoteImage } = {};
   private __file_image_map: { [key: string]: RemoteImage } = {};
+
+  private __set_credentials;
   private get credentials() {
+    if (this.__set_credentials) {
+      return this.__set_credentials;
+    }
     return FIGMA_REMOTE_LIB_AUTH_CREDENTIAL_GLOBAL;
   }
-  constructor(private readonly fileId: string) {
+
+  constructor(
+    private readonly fileId: string,
+    args?: {
+      authentication?: {
+        personalAccessToken?: string;
+        accessToken?: string;
+      };
+    }
+  ) {
     super();
+
+    this.__set_credentials = args.authentication;
   }
 
   private __fetching: Promise<any>;

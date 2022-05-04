@@ -13,8 +13,21 @@ export function convertFigmaCornerRadiusToBorderRadius(
       br: origin.bottomRightRadius,
     };
   } else {
-    return {
-      all: origin.cornerRadius,
-    };
+    if (
+      origin.topLeftRadius == origin.topRightRadius &&
+      origin.topLeftRadius == origin.bottomLeftRadius &&
+      origin.topLeftRadius == origin.bottomRightRadius
+    ) {
+      return {
+        all: origin.cornerRadius,
+      };
+    } else {
+      return {
+        tl: origin.topLeftRadius,
+        tr: origin.topRightRadius,
+        bl: origin.bottomLeftRadius,
+        br: origin.bottomRightRadius,
+      };
+    }
   }
 }
