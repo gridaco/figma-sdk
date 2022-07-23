@@ -17,6 +17,8 @@ import {
   mixed,
   makeComponentReference,
   ReflectBooleanOperationNode,
+  FigmaFileKey,
+  figma_special_filekeys,
 } from "@design-sdk/core";
 import { utils } from "@design-sdk/core";
 import { array } from "@reflect-ui/uiutils";
@@ -73,6 +75,29 @@ import { EdgeInsets } from "@reflect-ui/core";
  */
 export type ConverterEnvironment = "plugin" | "rest";
 
+// this global ========================================
+let _global_converter_env: ConverterEnvironment;
+let _global_filekey: FigmaFileKey;
+
+/**
+ * globally configure the converter environment. use with caution.
+ */
+export function config({
+  environment,
+  filekey,
+}: {
+  environment?: ConverterEnvironment;
+  filekey?: FigmaFileKey;
+}) {
+  _global_converter_env = environment ?? "plugin";
+  _global_filekey = filekey;
+}
+
+function _usefilekey(filekey?: FigmaFileKey): FigmaFileKey {
+  return filekey ?? _global_filekey ?? figma_special_filekeys.unknown_file;
+}
+// ====================================================
+
 /**
  * restrictied to single selection
  * @param sceneNode
@@ -81,15 +106,22 @@ export type ConverterEnvironment = "plugin" | "rest";
 export function intoReflectNode(
   sceneNode: SceneNode,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null,
-  mode: ConverterEnvironment
+  mode: ConverterEnvironment,
+  filekey?: FigmaFileKey
 ): ReflectSceneNode {
-  return intoReflectNodes([sceneNode], altParent, mode)[0];
+  return intoReflectNodes(
+    [sceneNode],
+    altParent,
+    mode,
+    _usefilekey(filekey)
+  )[0];
 }
 
 export function intoReflectNodes(
   sceneNode: ReadonlyArray<SceneNode>,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null,
   mode: ConverterEnvironment,
+  filekey: FigmaFileKey,
   maxChildren = 500
 ): Array<ReflectSceneNode> {
   if (sceneNode.length > maxChildren) {
@@ -124,6 +156,7 @@ export function intoReflectNodes(
             case "RECTANGLE": {
               altNode = new ReflectRectangleNode({
                 id: node.id,
+                filekey: _usefilekey(filekey),
                 name: node.name,
                 origin: node.type,
                 parent: altParent,
@@ -136,6 +169,7 @@ export function intoReflectNodes(
             case "ELLIPSE": {
               altNode = new ReflectEllipseNode({
                 id: node.id,
+                filekey: _usefilekey(filekey),
                 name: node.name,
                 origin: node.type,
                 parent: altParent,
@@ -163,6 +197,7 @@ export function intoReflectNodes(
         case "LINE": {
           const altNode = new ReflectLineNode({
             id: node.id,
+            filekey: _usefilekey(filekey),
             name: node.name,
             parent: altParent,
             origin: node.type,
@@ -181,7 +216,12 @@ export function intoReflectNodes(
         case "FRAME":
         case "INSTANCE":
         case "COMPONENT": {
-          const altNode = convertFrameNodeToAlt(node, altParent, mode);
+          const altNode = convertFrameNodeToAlt(
+            node,
+            altParent,
+            mode,
+            _usefilekey(filekey)
+          );
           if (node.type == "INSTANCE" || node.type == "COMPONENT") {
             // component & instance has variant mixin. we'll map it here.
             altNode.variantProperties = node.variantProperties;
@@ -205,6 +245,7 @@ export function intoReflectNodes(
 
           const altNode = new ReflectGroupNode({
             id: node.id,
+            filekey: _usefilekey(filekey),
             name: node.name,
             parent: altParent,
             origin: node.type,
@@ -216,7 +257,12 @@ export function intoReflectNodes(
           convertLayout(altNode, node, mode);
           convertBlend(altNode, node);
 
-          altNode.children = intoReflectNodes(node.children, altNode, mode);
+          altNode.children = intoReflectNodes(
+            node.children,
+            altNode,
+            mode,
+            _usefilekey(filekey)
+          );
           /// ---- disabled feature ----
           // try to find big rect and regardless of that result, also try to convert to autolayout.
           // There is a big chance this will be returned as a Frame
@@ -228,6 +274,7 @@ export function intoReflectNodes(
         case "TEXT": {
           const altNode = new ReflectTextNode({
             id: node.id,
+            filekey: _usefilekey(filekey),
             name: node.name,
             parent: altParent,
             origin: node.type,
@@ -251,6 +298,7 @@ export function intoReflectNodes(
         case "VECTOR": {
           const altNode = new ReflectVectorNode({
             id: node.id,
+            filekey: _usefilekey(filekey),
             name: node.name,
             parent: altParent,
             originParentId: node.parent?.id,
@@ -274,6 +322,7 @@ export function intoReflectNodes(
         case "BOOLEAN_OPERATION": {
           const altNode = new ReflectBooleanOperationNode({
             id: node.id,
+            filekey,
             name: node.name,
             parent: altParent,
             originParentId: node.parent?.id,
@@ -300,7 +349,8 @@ export function intoReflectNodes(
             node.children,
             // FIXME: do not use force type. - it won't impact the logic since boolean operation node is simply a group-like.
             altNode as any as ReflectGroupNode,
-            mode
+            mode,
+            filekey
           );
           return altNode;
         }
@@ -576,25 +626,28 @@ function figmaAccessibleMixedToReflectProperty<T>(
 export function convertSingleNodeToAlt(
   node: SceneNode,
   parent: ReflectFrameNode | ReflectGroupNode | null = null,
-  mode: ConverterEnvironment
+  mode: ConverterEnvironment,
+  filekey: FigmaFileKey
 ): ReflectSceneNode {
-  return intoReflectNodes([node], parent, mode)[0];
+  return intoReflectNodes([node], parent, mode, filekey)[0];
 }
 
 export function convertFrameNodeToAlt(
   node: FrameNode | InstanceNode | ComponentNode,
   altParent: ReflectFrameNode | ReflectGroupNode | null = null,
-  mode: ConverterEnvironment
+  mode: ConverterEnvironment,
+  filekey: FigmaFileKey
 ): ReflectRectangleNode | ReflectFrameNode | ReflectGroupNode {
   if (!utils.checkIfAutoLayout(node) && node.children.length === 0) {
     // todo - move this logic somewhere else. (highly Vulnerable)
     // if not autolayout and, if it has no children, convert frame to rectangle
     // this frame has no other functionality
-    return frameToRectangleNode(node, altParent, mode);
+    return frameToRectangleNode(node, altParent, mode, filekey);
   }
 
   const altNode = new ReflectFrameNode({
     id: node.id,
+    filekey,
     name: node.name,
     parent: altParent,
     origin: node.type,
@@ -608,7 +661,7 @@ export function convertFrameNodeToAlt(
   convertCorner(altNode, node);
   convertConstraint(altNode, node);
 
-  altNode.children = intoReflectNodes(node.children, altNode, mode);
+  altNode.children = intoReflectNodes(node.children, altNode, mode, filekey);
 
   // ----- disabled feature -----
   // return convert_frame_to_autolayout_if_possible(
@@ -623,10 +676,12 @@ export function convertFrameNodeToAlt(
 function frameToRectangleNode(
   node: FrameNode | InstanceNode | ComponentNode,
   altParent: ReflectFrameNode | ReflectGroupNode | null,
-  mode: ConverterEnvironment
+  mode: ConverterEnvironment,
+  filekey: FigmaFileKey
 ): ReflectRectangleNode {
   const newNode = new ReflectRectangleNode({
     id: node.id,
+    filekey,
     name: node.name,
     parent: altParent,
     origin: node.type,
