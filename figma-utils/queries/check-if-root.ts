@@ -1,5 +1,4 @@
-// FIXME -- migrate this
-import type { SceneNode } from "@design-sdk/figma";
+import type { SceneNode } from "@design-sdk/figma-types";
 
 /**
  * returns if giveen node is a root node.

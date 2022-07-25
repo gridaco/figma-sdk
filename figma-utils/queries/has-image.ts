@@ -1,5 +1,4 @@
-// FIXME - migrate this
-import { Paint } from "@design-sdk/figma";
+import type { Paint } from "@design-sdk/figma-types";
 
 /**
  * check if rect, elipes, or frame contains image based on its fills.

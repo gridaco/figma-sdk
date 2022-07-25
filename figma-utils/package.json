@@ -1,0 +1,27 @@
+{
+  "name": "@design-sdk/figma-utils",
+  "version": "0.0.0",
+  "description": "Figma node utilities",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc",
+    "prepack": "yarn clean && yarn build"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "@design-sdk/figma-node": "^0.0.0",
+    "@design-sdk/figma-types": "^0.0.0",
+    "@reflect-ui/core": "^0.0.3"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -3,21 +3,21 @@ import type {
   ReflectGroupNode,
   ReflectSceneNode,
 } from "@design-sdk/figma-node";
-import { ReflectSceneNodeType } from "@design-sdk/figma-node";
+import type { SceneNode } from "@design-sdk/figma-types";
 
 /**
  * @deprecated
  * this only follows figma's constraint type. this needs to be re organized and be moved to reflect-coer
  */
 type ConstraintType = "MIN" | "MAX" | "CENTER" | "STRETCH" | "SCALE";
-
+type SceneNodeType = SceneNode["type"];
 /**
  * represents a constraints relative to parent node
  */
 export type LCRS = "Left" | "Center" | "Right" | "Stretch" | "Scale" | "Mixed";
 
 export function getNodeActualLCRS(node: ReflectConstraintMixin): LCRS {
-  if (node.type == ReflectSceneNodeType.group) {
+  if ((node.type as SceneNodeType) == "GROUP") {
     return getGroupLCRS(node as ReflectGroupNode);
   } else {
     try {

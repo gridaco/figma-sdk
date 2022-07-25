@@ -1,8 +1,6 @@
 import { retrieveFill } from "./retrieve-fill";
-
-// FIXME - migrate this
-import { SolidPaint, Paint } from "@design-sdk/figma";
-import { RGBAF } from "@reflect-ui/core/lib/color";
+import type { SolidPaint, Paint } from "@design-sdk/figma-types";
+import type { RGBAF } from "@reflect-ui/core";
 
 export function retrievePrimaryColor(fills: ReadonlyArray<Paint>): RGBAF {
   const solid = retrieveFill<SolidPaint>(fills, {

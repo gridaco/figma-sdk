@@ -1,10 +1,3 @@
-// micro converters
-export * as converters from "./converters";
-
-// region features
-export * as features from "./features";
-// endregion
-
 // node
 export * from "@design-sdk/figma-node";
 export * as nodes from "@design-sdk/figma-node";

@@ -1,5 +1,4 @@
-// FIXME - migrate this
-import { Paint } from "@design-sdk/figma";
+import type { Paint } from "@design-sdk/figma-types";
 
 export function filterFills(
   fills: ReadonlyArray<Paint>,

@@ -4,8 +4,9 @@ import type {
   ReflectSceneNode,
   IReflectNodeReference,
 } from "@design-sdk/figma-node";
-import { ReflectSceneNodeType } from "@design-sdk/figma-node";
+import type { SceneNode } from "@design-sdk/figma-types";
 
+type SceneNodeType = SceneNode["type"];
 type MaybeChildrenMixin<T = any> = IChildrenMixin<T> | object;
 
 /**
@@ -76,7 +77,7 @@ export function mapGrandchildren<
           add(child as any);
         } else {
           // frame can be also a child, but not group. group only holds children, so we do not push group nodes
-          if (!((child as any).type == ReflectSceneNodeType.group)) {
+          if (!(((child as any).type as SceneNodeType) == "GROUP")) {
             add(child as any);
           }
         }

@@ -1,5 +1,4 @@
-// FIXME - migrate this
-import { Paint } from "@design-sdk/figma";
+import type { Paint } from "@design-sdk/figma-types";
 
 /**
  * Retrieve the first visible color that is being used by the layer, in case there are more than one.
