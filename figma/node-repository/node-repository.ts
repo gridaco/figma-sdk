@@ -11,7 +11,7 @@ export class NodeRepository {
     components = [],
     nodes,
   }: {
-    components?: ComponentNode[];
+    components?: ComponentNode[] | null;
     nodes: Node[];
   }) {
     this.nodes = nodes;

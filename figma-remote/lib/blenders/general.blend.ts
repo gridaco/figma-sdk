@@ -36,13 +36,13 @@ export function blendBaseNode(p: MappingBlendInput) {
   target.effects = convertFigmaRemoteEffectsToFigma(...source.effects);
 
   target.relativeTransform = source.relativeTransform as Transform2DMatrix;
-  target.x = source.relativeTransform[0][2];
-  target.y = source.relativeTransform[1][2];
+  target.x = source.relativeTransform?.[0]?.[2];
+  target.y = source.relativeTransform?.[1]?.[2];
 
   // @ts-ignore
-  target.width = source.size.x;
+  target.width = source.size?.x;
   // @ts-ignore
-  target.height = source.size.y;
+  target.height = source.size?.y;
 
   // static override --------------------
   target.effectStyleId = undefined;
@@ -94,14 +94,17 @@ function xy_as_relative(
   };
 }
 
-function angleFromTransform(transform: Readonly<Transform>): number {
+function angleFromTransform(transform?: Readonly<Transform>): number {
+  if (!transform) {
+    return 0;
+  }
+
   try {
     const [a, b, c] = transform[0];
     const [d, e, f] = transform[1];
     var angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
     return angle < 0 ? angle + 360 : angle;
   } catch (e) {
-    console.error(e);
     return 0;
   }
 }

@@ -9,12 +9,7 @@ export function forceRectangleToFrame(
   // if a Rect with elements inside were identified, extract this Rect
   // outer methods are going to use it.
   const frameNode = new ReflectFrameNode({
-    id: rect.id,
-    name: rect.name,
-    origin: rect.origin,
-    originParentId: rect.originParentId,
-    parent: rect.parent,
-    absoluteTransform: rect.absoluteTransform,
+    ...rect,
     childrenCount: inferedChildrenCound,
   });
 

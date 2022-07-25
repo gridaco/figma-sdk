@@ -12,7 +12,7 @@ import { array } from "@reflect-ui/uiutils";
 import { checkIfRoot } from "@design-sdk/core/utils/check-if-root";
 
 // FIXME - need migration
-import { figma, Figma } from "@design-sdk/figma";
+import { figma, Figma, FigmaFileKey } from "@design-sdk/figma";
 import { swapVariant } from "@design-sdk/figma/features/variant";
 
 import {
@@ -37,7 +37,11 @@ export class ReflectBaseNode
   implements IReflectNodeBaseReference, IReflectLayoutMixin, IReflectBlendMixin
 {
   readonly $schema: string = "reflect-ui.com";
+  readonly filekey: FigmaFileKey;
+  readonly id: string;
+  readonly name: string;
   readonly type: ReflectSceneNodeType;
+  readonly absoluteTransform: Transform;
   origin: ReflectSceneNodeType;
   originRaw: string;
   originParentId: string | null;
@@ -46,6 +50,7 @@ export class ReflectBaseNode
 
   constructor(props: {
     readonly id: string;
+    readonly filekey: FigmaFileKey;
     name: string;
     parent: ReflectSceneNode | null;
     origin: string;
@@ -54,6 +59,7 @@ export class ReflectBaseNode
     childrenCount: number;
   }) {
     this.id = props.id;
+    this.filekey = props.filekey;
     this.originParentId = props.originParentId;
     this.name = props.name;
     this.parent = props.parent;
@@ -94,8 +100,6 @@ export class ReflectBaseNode
   }
 
   locked: boolean;
-  readonly id: string;
-  readonly absoluteTransform: Transform;
   parent: ReflectSceneNode | null;
   mainComponent?: IReflectNodeBasicReference | null;
   mainComponentId?: string;
@@ -109,7 +113,6 @@ export class ReflectBaseNode
   }
   // endregion children related
 
-  readonly name: string;
   readonly pluginData: { [key: string]: string };
   getPluginData(key: string): string {
     return this.originNode.getPluginData(key);
