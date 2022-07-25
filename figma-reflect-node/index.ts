@@ -16,3 +16,7 @@ export * from "./mixed";
 
 // reference nodes
 export * from "./reflect-node-reference";
+
+// filekey
+export { figma_special_filekeys } from "./filekey";
+export type { FigmaAnonymousFileKey, FigmaFileKey } from "./filekey";

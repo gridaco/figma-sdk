@@ -57,7 +57,7 @@ export async function fetchTargetAsReflect({
     Object.keys(partial.components).forEach((key) => {
       const component = partial.components[key];
       const _mapped = mapper.mapFigmaRemoteToFigma(component);
-      const _converted = convert.intoReflectNode(_mapped, null, "rest");
+      const _converted = convert.intoReflectNode(_mapped, null, "rest", file);
       components.push(<FigmaRemoteImportPack>{
         file: file,
         node: component.id,
@@ -69,7 +69,7 @@ export async function fetchTargetAsReflect({
   }
 
   const _mapped = mapper.mapFigmaRemoteToFigma(partial.nodes[node]);
-  const _converted = convert.intoReflectNode(_mapped, null, "rest");
+  const _converted = convert.intoReflectNode(_mapped, null, "rest", file);
   return {
     ...partial,
     node: node,
@@ -86,6 +86,7 @@ export async function completePartialPack(
   auth?: AuthenticationCredential,
   config?: FimgaRemoteFetchConfig
 ): Promise<FigmaApiResponse<FigmaRemoteImportPack>> {
+  const filekey = partial.file;
   let d: types.Node;
   if (partial.remote) {
     d = partial.remote;
@@ -95,7 +96,7 @@ export async function completePartialPack(
     ).nodes[partial.node];
   }
   const _mapped = mapper.mapFigmaRemoteToFigma(d as any);
-  const _converted = convert.intoReflectNode(_mapped, null, "rest");
+  const _converted = convert.intoReflectNode(_mapped, null, "rest", filekey);
   return {
     ...partial,
     remote: d,
