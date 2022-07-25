@@ -4,5 +4,32 @@
     "version": "0.0.0",
     "author": "Grida.co",
     "private": false,
-    "license": "MIT"
+    "license": "MIT",
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "tsc",
+        "prepack": "yarn clean && yarn build"
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "dependencies": {
+        "@design-sdk/figma-utils": "^0.0.0",
+        "@reflect-ui/font-utils": "^0.0.1"
+    },
+    "peerDependencies": {
+        "@design-sdk/figma-core": "^0.0.0",
+        "@reflect-ui/cg": "^0.1.1",
+        "@reflect-ui/font-utils": "^0.0.1",
+        "@reflect-ui/uiutils": "^0.1.2-2"
+    },
+    "devDependencies": {
+        "@design-sdk/figma-types": "^0.0.0",
+        "@reflect-ui/cg": "^0.1.1"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }
