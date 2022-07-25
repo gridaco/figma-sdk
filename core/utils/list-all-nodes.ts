@@ -1,11 +1,12 @@
-import { figma, NodeType, SceneNode } from "@design-sdk/figma-types";
+import { plugin } from "@design-sdk/figma";
+import { NodeType, SceneNode } from "@design-sdk/figma-types";
 
 /**
  * list nodes in the document via iteration. page nodes are not supported by design.
  * @param types
  */
 export function listAllNodes(types: NodeType[]): Array<SceneNode> {
-  const all = figma.root.findAll();
+  const all = plugin.root.findAll();
   const targets = [];
   all.forEach((n) => {
     if (types.includes(n.type)) {

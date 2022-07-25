@@ -5,8 +5,9 @@
  * https://github.com/figma/plugin-typings/blob/master/plugin-api.d.ts
  * https://github.com/figma/plugin-typings/commit/e355d78a743797360c819dda783b73b5614485f7
  */
-//@ts-ignore
-export let figma: PluginAPI = global?.["figma"] ?? globalThis?.PluginAPI?.figma;
+export let plugin: PluginAPI =
+  //@ts-ignore
+  global?.["figma"] ?? globalThis?.PluginAPI?.figma;
 
 /**
  * sometimes figma api cannot be loaded by accessing global["figma"] even on figma platform, so when booting up, we'll need to provide figma export interface on figma code host.
@@ -14,7 +15,7 @@ export let figma: PluginAPI = global?.["figma"] ?? globalThis?.PluginAPI?.figma;
  * @param _figma
  */
 export function provideFigma(_figma) {
-  figma = _figma;
+  plugin = _figma;
 }
 
 export interface PluginAPI {

@@ -1,11 +1,11 @@
-import { BorderRadiusManifest } from "@reflect-ui/core";
-import {
+import type { BorderRadiusManifest } from "@reflect-ui/core";
+import type {
   Axis,
   CrossAxisAlignment,
   EdgeInsets,
   MainAxisAlignment,
 } from "@reflect-ui/core";
-import {
+import type {
   IReflectGeometryMixin,
   IReflectRectangleCornerMixin,
   IReflectBlendMixin,
@@ -13,7 +13,7 @@ import {
 } from "./mixins";
 
 // FIXME - migrate this to reflect core
-import {
+import type {
   LayoutGrid,
   Guide,
   Constraints,
@@ -28,12 +28,11 @@ import {
   FigmaCounterAxisSizingMode,
   VectorPaths,
 } from "@design-sdk/figma-types";
-
-import { ReflectSceneNodeType } from "./node-type";
 import type { ReflectSceneNode } from "./node-type-alias";
+import type { BlendMode } from "@reflect-ui/cg";
 import { ReflectChildrenMixin } from "./mixins/children.mixin";
-import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
-import { checkIfAutoLayout } from "@design-sdk/core/utils/check-if-auto-layout";
+import { ReflectSceneNodeType } from "./node-type";
+import { checkIfAutoLayout } from "@design-sdk/figma-utils";
 
 //#region frame
 interface IReflectFrameMixin {

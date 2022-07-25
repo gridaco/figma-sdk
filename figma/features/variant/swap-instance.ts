@@ -1,4 +1,4 @@
-import { figma, InstanceNode, ComponentNode } from "@design-sdk/figma";
+import { plugin, InstanceNode, ComponentNode } from "@design-sdk/figma";
 import { isVariantMatchingName } from "./variant-name-utils";
 
 /**
@@ -23,9 +23,9 @@ export function swapVariant(from: InstanceNode, name: string): InstanceNode {
 
     return swapInstance(
       // safely retrieve origin node again
-      figma.getNodeById(from.id) as InstanceNode,
+      plugin.getNodeById(from.id) as InstanceNode,
       // safely retrieve origin node again
-      figma.getNodeById(swapTargetMasterComponent.id) as ComponentNode
+      plugin.getNodeById(swapTargetMasterComponent.id) as ComponentNode
     );
   } catch (_) {
     // somehow failed

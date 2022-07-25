@@ -1,13 +1,13 @@
 import { typographyIntelisenceMapping } from "@reflect-ui/namings";
 import { TextStyleManifest } from "@reflect-ui/core";
 import { convertTextStyleToReflect } from "@design-sdk/figma-node-conversion";
-import { figma } from "@design-sdk/figma-types";
+import { plugin } from "@design-sdk/figma-types";
 
 export function getTextStyleById(id: string): TextStyleManifest {
   if (id === undefined || id === null || id === "") {
     throw `the parameter id of ${id} is not valid. maybe your text does not have a assiged textstyle`;
   }
-  for (const s of figma.getLocalTextStyles()) {
+  for (const s of plugin.getLocalTextStyles()) {
     if (id === s.id) {
       return convertTextStyleToReflect(s);
     }
@@ -45,7 +45,7 @@ export class TextStyleRepository {
       Map<string, TextStyleManifest>
     >();
     this._mapping = new Map<string, TextStyleManifest>();
-    const textThemeStyles = figma.getLocalTextStyles();
+    const textThemeStyles = plugin.getLocalTextStyles();
     for (let textThemeStyle of textThemeStyles) {
       const convertedTextThemeStyle = convertTextStyleToReflect(textThemeStyle);
       this._mapping[textThemeStyle.name] = convertedTextThemeStyle;
@@ -113,9 +113,7 @@ export enum TextThemeStyles {
   overline = "overline",
 }
 
-function findOneStyle(
-  textStyleName: string
-): {
+function findOneStyle(textStyleName: string): {
   // the type
   type: TextThemeStyles;
   // the variant, e.g. sm/h1, xl/h1

@@ -1,4 +1,4 @@
-import { figma } from "@design-sdk/figma";
+import { plugin } from "@design-sdk/figma";
 
 const IDENTITY_KEY = "figma-file-checksum-identity";
 
@@ -22,18 +22,18 @@ function getIdentity() {}
 
 function setIdentity() {
   const identity = makeIdentity();
-  figma.clientStorage.setAsync(IDENTITY_KEY, identity);
+  plugin.clientStorage.setAsync(IDENTITY_KEY, identity);
 }
 
 function setIdentityFrom(name: string, ...pages: string[]) {
   const identity = makeIdentityFrom(name, ...pages);
-  figma.clientStorage.setAsync(IDENTITY_KEY, identity);
+  plugin.clientStorage.setAsync(IDENTITY_KEY, identity);
 }
 
 function makeIdentity(): FigmaIdentityByPages {
-  const pages = figma.root.children;
+  const pages = plugin.root.children;
   const pagesids = pages.map((page) => page.id);
-  return makeIdentityFrom(figma.root.name, ...pagesids);
+  return makeIdentityFrom(plugin.root.name, ...pagesids);
 }
 
 function makeIdentityFrom(
@@ -47,7 +47,7 @@ function makeIdentityFrom(
 }
 
 function saveonRoot() {
-  figma.root.setPluginData(
+  plugin.root.setPluginData(
     "filekey",
     "" // TODO: get the file key
   );

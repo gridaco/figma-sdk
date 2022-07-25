@@ -1,5 +1,5 @@
 import { BaseImageRepositories } from "@design-sdk/core/assets-repository/image-repository";
-import { figma } from "../../";
+import { plugin } from "../../";
 
 export class ImageRepositories extends BaseImageRepositories {
   async fetchDataById(
@@ -8,7 +8,7 @@ export class ImageRepositories extends BaseImageRepositories {
       type: "original";
     }
   ): Promise<Uint8Array> {
-    const node = figma.getNodeById(id);
+    const node = plugin.getNodeById(id);
     if (node.type == "DOCUMENT") {
       return;
     } else {
@@ -29,7 +29,7 @@ export class ImageRepositories extends BaseImageRepositories {
   }
 
   async _fetchDataByHash(hash: string): Promise<Uint8Array> {
-    const image = figma.getImageByHash(hash);
+    const image = plugin.getImageByHash(hash);
     return image.getBytesAsync();
   }
 

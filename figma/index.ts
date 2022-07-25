@@ -10,7 +10,7 @@ export * from "./utils";
 export * as types from "@design-sdk/figma-types";
 export * from "@design-sdk/figma-types";
 export { v1 as Figma } from "@design-sdk/figma-types";
-export { figma } from "@design-sdk/figma-types";
+export { plugin } from "@design-sdk/figma-types";
 
 //
 export * from "./node-repository";

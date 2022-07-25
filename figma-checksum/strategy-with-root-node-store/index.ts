@@ -1,4 +1,4 @@
-import { figma } from "@design-sdk/figma";
+import { plugin } from "@design-sdk/figma";
 import { SIGNATURE_STORE_KEY } from "../k";
 import { nanoid } from "nanoid/non-secure";
 import { FigmaChecksumBase } from "../base";
@@ -26,7 +26,7 @@ export class FigmaRootNodeStoreVerification extends FigmaChecksumBase {
 }
 
 function get(): string {
-  return figma.root.getPluginData(SIGNATURE_STORE_KEY);
+  return plugin.root.getPluginData(SIGNATURE_STORE_KEY);
 }
 
 function exists(): boolean {
@@ -35,7 +35,7 @@ function exists(): boolean {
 }
 
 function update(signature: string) {
-  figma.root.setPluginData(SIGNATURE_STORE_KEY, signature);
+  plugin.root.setPluginData(SIGNATURE_STORE_KEY, signature);
 }
 
 function set(): string {

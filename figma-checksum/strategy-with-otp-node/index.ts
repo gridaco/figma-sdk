@@ -3,7 +3,7 @@
 ///
 
 import { FigmaChecksumBase } from "../base";
-import { figma } from "@design-sdk/figma";
+import { plugin } from "@design-sdk/figma";
 
 export class FigmaOTPNodeVerification extends FigmaChecksumBase {
   remoteMethod(): Promise<string> {
@@ -35,7 +35,7 @@ export class FigmaOTPNodeVerification extends FigmaChecksumBase {
   }
 
   clear() {
-    figma.getNodeById(this._page).remove();
+    plugin.getNodeById(this._page).remove();
   }
 }
 
@@ -44,18 +44,18 @@ async function createTemporalNodeWithSignature(
   signature: string
 ): Promise<{ page: string; node: string }> {
   // this must be called before editing text
-  await figma.loadFontAsync(__fontname);
+  await plugin.loadFontAsync(__fontname);
 
-  const page = figma.createPage();
+  const page = plugin.createPage();
   page.name = "🔑 running verification... (will be removed automatically)";
 
-  const holder = figma.createFrame();
+  const holder = plugin.createFrame();
   holder.name = "do not remove me while verification";
   holder.resize(0, 0);
   page.appendChild(holder);
 
   // ---------------- region create node & styling ----------------
-  const text = figma.createText();
+  const text = plugin.createText();
   holder.appendChild(text);
   text.name = "________________________________________donotmodify"; // 40 '_' + 'donotmodify'
   text.opacity = 0; // to make not editable by double click
