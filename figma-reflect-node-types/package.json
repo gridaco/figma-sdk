@@ -1,0 +1,4 @@
+{
+  "name": "@design-sdk/figma-node-types",
+  "description": "Abstract type definitions for Figma node types with reflect property typings"
+}
