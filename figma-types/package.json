@@ -7,7 +7,9 @@
     "homepage": "https://github.com/gridaco/design-sdk",
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
-        "prepack": "yarn test && tsc",
+        "clean": "rimraf dist",
+        "build": "tsc",
+        "prepack": "yarn test && yarn clean && yarn build",
         "test": "jest"
     },
     "files": [
@@ -15,7 +17,7 @@
         "dist/index.d.ts",
         "dist/**/*.js",
         "dist/**/*.d.ts",
-        "README",
+        "README.md",
         "LICENSE"
     ],
     "publishConfig": {

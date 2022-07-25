@@ -1,7 +1,7 @@
-import { mixed } from "@design-sdk/core";
-
 export interface FigmaCornerRadius {
-  cornerRadius: number | typeof mixed;
+  // @deprecated
+  // import { mixed } from "@design-sdk/core";
+  // cornerRadius: number | typeof mixed;
   topLeftRadius: number;
   topRightRadius: number;
   bottomLeftRadius: number;
