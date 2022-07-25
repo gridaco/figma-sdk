@@ -1,8 +1,8 @@
-import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
-import { Figma } from "@design-sdk/figma-types";
+import type { BlendMode as FigmaBlendMode } from "@design-sdk/figma-types";
+import { BlendMode } from "@reflect-ui/cg";
 
 export function convertBlendModeToReflect(
-  figmaBlendMode: Figma.BlendMode | "PASS_THROUGH"
+  figmaBlendMode: FigmaBlendMode | "PASS_THROUGH"
 ): BlendMode | "PASS_THROUGH" {
   if (figmaBlendMode == "PASS_THROUGH") {
     return "PASS_THROUGH";

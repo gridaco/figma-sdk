@@ -3,7 +3,7 @@ import {
   LCRS,
   getNodeActualLCRS,
   getReletiveLCRS,
-} from "@design-sdk/core/features/constraints/lcrs";
+} from "@design-sdk/figma-utils";
 import type { ReflectSceneNode } from "../node-type-alias";
 
 // FIXME - migrate this to reflect core cg
@@ -14,7 +14,8 @@ export interface IReflectConstraintMixin {
 
 export class ReflectConstraintMixin
   extends ReflectBaseNode
-  implements IReflectConstraintMixin {
+  implements IReflectConstraintMixin
+{
   constraints: Constraints;
 
   /**

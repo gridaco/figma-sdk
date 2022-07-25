@@ -8,16 +8,19 @@ import type {
   TextOverflow,
   TextTransform,
 } from "@reflect-ui/core";
+import type {
+  TextAutoResize,
+  FontName,
+  LetterSpacing,
+} from "@design-sdk/figma-types";
 import { FontWeight } from "@reflect-ui/core";
 import { ReflectSceneNodeType } from "./node-type";
 import { ReflectDefaultShapeMixin } from "./mixins";
 
 // region FIXME - migrate this
 import { getTextStyleById } from "@design-sdk/figma";
-import { TextAutoResize } from "@design-sdk/figma-types";
-import { FontName, LetterSpacing } from "@design-sdk/figma-types";
 import { extractTextStyleFromTextNode } from "@design-sdk/figma-node-conversion";
-import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
+import { inferFontWeight } from "@reflect-ui/font-utils";
 // endregion
 
 export class ReflectTextNode
@@ -76,7 +79,7 @@ export class ReflectTextNode
 
   get fontWeight(): FontWeight {
     try {
-      return convertFontStyleNameToFontWeightReflect(this.fontName.style);
+      return inferFontWeight(this.fontName.style);
     } catch (_) {
       // fallback.
       return FontWeight.normal;

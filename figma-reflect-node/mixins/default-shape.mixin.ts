@@ -1,8 +1,7 @@
 import { ReflectConstraintMixin } from "./constraint.mixin";
-
 import type { BorderRadiusManifest } from "@reflect-ui/core";
 import type { IReflectDefaultShapeMixin } from "../interfaces/default-shape-mixin";
-import type { BlendMode } from "@reflect-ui/core/lib/cg/filters";
+import type { BlendMode } from "@reflect-ui/cg";
 
 // FIXME - migrate this
 import type {

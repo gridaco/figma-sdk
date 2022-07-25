@@ -1,6 +1,6 @@
 // FIXME
-import { Effect } from "@design-sdk/figma";
-import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
+import type { Effect } from "@design-sdk/figma";
+import type { BlendMode } from "@reflect-ui/cg";
 
 export interface IReflectBlendMixin {
   opacity: number;

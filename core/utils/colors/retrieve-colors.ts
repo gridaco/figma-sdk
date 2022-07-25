@@ -1,8 +1,9 @@
 import { ReflectSceneNode } from "@design-sdk/core";
-import { retrieveFill } from "@design-sdk/core/utils";
 import { calculateContrastRatio } from "@reflect-ui/uiutils";
-import { converters } from "@reflect-ui/core/lib";
+import { converters } from "@reflect-ui/core";
 import { Paint } from "@design-sdk/figma";
+import { retrieveFill } from "@design-sdk/figma-utils";
+
 export function retrieveColorsFrom(
   sceneNode: Array<ReflectSceneNode>
 ): Array<contrastedColor> {

@@ -1,5 +1,5 @@
 import type { ReflectBaseNode } from "./base.node";
-import { Figma } from "@design-sdk/figma";
+import type { SceneNode, ComponentNode } from "@design-sdk/figma-types";
 import type {
   InfiniteChildrenReference,
   IReflectNodeBasicReference,
@@ -35,7 +35,7 @@ export function makeReference(r: ReflectBaseNode): IReflectNodeReference {
 
 function _safely_makeComponentReference(r: IReflectNodeReference) {
   if (r.origin === "COMPONENT" || r.type == "COMPONENT") {
-    return makeComponentReference(r as any as Figma.ComponentNode);
+    return makeComponentReference(r as any as ComponentNode);
   }
 }
 
@@ -47,9 +47,7 @@ interface ComponentReference extends IReflectNodeBasicReference {
   children: InfiniteChildrenReference[];
 }
 
-export function makeComponentReference(
-  r: Figma.ComponentNode
-): ComponentReference {
+export function makeComponentReference(r: ComponentNode): ComponentReference {
   if (!r) {
     // console.warn(
     //   "the givven input was empty. cannot perform 'makeComponentReference'"
@@ -119,7 +117,7 @@ const make_infinite_parent_reference = (
     variantProperties: r.variantProperties,
     children: should_hold_infinite_children(r)
       ? make_infinite_children_reference(
-          r.children as any as ReadonlyArray<Figma.SceneNode>
+          r.children as any as ReadonlyArray<SceneNode>
         )
       : r.children.map((c) => ({
           name: c.name,
@@ -131,7 +129,7 @@ const make_infinite_parent_reference = (
 };
 
 const make_infinite_children_reference = (
-  children: ReadonlyArray<Figma.SceneNode>
+  children: ReadonlyArray<SceneNode>
 ): Array<InfiniteChildrenReference> => {
   return children?.map((c) => {
     return <InfiniteChildrenReference>{

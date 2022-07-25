@@ -3,7 +3,7 @@ import type {
   StrokeCap,
   StrokeJoin,
   VectorPaths,
-} from "@design-sdk/figma";
+} from "@design-sdk/figma-types";
 
 export interface IReflectGeometryMixin {
   fills: ReadonlyArray<Paint> | undefined;

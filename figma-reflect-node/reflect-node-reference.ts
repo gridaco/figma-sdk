@@ -3,7 +3,7 @@ export {
   makeComponentReference,
   makeReference,
 } from "./make-reflect-node-reference";
-import type { NodeType } from "@design-sdk/figma";
+import type { NodeType } from "@design-sdk/figma-types";
 
 export type IReflectNodeReference =
   | IReflectNodeRootLikeReference

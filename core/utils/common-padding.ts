@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "@design-sdk/core";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { EdgeInsets } from "@reflect-ui/core";
 
 type Padding = {
