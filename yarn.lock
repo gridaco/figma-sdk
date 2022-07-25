@@ -566,17 +566,27 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@reflect-ui/cg@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/cg/-/cg-0.1.1.tgz#a8994693165e70e29da1070128bf3a7a086a014b"
+  integrity sha512-4Ay8JEq/fXfL6NQvXqbGEjKfXvOBYsE13B3BhXNsfNPj2uSie8HyBt5xzaA4cebTfkIaOIwEmAhT5PubZzX/Tg==
+
 "@reflect-ui/core@0.0.2-rc.7":
   version "0.0.2-rc.7"
   resolved "https://registry.yarnpkg.com/@reflect-ui/core/-/core-0.0.2-rc.7.tgz#9d531f5a0b9caab31e7563020044b753700e2bbc"
   integrity sha512-EqF4SRU57bfa5DOPET1rv5lROFyMVHLv1xTEIlN6N2gDpXt71QceImWfQp3z3Khqnb4R/p9OhNK6DXGUpozWKw==
 
-"@reflect-ui/core@0.0.2-rc.8":
-  version "0.0.2-rc.8"
-  resolved "https://registry.yarnpkg.com/@reflect-ui/core/-/core-0.0.2-rc.8.tgz#4ab47a860e7dc655ed95e37b69e6a9bbaef894bc"
-  integrity sha512-yyzhDej9jo0l3582fUkPEOpgm0icnP9Yimqc3YIFThQRYW9r/SkAR4ed+lpuXL/ztyiNI12PuXB8GyRNWaHGag==
+"@reflect-ui/core@0.0.3", "@reflect-ui/core@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/core/-/core-0.0.3.tgz#eee6577f5e22a9fa7d1e6c65ba614856e6bb6cc2"
+  integrity sha512-1KJBrGjHQDZZBBT3vIuoG+hUJY7Kl0uzJiagnEHj/9EFsNP6QnExduBuDr6Zg8QnMYg0KVFKBEyQ7njdx3uQSg==
   dependencies:
     "@reflect-ui/uiutils" "^0.1.2-1"
+
+"@reflect-ui/font-utils@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/font-utils/-/font-utils-0.0.1.tgz#fc22d21d90dc896dec96fcacaf8d584a30fb0642"
+  integrity sha512-WglAO5z4E4upRx7kG3sn2uxG6jf0Ce3rc0WWZfYY9eyHrkm29dPc80JwHzxEAwbCjTr4iayF+ggNgbcGLAE2Tw==
 
 "@reflect-ui/namings@0.0.3":
   version "0.0.3"

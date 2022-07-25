@@ -1,4 +1,5 @@
-import { TextNode, LetterSpacing, figma } from "@design-sdk/figma-types";
+import { TextNode, LetterSpacing } from "@design-sdk/figma-types";
+import { plugin } from "@design-sdk/figma";
 export function convertLetterSpacingToReflect(
   origin: LetterSpacing,
   node?: TextNode
@@ -8,7 +9,7 @@ export function convertLetterSpacingToReflect(
       return origin;
     } else {
       if (node) {
-        if (node.fontSize !== figma.mixed) {
+        if (node.fontSize !== plugin.mixed) {
           // read [commonLineHeight] comment to understand what is going on here.
           const _value =
             ((node.fontSize as number) *

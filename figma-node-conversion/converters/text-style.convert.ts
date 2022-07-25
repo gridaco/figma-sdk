@@ -1,16 +1,11 @@
 import { FontWeight, TextStyleManifest } from "@reflect-ui/core";
 import { convertFontStyleToReflect } from "./font-style.convert";
-import { convertFontStyleNameToFontWeightReflect } from "@design-sdk/core/converters";
+import { inferFontWeight } from "@reflect-ui/font-utils";
 import { convertLetterSpacingToReflect } from "./letter-spacing.convert";
 import { figma_lineheight_to_reflect_ling_height } from "./line-height.convert";
 import { convertTextDecorationToReflect } from "./tetx-decoration.convert";
-import {
-  TextStyle,
-  TextNode,
-  LetterSpacing,
-  LineHeight,
-} from "@design-sdk/figma-types";
-import { ReflectTextNode } from "@design-sdk/core";
+import { TextStyle, TextNode, LetterSpacing } from "@design-sdk/figma-types";
+import type { ReflectTextNode } from "@design-sdk/figma-node";
 
 export function convertTextStyleToReflect(
   origin: TextStyle,
@@ -19,13 +14,15 @@ export function convertTextStyleToReflect(
   return {
     name: origin.name,
     fontFamily: origin.fontName.family,
-    fontWeight: convertFontStyleNameToFontWeightReflect(origin.fontName.style),
+    fontWeight: inferFontWeight(origin.fontName.style),
     fontStyle: convertFontStyleToReflect(origin.fontName),
     fontSize: origin.fontSize,
     wordSpacing: undefined, // non-figma property
     decoration: convertTextDecorationToReflect(origin.textDecoration),
     decorationStyle: undefined,
     decorationThickness: undefined,
+    // TODO: fixme
+    // @ts-ignore
     letterSpacing: convertLetterSpacingToReflect(
       origin.letterSpacing as LetterSpacing
     ),
@@ -38,9 +35,7 @@ export function extractTextStyleFromTextNode(
   origin: ReflectTextNode
 ): TextStyleManifest {
   let _fontFamily = origin.fontName?.family;
-  let _fontWeight = convertFontStyleNameToFontWeightReflect(
-    origin.fontName?.style
-  );
+  let _fontWeight = inferFontWeight(origin.fontName?.style);
   if (!origin.fontName) {
     // TODO: add warning system.
     // console.warn("this might be a bug (or by multiple textstyle). no fontName was found in text node. the text node was", origin);
@@ -60,6 +55,8 @@ export function extractTextStyleFromTextNode(
     decoration: origin.textDecoration,
     decorationStyle: undefined,
     decorationThickness: undefined,
+    // TODO: fixme
+    // @ts-ignore
     letterSpacing: convertLetterSpacingToReflect(
       origin.letterSpacing as LetterSpacing
     ),

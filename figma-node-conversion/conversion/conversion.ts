@@ -14,13 +14,14 @@ import {
   IReflectGeometryMixin,
   IReflectLayoutMixin,
   ReflectConstraintMixin,
-  mixed,
   makeComponentReference,
   ReflectBooleanOperationNode,
+} from "@design-sdk/core";
+import {
+  mixed,
   FigmaFileKey,
   figma_special_filekeys,
-} from "@design-sdk/core";
-import { utils } from "@design-sdk/core";
+} from "@design-sdk/figma-core";
 import { array } from "@reflect-ui/uiutils";
 import { shouldIgnore } from "@design-sdk/flags";
 
@@ -38,7 +39,7 @@ import {
   convertLetterSpacingToReflect,
 } from "../converters";
 import {
-  figma,
+  plugin,
   SceneNode,
   LayoutMixin,
   DefaultFrameMixin,
@@ -62,6 +63,7 @@ import {
 } from "@design-sdk/figma-types";
 import { convertBlendModeToReflect } from "../converters/blend-mode.convert";
 import { EdgeInsets } from "@reflect-ui/core";
+import { checkIfAutoLayout } from "@design-sdk/figma-utils";
 
 // import { convert_frame_to_autolayout_if_possible } from "../../../designto-sanitized/convert-frame-to-autolayout-if-possible";
 // import { convert_rectangle_with_others_as_new_frame_and_as_bg } from "../../../designto-sanitized/convert-rectangle-with-others-as-new-frame-and-as-bg";
@@ -561,9 +563,6 @@ function convertCorner(
   node: CornerMixin | RectangleCornerMixin
 ) {
   altNode.cornerRadius = convertFigmaCornerRadiusToBorderRadius({
-    cornerRadius: figmaAccessibleMixedToReflectProperty(
-      (node as CornerMixin).cornerRadius
-    ),
     topLeftRadius: (node as RectangleCornerMixin).topLeftRadius,
     topRightRadius: (node as RectangleCornerMixin).topRightRadius,
     bottomLeftRadius: (node as RectangleCornerMixin).bottomLeftRadius,
@@ -606,7 +605,7 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
 function figmaToReflectProperty<T>(
   origin: T | PluginAPI["mixed"]
 ): T | undefined {
-  if (origin === figma?.mixed) {
+  if (origin === plugin?.mixed) {
     return undefined;
   }
   return origin as T;
@@ -617,7 +616,7 @@ function figmaToReflectProperty<T>(
 function figmaAccessibleMixedToReflectProperty<T>(
   origin: T | PluginAPI["mixed"]
 ): T | typeof mixed {
-  if (origin === figma?.mixed) {
+  if (origin === plugin?.mixed) {
     return mixed as any;
   }
   return origin as T;
@@ -638,7 +637,7 @@ export function convertFrameNodeToAlt(
   mode: ConverterEnvironment,
   filekey: FigmaFileKey
 ): ReflectRectangleNode | ReflectFrameNode | ReflectGroupNode {
-  if (!utils.checkIfAutoLayout(node) && node.children.length === 0) {
+  if (!checkIfAutoLayout(node) && node.children.length === 0) {
     // todo - move this logic somewhere else. (highly Vulnerable)
     // if not autolayout and, if it has no children, convert frame to rectangle
     // this frame has no other functionality

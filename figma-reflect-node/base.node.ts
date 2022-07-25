@@ -7,18 +7,19 @@ import {
 } from "@reflect-ui/core";
 import type { ReflectSceneNode } from "./node-type-alias";
 import { ReflectSceneNodeType } from "./node-type";
-import { utils } from "@design-sdk/core";
 import { array } from "@reflect-ui/uiutils";
-import { checkIfRoot } from "@design-sdk/core/utils/check-if-root";
-
 // FIXME - need migration
-import { figma, Figma, FigmaFileKey } from "@design-sdk/figma";
-import { swapVariant } from "@design-sdk/figma/features/variant";
-
+import type { FigmaFileKey } from "@design-sdk/figma-core";
 import {
+  hasImage,
+  checkIfRoot,
   retrieveImageFills,
   retrievePrimaryImageFill,
-} from "@design-sdk/core/utils/retrieve-image-fills";
+  retrieveFill,
+  retrievePrimaryColor,
+  filterFills,
+  mapGrandchildren,
+} from "@design-sdk/figma-utils";
 import { IReflectLayoutMixin } from "./mixins/layout.mixin";
 import { IReflectBlendMixin } from "./mixins/blend.mixin";
 import {
@@ -27,9 +28,19 @@ import {
   makeReference,
 } from "./reflect-node-reference";
 import { types } from "@reflect-ui/uiutils";
-import { BlendMode } from "@reflect-ui/core/lib/cg/filters";
-import { FigmaLayoutGrow, FimgaLayoutAlign } from "@design-sdk/figma-types";
-import { TextShadowManifest } from "@reflect-ui/core/lib/text-shadow";
+import type { BlendMode } from "@reflect-ui/cg";
+import type {
+  ChildrenMixin,
+  Effect,
+  FigmaLayoutGrow,
+  FimgaLayoutAlign,
+  InstanceNode,
+  Paint,
+  SceneNode,
+  Image,
+} from "@design-sdk/figma-types";
+import { plugin } from "@design-sdk/figma-types";
+
 type Transform = types.Transform;
 type RGBAF = types.RGBAF;
 
@@ -64,7 +75,7 @@ export class ReflectBaseNode
     this.name = props.name;
     this.parent = props.parent;
     this.parentId = props.parent?.id;
-    this.origin = utils.originFigmaTypeToReflectType(props.origin);
+    this.origin = figma_node_type_to_reflect_type(props.origin);
     this.originRaw = props.origin;
     this.absoluteTransform = props.absoluteTransform;
     this.childrenCount = props.childrenCount;
@@ -87,7 +98,7 @@ export class ReflectBaseNode
 
   getHierachyIndexOnParent(): number {
     if (this.originParentNode) {
-      const children = (this.originParentNode as Figma.ChildrenMixin)?.children;
+      const children = (this.originParentNode as ChildrenMixin)?.children;
       if (children) {
         for (let childIndex = 0; childIndex < children.length; childIndex++) {
           if (children[childIndex].id === this.id) {
@@ -121,13 +132,13 @@ export class ReflectBaseNode
     return this.originNode.setPluginData(key, value);
   }
 
-  get originParentNode(): Figma.SceneNode {
-    return figma.getNodeById(this.originParentId) as Figma.SceneNode;
+  get originParentNode(): SceneNode {
+    return plugin?.getNodeById(this.originParentId) as SceneNode;
   }
-  get originNode(): Figma.SceneNode {
+  get originNode(): SceneNode {
     try {
-      console.log("figma.getNodeById(this.id)", figma.getNodeById(this.id));
-      return figma.getNodeById(this.id) as Figma.SceneNode;
+      console.log("figma.getNodeById(this.id)", plugin?.getNodeById(this.id));
+      return plugin?.getNodeById(this.id) as SceneNode;
     } catch (e) {
       console.error("error while getting origin node", e);
     }
@@ -184,8 +195,8 @@ export class ReflectBaseNode
   height: number;
   layoutAlign: FimgaLayoutAlign;
   layoutGrow: FigmaLayoutGrow;
-  fills?: ReadonlyArray<Figma.Paint>;
-  strokes?: ReadonlyArray<Figma.Paint>;
+  fills?: ReadonlyArray<Paint>;
+  strokes?: ReadonlyArray<Paint>;
 
   /**
    * layoutMode is only available for frame node
@@ -208,7 +219,7 @@ export class ReflectBaseNode
   opacity: number;
   blendMode: "PASS_THROUGH" | BlendMode;
   isMask: boolean;
-  effects: ReadonlyArray<Figma.Effect>;
+  effects: ReadonlyArray<Effect>;
   effectStyleId: string;
   visible: boolean;
   radius: number;
@@ -285,15 +296,6 @@ export class ReflectBaseNode
     }
   }
 
-  swapVariant(name: string): Figma.InstanceNode {
-    if (this.hasVariant) {
-      return swapVariant(this as any as Figma.InstanceNode, name);
-    }
-
-    // invalid request. this is not a variant compat node
-    return undefined;
-  }
-
   get isInstance(): boolean {
     return this.type === "INSTANCE";
   }
@@ -317,7 +319,7 @@ export class ReflectBaseNode
    * returns true if "this" fill contains image. does not looks through its children.
    */
   get hasImage(): boolean {
-    return utils.hasImage(this.fills);
+    return hasImage(this.fills);
   }
 
   /**
@@ -333,16 +335,20 @@ export class ReflectBaseNode
     return !this.hasImage;
   }
 
-  get images(): Array<Figma.Image> | undefined {
+  get images(): Array<Image> | undefined {
     if (Array.isArray(this.fills)) {
-      return retrieveImageFills(this.fills);
+      return retrieveImageFills(this.fills).map((i) =>
+        plugin?.getImageByHash(i.imageHash)
+      );
     }
   }
 
-  get primaryImage(): Figma.Image {
+  get primaryImage(): Image {
     try {
       if (Array.isArray(this.fills)) {
-        return retrievePrimaryImageFill(this.fills);
+        return plugin?.getImageByHash(
+          retrievePrimaryImageFill(this.fills).imageHash
+        );
       }
     } catch (_) {
       return;
@@ -361,9 +367,9 @@ export class ReflectBaseNode
     return this.visibleFills?.length > 0;
   }
 
-  get visibleFills(): ReadonlyArray<Figma.Paint> | undefined {
+  get visibleFills(): ReadonlyArray<Paint> | undefined {
     try {
-      return utils.filterFills((this as any).fills as Figma.Paint[], {
+      return filterFills((this as any).fills as Paint[], {
         visibleOnly: true,
       });
     } catch (_) {
@@ -374,11 +380,11 @@ export class ReflectBaseNode
     }
   }
 
-  get primaryFill(): Figma.Paint {
-    return utils.retrieveFill(this.fills);
+  get primaryFill(): Paint {
+    return retrieveFill(this.fills);
   }
 
-  get mostUsedFill(): Figma.Paint {
+  get mostUsedFill(): Paint {
     if (this.hasChildren) {
       const availableNodes = this.getGrandchildren({
         includeThis: true,
@@ -388,14 +394,14 @@ export class ReflectBaseNode
         .map((n) => n.visibleFills)
         .filter((n) => array.filters.notEmpty(n));
       const fills = [].concat.apply([], fillsMap);
-      return utils.retrieveFill(fills);
+      return retrieveFill(fills);
     }
     return this.primaryFill;
   }
 
   get primaryColor(): RGBAF {
     try {
-      return utils.retrievePrimaryColor(this.fills as Figma.Paint[]);
+      return retrievePrimaryColor(this.fills as Paint[]);
     } catch (_) {
       // console.error(
       //   `error while fetching primarycolor from ${this.toString()}`
@@ -416,12 +422,43 @@ export class ReflectBaseNode
     includeThis: boolean;
   }): ReadonlyArray<ReflectSceneNode> | undefined {
     if (this.hasChildren) {
-      return utils.mapGrandchildren(this as any, null, options);
+      return mapGrandchildren(this as any, null, options);
     } else {
       // if include this option is set to yes, then, return this even if this is not a children-containing node.
       if (options?.includeThis) {
         return [this as any];
       }
     }
+  }
+}
+
+function figma_node_type_to_reflect_type(type: string): ReflectSceneNodeType {
+  if (type in ReflectSceneNodeType) {
+    return ReflectSceneNodeType[type];
+  }
+
+  switch (type) {
+    case "GROUP":
+      return ReflectSceneNodeType.group;
+    case "FRAME":
+      return ReflectSceneNodeType.frame;
+    case "VECTOR":
+      return ReflectSceneNodeType.vector;
+    case "COMPONENT":
+      return ReflectSceneNodeType.component;
+    case "TEXT":
+      return ReflectSceneNodeType.text;
+    case "INSTANCE":
+      return ReflectSceneNodeType.instance;
+    case "RECTANGLE":
+      return ReflectSceneNodeType.rectangle;
+    case "LINE":
+      return ReflectSceneNodeType.line;
+    case "ELLIPSE":
+      return;
+    case "COMPONENT_SET":
+      return ReflectSceneNodeType.variant_set;
+    default:
+      return ReflectSceneNodeType.unknown;
   }
 }
