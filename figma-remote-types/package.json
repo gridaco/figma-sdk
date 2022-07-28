@@ -4,6 +4,7 @@
     "main": "index.js",
     "types": "index.d.ts",
     "version": "0.0.7",
+    "private": false,
     "keywords": [
         "figma",
         "oauth",
