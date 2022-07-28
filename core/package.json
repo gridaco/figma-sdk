@@ -2,17 +2,35 @@
     "name": "@design-sdk/core",
     "version": "0.0.0",
     "license": "Apache 2.0",
-    "author": "Bridged Authors",
+    "author": "grida.co",
+    "private": false,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
-        "prepack": "tsc"
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc"
     },
     "dependencies": {
-        "@base-sdk/base": "0.1.0-5",
-        "@reflect-ui/core": "0.0.3",
+        "@base-sdk/base": "0.1.4",
         "@design-sdk/flags": "0.0.0",
+        "@design-sdk/figma-node": "*",
+        "@design-sdk/figma-types": "*",
+        "@design-sdk/figma-utils": "*",
+        "@reflect-ui/core": "0.0.5",
         "@reflect-ui/namings": "0.0.3"
     },
     "devDependencies": {
         "typescript": "^4.2.4"
+    },
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
     }
 }

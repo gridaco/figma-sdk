@@ -9,8 +9,8 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rimraf dist",
-        "build": "tsc",
-        "prepack": "yarn clean && yarn build"
+        "build": "yarn clean && tsc",
+        "prepack": "yarn build"
     },
     "files": [
         "dist",

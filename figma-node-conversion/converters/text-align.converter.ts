@@ -1,8 +1,8 @@
-import { TextAlignVertical, TextAlign } from "@reflect-ui/core";
-import {
+import type {
   FigmaTextHorizontalAligment,
   FigmaTextVerticalAligment,
 } from "@design-sdk/figma-types";
+import { TextAlignVertical, TextAlign } from "@reflect-ui/core";
 
 export function convertTextAlignHorizontalToReflect(
   origin: FigmaTextHorizontalAligment

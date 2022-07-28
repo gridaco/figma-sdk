@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "@design-sdk/figma-node";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 
 export const find_node_by_id_under_entry = (
   id: string,

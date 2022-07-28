@@ -1,5 +1,24 @@
 {
     "name": "@design-sdk/diff",
+    "description": "diff utils for design",
+    "keywords": [
+        "design",
+        "diff"
+    ],
     "version": "0.0.0",
-    "description": "diff utils for design"
+    "authors": "Grida.co",
+    "private": false,
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc"
+    },
+    "dependencies": {},
+    "publishConfig": {
+        "access": "public"
+    }
 }

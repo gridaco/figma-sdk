@@ -4,7 +4,6 @@ import {
   StorableLayerType,
   legacy_scene,
 } from "@base-sdk/base";
-
 import {
   ReflectFrameNode,
   ReflectSceneNode,

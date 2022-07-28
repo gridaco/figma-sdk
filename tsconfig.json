@@ -2,13 +2,16 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": ["esnext", "dom"],
+    "outDir": "dist",
+    "lib": ["esnext", "es2019", "dom"],
     "declaration": true,
     "esModuleInterop": true,
     "sourceMap": true,
     "experimentalDecorators": true,
     "noUnusedLocals": false,
-    "typeRoots": ["./node_modules/@types", "../../node_modules/@types"]
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types"]
   },
+  "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist", "example", "doc", "__test__"]
 }

@@ -16,7 +16,7 @@ import {
   ReflectConstraintMixin,
   makeComponentReference,
   ReflectBooleanOperationNode,
-} from "@design-sdk/core";
+} from "@design-sdk/figma-node";
 import {
   mixed,
   FigmaFileKey,

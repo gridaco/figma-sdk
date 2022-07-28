@@ -1,16 +1,23 @@
 {
     "name": "@design-sdk/figma-remote",
     "version": "0.0.0",
+    "private": false,
     "description": "Figma remote api & formats",
     "license": "MIT",
     "main": "index",
     "homepage": "https://github.com/gridaco/design-sdk",
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
-        "tsc": "tsc",
         "clean": "rimraf dist",
-        "prepack": "yarn clean && yarn test && tsc",
+        "build": "yarn clean && tsc",
         "test": "jest"
+    },
+    "dependencies": {
+        "@design-sdk/figma-remote-api": "0.0.2"
+    },
+    "devDependencies": {
+        "typescript": "^4.3.5",
+        "@design-sdk/figma-remote-types": "0.0.5"
     },
     "files": [
         "dist/index.js",
@@ -22,12 +29,5 @@
     ],
     "publishConfig": {
         "access": "public"
-    },
-    "dependencies": {
-        "@design-sdk/figma-remote-api": "0.0.2"
-    },
-    "devDependencies": {
-        "typescript": "^4.3.5",
-        "@design-sdk/figma-remote-types": "0.0.5"
     }
 }

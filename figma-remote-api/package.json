@@ -2,6 +2,7 @@
     "name": "@design-sdk/figma-remote-api",
     "description": "Light-weight Figma Remote api wrapper with types & authentication",
     "main": "dist/index.js",
+    "private": false,
     "keywords": [
         "figma",
         "oauth",

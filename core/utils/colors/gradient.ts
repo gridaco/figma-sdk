@@ -1,4 +1,4 @@
-import type { GradientPaint } from "@design-sdk/figma";
+import type { GradientPaint } from "@design-sdk/figma-types";
 
 export function gradientAngle(fill: GradientPaint): number {
   const decomposed = decomposeRelativeTransform(

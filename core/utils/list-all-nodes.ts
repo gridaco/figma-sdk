@@ -1,5 +1,5 @@
-import { plugin } from "@design-sdk/figma";
-import { NodeType, SceneNode } from "@design-sdk/figma-types";
+import { plugin } from "@design-sdk/figma-types";
+import type { NodeType, SceneNode } from "@design-sdk/figma-types";
 
 /**
  * list nodes in the document via iteration. page nodes are not supported by design.
