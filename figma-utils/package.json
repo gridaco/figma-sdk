@@ -14,9 +14,9 @@
     "clean": "rimraf dist",
     "build": "yarn clean && tsc"
   },
-  "devDependencies": {
-    "@design-sdk/figma-node": "^0.0.0",
-    "@design-sdk/figma-types": "^0.0.0",
+  "dependencies": {
+    "@design-sdk/figma-node": "^0.0.13",
+    "@design-sdk/figma-types": "^0.0.13",
     "@reflect-ui/core": "^0.0.5"
   },
   "publishConfig": {

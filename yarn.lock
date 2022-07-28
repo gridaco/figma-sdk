@@ -388,15 +388,7 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@design-sdk/figma-node@^0.0.0":
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/@design-sdk/figma-node/-/figma-node-0.0.0.tgz#5f57352d94610ae8f094e010831181d182d816a7"
-  integrity sha512-E69aC679UQc43FdbN3PsHBB1SiuftLuCVTQLLrV1fwlo6CW44zpGpNsJ8TD7Np8fIXPKJEC8cXS/WUFn3jR3xA==
-  dependencies:
-    "@design-sdk/figma-utils" "^0.0.0"
-    "@reflect-ui/font-utils" "^0.0.1"
-
-"@design-sdk/figma-types@0.0.0", "@design-sdk/figma-types@^0.0.0":
+"@design-sdk/figma-types@0.0.0":
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@design-sdk/figma-types/-/figma-types-0.0.0.tgz#16f76e6a181f4562d188a6e13ba9352bf52d7d46"
   integrity sha512-4DeGEnUn93S1Fu/inC2rJhL9wvcYvyvmGL6CBU04LQKTrn2Ni3BM/dArI/eHwWSSKDVlivx/oENTgYgZxqcs1Q==
