@@ -1,7 +1,7 @@
 {
     "name": "@design-sdk/figma-node",
     "description": "A temporary reflect node definition alias based on figma typings",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "author": "Grida.co",
     "private": false,
     "license": "MIT",
@@ -18,7 +18,7 @@
         "LICENSE"
     ],
     "dependencies": {
-        "@design-sdk/figma-utils": "^0.0.10",
+        "@design-sdk/figma-utils": "^0.0.11",
         "@reflect-ui/font-utils": "^0.0.1"
     },
     "peerDependencies": {

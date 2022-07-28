@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/core",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "license": "Apache 2.0",
     "author": "grida.co",
     "private": false,
@@ -12,10 +12,10 @@
     },
     "dependencies": {
         "@base-sdk/base": "0.1.4",
-        "@design-sdk/figma-node": "^0.0.10",
-        "@design-sdk/figma-types": "^0.0.10",
-        "@design-sdk/figma-utils": "^0.0.10",
-        "@design-sdk/flags": "^0.0.10",
+        "@design-sdk/figma-node": "^0.0.11",
+        "@design-sdk/figma-types": "^0.0.11",
+        "@design-sdk/figma-utils": "^0.0.11",
+        "@design-sdk/flags": "^0.0.11",
         "@reflect-ui/core": "0.0.5",
         "@reflect-ui/namings": "0.0.3"
     },
