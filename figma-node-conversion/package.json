@@ -19,6 +19,10 @@
         "build": "yarn clean && tsc",
         "test": "jest"
     },
+    "dependencies": {
+        "@design-sdk/figma-node": "*",
+        "@design-sdk/figma-types": "*"
+    },
     "files": [
         "dist/index.js",
         "dist/index.d.ts",

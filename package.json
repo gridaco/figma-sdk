@@ -2,15 +2,16 @@
     "name": "design-sdk",
     "private": true,
     "workspaces": [
-        "bridged",
         "core",
         "core-*",
         "key-annotations",
         "figma",
         "figma-*",
         "sketch",
+        "sketch-types",
         "xd",
-        "universal"
+        "universal",
+        "vanilla"
     ],
     "scripts": {
         "lerna": "lerna",

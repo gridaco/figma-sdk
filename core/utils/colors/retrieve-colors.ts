@@ -1,7 +1,7 @@
-import { ReflectSceneNode } from "@design-sdk/core";
+import type { Paint } from "@design-sdk/figma-types";
+import type { ReflectSceneNode } from "@design-sdk/core";
 import { calculateContrastRatio } from "@reflect-ui/uiutils";
 import { converters } from "@reflect-ui/core";
-import { Paint } from "@design-sdk/figma";
 import { retrieveFill } from "@design-sdk/figma-utils";
 
 export function retrieveColorsFrom(

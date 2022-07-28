@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "@design-sdk/core";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { Axis } from "@reflect-ui/core";
 
 export const magicMargin = 32;

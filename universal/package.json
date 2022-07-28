@@ -11,7 +11,8 @@
     "dependencies": {
         "@design-sdk/core": "0.0.0",
         "@design-sdk/figma": "0.0.0",
-        "@design-sdk/sketch": "0.0.0"
+        "@design-sdk/sketch": "0.0.0",
+        "@design-sdk/vanilla": "0.0.0"
     },
     "scripts": {
         "clean": "rimraf dist",

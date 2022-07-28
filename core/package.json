@@ -11,9 +11,12 @@
         "build": "yarn clean && tsc"
     },
     "dependencies": {
-        "@base-sdk/base": "0.1.0-5",
-        "@reflect-ui/core": "0.0.3",
+        "@base-sdk/base": "0.1.4",
         "@design-sdk/flags": "0.0.0",
+        "@design-sdk/figma-node": "*",
+        "@design-sdk/figma-types": "*",
+        "@design-sdk/figma-utils": "*",
+        "@reflect-ui/core": "0.0.5",
         "@reflect-ui/namings": "0.0.3"
     },
     "devDependencies": {

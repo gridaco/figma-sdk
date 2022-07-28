@@ -1,5 +1,6 @@
-import { TextNode, LetterSpacing } from "@design-sdk/figma-types";
-import { plugin } from "@design-sdk/figma";
+import type { TextNode, LetterSpacing } from "@design-sdk/figma-types";
+import { plugin } from "@design-sdk/figma-types";
+
 export function convertLetterSpacingToReflect(
   origin: LetterSpacing,
   node?: TextNode

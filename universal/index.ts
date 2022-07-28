@@ -1,15 +1,10 @@
-// region features
-export * as features from "@design-sdk/core/features";
-export { keyAnnotations, constraints } from "@design-sdk/core/features";
-// endregion
-
 // node
 export * as nodes from "@design-sdk/core";
 
 // platform
 export * as _platform from "@design-sdk/core/platform";
 
-export * as vanilla from "@design-sdk/core/vanilla";
+export * as vanilla from "@design-sdk/vanilla";
 
 export * as repo_assets from "@design-sdk/core/assets-repository";
 

@@ -19,6 +19,7 @@
     "authors": "Grida.co",
     "license": "MIT",
     "scripts": {
+        "build": "echo 'this package does not require build' && exit 0",
         "test": "jest"
     },
     "dependencies": {},

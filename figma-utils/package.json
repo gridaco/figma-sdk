@@ -18,7 +18,7 @@
   "devDependencies": {
     "@design-sdk/figma-node": "^0.0.0",
     "@design-sdk/figma-types": "^0.0.0",
-    "@reflect-ui/core": "^0.0.3"
+    "@reflect-ui/core": "^0.0.5"
   },
   "publishConfig": {
     "access": "public"

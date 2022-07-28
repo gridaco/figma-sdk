@@ -1,4 +1,4 @@
-import { ReflectFrameNode, ReflectRectangleNode } from "@design-sdk/core";
+import { ReflectFrameNode, ReflectRectangleNode } from "@design-sdk/figma-node";
 import { CrossAxisAlignment, MainAxisAlignment } from "@reflect-ui/core";
 
 // TODO - Additional feature, this needs to be migrated to @designto/token/logics

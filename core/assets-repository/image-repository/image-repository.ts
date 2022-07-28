@@ -1,10 +1,11 @@
 import { ImageAsset, TemporaryImageAsset } from "./image-asset";
-import { IImageRepository } from "@base-sdk/base";
+import type { IImageRepository } from "@base-sdk/base";
 import { build_temp_static_remote_asset_uri_to_be_replaced_later__dangerous } from "./temporary-image-asset-url-reservation";
 import assert from "assert";
 
 export class ImageRepository<P extends string = string>
-  implements IImageRepository<TemporaryImageAsset> {
+  implements IImageRepository<TemporaryImageAsset>
+{
   images: Map<string, TemporaryImageAsset> = new Map<
     string,
     TemporaryImageAsset
@@ -34,7 +35,7 @@ export class ImageRepository<P extends string = string>
       const newImage = new TemporaryImageAsset<P>(
         props.key,
         props.hash,
-        (this.prefix as string) as P
+        this.prefix as string as P
       );
       this.images[props.key] = newImage;
       // console.info(

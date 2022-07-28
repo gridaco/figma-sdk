@@ -1,4 +1,5 @@
-import { LineHeight } from "@design-sdk/figma-types";
+import type { LineHeight } from "@design-sdk/figma-types";
+
 export function figma_lineheight_to_reflect_ling_height(
   origin: LineHeight
 ): number | `${number}%` {
