@@ -1,6 +1,6 @@
 {
   "name": "@design-sdk/figma-utils",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Figma node utilities",
   "private": false,
   "main": "dist/index.js",
