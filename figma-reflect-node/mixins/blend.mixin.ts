@@ -1,5 +1,5 @@
 // FIXME
-import type { Effect } from "@design-sdk/figma";
+import type { Effect } from "@design-sdk/figma-types";
 import type { BlendMode } from "@reflect-ui/cg";
 
 export interface IReflectBlendMixin {
