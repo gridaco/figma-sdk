@@ -9,8 +9,8 @@
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
         "clean": "rimraf dist",
-        "build": "tsc",
-        "prepack": "yarn test && yarn clean && yarn build",
+        "build": "yarn clean && tsc",
+        "prepack": "yarn test && yarn build",
         "test": "jest"
     },
     "files": [
