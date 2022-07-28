@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/figma-remote",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "private": false,
     "description": "Figma remote api & formats",
     "license": "MIT",
@@ -13,10 +13,10 @@
         "test": "jest"
     },
     "dependencies": {
-        "@design-sdk/figma-remote-api": "^0.0.8"
+        "@design-sdk/figma-remote-api": "^0.0.9"
     },
     "devDependencies": {
-        "@design-sdk/figma-remote-types": "^0.0.8",
+        "@design-sdk/figma-remote-types": "^0.0.9",
         "typescript": "^4.3.5"
     },
     "files": [
