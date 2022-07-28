@@ -2,6 +2,7 @@
   "name": "@design-sdk/figma-utils",
   "version": "0.0.0",
   "description": "Figma node utilities",
+  "private": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -11,8 +12,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc",
-    "prepack": "yarn clean && yarn build"
+    "build": "yarn clean && tsc"
   },
   "peerDependencies": {},
   "devDependencies": {
@@ -20,7 +20,6 @@
     "@design-sdk/figma-types": "^0.0.0",
     "@reflect-ui/core": "^0.0.3"
   },
-  "private": false,
   "publishConfig": {
     "access": "public"
   }

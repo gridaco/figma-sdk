@@ -2,6 +2,7 @@
     "name": "@design-sdk/figma-oauth",
     "description": "OAuth management for figma",
     "main": "dist/index.js",
+    "private": false,
     "keywords": [
         "figma",
         "oauth",

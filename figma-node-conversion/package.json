@@ -3,5 +3,31 @@
     "description": "convert figma nodes into a universal version - to reflect design nodes",
     "version": "0.0.0",
     "private": false,
-    "author": "Grida.co"
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "keywords": [
+        "figma",
+        "design",
+        "converter"
+    ],
+    "authors": [
+        "grida.co",
+        "softmarshmallow <universe@grida.co>"
+    ],
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc",
+        "test": "jest"
+    },
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
 }

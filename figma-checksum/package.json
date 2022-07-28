@@ -1,10 +1,28 @@
 {
     "name": "@design-sdk/figma-checksum",
     "version": "0.0.0",
+    "private": false,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc"
+    },
     "dependencies": {
         "nanoid": "^3.1.30"
     },
     "devDependencies": {
         "@figma/plugin-typings": "1.37.0"
+    },
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
     }
 }

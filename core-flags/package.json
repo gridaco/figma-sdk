@@ -2,13 +2,13 @@
     "name": "@design-sdk/flags",
     "description": "extend your design with flags",
     "version": "0.0.0",
+    "private": false,
     "scripts": {
-        "prepack": "yarn test && yarn tsc",
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc",
         "test": "jest --config=jest.config.js"
     },
-    "dependencies": {
-        "assert": "2.0.0"
-    },
+    "dependencies": {},
     "devDependencies": {
         "@types/jest": "^27.0.2",
         "@types/node": "^16.10.3",
@@ -16,5 +16,8 @@
         "jest": "^27.2.4",
         "ts-jest": "^27.0.5",
         "typescript": "^4.4.3"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

@@ -3,10 +3,16 @@
     "version": "0.0.6",
     "description": "Figma url utils for sharing & embeding and url inspection",
     "license": "MIT",
+    "private": false,
     "homepage": "https://github.com/gridaco/design-sdk",
     "repository": "https://github.com/gridaco/design-sdk",
+    "authors": [
+        "grida.co",
+        "softmarshmallow <universe@grida.co>"
+    ],
     "scripts": {
-        "prepack": "yarn test && tsc",
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc",
         "test": "jest"
     },
     "files": [

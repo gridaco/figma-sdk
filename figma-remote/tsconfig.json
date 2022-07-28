@@ -1,6 +1,7 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig.build.json",
   "compilerOptions": {
+    "lib": ["ESNext", "ES2019", "DOM"],
     "rootDir": "./lib",
     "outDir": "./dist"
   },

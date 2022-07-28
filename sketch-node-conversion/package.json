@@ -1,4 +1,40 @@
 {
     "name": "@design-sdk/sketch-node-conversion",
-    "version": "0.0.0"
+    "description": "Convert Sketch files to Universal reflect-ui design tokens",
+    "version": "0.0.0",
+    "private": false,
+    "keywords": [
+        "sketch",
+        "design",
+        "converter",
+        "design-sdk"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "homepage": "https://github.com/gridaco/design-sdk",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gridaco/design-sdk",
+        "directory": "sketch-node-conversion"
+    },
+    "authors": [
+        "grida.co",
+        "softmarshmallow <universe@grida.co>"
+    ],
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc"
+    },
+    "dependencies": {},
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
 }

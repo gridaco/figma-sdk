@@ -2,10 +2,10 @@
   "name": "@design-sdk/figma-core",
   "version": "0.0.0",
   "description": "core definitions",
+  "private": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc",
-    "prepack": "yarn clean && yarn build"
+    "build": "yarn clean && tsc"
   },
   "files": [
     "dist",

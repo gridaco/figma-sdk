@@ -1,9 +1,31 @@
 {
     "name": "@design-sdk/universal",
     "version": "0.0.0",
+    "private": false,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "authors": [
+        "grida.co",
+        "softmarshmallow <universe@grida.co>"
+    ],
     "dependencies": {
         "@design-sdk/core": "0.0.0",
         "@design-sdk/figma": "0.0.0",
         "@design-sdk/sketch": "0.0.0"
+    },
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc"
+    },
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
     }
 }

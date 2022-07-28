@@ -1,4 +1,40 @@
 {
     "name": "@design-sdk/xd-node-conversion",
-    "version": "0.0.0"
+    "description": "Convert XD files to Universal reflect-ui design tokens",
+    "version": "0.0.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "private": false,
+    "authors": [
+        "grida.co",
+        "softmarshmallow <universe@grida.co>"
+    ],
+    "keywords": [
+        "xd",
+        "design",
+        "converter",
+        "design-sdk"
+    ],
+    "homepage": "https://github.com/gridaco/design-sdk",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gridaco/design-sdk",
+        "directory": "xd-node-conversion"
+    },
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc"
+    },
+    "dependencies": {},
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
 }

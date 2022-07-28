@@ -2,5 +2,26 @@
     "name": "@design-sdk/figma-xpath",
     "version": "0.0.0",
     "private": false,
-    "license": "MIT"
+    "license": "MIT",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc"
+    },
+    "authors": [
+        "grida.co",
+        "softmarshmallow <universe@grida.co>"
+    ],
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
+    }
 }

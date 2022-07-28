@@ -3,6 +3,19 @@
     "description": "Core typings for design representetives",
     "authors": "Grida.co",
     "version": "0.0.0",
-    "main": "index.ts",
-    "dependencies": {}
+    "private": false,
+    "main": "dist/index.js",
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc"
+    },
+    "dependencies": {},
+    "publishConfig": {
+        "access": "public"
+    }
 }

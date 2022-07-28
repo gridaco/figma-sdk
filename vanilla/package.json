@@ -2,7 +2,29 @@
     "name": "@design-sdk/vanilla",
     "version": "0.0.0",
     "private": false,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "authors": [
+        "grida.co",
+        "softmarshmallow <universe@grida.co>"
+    ],
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && tsc",
+        "test": "jest"
+    },
     "peerDependencies": {
         "@design-sdk/core": "0.0.0"
+    },
+    "files": [
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "README",
+        "LICENSE"
+    ],
+    "publishConfig": {
+        "access": "public"
     }
 }
