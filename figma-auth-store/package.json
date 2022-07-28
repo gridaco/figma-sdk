@@ -20,7 +20,7 @@
         "grida.co",
         "softmarshmallow <universe@grida.co>"
     ],
-    "version": "0.0.12",
+    "version": "0.0.13",
     "scripts": {
         "clean": "rimraf dist",
         "build": "yarn clean && tsc",
