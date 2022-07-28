@@ -20,13 +20,12 @@
         "grida.co",
         "softmarshmallow <universe@grida.co>"
     ],
-    "version": "0.0.2",
+    "version": "0.0.7",
     "scripts": {
         "clean": "rimraf dist",
         "build": "yarn clean && tsc",
         "test": "jest"
     },
-    "dependencies": {},
     "devDependencies": {
         "@types/jest": "^26.0.24",
         "@types/node": "^16.3.3",

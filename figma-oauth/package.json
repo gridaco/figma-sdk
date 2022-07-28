@@ -15,7 +15,7 @@
     "homepage": "https://github.com/gridaco/design-sdk/",
     "repository": "https://github.com/gridaco/design-sdk/tree/main/figma-oauth/",
     "authors": "Grida.co",
-    "version": "0.0.3",
+    "version": "0.0.7",
     "scripts": {
         "clean": "rimraf dist",
         "prepack": "yarn clean && tsc",
@@ -24,7 +24,6 @@
     "peerDependencies": {
         "axios": "^0.21.1"
     },
-    "dependencies": {},
     "devDependencies": {
         "@types/jest": "^26.0.24",
         "dotenv": "^10.0.0",

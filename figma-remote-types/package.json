@@ -3,7 +3,7 @@
     "description": "Light-weight Figma Remote api wrapper with types & authentication",
     "main": "index.js",
     "types": "index.d.ts",
-    "version": "0.0.5",
+    "version": "0.0.7",
     "keywords": [
         "figma",
         "oauth",
@@ -22,7 +22,6 @@
         "build": "echo 'this package does not require build' && exit 0",
         "test": "jest"
     },
-    "dependencies": {},
     "devDependencies": {
         "@types/jest": "^26.0.24",
         "jest": "^27.0.6",

@@ -1,6 +1,6 @@
 {
   "name": "@design-sdk/figma-utils",
-  "version": "0.0.0",
+  "version": "0.0.7",
   "description": "Figma node utilities",
   "private": false,
   "main": "dist/index.js",
@@ -14,7 +14,6 @@
     "clean": "rimraf dist",
     "build": "yarn clean && tsc"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@design-sdk/figma-node": "^0.0.0",
     "@design-sdk/figma-types": "^0.0.0",

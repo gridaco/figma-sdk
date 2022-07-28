@@ -2,7 +2,7 @@
     "name": "@design-sdk/core-types",
     "description": "Core typings for design representetives",
     "authors": "Grida.co",
-    "version": "0.0.0",
+    "version": "0.0.7",
     "private": false,
     "main": "dist/index.js",
     "files": [
@@ -14,7 +14,6 @@
         "clean": "rimraf dist",
         "build": "yarn clean && tsc"
     },
-    "dependencies": {},
     "publishConfig": {
         "access": "public"
     }
