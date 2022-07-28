@@ -16,6 +16,7 @@
     "scripts": {
         "lerna": "lerna",
         "bootstrap": "lerna bootstrap",
+        "publish:all": "lerna publish",
         "build": "lerna run build"
     },
     "devDependencies": {
