@@ -18,7 +18,7 @@
         "LICENSE"
     ],
     "dependencies": {
-        "@design-sdk/figma-core": "^0.0.13",
+        "@design-sdk/figma-core": "^0.0.17",
         "@design-sdk/figma-utils": "^0.0.17",
         "@reflect-ui/font-utils": "^0.0.1"
     },
@@ -29,7 +29,7 @@
         "@reflect-ui/uiutils": "^0.1.2-2"
     },
     "devDependencies": {
-        "@design-sdk/figma-types": "^0.0.13",
+        "@design-sdk/figma-types": "^0.0.17",
         "@reflect-ui/cg": "^0.1.1"
     },
     "publishConfig": {

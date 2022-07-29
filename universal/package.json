@@ -10,9 +10,9 @@
     ],
     "dependencies": {
         "@design-sdk/core": "^0.0.17",
-        "@design-sdk/figma": "^0.0.13",
-        "@design-sdk/sketch": "^0.0.13",
-        "@design-sdk/vanilla": "^0.0.13"
+        "@design-sdk/figma": "^0.0.17",
+        "@design-sdk/sketch": "^0.0.17",
+        "@design-sdk/vanilla": "^0.0.17"
     },
     "scripts": {
         "clean": "rimraf dist",

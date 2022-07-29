@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@design-sdk/figma-node": "^0.0.17",
-        "@design-sdk/figma-types": "^0.0.13"
+        "@design-sdk/figma-types": "^0.0.17"
     },
     "files": [
         "dist/index.js",
