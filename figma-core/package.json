@@ -1,6 +1,6 @@
 {
   "name": "@design-sdk/figma-core",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "core definitions",
   "private": false,
   "main": "dist/index.js",

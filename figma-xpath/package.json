@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/figma-xpath",
-    "version": "0.0.17",
+    "version": "0.0.18",
     "private": false,
     "license": "MIT",
     "main": "dist/index.js",
