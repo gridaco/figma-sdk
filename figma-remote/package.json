@@ -4,7 +4,8 @@
     "private": false,
     "description": "Figma remote api & formats",
     "license": "MIT",
-    "main": "index",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "homepage": "https://github.com/gridaco/design-sdk",
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
