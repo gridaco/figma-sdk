@@ -11,7 +11,8 @@
         "sketch-types",
         "xd",
         "universal",
-        "vanilla"
+        "vanilla",
+        "url-analysis"
     ],
     "scripts": {
         "lerna": "lerna",

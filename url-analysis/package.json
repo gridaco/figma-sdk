@@ -14,7 +14,7 @@
         "build": "yarn clean && tsc"
     },
     "dependencies": {
-        "@design-sdk/core-types": "0.0.0"
+        "@design-sdk/core-types": "0.0.17"
     },
     "files": [
         "dist/index.js",
