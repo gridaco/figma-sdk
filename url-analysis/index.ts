@@ -1,4 +1,4 @@
-import { DesignProvider } from "@design-sdk/core-types";
+import type { DesignProvider } from "@design-sdk/core-types";
 export type { DesignProvider };
 
 export function analyzeDesignUrl(url: string): DesignProvider {
