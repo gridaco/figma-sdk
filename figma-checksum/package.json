@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/figma-checksum",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "private": false,
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
