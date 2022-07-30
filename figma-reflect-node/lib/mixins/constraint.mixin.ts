@@ -7,7 +7,7 @@ import {
 import type { ReflectSceneNode } from "../node-type-alias";
 
 // FIXME - migrate this to reflect core cg
-import { Constraints } from "@design-sdk/figma-types";
+import type { Constraints } from "@design-sdk/figma-types";
 export interface IReflectConstraintMixin {
   constraints: Constraints;
 }
@@ -22,7 +22,7 @@ export class ReflectConstraintMixin
    * the current node's constraint LCRS positioning. as is.
    */
   get constraintLcrs(): LCRS {
-    return getNodeActualLCRS(this);
+    return getNodeActualLCRS(this as any);
   }
 
   /**

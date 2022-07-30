@@ -5,8 +5,11 @@
     "private": false,
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc",
+        "build": "tsc",
         "test": "jest --config=jest.config.js"
+    },
+    "exports": {
+        "parsing-strategy-dashdash": "./dist/parsing-strategy-dashdash"
     },
     "devDependencies": {
         "@types/assert": "^1.5.6",

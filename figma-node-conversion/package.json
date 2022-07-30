@@ -16,12 +16,20 @@
     ],
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc",
+        "build": "tsc",
         "test": "jest"
     },
     "dependencies": {
-        "@design-sdk/figma-node": "^0.0.23",
-        "@design-sdk/figma-types": "0.0.19"
+        "@design-sdk/figma-node": "0.0.23",
+        "@design-sdk/figma-types": "0.0.23",
+        "@design-sdk/figma-utils": "0.0.23",
+        "@design-sdk/flags": "0.0.23",
+        "@reflect-ui/core": "^0.0.5",
+        "@reflect-ui/cg": "^0.0.5",
+        "@reflect-ui/font-utils": "^0.0.5"
+    },
+    "peerDependencies": {
+        "@design-sdk/figma-core": "^0.0.23"
     },
     "files": [
         "dist",

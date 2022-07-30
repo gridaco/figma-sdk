@@ -1,5 +1,5 @@
-import type { ReflectSceneNode } from "@design-sdk/core";
-import type { IReflectNodeReference } from "@design-sdk/core";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
+import type { IReflectNodeReference } from "@design-sdk/figma-node";
 import { analyzeNode } from "../../node-analysis";
 import {
   getVariantNamesSetFromReference_Figma,

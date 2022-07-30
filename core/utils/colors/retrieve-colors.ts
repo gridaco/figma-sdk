@@ -1,5 +1,5 @@
 import type { Paint } from "@design-sdk/figma-types";
-import type { ReflectSceneNode } from "@design-sdk/core";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { calculateContrastRatio } from "@reflect-ui/uiutils";
 import { converters } from "@reflect-ui/core";
 import { retrieveFill } from "@design-sdk/figma-utils";

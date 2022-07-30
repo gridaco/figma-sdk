@@ -15,10 +15,11 @@
         "url-analysis"
     ],
     "scripts": {
+        "clean": "rimraf */dist",
         "lerna": "lerna",
         "bootstrap": "lerna bootstrap",
         "publish:all": "lerna publish",
-        "build": "lerna run build"
+        "build": "yarn clean && lerna run build"
     },
     "devDependencies": {
         "@types/jest": "^26.0.23",

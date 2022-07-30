@@ -6,7 +6,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc"
+        "build": "tsc"
     },
     "files": [
         "dist/index.js",

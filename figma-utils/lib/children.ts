@@ -1,13 +1,7 @@
-import type {
-  IChildrenMixin,
-  IReflectChildrenMixin,
-  ReflectSceneNode,
-  IReflectNodeReference,
-} from "@design-sdk/figma-node";
 import type { SceneNode } from "@design-sdk/figma-types";
 
 type SceneNodeType = SceneNode["type"];
-type MaybeChildrenMixin<T = any> = IChildrenMixin<T> | object;
+type MaybeChildrenMixin<T = any> = { children?: Array<T> };
 
 /**
  * maps all children under complex object determined by property name "children" and it's type (if its a array)
@@ -16,8 +10,8 @@ type MaybeChildrenMixin<T = any> = IChildrenMixin<T> | object;
  * @returns
  */
 export function mapGrandchildren<
-  I extends MaybeChildrenMixin<any> = IReflectChildrenMixin,
-  O = ReflectSceneNode,
+  I extends MaybeChildrenMixin<any> = any,
+  O = any,
   ITEMS = O
 >(
   node: I,
@@ -56,19 +50,15 @@ export function mapGrandchildren<
   };
 
   if ("children" in node) {
-    const castedNode = node as IChildrenMixin<I>;
+    const castedNode = node as MaybeChildrenMixin<I>;
     // children field may exist, but not a array or undefined
     if (castedNode.children && Array.isArray(castedNode.children)) {
       for (const child of castedNode.children) {
         if ("children" in child && Array.isArray((child as any).children)) {
-          const grandchildren = mapGrandchildren(
-            child as IReflectChildrenMixin,
-            _current_depth + 1,
-            {
-              ...options,
-              includeThis: false,
-            }
-          );
+          const grandchildren = mapGrandchildren(child, _current_depth + 1, {
+            ...options,
+            includeThis: false,
+          });
           add(...(grandchildren as any));
         }
 
@@ -88,10 +78,7 @@ export function mapGrandchildren<
   return children;
 }
 
-export function mapChildren<
-  I extends MaybeChildrenMixin<any> = IReflectChildrenMixin,
-  O = ReflectSceneNode
->(
+export function mapChildren<I extends MaybeChildrenMixin<any> = any, O = any>(
   node: I,
   options?: {
     includeThis?: boolean;
@@ -109,7 +96,7 @@ export function mapChildren<
  * @param node
  * @returns
  */
-export function isTheOnlyChild(node: IReflectNodeReference) {
+export function isTheOnlyChild(node: any) {
   if (node.parent.children) {
     return node.parent.children.length === 1;
   }

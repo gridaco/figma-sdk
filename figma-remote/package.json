@@ -10,10 +10,13 @@
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc",
+        "build": "tsc",
         "test": "jest"
     },
     "dependencies": {
+        "@design-sdk/figma-node-conversion": "^0.0.23",
+        "@design-sdk/figma-node": "^0.0.23",
+        "@design-sdk/figma-utils": "^0.0.23",
         "@design-sdk/figma-remote-api": "^0.0.23"
     },
     "devDependencies": {

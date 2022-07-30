@@ -16,10 +16,6 @@ import type {
 import { FontWeight } from "@reflect-ui/core";
 import { ReflectSceneNodeType } from "./node-type";
 import { ReflectDefaultShapeMixin } from "./mixins";
-
-// region FIXME - migrate this
-import { getTextStyleById } from "@design-sdk/figma";
-import { extractTextStyleFromTextNode } from "@design-sdk/figma-node-conversion";
 import { inferFontWeight } from "@reflect-ui/font-utils";
 // endregion
 
@@ -62,15 +58,6 @@ export class ReflectTextNode
       return true;
     }
     return false;
-  }
-
-  get textStyle(): TextStyleManifest {
-    try {
-      return getTextStyleById(this.textStyleId as string);
-    } catch (e) {
-      // console.error(`error occcured while getting text style by id`, e)
-      return extractTextStyleFromTextNode(this);
-    }
   }
 
   get fontFamily(): string {

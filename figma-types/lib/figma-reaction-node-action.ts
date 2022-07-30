@@ -1,6 +1,6 @@
 import { FigmaNodeActionNavigation } from "./figma-node-action-navigation";
 
-/* figma types for transition is not ready. using native type instead. */ import type { Transition } from "@design-sdk/figma-types";
+/* figma types for transition is not ready. using native type instead. */ import type { Transition } from "./v1";
 
 export type FigmaReactionNodeAction = {
   readonly type: "NODE";

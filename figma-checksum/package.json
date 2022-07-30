@@ -6,12 +6,14 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc"
+        "build": "tsc"
     },
     "dependencies": {
+        "@design-sdk/figma": "^0.0.23",
         "nanoid": "^3.1.30"
     },
     "devDependencies": {
+        "@design-sdk/figma-types": "^0.0.23",
         "@figma/plugin-typings": "1.37.0"
     },
     "files": [

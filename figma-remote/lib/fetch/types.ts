@@ -1,6 +1,6 @@
-import * as types from "@design-sdk/figma-remote-types";
-import * as Figma from "@design-sdk/figma-types";
-import * as nodes from "@design-sdk/figma-node";
+import type { Node } from "@design-sdk/figma-remote-types";
+import type { SceneNode } from "@design-sdk/figma-types";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import type {
   Component as RemoteComponentNode,
   Node as RemoteNode,
@@ -17,9 +17,9 @@ export interface FigmaRemoteImportPack<T = any> {
   file: string;
   node: string;
   raw?: T;
-  remote?: types.Node;
-  figma?: Figma.SceneNode;
-  reflect?: nodes.ReflectSceneNode;
+  remote?: Node;
+  figma?: SceneNode;
+  reflect?: ReflectSceneNode;
   components?: FigmaRemoteImportPack[];
 }
 

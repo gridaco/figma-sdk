@@ -9,14 +9,14 @@
         "softmarshmallow <universe@grida.co>"
     ],
     "dependencies": {
-        "@design-sdk/core": "^0.0.23",
-        "@design-sdk/figma": "^0.0.17",
-        "@design-sdk/sketch": "^0.0.17",
-        "@design-sdk/vanilla": "^0.0.17"
+        "@design-sdk/core": "0.0.23",
+        "@design-sdk/figma": "0.0.23",
+        "@design-sdk/sketch": "0.0.23",
+        "@design-sdk/vanilla": "0.0.23"
     },
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc"
+        "build": "tsc"
     },
     "files": [
         "dist/index.js",

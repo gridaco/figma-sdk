@@ -8,13 +8,13 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc"
+        "build": "tsc"
     },
     "dependencies": {
         "@base-sdk/base": "0.1.4",
-        "@design-sdk/figma-node": "^0.0.23",
-        "@design-sdk/figma-types": "0.0.19",
-        "@design-sdk/figma-utils": "^0.0.23",
+        "@design-sdk/figma-node": "0.0.23",
+        "@design-sdk/figma-types": "0.0.23",
+        "@design-sdk/figma-utils": "0.0.23",
         "@design-sdk/flags": "^0.0.17",
         "@reflect-ui/core": "0.0.5",
         "@reflect-ui/namings": "0.0.3"

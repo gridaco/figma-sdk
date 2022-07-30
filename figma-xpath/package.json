@@ -7,17 +7,18 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc"
+        "build": "tsc",
+        "prepack": "yarn clean && yarn build"
     },
     "authors": [
         "grida.co",
         "softmarshmallow <universe@grida.co>"
     ],
+    "devDependencies": {
+        "@design-sdk/figma-node": "^0.0.23"
+    },
     "files": [
-        "dist/index.js",
-        "dist/index.d.ts",
-        "dist/**/*.js",
-        "dist/**/*.d.ts",
+        "dist",
         "README",
         "LICENSE"
     ],

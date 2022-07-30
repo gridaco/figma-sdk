@@ -1,4 +1,7 @@
-import { ReflectFrameNode, ReflectRectangleNode } from "@design-sdk/core";
+import type {
+  ReflectFrameNode,
+  ReflectRectangleNode,
+} from "@design-sdk/figma-node";
 import type { CGRectManifest } from "@reflect-ui/core";
 
 export function makeCGRect(

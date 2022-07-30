@@ -1,24 +1,22 @@
 import type {
-  ReflectConstraintMixin,
-  ReflectGroupNode,
-  ReflectSceneNode,
-} from "@design-sdk/figma-node";
-import type { SceneNode } from "@design-sdk/figma-types";
+  SceneNode,
+  ConstraintMixin,
+  ConstraintType,
+} from "@design-sdk/figma-types";
 
-/**
- * @deprecated
- * this only follows figma's constraint type. this needs to be re organized and be moved to reflect-coer
- */
-type ConstraintType = "MIN" | "MAX" | "CENTER" | "STRETCH" | "SCALE";
 type SceneNodeType = SceneNode["type"];
 /**
  * represents a constraints relative to parent node
  */
 export type LCRS = "Left" | "Center" | "Right" | "Stretch" | "Scale" | "Mixed";
 
-export function getNodeActualLCRS(node: ReflectConstraintMixin): LCRS {
+export function getNodeActualLCRS(
+  node: {
+    type: SceneNodeType;
+  } & ConstraintMixin
+): LCRS {
   if ((node.type as SceneNodeType) == "GROUP") {
-    return getGroupLCRS(node as ReflectGroupNode);
+    return getGroupLCRS(node as any);
   } else {
     try {
       return X_ALIGN_FIGMA_TO_REFLECT.get(node.constraints.horizontal);
@@ -33,10 +31,14 @@ export function getNodeActualLCRS(node: ReflectConstraintMixin): LCRS {
  * https://github.com/figma/plugin-typings/issues/9
  * @param node
  */
-export function getGroupLCRS(node: ReflectGroupNode): LCRS {
+export function getGroupLCRS(
+  node: {
+    type: "GROUP";
+  } & ConstraintMixin & { children: any }
+): LCRS {
   let lastChildLCRS: LCRS;
   for (const c of node.children) {
-    const childLCRS = getNodeActualLCRS(c);
+    const childLCRS = getNodeActualLCRS(c as any);
     if (lastChildLCRS) {
       if (lastChildLCRS === childLCRS) {
         // do nothing if lcrs matches
@@ -57,8 +59,14 @@ export function getGroupLCRS(node: ReflectGroupNode): LCRS {
  * @param reletiveTo the parent node of target node in generatl.
  */
 export function getReletiveLCRS(
-  target: ReflectConstraintMixin,
-  reletiveTo: ReflectSceneNode
+  target: {
+    absoluteX: number;
+    width: number;
+  },
+  reletiveTo: {
+    absoluteX: number;
+    width: number;
+  }
 ): LCRS {
   // FIXME rel does not work with group as expected.
 

@@ -9,7 +9,7 @@ import {
   ReflectSceneNode,
   ReflectSceneNodeType,
   ReflectTextNode,
-} from "@design-sdk/core";
+} from "@design-sdk/figma-node";
 import { converters, TextManifest, ImageManifest } from "@reflect-ui/core";
 import { ImageRepository } from "@design-sdk/core/assets-repository";
 import { makeCGRect } from "./make";
@@ -68,8 +68,8 @@ function fetchElements(
   // console.log(`fetching elements from ${node.toString()}`)
   if (node instanceof ReflectTextNode) {
     // todo -> make text manifest
-    const textStyle = node.textStyle;
-    textStyle.color = node.primaryColor;
+    // const textStyle = node.textStyle;
+    // textStyle.color = node.primaryColor;
     return [
       {
         nodeId: node.id,
@@ -85,7 +85,7 @@ function fetchElements(
           textAlign: node.textAlign,
           textAlignVertical: node.textAlignVertical,
           // TODO
-          style: node.textStyle,
+          // style: node.textStyle,
           overflow: undefined,
           maxLines: undefined,
         },

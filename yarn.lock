@@ -388,52 +388,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@design-sdk/figma-remote-api@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@design-sdk/figma-remote-api/-/figma-remote-api-0.0.17.tgz#ccb7fdc14530832a149801108e6b0aae7cc6b2ca"
-  integrity sha512-p6xJJ+vi29OzV3P42pFJjf8EkxepoGfo/nGUmwCVu4evXxDl4G4OZlosVA1YJfr8rPVz6EXITKWFtCrKg1k5Iw==
-
-"@design-sdk/figma-remote@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@design-sdk/figma-remote/-/figma-remote-0.0.17.tgz#d7f5f107a10adb59ff1ac44e6041a455e3719392"
-  integrity sha512-ULTTTh6p4gM+bnBV94TF6mTVGb4b/h64QVqrLYxN8Nms9ebQiFVQZTElh1hFgXYrxmlwE/eFYcBywJP/yeQGfQ==
-  dependencies:
-    "@design-sdk/figma-remote-api" "^0.0.17"
-
-"@design-sdk/figma-types@0.0.0":
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/@design-sdk/figma-types/-/figma-types-0.0.0.tgz#16f76e6a181f4562d188a6e13ba9352bf52d7d46"
-  integrity sha512-4DeGEnUn93S1Fu/inC2rJhL9wvcYvyvmGL6CBU04LQKTrn2Ni3BM/dArI/eHwWSSKDVlivx/oENTgYgZxqcs1Q==
-
-"@design-sdk/figma-url@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@design-sdk/figma-url/-/figma-url-0.0.2.tgz#6cdac717440def04f419efea080f95dae23e9d6f"
-  integrity sha512-BHxiY5OlX8OQNr/81NGo6pI8bm4c9M6s5vV+IJlQf9NFMKIoxv8fUZl0cuDvmQBloOC0HdVL09fPgIi0etVEvQ==
-
-"@design-sdk/figma@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@design-sdk/figma/-/figma-0.0.17.tgz#6b6cb38039eb9820d47149776859e7f830512be7"
-  integrity sha512-q79PKViOnpSSgDQB3LhXfflNCjKFCPHaTwbSRQCT8EgFZip/R9W8cWpyeXESOaZKKS633/CYTJLdX6kuj97t+Q==
-  dependencies:
-    "@design-sdk/figma-remote" "^0.0.17"
-    "@design-sdk/figma-types" "0.0.0"
-    "@design-sdk/figma-url" "0.0.2"
-    "@reflect-ui/uiutils" "0.1.2-1"
-
 "@design-sdk/flags@^0.0.17":
   version "0.0.17"
   resolved "https://registry.yarnpkg.com/@design-sdk/flags/-/flags-0.0.17.tgz#5e9563767c1c27fa3ba9f670ff2e0890a9bb5211"
   integrity sha512-GRb24/NmZwd/O4UZHoDeOTebd8uU+u/oF5+P9OvrPYgds7CeWHftYeuu/RtXMn3i5GBXiMYw1W2r6mRCj486KQ==
-
-"@design-sdk/sketch@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@design-sdk/sketch/-/sketch-0.0.17.tgz#0ffc58f4da9f427520039a4de31461db8a443c7b"
-  integrity sha512-D51je1cvly6Rw23MXmOxUc/Da3WGVdwZzRvMk7/vuMv1lZREvdCkfzo5sBPoby39ovT9HSl4QFMPKuC98fAS6A==
-
-"@design-sdk/vanilla@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@design-sdk/vanilla/-/vanilla-0.0.17.tgz#792a914138603b3c5be7484d901ca77c1c78ffde"
-  integrity sha512-JomqHvuruJc9myi1emXbGmu+sZiCdhnR2U1pIQ21A0n1Xt7y9olRLurOxhDfusJJRFRocGVszv8QtWlXcldWmg==
 
 "@figma/plugin-typings@1.37.0":
   version "1.37.0"
@@ -1617,6 +1575,11 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
+"@reflect-ui/cg@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/cg/-/cg-0.0.5.tgz#772fc3161926527e21453101c4e13af5debec98d"
+  integrity sha512-rqqaumLDgk9dGtPgkYy9h5PLlNv8ZVEz/+ktOcJpJE6v9fAQOSH1Wh5WAehpiZTQtKe944GzrFMsb/g8pTabWg==
+
 "@reflect-ui/cg@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@reflect-ui/cg/-/cg-0.1.1.tgz#a8994693165e70e29da1070128bf3a7a086a014b"
@@ -1638,6 +1601,11 @@
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@reflect-ui/font-utils/-/font-utils-0.0.1.tgz#fc22d21d90dc896dec96fcacaf8d584a30fb0642"
   integrity sha512-WglAO5z4E4upRx7kG3sn2uxG6jf0Ce3rc0WWZfYY9eyHrkm29dPc80JwHzxEAwbCjTr4iayF+ggNgbcGLAE2Tw==
+
+"@reflect-ui/font-utils@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/font-utils/-/font-utils-0.0.5.tgz#288bb2d41e0cb5d2f054b2104ff842d35f0bb223"
+  integrity sha512-juO3SlP/J7xzpxz09kS0remIvcSIR0MrcnSflKV74WQBmR2XSeKVh6JjQrJ+5bmt+jTUlvpovKHyaWLX2luHPA==
 
 "@reflect-ui/namings@0.0.3":
   version "0.0.3"

@@ -1,7 +1,7 @@
 import * as types from "@design-sdk/figma-remote-types";
 import * as mapper from "../mapper";
 import * as api from "@design-sdk/figma-remote-api";
-import { convert } from "@design-sdk/figma";
+import { convert } from "@design-sdk/figma-node-conversion";
 import { NotfoundError, UnauthorizedError } from "./errors";
 import type { AuthenticationCredential, FigmaRemoteImportPack } from "./types";
 import type { AxiosPromise } from "axios";

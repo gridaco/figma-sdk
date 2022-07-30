@@ -1,4 +1,4 @@
-import { FimgaLayoutAlign } from "@design-sdk/figma-types";
+import type { FimgaLayoutAlign } from "@design-sdk/figma-types";
 import { types } from "@reflect-ui/uiutils";
 
 export interface IReflectLayoutMixin {

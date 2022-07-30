@@ -1,4 +1,4 @@
-import {
+import type {
   Constraints,
   FigmaBooleanOpeartionType,
 } from "@design-sdk/figma-types";
@@ -12,7 +12,8 @@ import type { ReflectSceneNode } from "./node-type-alias";
 
 export class ReflectBooleanOperationNode
   extends ReflectDefaultShapeMixin
-  implements IReflectCornerMixin, IReflectConstraintMixin {
+  implements IReflectCornerMixin, IReflectConstraintMixin
+{
   readonly type: ReflectSceneNodeType.boolean_operation =
     ReflectSceneNodeType.boolean_operation;
   constraints: Constraints;

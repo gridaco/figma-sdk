@@ -11,7 +11,7 @@
     ],
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc",
+        "build": "tsc",
         "test": "jest"
     },
     "files": [

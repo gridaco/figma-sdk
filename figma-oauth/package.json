@@ -18,7 +18,7 @@
     "version": "0.0.23",
     "scripts": {
         "clean": "rimraf dist",
-        "prepack": "yarn clean && tsc",
+        "prepack": "tsc",
         "test": "jest"
     },
     "peerDependencies": {

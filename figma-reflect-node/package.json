@@ -9,7 +9,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc",
+        "build": "tsc",
         "prepack": "yarn build"
     },
     "files": [
@@ -18,19 +18,23 @@
         "LICENSE"
     ],
     "dependencies": {
-        "@design-sdk/figma-core": "0.0.19",
-        "@design-sdk/figma-utils": "^0.0.23",
+        "@design-sdk/figma-core": "0.0.23",
+        "@design-sdk/figma-utils": "0.0.23",
         "@reflect-ui/font-utils": "^0.0.1"
     },
     "peerDependencies": {
-        "@design-sdk/figma-core": "0.0.19",
+        "@design-sdk/figma-core": "0.0.23",
+        "@design-sdk/figma-types": "^0.0.23",
         "@reflect-ui/cg": "^0.1.1",
+        "@reflect-ui/core": "^0.0.5",
         "@reflect-ui/font-utils": "^0.0.1",
         "@reflect-ui/uiutils": "^0.1.2-2"
     },
     "devDependencies": {
-        "@design-sdk/figma-types": "0.0.19",
-        "@reflect-ui/cg": "^0.1.1"
+        "@design-sdk/figma-types": "^0.0.23",
+        "@reflect-ui/core": "^0.0.5",
+        "@reflect-ui/cg": "^0.1.1",
+        "typescript": "^4.7.4"
     },
     "publishConfig": {
         "access": "public"

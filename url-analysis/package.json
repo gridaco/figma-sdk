@@ -11,16 +11,13 @@
     ],
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc"
+        "build": "tsc"
     },
     "devDependencies": {
         "@design-sdk/core-types": "^0.0.23"
     },
     "files": [
-        "dist/index.js",
-        "dist/index.d.ts",
-        "dist/**/*.js",
-        "dist/**/*.d.ts",
+        "dist",
         "README",
         "LICENSE"
     ],

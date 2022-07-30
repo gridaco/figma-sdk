@@ -20,7 +20,7 @@
     "license": "MIT",
     "scripts": {
         "clean": "rimraf dist",
-        "prepack": "yarn clean && tsc",
+        "prepack": "tsc",
         "test": "jest"
     },
     "peerDependencies": {

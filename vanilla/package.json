@@ -10,17 +10,15 @@
     ],
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc",
+        "build": "tsc",
         "test": "jest"
     },
     "peerDependencies": {
-        "@design-sdk/core": "0.0.0"
+        "@design-sdk/figma-node": "*",
+        "@design-sdk/core": "*"
     },
     "files": [
-        "dist/index.js",
-        "dist/index.d.ts",
-        "dist/**/*.js",
-        "dist/**/*.d.ts",
+        "dist",
         "README",
         "LICENSE"
     ],

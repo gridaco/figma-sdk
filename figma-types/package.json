@@ -10,14 +10,11 @@
     "repository": "https://github.com/gridaco/design-sdk",
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && tsc",
+        "build": "tsc",
         "test": "jest"
     },
     "files": [
-        "dist/index.js",
-        "dist/index.d.ts",
-        "dist/**/*.js",
-        "dist/**/*.d.ts",
+        "dist",
         "README.md",
         "LICENSE"
     ],

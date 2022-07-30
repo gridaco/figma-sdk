@@ -12,11 +12,10 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "yarn clean && tsc"
+    "build": "tsc"
   },
-  "dependencies": {
-    "@design-sdk/figma-node": "^0.0.23",
-    "@design-sdk/figma-types": "0.0.19",
+  "devDependencies": {
+    "@design-sdk/figma-types": "0.0.23",
     "@reflect-ui/core": "^0.0.5"
   },
   "publishConfig": {

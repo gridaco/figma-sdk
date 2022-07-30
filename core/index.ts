@@ -1,7 +1,3 @@
-// node
-export * from "@design-sdk/figma-node";
-export * as nodes from "@design-sdk/figma-node";
-
 // platform
 export * as _platform from "./platform";
 
