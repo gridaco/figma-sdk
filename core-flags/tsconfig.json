@@ -2,8 +2,8 @@
   "extends": "../tsconfig.build.json",
   "compilerOptions": {
     "outDir": "dist",
-    "skipLibCheck": true,
-    "strict": false
+    "allowJs": true
   },
-  "exclude": ["node_modules", "dist", "__test__"]
+  "include": ["./"],
+  "exclude": ["node_modules", "dist", "__test__", "jest.config.js"]
 }
