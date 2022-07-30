@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/figma-checksum",
-    "version": "0.0.27",
+    "version": "0.0.28",
     "private": false,
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -9,11 +9,11 @@
         "build": "tsc"
     },
     "dependencies": {
-        "@design-sdk/figma": "^0.0.27",
+        "@design-sdk/figma": "^0.0.28",
         "nanoid": "^3.1.30"
     },
     "devDependencies": {
-        "@design-sdk/figma-types": "^0.0.27",
+        "@design-sdk/figma-types": "^0.0.28",
         "@figma/plugin-typings": "1.37.0"
     },
     "files": [
