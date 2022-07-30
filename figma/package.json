@@ -11,9 +11,9 @@
     },
     "dependencies": {
         "@design-sdk/figma-node-conversion": "^0.0.21",
-        "@design-sdk/figma-remote": "0.0.19",
-        "@design-sdk/figma-types": "0.0.19",
-        "@design-sdk/figma-url": "0.0.19",
+        "@design-sdk/figma-remote": "0.0.21",
+        "@design-sdk/figma-types": "0.0.21",
+        "@design-sdk/figma-url": "0.0.21",
         "@reflect-ui/uiutils": "0.1.2-1"
     },
     "files": [

@@ -16,10 +16,7 @@
         "test": "jest"
     },
     "files": [
-        "dist/index.js",
-        "dist/index.d.ts",
-        "dist/**/*.js",
-        "dist/**/*.d.ts",
+        "dist",
         "README",
         "LICENSE"
     ],
