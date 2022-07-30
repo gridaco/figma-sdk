@@ -7,7 +7,7 @@
         "design",
         "diff"
     ],
-    "version": "0.0.26",
+    "version": "0.0.27",
     "authors": "Grida.co",
     "private": false,
     "files": [
@@ -20,8 +20,8 @@
         "build": "tsc"
     },
     "dependencies": {
-        "@design-sdk/figma-types": "^0.0.26",
-        "@design-sdk/figma-xpath": "^0.0.26"
+        "@design-sdk/figma-types": "^0.0.27",
+        "@design-sdk/figma-xpath": "^0.0.27"
     },
     "publishConfig": {
         "access": "public"
