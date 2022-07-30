@@ -1,7 +1,7 @@
 {
     "name": "@design-sdk/figma-node-conversion",
     "description": "convert figma nodes into a universal version - to reflect design nodes",
-    "version": "0.0.21",
+    "version": "0.0.22",
     "private": false,
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
         "test": "jest"
     },
     "dependencies": {
-        "@design-sdk/figma-node": "^0.0.21",
+        "@design-sdk/figma-node": "^0.0.22",
         "@design-sdk/figma-types": "0.0.19"
     },
     "files": [
