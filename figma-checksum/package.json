@@ -17,10 +17,7 @@
         "@figma/plugin-typings": "1.37.0"
     },
     "files": [
-        "dist/index.js",
-        "dist/index.d.ts",
-        "dist/**/*.js",
-        "dist/**/*.d.ts",
+        "dist",
         "README",
         "LICENSE"
     ],

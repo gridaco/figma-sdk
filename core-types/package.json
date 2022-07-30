@@ -5,15 +5,15 @@
     "version": "0.0.27",
     "private": false,
     "main": "dist/index.js",
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "tsc"
+    },
     "files": [
         "dist",
         "README.md",
         "LICENSE"
     ],
-    "scripts": {
-        "clean": "rimraf dist",
-        "build": "tsc"
-    },
     "publishConfig": {
         "access": "public"
     }

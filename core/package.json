@@ -11,7 +11,7 @@
         "build": "tsc"
     },
     "exports": {
-        "utils": "./dist/utils"
+        "./utils": "./dist/utils"
     },
     "dependencies": {
         "@base-sdk/base": "0.1.4",
