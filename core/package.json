@@ -12,8 +12,8 @@
     },
     "dependencies": {
         "@base-sdk/base": "0.1.4",
-        "@design-sdk/figma-node": "^0.0.19",
-        "@design-sdk/figma-types": "^0.0.17",
+        "@design-sdk/figma-node": "0.0.19",
+        "@design-sdk/figma-types": "0.0.19",
         "@design-sdk/figma-utils": "^0.0.19",
         "@design-sdk/flags": "^0.0.17",
         "@reflect-ui/core": "0.0.5",

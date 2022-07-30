@@ -388,6 +388,18 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@design-sdk/figma-remote-api@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@design-sdk/figma-remote-api/-/figma-remote-api-0.0.17.tgz#ccb7fdc14530832a149801108e6b0aae7cc6b2ca"
+  integrity sha512-p6xJJ+vi29OzV3P42pFJjf8EkxepoGfo/nGUmwCVu4evXxDl4G4OZlosVA1YJfr8rPVz6EXITKWFtCrKg1k5Iw==
+
+"@design-sdk/figma-remote@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@design-sdk/figma-remote/-/figma-remote-0.0.17.tgz#d7f5f107a10adb59ff1ac44e6041a455e3719392"
+  integrity sha512-ULTTTh6p4gM+bnBV94TF6mTVGb4b/h64QVqrLYxN8Nms9ebQiFVQZTElh1hFgXYrxmlwE/eFYcBywJP/yeQGfQ==
+  dependencies:
+    "@design-sdk/figma-remote-api" "^0.0.17"
+
 "@design-sdk/figma-types@0.0.0":
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@design-sdk/figma-types/-/figma-types-0.0.0.tgz#16f76e6a181f4562d188a6e13ba9352bf52d7d46"
@@ -397,6 +409,31 @@
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@design-sdk/figma-url/-/figma-url-0.0.2.tgz#6cdac717440def04f419efea080f95dae23e9d6f"
   integrity sha512-BHxiY5OlX8OQNr/81NGo6pI8bm4c9M6s5vV+IJlQf9NFMKIoxv8fUZl0cuDvmQBloOC0HdVL09fPgIi0etVEvQ==
+
+"@design-sdk/figma@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@design-sdk/figma/-/figma-0.0.17.tgz#6b6cb38039eb9820d47149776859e7f830512be7"
+  integrity sha512-q79PKViOnpSSgDQB3LhXfflNCjKFCPHaTwbSRQCT8EgFZip/R9W8cWpyeXESOaZKKS633/CYTJLdX6kuj97t+Q==
+  dependencies:
+    "@design-sdk/figma-remote" "^0.0.17"
+    "@design-sdk/figma-types" "0.0.0"
+    "@design-sdk/figma-url" "0.0.2"
+    "@reflect-ui/uiutils" "0.1.2-1"
+
+"@design-sdk/flags@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@design-sdk/flags/-/flags-0.0.17.tgz#5e9563767c1c27fa3ba9f670ff2e0890a9bb5211"
+  integrity sha512-GRb24/NmZwd/O4UZHoDeOTebd8uU+u/oF5+P9OvrPYgds7CeWHftYeuu/RtXMn3i5GBXiMYw1W2r6mRCj486KQ==
+
+"@design-sdk/sketch@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@design-sdk/sketch/-/sketch-0.0.17.tgz#0ffc58f4da9f427520039a4de31461db8a443c7b"
+  integrity sha512-D51je1cvly6Rw23MXmOxUc/Da3WGVdwZzRvMk7/vuMv1lZREvdCkfzo5sBPoby39ovT9HSl4QFMPKuC98fAS6A==
+
+"@design-sdk/vanilla@^0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@design-sdk/vanilla/-/vanilla-0.0.17.tgz#792a914138603b3c5be7484d901ca77c1c78ffde"
+  integrity sha512-JomqHvuruJc9myi1emXbGmu+sZiCdhnR2U1pIQ21A0n1Xt7y9olRLurOxhDfusJJRFRocGVszv8QtWlXcldWmg==
 
 "@figma/plugin-typings@1.37.0":
   version "1.37.0"
@@ -1740,6 +1777,11 @@
   version "15.14.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.14.9.tgz#bc43c990c3c9be7281868bbc7b8fdd6e2b57adfa"
   integrity sha512-qjd88DrCxupx/kJD5yQgZdcYKZKSIGBVDIBE1/LTGcNm3d2Np/jxojkdePDdfnBHJc5W7vSMpbJ1aB7p/Py69A==
+
+"@types/node@^18.6.2":
+  version "18.6.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.6.2.tgz#ffc5f0f099d27887c8d9067b54e55090fcd54126"
+  integrity sha512-KcfkBq9H4PI6Vpu5B/KoPeuVDAbmi+2mDBqGPGUgoL7yXQtcWGu2vJWmmRkneWK3Rh0nIAX192Aa87AqKHYChQ==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"

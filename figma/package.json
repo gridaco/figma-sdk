@@ -10,9 +10,10 @@
         "build": "yarn clean && tsc"
     },
     "dependencies": {
-        "@design-sdk/figma-remote": "^0.0.19",
-        "@design-sdk/figma-types": "0.0.0",
-        "@design-sdk/figma-url": "0.0.2",
+        "@design-sdk/figma-node-conversion": "0.0.19",
+        "@design-sdk/figma-remote": "0.0.19",
+        "@design-sdk/figma-types": "0.0.19",
+        "@design-sdk/figma-url": "0.0.19",
         "@reflect-ui/uiutils": "0.1.2-1"
     },
     "files": [

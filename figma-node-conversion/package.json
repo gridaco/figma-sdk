@@ -20,8 +20,8 @@
         "test": "jest"
     },
     "dependencies": {
-        "@design-sdk/figma-node": "^0.0.19",
-        "@design-sdk/figma-types": "^0.0.17"
+        "@design-sdk/figma-node": "0.0.19",
+        "@design-sdk/figma-types": "0.0.19"
     },
     "files": [
         "dist/index.js",
@@ -33,5 +33,8 @@
     ],
     "publishConfig": {
         "access": "public"
+    },
+    "devDependencies": {
+        "@types/node": "^18.6.2"
     }
 }
