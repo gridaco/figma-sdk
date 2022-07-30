@@ -1,6 +1,8 @@
 {
     "name": "@design-sdk/diff",
     "description": "diff utils for design",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "keywords": [
         "design",
         "diff"
