@@ -1,4 +1,4 @@
-import { BaseImageRepositories } from "@design-sdk/core/assets-repository/image-repository";
+import { BaseImageRepositories } from "@design-sdk/asset-repository";
 import { plugin } from "../../";
 
 export class ImageRepositories extends BaseImageRepositories {

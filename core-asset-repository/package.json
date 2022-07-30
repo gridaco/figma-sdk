@@ -1,0 +1,28 @@
+{
+  "name": "@design-sdk/asset-repository",
+  "version": "0.0.23",
+  "license": "Apache 2.0",
+  "author": "grida.co",
+  "private": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@base-sdk/hosting": "^0.1.2"
+  },
+  "devDependencies": {
+    "@base-sdk/base": "^0.1.4",
+    "typescript": "^4.2.4"
+  },
+  "files": [
+    "dist",
+    "README",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

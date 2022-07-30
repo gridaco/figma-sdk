@@ -318,7 +318,7 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@base-sdk/base@0.1.4":
+"@base-sdk/base@0.1.4", "@base-sdk/base@^0.1.4":
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@base-sdk/base/-/base-0.1.4.tgz#2fc37b592519a96e782af94953d06c76e7e90415"
   integrity sha512-Fvw2E93akrZA0DQTHE/1cyMjKI46X52Jsfg2pF7L5qMs1fa6su2flYvmY2kAo8ULnXQBw2Qokwbh/1Arh+5S6Q==
@@ -354,7 +354,7 @@
   dependencies:
     axios "^0.21.0"
 
-"@base-sdk/hosting@0.1.2":
+"@base-sdk/hosting@0.1.2", "@base-sdk/hosting@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@base-sdk/hosting/-/hosting-0.1.2.tgz#24c627a309cc2d25e024b38eea00142f3a46585f"
   integrity sha512-PsXv5RGRd4kjLIcqT+b6h4r0ktEdFJ3YuANOGWSr7RdePmT1ZT2WrXzSAK/74N91AJOkaX1ci8j56ZPG0spuxg==

@@ -10,6 +10,9 @@
         "clean": "rimraf dist",
         "build": "tsc"
     },
+    "exports": {
+        "utils": "./dist/utils"
+    },
     "dependencies": {
         "@base-sdk/base": "0.1.4",
         "@design-sdk/figma-node": "0.0.23",

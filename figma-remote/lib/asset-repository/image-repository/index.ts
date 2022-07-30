@@ -1,4 +1,4 @@
-import { BaseImageRepositories } from "@design-sdk/core/assets-repository/image-repository";
+import { BaseImageRepositories } from "@design-sdk/asset-repository";
 import { FIGMA_REMOTE_LIB_AUTH_CREDENTIAL_GLOBAL } from "../../configure-auth-credentials/__internal__";
 import { fetchImagesOfFile, fetchNodeAsImage } from "../../fetch";
 type RemoteImage = string;

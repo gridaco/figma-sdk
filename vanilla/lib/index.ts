@@ -11,7 +11,7 @@ import {
   ReflectTextNode,
 } from "@design-sdk/figma-node";
 import { converters, TextManifest, ImageManifest } from "@reflect-ui/core";
-import { ImageRepository } from "@design-sdk/core/assets-repository";
+import { ImageRepository } from "@design-sdk/asset-repository";
 import { makeCGRect } from "./make";
 
 const vanillaImageRepo = new ImageRepository(
