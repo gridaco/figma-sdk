@@ -20,7 +20,8 @@
         "build": "tsc"
     },
     "dependencies": {
-        "@design-sdk/figma-types": "^0.0.26"
+        "@design-sdk/figma-types": "^0.0.26",
+        "@design-sdk/figma-xpath": "^0.0.26"
     },
     "publishConfig": {
         "access": "public"
