@@ -1,4 +1,4 @@
-import { createParser, Option, Results } from "./dashdash";
+import { createParser, Option, Results } from "@design-sdk/core-flags-dashdash";
 
 export type { Option, Results };
 
