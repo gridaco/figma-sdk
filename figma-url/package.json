@@ -4,6 +4,8 @@
     "description": "Figma url utils for sharing & embeding and url inspection",
     "license": "MIT",
     "private": false,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "homepage": "https://github.com/gridaco/design-sdk",
     "repository": "https://github.com/gridaco/design-sdk",
     "authors": [
