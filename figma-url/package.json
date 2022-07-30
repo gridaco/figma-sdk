@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/figma-url",
-    "version": "0.0.25",
+    "version": "0.0.26",
     "description": "Figma url utils for sharing & embeding and url inspection",
     "license": "MIT",
     "private": false,
