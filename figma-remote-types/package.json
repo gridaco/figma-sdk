@@ -3,7 +3,7 @@
     "description": "Light-weight Figma Remote api wrapper with types & authentication",
     "main": "index.js",
     "types": "index.d.ts",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "private": false,
     "keywords": [
         "figma",
