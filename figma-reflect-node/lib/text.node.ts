@@ -32,7 +32,6 @@ export class ReflectTextNode
    */
   data: string;
 
-  // omitted - style: TextStyleManifest; (FIXME: make text style as unified property)
   overflow: TextOverflow;
   maxLines: number;
 
@@ -52,6 +51,9 @@ export class ReflectTextNode
 
   letterSpacing: LetterSpacing;
   lineHeight: DimensionLength;
+
+  // omitted - style: TextStyleManifest; (FIXME: make text style as unified property)
+  textStyle: TextStyleManifest | undefined;
 
   get hasTextStyle(): boolean {
     if (this.textStyleId !== "") {

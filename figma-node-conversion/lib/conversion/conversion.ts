@@ -37,6 +37,7 @@ import {
   convertTextCaseToReflectTextTransform,
   figma_lineheight_to_reflect_ling_height,
   convertLetterSpacingToReflect,
+  convertTextStyleToReflect,
 } from "../converters";
 import {
   plugin,
@@ -64,6 +65,7 @@ import {
 import { convertBlendModeToReflect } from "../converters/blend-mode.convert";
 import { EdgeInsets } from "@reflect-ui/core";
 import { checkIfAutoLayout } from "@design-sdk/figma-utils";
+import { extractTextStyleFromTextNode } from "../converters";
 
 // import { convert_frame_to_autolayout_if_possible } from "../../../designto-sanitized/convert-frame-to-autolayout-if-possible";
 // import { convert_rectangle_with_others_as_new_frame_and_as_bg } from "../../../designto-sanitized/convert-rectangle-with-others-as-new-frame-and-as-bg";
@@ -286,7 +288,7 @@ export function intoReflectNodes(
           });
 
           convertDefaultShape(altNode, node, mode);
-          convertIntoReflectText(altNode, node);
+          convertIntoReflectText(altNode, node, mode);
           convertConstraint(altNode, node);
 
           return altNode;
@@ -571,7 +573,11 @@ function convertCorner(
   altNode.cornerSmoothing = (node as CornerMixin).cornerSmoothing;
 }
 
-function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
+function convertIntoReflectText(
+  altNode: ReflectTextNode,
+  node: TextNode,
+  mode: ConverterEnvironment
+) {
   altNode.autoRename = node.autoRename;
   altNode.textAlign = convertTextAlignHorizontalToReflect(
     node.textAlignHorizontal
@@ -599,6 +605,25 @@ function convertIntoReflectText(altNode: ReflectTextNode, node: TextNode) {
   altNode.lineHeight = figma_lineheight_to_reflect_ling_height(
     figmaToReflectProperty(node.lineHeight)
   );
+
+  // run lastly
+  const textStyle = (node: ReflectTextNode): ReflectTextNode["textStyle"] => {
+    if (mode === "plugin") {
+      try {
+        for (const s of plugin.getLocalTextStyles()) {
+          if (s.id === node.textStyleId) {
+            return convertTextStyleToReflect(s);
+          }
+        }
+      } catch (e) {
+        console.error(`error while getting textstyle from plugin api by id`, e);
+        return extractTextStyleFromTextNode(node);
+      }
+    } else {
+      return extractTextStyleFromTextNode(node);
+    }
+  };
+  altNode.textStyle = textStyle(altNode);
 }
 
 // drops the useless figma's mixed symbol
