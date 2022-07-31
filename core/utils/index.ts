@@ -1,6 +1,8 @@
-export * from "./retrieve-colliding-children";
 export * from "./common-padding";
 export * from "./common-position";
 export * from "./coordinates";
-export * as colors from "./colors";
-export * as query from "./query";
+export * from "./node-width-height";
+export * from "./retrieve-colliding-children";
+export * from "./used-colors";
+export * from "./colors";
+export * from "./query";
