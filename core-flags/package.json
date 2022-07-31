@@ -13,6 +13,13 @@
     "exports": {
         "parsing-strategy-dashdash": "./dist/parsing-strategy-dashdash"
     },
+    "typesVersions": {
+        "*": {
+            "parsing-strategy-dashdash": [
+                "dist/parsing-strategy-dashdash/index.d.ts"
+            ]
+        }
+    },
     "dependencies": {
         "@design-sdk/core-flags-dashdash": "^0.0.28"
     },

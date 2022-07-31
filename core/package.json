@@ -11,7 +11,14 @@
         "build": "tsc"
     },
     "exports": {
-        "./utils": "./dist/utils"
+        "./utils": "./dist/utils/index.js"
+    },
+    "typesVersions": {
+        "*": {
+            "utils": [
+                "dist/utils/index.d.ts"
+            ]
+        }
     },
     "dependencies": {
         "@base-sdk/base": "0.1.4",
