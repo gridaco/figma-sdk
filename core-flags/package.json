@@ -11,7 +11,7 @@
         "test": "jest --config=jest.config.js"
     },
     "exports": {
-        "parsing-strategy-dashdash": "./dist/parsing-strategy-dashdash"
+        "./parsing-strategy-dashdash": "./dist/parsing-strategy-dashdash/index.js"
     },
     "typesVersions": {
         "*": {
