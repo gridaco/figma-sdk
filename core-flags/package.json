@@ -11,10 +11,14 @@
         "test": "jest --config=jest.config.js"
     },
     "exports": {
+        ".": "./dist/index.js",
         "./parsing-strategy-dashdash": "./dist/parsing-strategy-dashdash/index.js"
     },
     "typesVersions": {
         "*": {
+            ".": [
+                "dist/index.d.ts"
+            ],
             "parsing-strategy-dashdash": [
                 "dist/parsing-strategy-dashdash/index.d.ts"
             ]

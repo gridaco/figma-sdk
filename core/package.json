@@ -11,10 +11,14 @@
         "build": "tsc"
     },
     "exports": {
+        ".": "./dist/index.js",
         "./utils": "./dist/utils/index.js"
     },
     "typesVersions": {
         "*": {
+            ".": [
+                "dist/index.d.ts"
+            ],
             "utils": [
                 "dist/utils/index.d.ts"
             ]

@@ -14,10 +14,14 @@
         "test": "jest"
     },
     "exports": {
+        ".": "./dist/index.js",
         "./asset-repository": "./dist/asset-repository/index.js"
     },
     "typesVersions": {
         "*": {
+            ".": [
+                "dist/index.d.ts"
+            ],
             "asset-repository": [
                 "dist/asset-repository/index.d.ts"
             ]
