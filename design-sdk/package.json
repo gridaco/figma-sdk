@@ -1,0 +1,23 @@
+{
+  "name": "design-sdk",
+  "version": "0.0.33",
+  "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@design-sdk/core": "0.0.33",
+    "@design-sdk/figma": "0.0.33",
+    "@design-sdk/diff": "0.0.33",
+    "@design-sdk/flags": "0.0.33",
+    "@design-sdk/vanilla": "0.0.33"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
