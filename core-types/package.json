@@ -2,7 +2,7 @@
     "name": "@design-sdk/core-types",
     "description": "Core typings for design representetives",
     "authors": "Grida.co",
-    "version": "0.0.30",
+    "version": "0.0.31",
     "private": false,
     "main": "dist/index.js",
     "scripts": {
