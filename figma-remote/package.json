@@ -18,7 +18,7 @@
     },
     "typesVersions": {
         "*": {
-            "image-repository": [
+            "asset-repository": [
                 "dist/asset-repository/index.d.ts"
             ]
         }
