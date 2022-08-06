@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/figma-types",
-    "version": "0.0.33",
+    "version": "0.0.34",
     "description": "Figma remote api & formats",
     "license": "MIT",
     "private": false,
