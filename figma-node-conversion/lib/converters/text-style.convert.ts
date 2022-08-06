@@ -34,9 +34,11 @@ export function convertTextStyleToReflect(
 export function extractTextStyleFromTextNode(
   origin: ReflectTextNode
 ): TextStyleManifest {
-  let _fontFamily = origin.fontName?.family;
-  let _fontWeight = inferFontWeight(origin.fontName?.style);
-  if (!origin.fontName) {
+  const { fontName, fontSize, textDecoration } = origin;
+  let _fontFamily = fontName?.family;
+  let _fontWeight = inferFontWeight(fontName?.style);
+
+  if (!fontName) {
     // TODO: add warning system.
     // console.warn("this might be a bug (or by multiple textstyle). no fontName was found in text node. the text node was", origin);
     // console.info('since no fontName was provided, falling back to "Roboto Regular"');
@@ -49,18 +51,19 @@ export function extractTextStyleFromTextNode(
     name: undefined,
     fontFamily: _fontFamily,
     fontWeight: _fontWeight,
-    fontStyle: convertFontStyleToReflect(origin.fontName),
-    fontSize: origin.fontSize,
+    fontStyle: convertFontStyleToReflect(fontName),
+    fontSize: fontSize,
     wordSpacing: undefined, // non-figma property
-    decoration: origin.textDecoration,
+    decoration: textDecoration,
     decorationStyle: undefined,
     decorationThickness: undefined,
     // TODO: fixme
-    // @ts-ignore
     letterSpacing: convertLetterSpacingToReflect(
       origin.letterSpacing as LetterSpacing
     ),
     lineHeight: origin.lineHeight,
     color: origin.primaryColor,
+    // @ts-ignore -- this does not take much memory, including this for debugging purpose.
+    __fontName: fontName,
   };
 }

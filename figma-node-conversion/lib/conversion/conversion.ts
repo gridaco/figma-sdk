@@ -608,19 +608,25 @@ function convertIntoReflectText(
 
   // run lastly
   const textStyle = (node: ReflectTextNode): ReflectTextNode["textStyle"] => {
-    if (mode === "plugin") {
-      try {
-        for (const s of plugin.getLocalTextStyles()) {
-          if (s.id === node.textStyleId) {
-            return convertTextStyleToReflect(s);
+    switch (mode) {
+      case "plugin": {
+        try {
+          for (const s of plugin.getLocalTextStyles()) {
+            if (s.id === node.textStyleId) {
+              return convertTextStyleToReflect(s);
+            }
           }
+        } catch (e) {
+          console.error(
+            `error while getting textstyle from plugin api by id`,
+            e
+          );
+          return extractTextStyleFromTextNode(node);
         }
-      } catch (e) {
-        console.error(`error while getting textstyle from plugin api by id`, e);
+      }
+      case "rest": {
         return extractTextStyleFromTextNode(node);
       }
-    } else {
-      return extractTextStyleFromTextNode(node);
     }
   };
   altNode.textStyle = textStyle(altNode);
