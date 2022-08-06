@@ -607,12 +607,12 @@ function convertIntoReflectText(
   );
 
   // run lastly
-  const textStyle = (node: ReflectTextNode): ReflectTextNode["textStyle"] => {
+  const textStyle = (alt: ReflectTextNode): ReflectTextNode["textStyle"] => {
     switch (mode) {
       case "plugin": {
         try {
           for (const s of plugin.getLocalTextStyles()) {
-            if (s.id === node.textStyleId) {
+            if (s.id === alt.textStyleId) {
               return convertTextStyleToReflect(s);
             }
           }
@@ -621,11 +621,13 @@ function convertIntoReflectText(
             `error while getting textstyle from plugin api by id`,
             e
           );
-          return extractTextStyleFromTextNode(node);
+          return extractTextStyleFromTextNode(alt);
         }
       }
       case "rest": {
-        return extractTextStyleFromTextNode(node);
+        return extractTextStyleFromTextNode(alt, {
+          __restapi_ver_fontWeight: node.fontWeight,
+        });
       }
     }
   };

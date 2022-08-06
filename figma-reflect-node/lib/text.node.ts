@@ -65,13 +65,4 @@ export class ReflectTextNode
   get fontFamily(): string {
     return this.fontName.family;
   }
-
-  get fontWeight(): FontWeight {
-    try {
-      return inferFontWeight(this.fontName.style);
-    } catch (_) {
-      // fallback.
-      return FontWeight.normal;
-    }
-  }
 }

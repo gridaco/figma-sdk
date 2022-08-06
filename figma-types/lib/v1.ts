@@ -497,6 +497,7 @@ export interface StyledTextSegment {
   end: number;
   fontSize: number;
   fontName: FontName;
+  fontWeight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
   textDecoration: TextDecoration;
   textCase: TextCase;
   lineHeight: LineHeight;
@@ -863,6 +864,15 @@ export interface TextSublayerNode {
 
   // -------------------------------------
   // OVERRIDE - for remote data
+
+  /**
+   * Note!
+   * - this field only exists on the rest api.
+   * - this field does not exist on native plugin api. to set this, you have to read each ranges and set this data.
+   * - this field is required to be set also on the plugin api, to support text span (multi text style).
+   * - this field may be added by the plugin api in the future by figma team by different name.
+   */
+  fontWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 
   /**
    * Array with same number of elements as characters in text box, each element is a reference to the styleOverrideTable defined below and maps to the corresponding character in the characters field. Elements with value 0 have the default type style
