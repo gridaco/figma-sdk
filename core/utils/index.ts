@@ -5,4 +5,3 @@ export * from "./node-width-height";
 export * from "./retrieve-colliding-children";
 export * from "./used-colors";
 export * from "./colors";
-export * from "./query";
