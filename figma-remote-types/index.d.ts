@@ -1058,12 +1058,48 @@ export interface Comment {
    * The content of the comment
    */
   readonly message: string;
-  readonly client_meta: Vector2 | FrameOffset;
+  /**
+   * Positioning information of the comment. Includes information on the location of the comment pin, which is either the absolute coordinates on the canvas or a relative offset within a frame. If the comment is a region, it will also contain the region height, width, and position of the anchor in regards to the region.
+   */
+  readonly client_meta: CommentClientMeta;
   /**
    * Only set for top level comments. The number displayed with the
    * comment in the UI
    */
   readonly order_id: number;
+
+  /**
+   * An array of reactions to the comment
+   */
+  readonly reactions: ReadonlyArray<Reaction>;
+}
+
+/**
+ * A reaction left by a user on a comment
+ */
+export interface Reaction {
+  /**
+   *
+   */
+  user: User;
+
+  /**
+   * The emoji type of reaction as a string enum
+   */
+  emoji:
+    | ":eyes:"
+    | ":heart_eyes:"
+    | ":heavy_plus_sign:"
+    | ":+1:"
+    | ":-1:"
+    | ":joy:"
+    | ":fire:"
+    | string;
+
+  /**
+   * The UTC ISO 8601 time at which the reaction was left
+   */
+  created_at: Date;
 }
 
 /** A description of a user */
@@ -1083,6 +1119,80 @@ export interface FrameOffset {
   /** 2d vector offset within the frame */
   readonly node_offset: Vector2;
 }
+
+export type PinCorner =
+  | "bottom-right"
+  | "bottom-left"
+  | "top-right"
+  | "top-left";
+
+/**
+ * Position of a region comment on the canvas
+ */
+export interface Region {
+  /**
+   * X coordinate of the position
+   */
+  x: number;
+
+  /**
+   * Y coordinate of the position
+   */
+  y: number;
+
+  /**
+   * The height of the comment region. Must be greater than 0
+   */
+  region_height: number;
+
+  /**
+   * The width of the comment region. Must be greater than 0
+   */
+  region_width: number;
+
+  /**
+   * The corner of the comment region to pin to the node's corner as a string enum
+   * @default bottom-right
+   */
+  comment_pin_corner: PinCorner;
+}
+
+/**
+ * A relative offset region within a frame
+ */
+export interface FrameOffsetRegion {
+  /**
+   * Unique id specifying the frame.
+   */
+  node_id: string;
+
+  /**
+   * 2D vector offset within the frame.
+   */
+  node_offset: Vector;
+
+  /**
+   * The height of the comment region
+   */
+  region_height: number;
+
+  /**
+   * The width of the comment region
+   */
+  region_width: number;
+
+  /**
+   * The corner of the comment region to pin to the node's corner as a string enum
+   * @default bottom-right
+   */
+  comment_pin_corner: PinCorner;
+}
+
+export type CommentClientMeta =
+  | Vector2
+  | FrameOffset
+  | Region
+  | FrameOffsetRegion;
 
 export interface ProjectSummary {
   readonly id: string;
