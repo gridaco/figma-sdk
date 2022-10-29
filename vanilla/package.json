@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/vanilla",
-    "version": "0.0.37",
+    "version": "0.0.38",
     "private": false,
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
         "test": "jest"
     },
     "dependencies": {
-        "@design-sdk/asset-repository": "^0.0.37"
+        "@design-sdk/asset-repository": "^0.0.38"
     },
     "peerDependencies": {
         "@design-sdk/core": "*",

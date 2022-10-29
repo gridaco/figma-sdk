@@ -7,7 +7,7 @@
         "design",
         "diff"
     ],
-    "version": "0.0.37",
+    "version": "0.0.38",
     "authors": "Grida.co",
     "private": false,
     "scripts": {
@@ -15,8 +15,8 @@
         "build": "tsc"
     },
     "dependencies": {
-        "@design-sdk/figma-types": "^0.0.37",
-        "@design-sdk/figma-xpath": "^0.0.37"
+        "@design-sdk/figma-types": "^0.0.38",
+        "@design-sdk/figma-xpath": "^0.0.38"
     },
     "files": [
         "dist",

@@ -1,7 +1,7 @@
 {
     "name": "@design-sdk/url-analysis",
     "description": "A library for analyzing design URLs from multiple platforms (sketch, figma, ..)",
-    "version": "0.0.37",
+    "version": "0.0.38",
     "private": false,
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
         "build": "tsc"
     },
     "devDependencies": {
-        "@design-sdk/core-types": "^0.0.37"
+        "@design-sdk/core-types": "^0.0.38"
     },
     "files": [
         "dist",
