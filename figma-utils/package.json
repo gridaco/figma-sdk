@@ -1,6 +1,6 @@
 {
   "name": "@design-sdk/figma-utils",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "description": "Figma node utilities",
   "private": false,
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "@design-sdk/figma-types": "^0.0.38",
+    "@design-sdk/figma-types": "^0.0.39",
     "@reflect-ui/core": "^0.0.5"
   },
   "publishConfig": {
