@@ -242,6 +242,39 @@ export interface ClientInterface {
   ) => AxiosPromise<Figma.Comment>;
 
   /**
+   * Gets a paginated list of reactions left on the comment.
+   * @param {fileId} String File to get comment containing reactions from
+   * @param {commentId} String Comment to get reactions from
+   * @see https://www.figma.com/developers/api#get-comment-reactions-endpoint
+   */
+  readonly commentReactions: (
+    fileId: string,
+    commentId: string
+  ) => AxiosPromise<Figma.CommentReactionsResponse>;
+
+  /**
+   * Posts a new comment reaction on a file comment.
+   * @param {fileId} String File to post comment reactions to
+   * @param {commentId} String ID of comment to react to
+   * @see https://www.figma.com/developers/api#post-comment-reactions-endpoint
+   */
+  readonly postCommentReaction: (
+    fileId: string,
+    commentId: string
+  ) => AxiosPromise<Figma.Reaction>;
+
+  /**
+   * Deletes a specific comment reaction. Only the person who made the comment reaction is allowed to delete it.
+   * @param {fileId} String File to delete comment reaction from
+   * @param {commentId} String Comment id of comment to delete reaction from
+   * @see https://www.figma.com/developers/api#delete-comment-reactions-endpoint
+   */
+  readonly deleteCommentReaction: (
+    fileId: string,
+    commentId: string
+  ) => AxiosPromise<Figma.Reaction>;
+
+  /**
    * Get user information for the authenticated user.
    * @see https://www.figma.com/developers/api#get-me-endpoint
    */
@@ -373,6 +406,15 @@ export const Client = (opts: ClientOptions): ClientInterface => {
 
     deleteComment: (fileId, commentId) =>
       client.delete(`files/${fileId}/comments/${commentId}`),
+
+    commentReactions: (fileId, commentId) =>
+      client.get(`files/${fileId}/comments/${commentId}/reactions`),
+
+    postCommentReaction: (fileId, commentId) =>
+      client.post(`files/${fileId}/comments/${commentId}/reactions`),
+
+    deleteCommentReaction: (fileId, commentId) =>
+      client.delete(`files/${fileId}/comments/${commentId}/reactions`),
 
     me: () => client.get(`me`),
 

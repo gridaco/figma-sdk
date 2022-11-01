@@ -1273,6 +1273,10 @@ export interface CommentsResponse {
   readonly comments: ReadonlyArray<Comment>;
 }
 
+export interface CommentReactionsResponse {
+  readonly reactions: ReadonlyArray<Reaction>;
+}
+
 export interface ComponentResponse {
   readonly error: boolean;
   readonly status: number;
