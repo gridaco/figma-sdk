@@ -112,6 +112,14 @@ export interface PostCommentParams {
   readonly comment_id?: string;
 }
 
+export interface PostCommentReactionParams {
+  readonly emoji: Figma.Reaction["emoji"];
+}
+
+export interface DeleteCommentReactionParams {
+  readonly emoji: Figma.Reaction["emoji"];
+}
+
 export interface PaginationParams {
   /**
    * Number of items in a paged list of results.
@@ -260,7 +268,8 @@ export interface ClientInterface {
    */
   readonly postCommentReaction: (
     fileId: string,
-    commentId: string
+    commentId: string,
+    params: PostCommentReactionParams
   ) => AxiosPromise<Figma.Reaction>;
 
   /**
@@ -271,7 +280,8 @@ export interface ClientInterface {
    */
   readonly deleteCommentReaction: (
     fileId: string,
-    commentId: string
+    commentId: string,
+    params: DeleteCommentReactionParams
   ) => AxiosPromise<Figma.Reaction>;
 
   /**
@@ -410,11 +420,15 @@ export const Client = (opts: ClientOptions): ClientInterface => {
     commentReactions: (fileId, commentId) =>
       client.get(`files/${fileId}/comments/${commentId}/reactions`),
 
-    postCommentReaction: (fileId, commentId) =>
-      client.post(`files/${fileId}/comments/${commentId}/reactions`),
+    postCommentReaction: (fileId, commentId, params) =>
+      client.post(`files/${fileId}/comments/${commentId}/reactions`, {
+        params: params,
+      }),
 
-    deleteCommentReaction: (fileId, commentId) =>
-      client.delete(`files/${fileId}/comments/${commentId}/reactions`),
+    deleteCommentReaction: (fileId, commentId, params) =>
+      client.delete(`files/${fileId}/comments/${commentId}/reactions`, {
+        params,
+      }),
 
     me: () => client.get(`me`),
 
