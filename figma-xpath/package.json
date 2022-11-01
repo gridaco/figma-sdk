@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/figma-xpath",
-    "version": "0.0.39",
+    "version": "0.0.40",
     "private": false,
     "license": "MIT",
     "main": "dist/index.js",
@@ -15,7 +15,7 @@
         "softmarshmallow <universe@grida.co>"
     ],
     "devDependencies": {
-        "@design-sdk/figma-node": "^0.0.39"
+        "@design-sdk/figma-node": "^0.0.40"
     },
     "files": [
         "dist",
