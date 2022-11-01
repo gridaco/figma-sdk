@@ -421,9 +421,7 @@ export const Client = (opts: ClientOptions): ClientInterface => {
       client.get(`files/${fileId}/comments/${commentId}/reactions`),
 
     postCommentReaction: (fileId, commentId, params) =>
-      client.post(`files/${fileId}/comments/${commentId}/reactions`, {
-        params: params,
-      }),
+      client.post(`files/${fileId}/comments/${commentId}/reactions`, params),
 
     deleteCommentReaction: (fileId, commentId, params) =>
       client.delete(`files/${fileId}/comments/${commentId}/reactions`, {
