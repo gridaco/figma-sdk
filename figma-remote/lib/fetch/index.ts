@@ -170,14 +170,18 @@ export async function fetchTarget(
       status: "success",
     };
   } catch (e) {
-    switch (e.status) {
-      case 404:
-        throw new NotfoundError(`Node ${ids} not found in file ${file}`);
-      case 403:
-        throw new UnauthorizedError(e);
-      default:
-        throw e;
+    // catch axios error
+    if (e.response) {
+      switch (e.response.status) {
+        case 404:
+          throw new NotfoundError(`Node ${ids} not found in file ${file}`);
+        case 403:
+          throw new UnauthorizedError(e);
+        default:
+          throw e;
+      }
     }
+    throw e;
   }
 }
 
