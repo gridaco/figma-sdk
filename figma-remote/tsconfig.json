@@ -4,6 +4,6 @@
     "rootDir": "./lib",
     "outDir": "./dist"
   },
-  "include": ["lib"],
+  "include": ["lib", "__test__/fecth.test.ts"],
   "exclude": ["node_modules", "dist", "__test__"]
 }

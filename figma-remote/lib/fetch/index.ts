@@ -176,7 +176,8 @@ export async function fetchTarget(
         case 404:
           throw new NotfoundError(`Node ${ids} not found in file ${file}`);
         case 403:
-          throw new UnauthorizedError(e);
+          // e.g. {"status":403,"err":"Invalid token"}
+          throw new UnauthorizedError(e.response.data.err);
         default:
           throw e;
       }
