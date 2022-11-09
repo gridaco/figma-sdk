@@ -4,7 +4,7 @@
     "private": false,
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "version": "0.0.42",
+    "version": "0.0.43",
     "authors": [
         "grida.co",
         "softmarshmallow <universe@grida.co>"
