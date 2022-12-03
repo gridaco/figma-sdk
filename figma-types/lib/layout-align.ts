@@ -10,4 +10,4 @@
  *
  * > ⚠️ Previously, layoutAlign also determined counter axis alignment of auto-layout frame children. Counter axis alignment is now set on the auto-layout frame itself through counterAxisAlignItems. Note that this means all layers in an auto-layout frame must now have the same counter axis alignment. This means "MIN", "CENTER", and "MAX" are now deprecated values of layoutAlign.
  */
-export type FimgaLayoutAlign = "STRETCH" | "INHERIT";
+export type FigmaLayoutAlign = "STRETCH" | "INHERIT";

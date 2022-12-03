@@ -1,4 +1,4 @@
-import type { FimgaLayoutAlign } from "@design-sdk/figma-types";
+import type { FigmaLayoutAlign } from "@design-sdk/figma-types";
 import { types } from "@reflect-ui/uiutils";
 
 export interface IReflectLayoutMixin {
@@ -13,7 +13,7 @@ export interface IReflectLayoutMixin {
   /**
    * fimgma: this property is only applicable when frame is auto-layout frame.
    */
-  layoutAlign: FimgaLayoutAlign;
+  layoutAlign: FigmaLayoutAlign;
 
   /**
    * figma: [layout grow](https://www.figma.com/plugin-docs/api/properties/nodes-layoutgrow)

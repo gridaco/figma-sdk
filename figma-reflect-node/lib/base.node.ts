@@ -33,7 +33,7 @@ import type {
   ChildrenMixin,
   Effect,
   FigmaLayoutGrow,
-  FimgaLayoutAlign,
+  FigmaLayoutAlign,
   InstanceNode,
   Paint,
   SceneNode,
@@ -193,7 +193,7 @@ export class ReflectBaseNode
   rotation: number; // In degrees
   width: number;
   height: number;
-  layoutAlign: FimgaLayoutAlign;
+  layoutAlign: FigmaLayoutAlign;
   layoutGrow: FigmaLayoutGrow;
   fills?: ReadonlyArray<Paint>;
   strokes?: ReadonlyArray<Paint>;

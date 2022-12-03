@@ -6,7 +6,7 @@ import type {
   // FIXME: - migrate this
   Effect,
   FigmaLayoutGrow,
-  FimgaLayoutAlign,
+  FigmaLayoutAlign,
 } from "@design-sdk/figma-types";
 import { ReflectSceneNodeType } from "./node-type";
 import { types } from "@reflect-ui/uiutils";
@@ -31,7 +31,7 @@ export class ReflectGroupNode
   rotation: number;
   width: number;
   height: number;
-  layoutAlign: FimgaLayoutAlign;
+  layoutAlign: FigmaLayoutAlign;
   layoutGrow: FigmaLayoutGrow;
 
   children: Array<ReflectSceneNode>;

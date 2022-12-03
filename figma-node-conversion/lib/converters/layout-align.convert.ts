@@ -1,4 +1,4 @@
-import { FimgaLayoutAlign } from "@design-sdk/figma-types";
+import { FigmaLayoutAlign } from "@design-sdk/figma-types";
 import { MainAxisSize } from "@reflect-ui/core";
 
 /**
@@ -7,7 +7,7 @@ import { MainAxisSize } from "@reflect-ui/core";
  * @returns
  */
 export function layoutAlignToReflectMainAxisSize(
-  layoutAlign: FimgaLayoutAlign
+  layoutAlign: FigmaLayoutAlign
 ): MainAxisSize {
   switch (layoutAlign) {
     case "INHERIT":

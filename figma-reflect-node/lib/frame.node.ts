@@ -22,7 +22,7 @@ import type {
   StrokeCap,
   Effect,
   Transform,
-  FimgaLayoutAlign,
+  FigmaLayoutAlign,
   FigmaLayoutGrow,
   FigmaPrimaryAxisSizingMode,
   FigmaCounterAxisSizingMode,
@@ -118,7 +118,7 @@ export class ReflectFrameNode
   rotation: number; // In degrees
   width: number;
   height: number;
-  layoutAlign: FimgaLayoutAlign;
+  layoutAlign: FigmaLayoutAlign;
 
   get isAutoLayout(): boolean {
     return checkIfAutoLayout(this);

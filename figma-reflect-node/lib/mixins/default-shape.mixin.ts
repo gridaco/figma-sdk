@@ -9,7 +9,7 @@ import type {
   Effect,
   StrokeCap,
   StrokeJoin,
-  FimgaLayoutAlign,
+  FigmaLayoutAlign,
   VectorPaths,
 } from "@design-sdk/figma-types";
 import { FigmaLayoutGrow } from "@design-sdk/figma-types";
@@ -19,7 +19,7 @@ export class ReflectDefaultShapeMixin
   implements IReflectDefaultShapeMixin
 {
   layoutGrow: FigmaLayoutGrow;
-  layoutAlign: FimgaLayoutAlign;
+  layoutAlign: FigmaLayoutAlign;
   opacity: number;
   blendMode: "PASS_THROUGH" | BlendMode;
   isMask: boolean;
