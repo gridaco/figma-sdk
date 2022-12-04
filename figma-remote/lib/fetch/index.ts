@@ -28,14 +28,14 @@ type FigmaApiResponse<T> = T & {
     | "not-found";
 };
 
-export interface FimgaRemoteFetchConfig {
+export interface FigmaRemoteFetchConfig {
   /**
    * specify if to fetch with explicit out-of-target-scope components.
    */
   with_components?: boolean;
 }
 
-const default_config: FimgaRemoteFetchConfig = {
+const default_config: FigmaRemoteFetchConfig = {
   with_components: true,
 };
 
@@ -48,7 +48,7 @@ export async function fetchTargetAsReflect({
   file: string;
   node: string;
   auth: AuthenticationCredential;
-  config?: FimgaRemoteFetchConfig;
+  config?: FigmaRemoteFetchConfig;
 }): Promise<FigmaApiResponse<FigmaRemoteImportPack>> {
   const partial = await await fetchTarget(file, [node], auth, config);
 
@@ -84,7 +84,7 @@ export async function fetchTargetAsReflect({
 export async function completePartialPack(
   partial: FigmaRemoteImportPack,
   auth?: AuthenticationCredential,
-  config?: FimgaRemoteFetchConfig
+  config?: FigmaRemoteFetchConfig
 ): Promise<FigmaApiResponse<FigmaRemoteImportPack>> {
   const filekey = partial.file;
   let d: types.Node;
@@ -110,7 +110,7 @@ export async function fetchTarget(
   file: string,
   ids: string[] | string,
   auth: AuthenticationCredential,
-  config?: FimgaRemoteFetchConfig
+  config?: FigmaRemoteFetchConfig
 ): Promise<
   FigmaApiResponse<{
     file: string;
