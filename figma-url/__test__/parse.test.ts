@@ -11,8 +11,32 @@ test("parse fileid from url", () => {
   );
 });
 
-// test("parse nodeid and fileid from url", () => {
-//   expect(parseFigmaFileAndNodeIdFromUrl(FIGMA_DEMO_DEFAULT_FILE_NODE_URL)).toBe(
-//     3
-//   );
-// });
+test("parse nodeid and fileid from url v1 (old figma url via copy link / plain)", () => {
+  const url =
+    "https://www.figma.com/file/Gaznaw1QHppxvs9UkqNOb0/grida.co?node-id=5683:31451&t=ttMsIZRdkBv78VUQ-0";
+  expect(parseFileAndNodeId(url)).toEqual({
+    file: "Gaznaw1QHppxvs9UkqNOb0",
+    node: "5683:31451",
+    url,
+  });
+});
+
+test("parse nodeid and fileid from url v1 (old figma url via copy link / url encoded)", () => {
+  const url =
+    "https://www.figma.com/file/Gaznaw1QHppxvs9UkqNOb0/grida.co?node-id=5683%3A31451&t=ttMsIZRdkBv78VUQ-0";
+  expect(parseFileAndNodeId(url)).toEqual({
+    file: "Gaznaw1QHppxvs9UkqNOb0",
+    node: "5683:31451",
+    url,
+  });
+});
+
+test("parse nodeid and fileid from url v2 (updated figma url via copy link)", () => {
+  const url =
+    "https://www.figma.com/file/Gaznaw1QHppxvs9UkqNOb0/grida.co?node-id=5683-31451&t=ttMsIZRdkBv78VUQ-0";
+  expect(parseFileAndNodeId(url)).toEqual({
+    file: "Gaznaw1QHppxvs9UkqNOb0",
+    node: "5683:31451",
+    url,
+  });
+});

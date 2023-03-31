@@ -3,6 +3,7 @@ import {
   _FIGMA_FILE_URL_PREFIX,
   _PARAM_NODE_ID,
 } from "./constants";
+import { formatNodeId } from "./parse-url";
 
 export enum FigmaUrlType {
   /**
@@ -48,18 +49,10 @@ export function analyze(url: string): FigmaInputAnalysisResult {
   } catch (_) {
     const maybeidlike = url;
     if (maybeidlike.length > 0) {
-      if (maybeidlike.includes(":") || maybeidlike.includes("%3A")) {
-        let _target = maybeidlike;
-        // "%3A" is ":" as in url encoding
-        if (_target.includes("%3A")) {
-          // decode value, assuming it is url encoded
-          _target = decodeURI(_target);
-        }
-        // 2. run regex
-        if (_target.match(/[0-9]+:[0-9]+/) !== null) {
-          return FigmaFileOrNodeIdType.maybe_nodeid;
-        }
+      if (formatNodeId(maybeidlike)) {
+        return FigmaFileOrNodeIdType.maybe_nodeid;
       }
+
       // e.g. kLzb7R9xYuuphfX4TssVNe
       // e.g. 4hqwYFw6FKw1njvzEl3VUh
       // fileid is 22 chars at this point.

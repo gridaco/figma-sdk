@@ -35,7 +35,7 @@ test("analyze url - invalid embedding url (only inspecting structure)", () => {
 
 test("analyze url - empty embedding url", () => {
   const _url = undefined; // this is not embeddable 'case of missing "www."
-  expect(analyze(_url))
+  expect(analyze(_url as any as string))
     //
     .toBe(FigmaUrlType.empty);
 });
