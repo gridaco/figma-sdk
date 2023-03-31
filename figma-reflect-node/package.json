@@ -1,42 +1,41 @@
 {
-    "name": "@design-sdk/figma-node",
-    "description": "A temporary reflect node definition alias based on figma typings",
-    "version": "0.0.45",
-    "author": "Grida.co",
-    "private": false,
-    "license": "MIT",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "scripts": {
-        "clean": "rimraf dist",
-        "build": "tsc",
-        "prepack": "yarn build"
-    },
-    "files": [
-        "dist",
-        "README.md",
-        "LICENSE"
-    ],
-    "dependencies": {
-        "@design-sdk/figma-core": "^0.0.45",
-        "@design-sdk/figma-utils": "^0.0.45",
-        "@reflect-ui/font-utils": "^0.0.1"
-    },
-    "peerDependencies": {
-        "@design-sdk/figma-core": "0.0.23",
-        "@design-sdk/figma-types": "^0.0.23",
-        "@reflect-ui/cg": "^0.1.1",
-        "@reflect-ui/core": "^0.0.5",
-        "@reflect-ui/font-utils": "^0.0.1",
-        "@reflect-ui/uiutils": "^0.1.2-2"
-    },
-    "devDependencies": {
-        "@design-sdk/figma-types": "^0.0.45",
-        "@reflect-ui/cg": "^0.1.1",
-        "@reflect-ui/core": "^0.0.5",
-        "typescript": "^4.7.4"
-    },
-    "publishConfig": {
-        "access": "public"
-    }
+  "name": "@design-sdk/figma-node",
+  "description": "A temporary reflect node definition alias based on figma typings",
+  "version": "0.0.45",
+  "author": "Grida.co",
+  "private": false,
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc",
+    "prepack": "yarn build"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@design-sdk/figma-core": "^0.0.45",
+    "@design-sdk/figma-utils": "^0.0.45",
+    "@design-sdk/figma-types": "^0.0.45",
+    "@reflect-ui/font-utils": "^0.0.1"
+  },
+  "peerDependencies": {
+    "@design-sdk/figma-core": "0.0.23",
+    "@reflect-ui/cg": "^0.1.1",
+    "@reflect-ui/core": "^0.0.5",
+    "@reflect-ui/font-utils": "^0.0.1",
+    "@reflect-ui/uiutils": "^0.1.2-2"
+  },
+  "devDependencies": {
+    "@reflect-ui/cg": "^0.1.1",
+    "@reflect-ui/core": "^0.0.5",
+    "typescript": "^4.7.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
