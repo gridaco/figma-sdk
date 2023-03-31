@@ -58,6 +58,10 @@ parseFileAndNodeId(
 // => Y0Gh77AqBoHH7dG1GtK3xF, 264%3A49
 ```
 
+## `node-id` format
+
+This package both supports `node-id` format with `:`, `%3A` and `-`.
+
 ## LICENSE - MIT by [Grida.co](https://grida.co)
 
 ## References
