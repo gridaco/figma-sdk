@@ -1,6 +1,6 @@
 {
   "name": "@design-sdk/figma-node-repository",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "authors": "Grida.co",
   "private": false,
   "main": "dist/index.js",
@@ -10,8 +10,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@design-sdk/figma-node": "^0.0.43",
-    "@design-sdk/figma-types": "^0.0.43"
+    "@design-sdk/figma-node": "^0.0.44",
+    "@design-sdk/figma-types": "^0.0.44"
   },
   "files": [
     "dist",
