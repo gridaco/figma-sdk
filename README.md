@@ -4,7 +4,7 @@
 
 A mid wrapper for building consistant figma &amp; sketch &amp; reflection plugin, with single api reference
 
-> developed for [bridged's assistant](https://github.com/bridgedxyz/assistant)
+> Powers [Grida Figma Assistant](https://github.com/gridaco/assistant)
 
 ## Features
 
@@ -33,7 +33,7 @@ yarn add @design-sdk/<package>
 
 ## Are you looking for universal design converter?
 
-Take a look at [design-file-converter](https://github.com/bridgedxyz/design-file-converter)
+Take a look at [design-file-converter](https://github.com/gridaco/design-file-converter)
 
 ## Sketch reference
 
