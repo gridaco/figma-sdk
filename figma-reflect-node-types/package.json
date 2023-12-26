@@ -1,6 +1,6 @@
 {
   "name": "@design-sdk/figma-node-types",
-  "version": "0.0.52",
+  "version": "0.0.53",
   "description": "Abstract type definitions for Figma node types with reflect property typings",
   "private": false,
   "publishConfig": {
