@@ -2,7 +2,11 @@ import * as types from "@design-sdk/figma-remote-types";
 import * as mapper from "../mapper";
 import * as api from "@design-sdk/figma-remote-api";
 import { convert } from "@design-sdk/figma-node-conversion";
-import { NotfoundError, UnauthorizedError } from "./errors";
+import {
+  NotfoundError,
+  TokenExpiredUnauthorizedError,
+  UnauthorizedError,
+} from "./errors";
 import type { AuthenticationCredential, FigmaRemoteImportPack } from "./types";
 import type { AxiosPromise } from "axios";
 export { fetchDemo } from "./demo";
@@ -189,6 +193,7 @@ export async function fetchTarget(
 export type FetchFileGeneratorReturnType = types.FileResponse & {
   __response_type: "pages" | "roots" | "whole";
 };
+
 export async function* fetchFile({
   file,
   auth,
@@ -197,30 +202,34 @@ export async function* fetchFile({
   auth: AuthenticationCredential;
 }): AsyncGenerator<FigmaApiResponse<FetchFileGeneratorReturnType>> {
   const client = api.Client(auth);
-  const pagesreq = client.file(file, {
-    geometry: "paths",
-    depth: 1,
-  });
 
-  const rootsreq = client.file(file, {
-    geometry: "paths",
-    depth: 2,
-  });
-
-  const wholereq = client.file(file, {
-    geometry: "paths",
-  });
   try {
+    const pagesreq = client.file(file, {
+      geometry: "paths",
+      depth: 1,
+    });
+
     yield {
       ...(await pagesreq).data,
       __response_type: "pages",
       status: "success",
     };
+
+    const rootsreq = client.file(file, {
+      geometry: "paths",
+      depth: 2,
+    });
+
     yield {
       ...(await rootsreq).data,
       __response_type: "roots",
       status: "success",
     };
+
+    const wholereq = client.file(file, {
+      geometry: "paths",
+    });
+
     yield {
       ...(await wholereq).data,
       __response_type: "whole",
@@ -233,7 +242,15 @@ export async function* fetchFile({
           throw new NotfoundError(`File ${file} not found`);
         case 403:
           // e.g. {"status":403,"err":"Invalid token"}
-          throw new UnauthorizedError(e.response.data.err);
+          // e.g. {"status":403,"err":"Token expired"}
+          switch (e.response.data.err) {
+            case "Invalid token":
+              throw new UnauthorizedError(e.response.data.err);
+            case "Token expired":
+              throw new TokenExpiredUnauthorizedError(e.response.data.err);
+            default:
+              throw new UnauthorizedError(e.response.data.err);
+          }
         default:
           throw e;
       }
