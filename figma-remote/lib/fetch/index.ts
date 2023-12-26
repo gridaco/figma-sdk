@@ -210,22 +210,37 @@ export async function* fetchFile({
   const wholereq = client.file(file, {
     geometry: "paths",
   });
+  try {
+    yield {
+      ...(await pagesreq).data,
+      __response_type: "pages",
+      status: "success",
+    };
+    yield {
+      ...(await rootsreq).data,
+      __response_type: "roots",
+      status: "success",
+    };
+    yield {
+      ...(await wholereq).data,
+      __response_type: "whole",
+      status: "success",
+    };
+  } catch (e) {
+    if (e.response) {
+      switch (e.response.status) {
+        case 404:
+          throw new NotfoundError(`File ${file} not found`);
+        case 403:
+          // e.g. {"status":403,"err":"Invalid token"}
+          throw new UnauthorizedError(e.response.data.err);
+        default:
+          throw e;
+      }
+    }
+    throw e;
+  }
 
-  yield {
-    ...(await pagesreq).data,
-    __response_type: "pages",
-    status: "success",
-  };
-  yield {
-    ...(await rootsreq).data,
-    __response_type: "roots",
-    status: "success",
-  };
-  yield {
-    ...(await wholereq).data,
-    __response_type: "whole",
-    status: "success",
-  };
   return;
 }
 
