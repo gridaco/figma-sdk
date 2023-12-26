@@ -1,7 +1,7 @@
 {
   "name": "@design-sdk/core-flags-dashdash",
   "description": "dashdash",
-  "version": "0.0.47",
+  "version": "0.0.48",
   "private": false,
   "main": "index.js",
   "types": "index.d.ts",
