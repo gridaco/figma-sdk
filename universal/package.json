@@ -1,6 +1,6 @@
 {
     "name": "@design-sdk/universal",
-    "version": "0.0.49",
+    "version": "0.0.50",
     "private": false,
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -9,10 +9,10 @@
         "softmarshmallow <universe@grida.co>"
     ],
     "dependencies": {
-        "@design-sdk/core": "^0.0.49",
-        "@design-sdk/figma": "^0.0.49",
-        "@design-sdk/sketch": "^0.0.49",
-        "@design-sdk/vanilla": "^0.0.49"
+        "@design-sdk/core": "^0.0.50",
+        "@design-sdk/figma": "^0.0.50",
+        "@design-sdk/sketch": "^0.0.50",
+        "@design-sdk/vanilla": "^0.0.50"
     },
     "scripts": {
         "clean": "rimraf dist",
